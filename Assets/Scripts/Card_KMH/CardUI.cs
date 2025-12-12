@@ -12,9 +12,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     private Vector3 basePos;            // 부채꼴 위치
     private Quaternion baseRot;         // 부채꼴 회전
 
-    private int siblingIndex;             // 정렬 순서
+    private int siblingIndex;           // 정렬 순서
 
-    void Awake()
+    private void Awake()
     {
         // 테스트용 랜덤 색상
         GetComponent<Image>().color = Random.ColorHSV();
@@ -29,8 +29,8 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         // 마우스 오버
         if (isHovering)
         {
-            // 원래 위치보다 살짝 위로
-            Vector3 hoverPos = basePos + new Vector3(0, 50f, 0);
+            // 보정치만큼 위로
+            Vector3 hoverPos = new Vector3(transform.position.x, handManager.BottomOffset, transform.position.z);
 
             // 위로 이동, 회전 0, 확대
             transform.position = hoverPos;
@@ -47,27 +47,8 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         }
     }
 
-    // 첫 생성 초기화
-    public void Init(HandManager manager)
-    {
-        handManager = manager;
-    }
-    
-    // 카드 부채꼴 위치 지정 함수
-    public void SetBase(Vector3 pos, Quaternion rot)
-    {
-        basePos = pos;
-        baseRot = rot;
-    }
 
-    // 위치 갱신
-    public void UpdateTransform(Vector3 pos, Quaternion rot, Vector3 scale)
-    {
-        transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * handManager.MoveSpeed);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * handManager.MoveSpeed);
-        transform.localScale = Vector3.Lerp(transform.localScale, scale, Time.deltaTime * handManager.ScaleSpeed);
-    }
-
+    // ----------------------------------------------------------------
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -89,6 +70,8 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         // 원래 순서로 복귀
         transform.SetSiblingIndex(siblingIndex);
     }
+
+    // ----------------------------------------------------------------
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -121,4 +104,20 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             handManager.UseCard(this);
         }
     }
+
+    // ----------------------------------------------------------------
+
+    // 첫 생성 초기화
+    public void Init(HandManager manager)
+    {
+        handManager = manager;
+    }
+    
+    // 카드 부채꼴 위치 지정 함수
+    public void SetBase(Vector3 pos, Quaternion rot)
+    {
+        basePos = pos;
+        baseRot = rot;
+    }
+
 }

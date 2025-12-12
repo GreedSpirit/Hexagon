@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour
@@ -11,6 +10,7 @@ public class HandManager : MonoBehaviour
     [SerializeField] float _moveSpeed = 15f;        // 이동/회전 속도
     [SerializeField] float _scaleSpeed = 15f;       // 확대/축소 속도
     [SerializeField] float _hoverScale = 1.5f;      // 마우스 올렸을 때 커지는 배율
+    [SerializeField] float _bottomOffset = 50f;     // 핸드 아래 옵셋
     [SerializeField] float _useScreenRatio = 0.3f;  // 카드 사용할 화면 높이 비율
 
     [Header("부채꼴 설정")]
@@ -21,6 +21,7 @@ public class HandManager : MonoBehaviour
     public float MoveSpeed => _moveSpeed;
     public float ScaleSpeed => _scaleSpeed;
     public float HoverScale => _hoverScale;
+    public float BottomOffset => _bottomOffset;
     public float UseScreenRatio => _useScreenRatio;
 
 
@@ -56,8 +57,8 @@ public class HandManager : MonoBehaviour
         AlignCards();           
     }
 
-    // 부채꼴 계산
-    void AlignCards()
+    // 카드 부채꼴 정렬
+    private void AlignCards()
     {
         // 카드 수
         int count = myCards.Count;
@@ -75,7 +76,7 @@ public class HandManager : MonoBehaviour
         // 중심 포인트 지정 (반지름 만큼 아래로)
         Vector3 center = transform.position - (Vector3.up * radius);
 
-
+        // 카드 순회
         for (int i = 0; i < count; i++)
         {
             // 현재 카드 각도
