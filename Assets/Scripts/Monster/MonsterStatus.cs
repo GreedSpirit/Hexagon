@@ -15,6 +15,7 @@ public class MonsterStatus : MonoBehaviour
     [SerializeField] private int _monsterMaxHP;
     [SerializeField] private int _monsterCurHP;
     [SerializeField] private int _monsterDefense;
+    [SerializeField] private int _monsterShield = 0;
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
 
@@ -37,13 +38,22 @@ public class MonsterStatus : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        //이 곳에 damage 계산 로직 추가(방어력, 보호막 등)
+        //!추후 자세한 damage 계산 로직 추가(방어력)
+        if(_monsterShield > 0)
+        {
+            int shieldDamage = Mathf.Min(_monsterShield, damage);
+            _monsterShield -= shieldDamage;
+            damage -= shieldDamage;
+        }
         _monsterCurHP -= damage;
         if (_monsterCurHP < 0)
             _monsterCurHP = 0;
         NotifyHpObservers(); //HP 변경 알림
 
-        //몬스터 죽음 관련 로직 추가
+        if (_monsterCurHP == 0)
+        {
+            Death();
+        }
     }
 
     public void AddHpObserver(IMonsterHpObserver observer)
@@ -68,6 +78,20 @@ public class MonsterStatus : MonoBehaviour
         {
             observer.OnMonsterHpChanged(_monsterCurHP, _monsterMaxHP);
         }
+    }
+
+    private void Death()
+    {
+        //몬스터 죽음 처리 로직 추가
+        if(_monsterGrade == MonsterGrade.Boss)
+        {
+            DropLoot();
+        }
+    }
+
+    private void DropLoot()
+    {
+        //보스 몬스터 죽음 시 특별 처리 로직 추가
     }
 
 
