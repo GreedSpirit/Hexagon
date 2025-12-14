@@ -1,81 +1,104 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStat
 {
-    //Character 테이블에서 받아올 필드.
-    public string Name { get; private set; }
-    public int MoveSpeed { get; private set; }
+    //Initalizer에서 초기에 한 번만 받아오는 값
+    public string Name { get;  set; }
+    public float MoveSpeed { get; set; }
 
-    //CharacterLevel 테이블에서 받아올 필드.
+    //Initializer에서 미리 받아올 레벨 별 스탯 일람.
+    public List<StatsByLevel> LevelList { get; set; }
+
+    //레벨 업 할때마다 StatByLevels에서 꺼내어 갱신할 값
     public int Hp { get; private set; }
     public int Defense { get; private set; }
     public int NeedExp { get; private set; }
     public int TotalExp { get; private set; }
 
-    //플레이에 따라 변동되는 필드.
-    public int Level { get; set; }
-    public int CurrentExp { get; set; }
-    public int CurrentHp {  get; set; }    
-    public int Shield { get; set; }
+    //전투 중 갱신할 값.
+    public int Level { get; private set; } = 1;
+    public int Shield { get; private set; }
+    public int CurrentExp { get; private set; }
+    public int CurrentHp {  get; private set; }    
+    
 
 
 
     
-    public void FirstInit()//맨 처음 캐릭터 생성할 때 호출
+    public void SetStats()//맨 처음 캐릭터 생성할 때 및 레벨업 이후 호출.
     {
-        Level = 1;
-        SetName();
-        SetMoveSpeed();
-        SetStat();
-        
-        CurrentExp = 0;
-        CurrentHp = Hp;
+        StatsByLevel stats = LevelList[Level -1];
+        Hp = stats.Hp;
+        Defense = stats.Defence;
+        NeedExp = stats.NeedExp;
+        TotalExp = stats.TotalExp;        
     }
 
-    public void LevelUp()
+    private void LevelUp()
     {
-        //if(_level < Character Level 테이블의 id의 개수)
+        if (Level < LevelList.Count)
         {
             Level++;
-            SetStat();
+            SetStats();
         }
-        //else
+        else
         {
             Debug.Log("이미 최대 레벨입니다.");
         }        
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private void SetStat()
+    public void GetDamage(int damage) //데미지를 입을 때마다 호출.
     {
-        // HP = Character Level 테이블에 id : _level 의 HP
-        // Defense = Character Level 테이블에 id : _level의 Defense
-        // NeedExp = Character Level 테이블에 id : _level의 NeedExp
-        // TotalExp = Character Level 테이블에 id : _level의 TotalExp
+
+        if (Shield > 0) //보호막이 있는 경우
+        {
+            Shield -= damage; //보호막이 대미지 흡수
+            if (Shield < 0) //데미지가 남았으면 체력도 감소
+            {
+                CurrentHp += Shield;
+                Shield = 0;
+            }            
+        }
+        else //보호막이 없는 경우
+        {
+            CurrentHp -= damage;
+        }
     }
 
-    private void SetName()
+
+    public void GetTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
     {
-        //string key = Character 테이블에 id : 1 의 Name
-        //Name =  String Table에 id : key의 한국어나 영어
+        CurrentHp -= damage;
     }
-    private void SetMoveSpeed()
+
+
+    public void GetHp(int hp) //체력을 회복할 때마다 호출
     {
-        //MoveSpeed = Character 테이블에 id : 1 의 MoveSpeed
+        CurrentHp += hp;
+        if (CurrentHp > Hp)
+        {
+            CurrentHp = Hp;
+        }        
+    }
+
+    public void GetShield(int barrier) //보호막을 얻을 때마다 호출
+    {
+        Shield += barrier;
+    }
+
+    public void ResetShield() //보호막이 사라질 때(매 턴 시작 전 등)마다 호출
+    {
+        Shield = 0;
+    }
+
+
+    public void GetExp(int exp) //경험치를 얻을 때마다 호출
+    {
+        CurrentExp += exp;
+        if (CurrentExp > NeedExp)
+        {
+            CurrentExp -= NeedExp;
+            LevelUp();
+        }
     }
 }
