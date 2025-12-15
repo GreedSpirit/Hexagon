@@ -1,13 +1,20 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 
 public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField] Transform _visual;  // 실제 카드 비주얼
-    [SerializeField] Image _edgeColor;   // 테두리 색
+    [SerializeField] Transform _visual;             // 실제 카드 비주얼 트랜스폼
 
-    private Card cardLogic;
+    [SerializeField] Image img;                     // 카드 이미지
+    [SerializeField] TextMeshProUGUI nameText;      // 이름 텍스트
+    [SerializeField] TextMeshProUGUI descText;      // 설명 텍스트
+    [SerializeField] TextMeshProUGUI typeText;      // 타입 텍스트
+    [SerializeField] Image _edgeColor;              // 등급 색
+
+    private Card cardLogic;             // 카드 로직
+    private CardData cardData;          // 카드 데이터
     private HandManager handManager;    // 핸드 매니저 (카드 제거 시 필요)
 
     private bool isMouseOver = false;   // 마우스 오버
@@ -36,7 +43,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
         // 카드 비주얼 크기
         // 옵셋만큼 크게
-        _visual.localScale = Vector3.Lerp(_visual.localScale, Vector3.one * handManager.HoverOffset, Time.deltaTime * handManager.ScaleSpeed);
+        _visual.localScale = Vector3.Lerp(_visual.localScale, Vector3.one * handManager.HoverVisualScaleOffset, Time.deltaTime * handManager.ScaleSpeed);
 
         // 복귀 중
         if (isReturning)
@@ -86,8 +93,11 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         // 호버 상태
         isHovering = true;
 
+        // 바닥 띄우기 (핸드 매니저 y + 카드 높이 절반 * 호버 배율)
+        float yOffset = handManager.transform.position.y + handManager.CardHalfHeight * handManager.HoverScale;
+
         // 위로 이동, 회전 0, 확대
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        transform.position = new Vector3(transform.position.x, yOffset, transform.position.z);
         transform.rotation = Quaternion.identity;
         transform.localScale = Vector3.one * handManager.HoverScale;
 
@@ -112,7 +122,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public void OnDrag(PointerEventData eventData)
     {
         // 카드가 마우스 위치에 따라옴
-        transform.position = eventData.position + Vector2.down * 200f;
+        transform.position = eventData.position;
         transform.rotation = Quaternion.identity;
     }
 
@@ -137,10 +147,14 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     // ----------------------------------------------------------------
 
     // 첫 생성 초기화
-    public void Init(HandManager manager)
+    public void Init(CardData data, HandManager manager)
     {
         cardLogic = GetComponent<Card>();
+        cardData = data;
         handManager = manager;
+
+        // 비주얼 설정
+        SetVisual();
 
         // 테스트용 랜덤 색상
         _edgeColor.color = Random.ColorHSV();
@@ -151,6 +165,15 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     {
         basePos = pos;
         baseRot = rot;
+    }
+
+    // 카드 데이터에 맞게 비주얼 갱신
+    private void SetVisual()
+    {
+        //img = ImageManager ? data.CardImg;
+        nameText.text = cardData.Name;
+        descText.text = cardData.Desc;
+        typeText.text = cardData.CardType.ToString();
     }
 
 }

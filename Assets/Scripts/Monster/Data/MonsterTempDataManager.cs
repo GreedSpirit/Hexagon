@@ -5,7 +5,7 @@ public class MonsterTempDataManager : MonoBehaviour
 {
     public static MonsterTempDataManager Instance { get; private set; }
 
-    public Dictionary<int, MonsterStatData> MonsterStatDict { get; private set; }
+    public Dictionary<int, MonsterData> MonsterStatDict { get; private set; }
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class MonsterTempDataManager : MonoBehaviour
 
     private void LoadAllData()
     {
-        MonsterStatDict = ListToDict(CSVReader.Read<MonsterStatData>("Monster"));
+        MonsterStatDict = ListToDict(CSVReader.Read<MonsterData>("Monster"));
         //MonsterSkillSetDict = ListToDict(CSVReader.Read<MonsterSkillSetData>("MonsterSkillSet"));
     }
 
@@ -42,9 +42,9 @@ public class MonsterTempDataManager : MonoBehaviour
         return dict;
     }
 
-    public MonsterStatData GetMonsterStat(int id)
+    public MonsterData GetMonsterStat(int id)
     {
-        if (MonsterStatDict.TryGetValue(id, out MonsterStatData data))
+        if (MonsterStatDict.TryGetValue(id, out MonsterData data))
         {
             return data;
         }

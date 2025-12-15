@@ -1,0 +1,4 @@
+Id,몬스터 레벨,몬스터 최대 체력,몬스터 방어력
+int,int,int,int
+Id,Level,Hp,Defense
+1,1,50,1
