@@ -45,9 +45,9 @@ public class PlayerStatInitializer
         return statsByLevel;
     }
 
-    private string SetName() //인자값 : Character 테이블, String 테이블
+    private string SetName() //인자값 : CharacterData characterData, StringData stringData
     {
-        string name = "";
+        string name = "???";
         //string key = Character 테이블에 id : 1 의 Name
         //name =  String Table에 id : key의 한국어나 영어
         return name;
