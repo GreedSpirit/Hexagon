@@ -14,16 +14,13 @@ public class Player : MonoBehaviour //나중에 싱글톤도 해주기
     public Action OnShieldChanged; //보호막 수치 변화할 때마다 호출.
 
     private void Start()
-    {        
-        //GameManager.'PlayerInitializer를 생성해서 PlayerInitializer.InitPlayerStat을 호출하는 함수'를 호출
+    {
+        Debug.Log($"{_stat.Name}");
+        Debug.Log($"경험치 : {_stat.NeedExp}");
+        Debug.Log($"체력 : {_stat.Hp}");
+        Debug.Log($"방어력 : {_stat.Defense}");
+        Debug.Log($"이동속도 : {_stat.MoveSpeed}");
     }
-
-    
-    /// 추후 GameManager 구현 시 Start에 다음 함수 추가할 것
-    // FindFirstObjectByType<Player>().Init(new PlayerStatInitializer().InitPlayerStat());
-    /// 이거 좀 다듬어서... 안전 예외 처리도 좀 하고.. 가독성도 키우고...
-
-
 
 
     ///게임 매니저에서 호출할 함수
