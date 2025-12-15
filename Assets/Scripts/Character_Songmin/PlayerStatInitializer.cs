@@ -21,6 +21,10 @@ public class PlayerStatInitializer
     private List<StatsByLevel> FillLevelList(List<CharacterLevelData> levelDatas, List<CharacterStatData> statDatas)//인자값 : CharacterLevel 테이블(이거 파서로 변환할 때 각 세로열을 리스트로 변환 가능할까요??)
     {
         List<StatsByLevel> LevelList = new List<StatsByLevel>();
+        if (levelDatas.Count != statDatas.Count)
+        {
+            Debug.LogError("CharacterLevelData와 CharacterStatData의 개수가 일치하지 않습니다.");            
+        }
         for (int i = 0; i < levelDatas.Count; i++) //실제로는 여기 6 대신 CharacterLevel 테이블의 Level리스트.Count가 들어가야 함
         {
             LevelList.Add(SetStatsByLevel((i+1), levelDatas[i], statDatas[i]));
