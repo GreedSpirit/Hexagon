@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// <summary>
 /// MonsterSkillSet 테이블의 데이터를 불러오는 클래스
 /// </summary>
-public class MonsterSkillSetData : CSVLoad
+public class MonsterSkillSetData : CSVLoad, TableKey
 {
     public int Id { get; set; }
     public string Key { get; set; }

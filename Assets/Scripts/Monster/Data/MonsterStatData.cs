@@ -9,7 +9,7 @@ public enum MonsterGrade
     Boss
 }
 
-public class MonsterStatData : CSVLoad
+public class MonsterStatData : CSVLoad, TableKey
 {
     public int Id { get; set; }
     public string Key { get; set; }

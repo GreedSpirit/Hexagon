@@ -46,7 +46,9 @@ public class MonsterStatus : MonoBehaviour
 
     private void Start()
     {
-        _monsterStatData = MonsterTempDataManager.Instance.GetMonsterStat(1);
+        // ID 방식 Key 방식 구별
+        _monsterStatData = DataManager.Instance.GetMonsterStatData(1);
+        //_monsterStatData = DataManager.Instance.GetMonsterStatData("KeyMonsterGhost0001");
         if(_monsterStatData == null)
         {
             Debug.LogError("몬스터 스탯 데이터를 불러오지 못했습니다. Id: 1");
