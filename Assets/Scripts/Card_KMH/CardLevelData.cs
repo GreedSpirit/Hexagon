@@ -5,7 +5,7 @@ public enum StatusEffect
     None = 1,
 }
 
-public class CardStat
+public class CardLevelData
 {
     public int Id { get; set; }                     // id
     public string CardLevelKey { get; set; }        // 카드 레벨 테이블 키
