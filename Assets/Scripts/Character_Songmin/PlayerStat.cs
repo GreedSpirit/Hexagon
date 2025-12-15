@@ -30,7 +30,7 @@ public class PlayerStat
     {
         StatsByLevel stats = LevelList[Level -1];
         Hp = stats.Hp;
-        Defense = stats.Defence;
+        Defense = stats.Defense;
         NeedExp = stats.NeedExp;
         TotalExp = stats.TotalExp;        
     }
@@ -49,10 +49,10 @@ public class PlayerStat
     }
     public void GetDamage(int damage) //데미지를 입을 때마다 호출.
     {
-
+        int blockedDamage = damage - Defense; //방어력만큼 일단 감소
         if (Shield > 0) //보호막이 있는 경우
         {
-            Shield -= damage; //보호막이 대미지 흡수
+            Shield -= blockedDamage; //보호막이 대미지 흡수
             if (Shield < 0) //데미지가 남았으면 체력도 감소
             {
                 CurrentHp += Shield;
@@ -61,7 +61,7 @@ public class PlayerStat
         }
         else //보호막이 없는 경우
         {
-            CurrentHp -= damage;
+            CurrentHp -= blockedDamage;
         }
     }
 
