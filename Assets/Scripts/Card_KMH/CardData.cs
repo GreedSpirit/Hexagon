@@ -28,7 +28,7 @@ public class CardData : CSVLoad, TableKey
     public int Id { get; set; }                 // id
     public string Key { get; set; }             // 카드 테이블 Key
     public string Name { get; set; }            // 이름
-    public bool isCard { get; set; }            // 카드 or 스킬
+    public bool IsCard { get; set; }            // 카드 or 스킬
     public string Desc { get; set; }            // 설명
     public CardGrade CardGrade { get; set; }    // 등급
     public CardType CardType { get; set; }      // 타입
@@ -54,9 +54,9 @@ public class CardData : CSVLoad, TableKey
         Name = values[2];
 
         if (bool.TryParse(values[3], out bool isCard))
-            this.isCard = isCard;
+            this.IsCard = isCard;
         else
-            this.isCard = false;
+            this.IsCard = false;
 
         Desc = values[4];
 

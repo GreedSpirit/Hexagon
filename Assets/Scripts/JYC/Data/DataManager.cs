@@ -57,8 +57,8 @@ public class DataManager : MonoBehaviour
     private void LoadAllData()
     {
         // 모든 테이블에 대해 ID와 Key 딕셔너리를 동시에 생성하여 로드합니다.
-        CharacterDict = LoadAndCreateKeyDict(CSVReader.Read<CharacterData>("Character"), out Dictionary<string, CharacterData> tempCharKeyDict);
-        CharacterKeyDict = tempCharKeyDict;
+        //CharacterDict = LoadAndCreateKeyDict(CSVReader.Read<CharacterData>("Character"), out Dictionary<string, CharacterData> tempCharKeyDict);
+        //CharacterKeyDict = tempCharKeyDict;
         // CharacterLevelDict = LoadAndCreateKeyDict(CSVReader.Read<CharacterLevelData>("CharacterLevel"), out Dictionary<string, CharacterLevelData> tempCharLevelKeyDict);
         // CharacterLevelKeyDict = tempCharLevelKeyDict;
 
@@ -93,7 +93,7 @@ public class DataManager : MonoBehaviour
         // SkillSetKeyDict = tempSkillSetKeyDict;
 
         // 테스트 로그
-        Debug.Log($"데이터 로드 완료. Character 개수: {CharacterDict.Count}");
+        //Debug.Log($"데이터 로드 완료. Character 개수: {CharacterDict.Count}");
     }
     private Dictionary<int, T> LoadAndCreateKeyDict<T>(List<T> list, out Dictionary<string, T> keyDict) where T : CSVLoad, TableKey
     {
