@@ -7,17 +7,9 @@ public class Card : MonoBehaviour
 
     private HandManager handManager;
 
-    //public void Init(CardTableData data, HandManager manager)
-    //{
-    //    Data = data;
-    //    handManager = manager;
-    //
-    //    cardUI = GetComponent<CardUI>();
-    //    cardUI.SetVisual(data);
-    //}
-
-    public void Init(HandManager manager)
+    public void Init(CardData data, HandManager manager)
     {
+        Data = data;
         handManager = manager;
     }
 

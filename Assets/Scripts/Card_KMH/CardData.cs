@@ -36,7 +36,7 @@ public class CardData : CSVLoad, TableKey
     public Target Target { get; set; }          // 스킬 적용 대상
     public int Attack { get; set; }             // 피해량
     public int Healing { get; set; }            // 치유량
-    public int Shield { get; set; }            // 보호막량
+    public int Shield { get; set; }             // 보호막량
     public string StatusEffect { get; set; }    // StatusEffect 테이블 Key
     public float StatusEffectValue { get; set; }// 스킬 사용 시 적용될 상태이상 스킬 효과
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
