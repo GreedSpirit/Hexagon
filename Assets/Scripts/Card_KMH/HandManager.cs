@@ -17,7 +17,8 @@ public class HandManager : MonoBehaviour
     [SerializeField] float _maxAngle = 30f;     // 부채꼴 최대 각도
     [SerializeField] float _maxSpacing = 7f;    // 카드 간 최대 간격
     [SerializeField] float _radius = 2000f;     // 부채꼴 반지름 (클수록 완만)
-    [SerializeField] int _startHandCount = 4;   // 시작 시 뽑을 카드 수
+    [SerializeField] int _startHandCount;       // 시작 시 뽑을 카드 수
+    [SerializeField] int _handLimit;            // 핸드 소지 한계
 
 
     public float MoveSpeed => _moveSpeed;
