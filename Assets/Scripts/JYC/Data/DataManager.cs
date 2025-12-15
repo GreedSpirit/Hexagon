@@ -16,10 +16,11 @@ public class DataManager : MonoBehaviour
     // (ID: int 기반)
     public Dictionary<int, CharacterData> CharacterDict { get; private set; }
     public Dictionary<int, CardData> CardDict { get; private set; }
+    public Dictionary<int, MonsterStatData> MonsterStatDict { get; private set; }
+    public Dictionary<int, MonsterSkillSetData> MonsterSkillSetDict { get; private set; }
     // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
     // public Dictionary<int, CharacterLevelData> CharacterLevelDict { get; private set; }
     // public Dictionary<int, CardLevelData> CardLevelDict { get; private set; }
-    // public Dictionary<int, MonsterData> MonsterDict { get; private set; }
     // public Dictionary<int, SkillData> SkillDict { get; private set; }
     // public Dictionary<int, DungeonData> DungeonDict { get; private set; }
     // public Dictionary<int, StageData> StageDict { get; private set; }
@@ -29,10 +30,11 @@ public class DataManager : MonoBehaviour
     // (Key: string 기반)
     public Dictionary<string, CharacterData> CharacterKeyDict { get; private set; }
     public Dictionary<string, CardData> CardKeyDict { get; private set; }
+    public Dictionary<string, MonsterStatData> MonsterStatKeyDict { get; private set; }
+    public Dictionary<string, MonsterSkillSetData> MonsterSkillSetKeyDict { get; private set; }
     // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
     // public Dictionary<string, CharacterLevelData> CharacterLevelKeyDict { get; private set; }
     // public Dictionary<string, CardLevelData> CardLevelKeyDict { get; private set; }
-    // public Dictionary<string, MonsterData> MonsterKeyDict { get; private set; }
     // public Dictionary<string, SkillData> SkillKeyDict { get; private set; }
     // public Dictionary<string, DungeonData> DungeonKeyDict { get; private set; }
     // public Dictionary<string, StageData> StageKeyDict { get; private set; }
@@ -69,8 +71,10 @@ public class DataManager : MonoBehaviour
         // CardLevelKeyDict = tempCardLevelKeyDict;
 
         // [Monster]
-        // MonsterDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterData>("Monster"), out Dictionary<string, MonsterData> tempMonsterKeyDict);
-        // MonsterKeyDict = tempMonsterKeyDict;
+        MonsterStatDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterStatData>("Monster"), out Dictionary<string, MonsterStatData> tempMonsterKeyDict);
+        MonsterStatKeyDict = tempMonsterKeyDict;
+        MonsterSkillSetDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterSkillSetData>("MonsterSkillSet"), out Dictionary<string, MonsterSkillSetData> tempMonsterSkillSetKeyDict);
+        MonsterSkillSetKeyDict = tempMonsterSkillSetKeyDict;
 
         // [Skill]
         // SkillDict = LoadAndCreateKeyDict(CSVReader.Read<SkillData>("Skill"), out Dictionary<string, SkillData> tempSkillKeyDict);
@@ -134,6 +138,11 @@ public class DataManager : MonoBehaviour
     public CardData GetCard(int id) => CardDict.TryGetValue(id, out var data) ? data : null;
     public CardData GetCard(string key) => CardKeyDict.TryGetValue(key, out var data) ? data : null;
 
+    public MonsterStatData GetMonsterStatData(int id) => MonsterStatDict.TryGetValue(id, out var data) ? data : null;
+    public MonsterStatData GetMonsterStatData(string key) => MonsterStatKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public MonsterSkillSetData GetMonsterSkillSetData(int id) => MonsterSkillSetDict.TryGetValue(id, out var data) ? data : null;
+    public MonsterSkillSetData GetMonsterSkillSetData(string key) => MonsterSkillSetKeyDict.TryGetValue(key, out var data) ? data : null;
     
     //public CharacterLevelData GetCharacterLevel(int id) => CharacterLevelDict.TryGetValue(id, out var data) ? data : null;
     //public CharacterLevelData GetCharacterLevel(string key) => CharacterLevelKeyDict.TryGetValue(key, out var data) ? data : null;
@@ -141,8 +150,6 @@ public class DataManager : MonoBehaviour
     //public CardLevelData GetCardLevel(int id) => CardLevelDict.TryGetValue(id, out var data) ? data : null;
     //public CardLevelData GetCardLevel(string key) => CardLevelKeyDict.TryGetValue(key, out var data) ? data : null;
 
-    //public MonsterData GetMonster(int id) => MonsterDict.TryGetValue(id, out var data) ? data : null;
-    //public MonsterData GetMonster(string key) => MonsterKeyDict.TryGetValue(key, out var data) ? data : null;
 
     //public SkillData GetSkill(int id) => SkillDict.TryGetValue(id, out var data) ? data : null;
     //public SkillData GetSkill(string key) => SkillKeyDict.TryGetValue(key, out var data) ? data : null;
