@@ -23,7 +23,7 @@ public class DataManager : MonoBehaviour
     // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
     public Dictionary<int, CharacterLevelData> CharacterLevelDict { get; private set; }
     public Dictionary<int, CharacterStatData> CharacterStatDict { get; private set; }
-    // public Dictionary<int, CardLevelData> CardLevelDict { get; private set; }
+    public Dictionary<int, CardLevelData> CardLevelDict { get; private set; }
     // public Dictionary<int, SkillData> SkillDict { get; private set; }
     public Dictionary<int, DungeonData> DungeonDict { get; private set; }
     public Dictionary<int, StageData> StageDict { get; private set; }
@@ -40,7 +40,7 @@ public class DataManager : MonoBehaviour
     // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
      public Dictionary<string, CharacterLevelData> CharacterLevelKeyDict { get; private set; }
      public Dictionary<string, CharacterStatData> CharacterStatKeyDict { get; private set; }
-    // public Dictionary<string, CardLevelData> CardLevelKeyDict { get; private set; }
+    public Dictionary<string, CardLevelData> CardLevelKeyDict { get; private set; }
     // public Dictionary<string, SkillData> SkillKeyDict { get; private set; }
     public Dictionary<string, DungeonData> DungeonKeyDict { get; private set; }
     public Dictionary<string, StageData> StageKeyDict { get; private set; }
@@ -75,8 +75,8 @@ public class DataManager : MonoBehaviour
 
         CardDict = LoadAndCreateKeyDict(CSVReader.Read<CardData>("Card"), out Dictionary<string, CardData> tempCardKeyDict);
         CardKeyDict = tempCardKeyDict;
-        // CardLevelDict = LoadAndCreateKeyDict(CSVReader.Read<CardLevelData>("CardLevel"), out Dictionary<string, CardLevelData> tempCardLevelKeyDict);
-        // CardLevelKeyDict = tempCardLevelKeyDict;
+        CardLevelDict = LoadAndCreateKeyDict(CSVReader.Read<CardLevelData>("CardLevel"), out Dictionary<string, CardLevelData> tempCardLevelKeyDict);
+        CardLevelKeyDict = tempCardLevelKeyDict;
 
         // [Monster]
         MonsterStatDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterData>("Monster"), out Dictionary<string, MonsterData> tempMonsterKeyDict);
@@ -168,8 +168,8 @@ public class DataManager : MonoBehaviour
     public CharacterStatData GetCharacterStat(int id) => CharacterStatDict.TryGetValue(id, out var data) ? data : null;
     public CharacterStatData GetCharacterStat(string key) => CharacterStatKeyDict.TryGetValue(key, out var data) ? data : null;
 
-    //public CardLevelData GetCardLevel(int id) => CardLevelDict.TryGetValue(id, out var data) ? data : null;
-    //public CardLevelData GetCardLevel(string key) => CardLevelKeyDict.TryGetValue(key, out var data) ? data : null;
+    public CardLevelData GetCardLevel(int id) => CardLevelDict.TryGetValue(id, out var data) ? data : null;
+    public CardLevelData GetCardLevel(string key) => CardLevelKeyDict.TryGetValue(key, out var data) ? data : null;
 
 
     //public SkillData GetSkill(int id) => SkillDict.TryGetValue(id, out var data) ? data : null;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour
@@ -19,6 +20,9 @@ public class HandManager : MonoBehaviour
     [SerializeField] float _radius = 2000f;     // 부채꼴 반지름 (클수록 완만)
     [SerializeField] int _startHandCount;       // 시작 시 뽑을 카드 수
     [SerializeField] int _handLimit;            // 핸드 소지 한계
+
+    [Space]
+    [SerializeField] TextMeshProUGUI _deckCount;
 
 
     public float MoveSpeed => _moveSpeed;
@@ -62,9 +66,12 @@ public class HandManager : MonoBehaviour
     private void SetupDeck()
     {
         // 테스트용 카드 10장
+        int count = 10;
         List<int> allIds = new();
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < count; i++)
             allIds.Add(Random.Range(1,11));
+
+        _deckCount.text = $"Deck : {count} / {count}";
 
         // 덱 섞기
         ShuffleDeck(allIds);
@@ -98,6 +105,8 @@ public class HandManager : MonoBehaviour
 
         // 덱큐에서 카드 한장 뽑기
         int cardKey = _deck.Dequeue();
+
+        _deckCount.text = $"Deck : {_deck.Count} / {10}";
 
         if (_handCards.Count >= _handLimit)
         {

@@ -1,0 +1,8 @@
+id,카드 레벨 테이블의 기본키,카드 테이블의 기본키 기재,카드 레벨,카드 사용 가능 횟수,공격력,공격력 증가,치유량,치유량 증가,보호막,보호막량 증가,상태이상의 종류,상태이상 대미지,상태이상 지속 시간
+int,string,string,int,int,int,int,int,int,int,int,Enum,int,int
+Id,CardLevelKey,Card,Level,NumberOfAvailable,Attack,IncreaseAttack,Healing,IncreaseHealing,Shield,IncreaseShield,StatusEffect,StatusEffectStack,Duration
+1,KeyLevelCardSwipe0001,KeyCardSwipe,1,5,5,0,0,0,0,0,0,0,0
+2,KeyLevelCardSwipe0002,KeyCardSwipe,2,5,6,0,0,0,0,0,0,0,0
+3,KeyLevelCard_Swipe0003,KeyCardSwipe,3,5,7,0,0,0,0,0,,,
+4,KeyLevelCardSwipe0004,KeyCardSwipe,4,5,8,0,0,0,0,0,,,
+5,KeyLevelCardSwipe0005,KeyCardSwipe,5,6,8,0,0,0,0,0,,,
