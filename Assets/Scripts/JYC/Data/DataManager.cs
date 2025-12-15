@@ -2,11 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface TableKey
+{
+    int Id { get; }
+    string Key { get; }
+}
+
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
 
+
+    // (ID: int 기반)
     public Dictionary<int, CharacterData> CharacterDict { get; private set; }
+    public Dictionary<int, CardData> CardDict { get; private set; }
+    // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
+    // public Dictionary<int, CharacterLevelData> CharacterLevelDict { get; private set; }
+    // public Dictionary<int, CardLevelData> CardLevelDict { get; private set; }
+    // public Dictionary<int, MonsterData> MonsterDict { get; private set; }
+    // public Dictionary<int, SkillData> SkillDict { get; private set; }
+    // public Dictionary<int, DungeonData> DungeonDict { get; private set; }
+    // public Dictionary<int, StageData> StageDict { get; private set; }
+    // public Dictionary<int, StringData> StringDict { get; private set; }
+    // public Dictionary<int, SkillSetData> SkillSetDict { get; private set; }
+
+    // (Key: string 기반)
+    public Dictionary<string, CharacterData> CharacterKeyDict { get; private set; }
+    public Dictionary<string, CardData> CardKeyDict { get; private set; }
+    // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
+    // public Dictionary<string, CharacterLevelData> CharacterLevelKeyDict { get; private set; }
+    // public Dictionary<string, CardLevelData> CardLevelKeyDict { get; private set; }
+    // public Dictionary<string, MonsterData> MonsterKeyDict { get; private set; }
+    // public Dictionary<string, SkillData> SkillKeyDict { get; private set; }
+    // public Dictionary<string, DungeonData> DungeonKeyDict { get; private set; }
+    // public Dictionary<string, StageData> StageKeyDict { get; private set; }
+    // public Dictionary<string, StringData> StringKeyDict { get; private set; }
+    // public Dictionary<string, SkillSetData> SkillSetKeyDict { get; private set; }
+
 
     private void Awake()
     {
@@ -24,33 +56,106 @@ public class DataManager : MonoBehaviour
 
     private void LoadAllData()
     {
-        CharacterDict = ListToDict(CSVReader.Read<CharacterData>("Character"));
+        // 모든 테이블에 대해 ID와 Key 딕셔너리를 동시에 생성하여 로드합니다.
+        CharacterDict = LoadAndCreateKeyDict(CSVReader.Read<CharacterData>("Character"), out Dictionary<string, CharacterData> tempCharKeyDict);
+        CharacterKeyDict = tempCharKeyDict;
+        // CharacterLevelDict = LoadAndCreateKeyDict(CSVReader.Read<CharacterLevelData>("CharacterLevel"), out Dictionary<string, CharacterLevelData> tempCharLevelKeyDict);
+        // CharacterLevelKeyDict = tempCharLevelKeyDict;
+
+
+        CardDict = LoadAndCreateKeyDict(CSVReader.Read<CardData>("Card"), out Dictionary<string, CardData> tempCardKeyDict);
+        CardKeyDict = tempCardKeyDict;
+        // CardLevelDict = LoadAndCreateKeyDict(CSVReader.Read<CardLevelData>("CardLevel"), out Dictionary<string, CardLevelData> tempCardLevelKeyDict);
+        // CardLevelKeyDict = tempCardLevelKeyDict;
+
+        // [Monster]
+        // MonsterDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterData>("Monster"), out Dictionary<string, MonsterData> tempMonsterKeyDict);
+        // MonsterKeyDict = tempMonsterKeyDict;
+
+        // [Skill]
+        // SkillDict = LoadAndCreateKeyDict(CSVReader.Read<SkillData>("Skill"), out Dictionary<string, SkillData> tempSkillKeyDict);
+        // SkillKeyDict = tempSkillKeyDict;
+
+        // [Dungeon]
+        // DungeonDict = LoadAndCreateKeyDict(CSVReader.Read<DungeonData>("Dungeon"), out Dictionary<string, DungeonData> tempDungeonKeyDict);
+        // DungeonKeyDict = tempDungeonKeyDict;
+
+        // [Stage]
+        // StageDict = LoadAndCreateKeyDict(CSVReader.Read<StageData>("Stage"), out Dictionary<string, StageData> tempStageKeyDict);
+        // StageKeyDict = tempStageKeyDict;
+
+        // [String]
+        // StringDict = LoadAndCreateKeyDict(CSVReader.Read<StringData>("String"), out Dictionary<string, StringData> tempStringKeyDict);
+        // StringKeyDict = tempStringKeyDict;
+
+        // [SkillSet]
+        // SkillSetDict = LoadAndCreateKeyDict(CSVReader.Read<SkillSetData>("SkillSet"), out Dictionary<string, SkillSetData> tempSkillSetKeyDict);
+        // SkillSetKeyDict = tempSkillSetKeyDict;
 
         // 테스트 로그
         Debug.Log($"데이터 로드 완료. Character 개수: {CharacterDict.Count}");
     }
-
-    // 리스트를 딕셔너리로 변환
-    private Dictionary<int, CharacterData> ListToDict(List<CharacterData> list)
+    private Dictionary<int, T> LoadAndCreateKeyDict<T>(List<T> list, out Dictionary<string, T> keyDict) where T : CSVLoad, TableKey
     {
-        Dictionary<int, CharacterData> dict = new Dictionary<int, CharacterData>();
+        Dictionary<int, T> idDict = new Dictionary<int, T>();
+        keyDict = new Dictionary<string, T>();
 
-        foreach (CharacterData item in list)
+        foreach (T data in list)
         {
-            if (!dict.ContainsKey(item.Id))
+
+            // ID 딕셔너리에 추가
+            if (!idDict.ContainsKey(data.Id))
             {
-                dict.Add(item.Id, item);
+                idDict.Add(data.Id, data);
+            }
+            else
+            {
+                Debug.LogError($"ID 중복: {typeof(T).Name} 테이블에서 ID {data.Id}가 중복되었습니다.");
+            }
+
+            // Key 딕셔너리에 추가
+            if (!string.IsNullOrEmpty(data.Key) && !keyDict.ContainsKey(data.Key))
+            {
+                keyDict.Add(data.Key, data);
+            }
+            else if (!string.IsNullOrEmpty(data.Key))
+            {
+                Debug.LogError($"Key 중복/누락: {typeof(T).Name} 테이블에서 ID {data.Id}, Key {data.Key} 처리에 문제가 있습니다.");
             }
         }
-        return dict;
+        return idDict;
     }
 
-    public CharacterData GetCharacter(int id)
-    {
-        if (CharacterDict.TryGetValue(id, out CharacterData data))
-        {
-            return data;
-        }
-        return null;
-    }
+    // 데이터 접근 함수
+
+    public CharacterData GetCharacter(int id) => CharacterDict.TryGetValue(id, out var data) ? data : null;
+    public CharacterData GetCharacter(string key) => CharacterKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public CardData GetCard(int id) => CardDict.TryGetValue(id, out var data) ? data : null;
+    public CardData GetCard(string key) => CardKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    
+    //public CharacterLevelData GetCharacterLevel(int id) => CharacterLevelDict.TryGetValue(id, out var data) ? data : null;
+    //public CharacterLevelData GetCharacterLevel(string key) => CharacterLevelKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    //public CardLevelData GetCardLevel(int id) => CardLevelDict.TryGetValue(id, out var data) ? data : null;
+    //public CardLevelData GetCardLevel(string key) => CardLevelKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    //public MonsterData GetMonster(int id) => MonsterDict.TryGetValue(id, out var data) ? data : null;
+    //public MonsterData GetMonster(string key) => MonsterKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    //public SkillData GetSkill(int id) => SkillDict.TryGetValue(id, out var data) ? data : null;
+    //public SkillData GetSkill(string key) => SkillKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    //public DungeonData GetDungeon(int id) => DungeonDict.TryGetValue(id, out var data) ? data : null;
+    //public DungeonData GetDungeon(string key) => DungeonKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    //public StageData GetStage(int id) => StageDict.TryGetValue(id, out var data) ? data : null;
+    //public StageData GetStage(string key) => StageKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    //public StringData GetString(int id) => StringDict.TryGetValue(id, out var data) ? data : null;
+    //public StringData GetString(string key) => StringKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    //public SkillSetData GetSkillSet(int id) => SkillSetDict.TryGetValue(id, out var data) ? data : null;
+    //public SkillSetData GetSkillSet(string key) => SkillSetKeyDict.TryGetValue(key, out var data) ? data : null;
 }

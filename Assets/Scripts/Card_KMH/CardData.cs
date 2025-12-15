@@ -23,7 +23,7 @@ public enum Target
     Enemy,      // 상대방
 }   // 스킬 적용 대상
 
-public class CardData : CSVLoad
+public class CardData : CSVLoad, TableKey
 {
     public int Id { get; set; }                 // id
     public string Key { get; set; }             // 카드 테이블 Key
@@ -36,7 +36,7 @@ public class CardData : CSVLoad
     public Target Target { get; set; }          // 스킬 적용 대상
     public int Attack { get; set; }             // 피해량
     public int Healing { get; set; }            // 치유량
-    public int Shielld { get; set; }            // 보호막량
+    public int Shield { get; set; }            // 보호막량
     public string StatusEffect { get; set; }    // StatusEffect 테이블 Key
     public float StatusEffectValue { get; set; }// 스킬 사용 시 적용될 상태이상 스킬 효과
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
@@ -88,9 +88,9 @@ public class CardData : CSVLoad
             Healing = 0;
 
         if (int.TryParse(values[11], out int shield))
-            Shielld = shield;
+            Shield = shield;
         else
-            Shielld = 0;
+            Shield = 0;
 
         StatusEffect = values[12];
 
