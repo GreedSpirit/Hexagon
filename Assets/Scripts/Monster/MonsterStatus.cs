@@ -7,38 +7,39 @@ using UnityEngine;
 
 public class MonsterStatus : MonoBehaviour
 {
-    [SerializeField] private string _monsterName;
     [SerializeField] private int _monsterLevel; //추후 스테이지 테이블에서 불러올 내용
     [SerializeField] private MonsterGrade _monsterGrade;
     [SerializeField] private int _monsterMaxHP;
     [SerializeField] private int _monsterCurHP;
     [SerializeField] private int _monsterDefense;
     [SerializeField] private int _monsterShield = 0;
-    [SerializeField] private MonsterStatData _monsterStatData;
+    [SerializeField] private MonsterData _monsterStatData;
     [SerializeField] private MonsterSkillSetData _monsterSkillSet;
+    [SerializeField] private MonsterStatData _monsterStat;
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
 
     public void InitMonsterStatus()
     {
-        //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 미리 불러오는 방식으로 변경할 수도 있음
-        _monsterName = _monsterStatData.Name;
+        //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 불러오는 방식으로 변경할 수도 있음
         _monsterGrade = _monsterStatData.MonGrade;
 
         if(_monsterGrade == MonsterGrade.Normal)
         {
-            _monsterLevel = 1; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
-            // 100은 임시 기본 체력 수치, 추후 _monsterLevel 값을 이용해서 CommonMonsterStat 테이블에서 수치 갖고오기
-            _monsterMaxHP = Mathf.FloorToInt(100 * _monsterStatData.HpRate); 
-            _monsterDefense = Mathf.FloorToInt(5 * _monsterStatData.DefRate);
+            _monsterLevel = 3; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
+            _monsterStat = DataManager.Instance.GetCommonMonsterStatData(_monsterLevel);
+
+            _monsterMaxHP = Mathf.FloorToInt(_monsterStat.Hp * _monsterStatData.HpRate); 
+            _monsterDefense = Mathf.FloorToInt(_monsterStat.Defense * _monsterStatData.DefRate);
         }
         else if(_monsterGrade == MonsterGrade.Boss)
         {
-            _monsterLevel = 2; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
+            _monsterLevel = 1; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
             // 500은 임시 기본 체력 수치, 추후 _monsterLevel 값을 이용해서 BossMonsterStat 테이블에서 수치 갖고오기
             _monsterMaxHP = Mathf.FloorToInt(500 * _monsterStatData.HpRate);
             _monsterDefense = Mathf.FloorToInt(10 * _monsterStatData.DefRate);
         }
+        _monsterCurHP = _monsterMaxHP;
 
         //_monsterSkillSet = DataManager.Instance.GetMonsterSkillSetData(monsterData.SkillSet);
         
@@ -58,10 +59,15 @@ public class MonsterStatus : MonoBehaviour
         {
             Debug.Log("데이터 로드 성공");
             InitMonsterStatus();
+            NotifyHpObservers(); //초기 HP 상태 갱신
         }
-
-        _monsterCurHP = _monsterMaxHP;
-        NotifyHpObservers(); //초기 HP 상태 갱신
+        //바로 아래는 아직 CSV 파일이 없어서 MonsterSkillSetData에서 스킬셋 데이터를 불러오는 코드 주석 처리
+        //_monsterSkillSet = DataManager.Instance.GetMonsterSkillSetData(_monsterStatData.SkillSet);
+        //if(_monsterSkillSet == null)
+        //{
+        //    Debug.LogError("몬스터 스킬셋 데이터를 불러오지 못했습니다. Key: " + _monsterStatData.SkillSet);
+        //    return;
+        //}
     }
 
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수
