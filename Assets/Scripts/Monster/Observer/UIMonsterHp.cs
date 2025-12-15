@@ -8,7 +8,7 @@ public class UIMonsterHp : MonoBehaviour, IMonsterHpObserver
     [SerializeField] private TextMeshProUGUI _monsterHpText;
     [SerializeField] private MonsterStatus _monsterStatus;
 
-    private void Start()
+    private void Awake()
     {
         _monsterStatus.AddHpObserver(this);
     }

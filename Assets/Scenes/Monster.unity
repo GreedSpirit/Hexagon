@@ -119,6 +119,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &145462519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 145462521}
+  - component: {fileID: 145462522}
+  m_Layer: 0
+  m_Name: MonstartDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &145462521
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145462519}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.02021, y: 0.00287, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &145462522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145462519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 843752216f6379943b40ace78d121aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DataManager
 --- !u!1 &256001389
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,12 +343,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efff4f3d13bf1184bba370b43638ca54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterStatus
-  _monsterName: Mons
-  _monsterLevel: 15
+  _monsterName: 
+  _monsterLevel: 0
   _monsterGrade: 0
   _monsterMaxHP: 100
   _monsterCurHP: 0
   _monsterDefense: 10
+  _monsterShield: 0
 --- !u!114 &267137589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1337,3 +1382,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 2019826349}
   - {fileID: 267137587}
+  - {fileID: 145462521}

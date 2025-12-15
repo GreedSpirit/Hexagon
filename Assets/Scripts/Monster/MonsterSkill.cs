@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class MonsterSkill : MonoBehaviour
 {
+    
+
     public void Attack(int damage)
     {
         //몬스터 공격 로직 추가
