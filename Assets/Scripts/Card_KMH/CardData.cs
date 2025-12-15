@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public enum CardGrade   // 카드 등급
 {
@@ -28,7 +30,7 @@ public class CardData : CSVLoad, TableKey
     public int Id { get; set; }                 // id
     public string Key { get; set; }             // 카드 테이블 Key
     public string Name { get; set; }            // 이름
-    public bool isCard { get; set; }            // 카드 or 스킬
+    public bool IsCard { get; set; }            // 카드 or 스킬
     public string Desc { get; set; }            // 설명
     public CardGrade CardGrade { get; set; }    // 등급
     public CardType CardType { get; set; }      // 타입
@@ -36,11 +38,12 @@ public class CardData : CSVLoad, TableKey
     public Target Target { get; set; }          // 스킬 적용 대상
     public int Attack { get; set; }             // 피해량
     public int Healing { get; set; }            // 치유량
-    public int Shield { get; set; }            // 보호막량
+    public int Shield { get; set; }             // 보호막량
     public string StatusEffect { get; set; }    // StatusEffect 테이블 Key
     public float StatusEffectValue { get; set; }// 스킬 사용 시 적용될 상태이상 스킬 효과
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
     public string Vfx { get; set; }             // VFX 
+
 
     public void LoadFromCsv(string[] values)
     {
@@ -54,26 +57,26 @@ public class CardData : CSVLoad, TableKey
         Name = values[2];
 
         if (bool.TryParse(values[3], out bool isCard))
-            this.isCard = isCard;
+            IsCard = isCard;
         else
-            this.isCard = false;
+            IsCard = false;
 
         Desc = values[4];
 
-        if (int.TryParse(values[5], out int grade))
-            CardGrade = (CardGrade)grade;
+        if (Enum.TryParse(values[5], out CardGrade grade))
+            CardGrade = grade;
         else
             CardGrade = CardGrade.Null;
 
-        if (int.TryParse(values[6], out int type))
-            CardType = (CardType)type;
+        if (Enum.TryParse(values[6], out CardType type))
+            CardType = type;
         else
             CardType = CardType.Null;
 
         CardImg = values[7];
 
-        if (int.TryParse(values[8], out int target))
-            Target = (Target)target;
+        if (Enum.TryParse(values[8], out Target target))
+            Target = target;
         else
             Target = Target.Null;
 
