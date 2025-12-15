@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public enum CardGrade   // 카드 등급
 {
@@ -42,6 +44,7 @@ public class CardData : CSVLoad, TableKey
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
     public string Vfx { get; set; }             // VFX 
 
+
     public void LoadFromCsv(string[] values)
     {
         if (int.TryParse(values[0], out int idValue))
@@ -54,26 +57,26 @@ public class CardData : CSVLoad, TableKey
         Name = values[2];
 
         if (bool.TryParse(values[3], out bool isCard))
-            this.IsCard = isCard;
+            IsCard = isCard;
         else
-            this.IsCard = false;
+            IsCard = false;
 
         Desc = values[4];
 
-        if (int.TryParse(values[5], out int grade))
-            CardGrade = (CardGrade)grade;
+        if (Enum.TryParse(values[5], out CardGrade grade))
+            CardGrade = grade;
         else
             CardGrade = CardGrade.Null;
 
-        if (int.TryParse(values[6], out int type))
-            CardType = (CardType)type;
+        if (Enum.TryParse(values[6], out CardType type))
+            CardType = type;
         else
             CardType = CardType.Null;
 
         CardImg = values[7];
 
-        if (int.TryParse(values[8], out int target))
-            Target = (Target)target;
+        if (Enum.TryParse(values[8], out Target target))
+            Target = target;
         else
             Target = Target.Null;
 

@@ -99,6 +99,14 @@ public class HandManager : MonoBehaviour
         // 덱큐에서 카드 한장 뽑기
         int cardKey = _deck.Dequeue();
 
+        if (_handCards.Count >= _handLimit)
+        {
+            Debug.Log("오버 드로우 발생");
+            // 나중에 카드 생성 이후로 위치 변경
+            // 카드 소멸 보여주기
+            return;
+        }
+
         // cardKey 사용해서 테이블 정보 불러오기
         CardData data = DataManager.Instance.GetCard(cardKey);
 
@@ -112,13 +120,6 @@ public class HandManager : MonoBehaviour
         // 매니저 연결
         cardLogic.Init(data, this);
         cardUI.Init(data, this);
-
-        if (_handCards.Count >= _handLimit)
-        {
-            Debug.Log("오버 드로우 발생");
-            // 카드 소멸 보여주기
-            return;
-        }
         
         // 리스트 추가
         _handCards.Add(card);
