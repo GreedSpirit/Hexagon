@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 136110787}
   - component: {fileID: 136110786}
   m_Layer: 5
-  m_Name: Button
+  m_Name: DrawButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -300,14 +300,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db282633a52c6814f9db03d9a0e7d28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HandManager
-  cardPrefab: {fileID: 5402159272089855697, guid: 87fad771ab4b5e84ca72db07daa2adab, type: 3}
+  cardPrefab: {fileID: 8541036676305895480, guid: 87fad771ab4b5e84ca72db07daa2adab, type: 3}
   _moveSpeed: 15
   _scaleSpeed: 15
   _hoverScale: 1.5
   _useScreenRatio: 0.3
-  maxAngle: 100
-  maxSpacing: 10
-  radius: 600
+  _hoverOffset: 1.2
+  _maxAngle: 30
+  _maxSpacing: 7
+  _radius: 2000
+  _startHandCount: 4
 --- !u!1 &1022392298
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +347,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
