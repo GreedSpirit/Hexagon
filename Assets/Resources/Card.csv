@@ -1,16 +1,21 @@
-id,카드 테이블의 키,카드 이름, 카드 체크,카드내용,카드등급,카드 타입,카드 이미지,적용대상,피해량,치유량,보호량,상태이상키,상태이상효과,강화 약화 지속 턴,VFX
-int,string,string,int,string,int,int,string,int,int,int,int,string,float,int,string,,,
-Id,CardKey,Name,IsCard,Desc,CardGrade,CardType,CardImg,Target,Attack,Healing,Shield,StatusEffect,StatusEffectValue,Turn,VFX
-1,KeyCardSwipe1,NameCardSwipe1,1,Desc_Card_00001,1,1,Img_Card_00001,1,10,0,0,Key,1,1,1
-2,KeyCardSwipe2,NameCardSwipe2,1,Desc_Card_00002,2,3,Img_Card_00002,1,10,0,0,Key,1,1,1
-3,KeyCardSwipe3,NameCardSwipe3,1,Desc_Card_00003,3,2,Img_Card_00003,1,10,0,0,Key,1,1,1
-4,KeyCardSwipe4,NameCardSwipe4,1,Desc_Card_00004,1,3,Img_Card_00004,1,10,0,0,Key,1,1,1
-5,KeyCardSwipe5,NameCardSwipe5,1,Desc_Card_00005,2,1,Img_Card_00005,1,10,0,0,Key,1,1,1
-6,KeyCardSwipe6,NameCardSwipe6,1,Desc_Card_00006,3,3,Img_Card_00006,1,10,0,0,Key,1,1,1
-7,KeyCardSwipe7,NameCardSwipe7,1,Desc_Card_00007,1,2,Img_Card_00007,1,10,0,0,Key,1,1,1
-8,KeyCardSwipe8,NameCardSwipe8,1,Desc_Card_00008,2,1,Img_Card_00008,1,10,0,0,Key,1,1,1
-9,KeyCardSwipe9,NameCardSwipe9,1,Desc_Card_00009,3,3,Img_Card_00009,1,10,0,0,Key,1,1,1
-10,KeyCardSwipe10,NameCardSwipe10,1,Desc_Card_00010,1,2,Img_Card_00010,1,10,0,0,Key,1,1,1
+Id,Card 데이터 테이블의 기본키,카드(스킬)의 이름,"카드와 스킬을 구분하기 위한 칼럼
+true: 카드
+false: 스킬",카드(스킬)의 설명,"카드(스킬) 등급
 
+Common (본문)
+Rare (목차)
+Epic (표지)
+Legendary (고서)","스킬 적용 대상
 
+Self (자신)
+Enemy (상대방)","아래 항목 중 택 1 기재
 
+Attack (공격): 
+Healing (치유)
+Shield (방어)
+Spell (주문)",카드 강화 1단계 능력치 수치,카드 강화 단계가 증가할 때마다 증가하는 능력치 수치,StatusEffect 데이터 테이블의 Key값 입력,,"강화, 약화 효과가 적용될 턴의 수",카드 이미지 리소스명
+int,string,string,Bool,string,Enum,Enum,Enum,int,int,string,string,int,string
+Id,Key,Name,IsCard,Desc,CardGrade,Target,CardType,BaseValue,ValuePerLevel,StatusEffect,StatusEffectValue,Turn,CardImg
+1,KeySkill스킬명(영문)01,NameSkill스킬명(영문)01,TRUE,DESCSkill스킬명(영문)01,Common,Self,Attack,5,1,KeyStatusBurn,0,0,ImgSkill스킬명(영문)01
+2,KeySkill스킬명(영문)02,NameSkill스킬명(영문)02,FALSE,DESCSkill스킬명(영문)02,Rare,Enemy,Shield,8,1,KeyStatusFury,0,0,ImgSkill스킬명(영문)02
+3,KeySkill스킬명(영문)03,NameSkill스킬명(영문)03,TRUE,DESCSkill스킬명(영문)03,Epic,Enemy,Healing,10,2,KeyStatusPoison,0,0,ImgSkill스킬명(영문)03
