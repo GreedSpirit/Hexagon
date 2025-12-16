@@ -13,7 +13,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     [SerializeField] TextMeshProUGUI typeText;      // 타입 텍스트
     [SerializeField] Image _edgeColor;              // 등급 색
 
-    private Card cardLogic;             // 카드 로직
+    private CardLogic cardLogic;             // 카드 로직
     private CardData cardData;          // 카드 데이터
     private HandManager handManager;    // 핸드 매니저 (카드 제거 시 필요)
 
@@ -149,7 +149,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     // 첫 생성 초기화
     public void Init(CardData data, HandManager manager)
     {
-        cardLogic = GetComponent<Card>();
+        cardLogic = GetComponent<CardLogic>();
         cardData = data;
         handManager = manager;
 
@@ -172,8 +172,13 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     {
         //img = ImageManager ? data.CardImg;
         nameText.text = cardData.Name;
-        descText.text = cardData.Desc;
+        descText.text = SetDesc();
         typeText.text = cardData.CardType.ToString();
+    }
+
+    private string SetDesc()
+    {
+        return cardData.Desc;
     }
 
 }

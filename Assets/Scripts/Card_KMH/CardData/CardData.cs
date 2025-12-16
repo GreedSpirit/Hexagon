@@ -1,5 +1,5 @@
 using System;
-
+using UnityEngine;
 public enum CardGrade   // 카드 등급
 {
     Null,       // 불러오기 실패
@@ -41,6 +41,8 @@ public class CardData : CSVLoad, TableKey
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
     public string CardImg { get; set; }         // 카드 이미지
 
+    public int Level { get; set; } = 1;         // 레벨
+
 
     public void LoadFromCsv(string[] values)
     {
@@ -51,7 +53,10 @@ public class CardData : CSVLoad, TableKey
 
         Key = values[1];
 
-        Name = values[2];
+        if (string.IsNullOrEmpty(Name))
+            Debug.LogError($"{Key} 의 Name이 비어있습니다.");
+        else
+            Name = values[2];
 
         if (bool.TryParse(values[3], out bool isCard))
             IsCard = isCard;
@@ -63,17 +68,26 @@ public class CardData : CSVLoad, TableKey
         if (Enum.TryParse(values[5], out CardGrade grade))
             CardGrade = grade;
         else
+        {
+            Debug.LogError($"{Key} 의 CardGrade가 비어있습니다.");
             CardGrade = CardGrade.Null;
+        }
 
         if (Enum.TryParse(values[6], out Target target))
             Target = target;
         else
+        {
+            Debug.LogError($"{Key} 의 Target이 비어있습니다.");
             Target = Target.Null;
+        }
 
         if (Enum.TryParse(values[7], out CardType type))
             CardType = type;
         else
+        {
+            Debug.LogError($"{Key} 의 CardType이 비어있습니다.");
             CardType = CardType.Null;
+        }
 
         if (int.TryParse(values[8], out int baseValue))
             BaseValue = baseValue;

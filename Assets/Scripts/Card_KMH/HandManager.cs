@@ -33,7 +33,7 @@ public class HandManager : MonoBehaviour
     public float CardHalfHeight => _cardHalfHeight;
 
     // 덱의 카드 id 리스트
-    private Queue<int> _deck;
+    private Queue<Card> _deck;
 
     // 현재 들고 있는 카드 리스트
     private List<GameObject> _handCards = new List<GameObject>();
@@ -65,30 +65,27 @@ public class HandManager : MonoBehaviour
     // 덱 구성
     private void SetupDeck()
     {
-        // 테스트용 카드 10장
-        int count = 10;
-        List<int> allIds = new();
-        for(int i = 0; i < count; i++)
-            allIds.Add(Random.Range(1,4));
+        // 덱 복사
+        List<Card> newDeck = TestGameManager_KMH.Instance.Deck;
 
-        _deckCount.text = $"Deck : {count} / {count}";
+        _deckCount.text = $"Deck : {newDeck.Count} / {newDeck.Count}";
 
         // 덱 섞기
-        ShuffleDeck(allIds);
+        ShuffleDeck(newDeck);
 
         // 덱 설정 완료
-        _deck = new Queue<int>(allIds);
+        _deck = new Queue<Card>(newDeck);
     }
 
     // 셔플 (Fisher Yates)
-    private void ShuffleDeck(List<int> allIds)
+    private void ShuffleDeck(List<Card> deck)
     {
-        for (int i = 0; i < allIds.Count; i++)
+        for (int i = 0; i < deck.Count; i++)
         {
-            int rand = Random.Range(0, allIds.Count);
-            int temp = allIds[i];
-            allIds[i] = allIds[rand];
-            allIds[rand] = temp;
+            int rand = Random.Range(0, deck.Count);
+            Card temp = deck[i];
+            deck[i] = deck[rand];
+            deck[rand] = temp;
         }
     }
 
@@ -104,7 +101,8 @@ public class HandManager : MonoBehaviour
         }
 
         // 덱큐에서 카드 한장 뽑기
-        int cardKey = _deck.Dequeue();
+        Card card = _deck.Dequeue();
+        int cardKey = card.Id;
 
         _deckCount.text = $"Deck : {_deck.Count} / {10}";
 
@@ -120,18 +118,18 @@ public class HandManager : MonoBehaviour
         CardData data = DataManager.Instance.GetCard(cardKey);
 
         // 카드 생성
-        GameObject card = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
+        GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
 
         // 설정
-        Card cardLogic = card.GetComponent<Card>();
-        CardUI cardUI = card.GetComponent<CardUI>();
+        CardLogic cardLogic = newCard.GetComponent<CardLogic>();
+        CardUI cardUI = newCard.GetComponent<CardUI>();
 
         // 매니저 연결
         cardLogic.Init(data, this);
         cardUI.Init(data, this);
         
         // 리스트 추가
-        _handCards.Add(card);
+        _handCards.Add(newCard);
 
         // 정렬
         AlignCards();
