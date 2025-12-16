@@ -1,6 +1,6 @@
 Id,Card 데이터 테이블의 기본키,카드(스킬)의 이름,카드 스킬 구분,카드(스킬)의 설명,카드(스킬) 등급,스킬 적용 대상 ,카드 타입 ,카드 강화 1단계 능력치 수치,카드 강화 단계가 증가할 때마다 증가하는 능력치 수치,StatusEffect 데이터 테이블의 Key값 입력,Status 수치,"강화, 약화 효과가 적용될 턴의 수",카드 이미지 리소스명
 int,string,string,Bool,string,Enum,Enum,Enum,int,int,string,string,int,string
 Id,Key,Name,IsCard,Desc,CardGrade,Target,CardType,BaseValue,ValuePerLevel,StatusEffect,StatusEffectValue,Turn,CardImg
-1,KeySkill스킬명(영문)01,NameSkill스킬명(영문)01,TRUE,DESCSkill스킬명(영문)01,Common,Self,Attack,5,1,KeyStatusBurn,0,0,ImgSkill스킬명(영문)01
-2,KeySkill스킬명(영문)02,NameSkill스킬명(영문)02,FALSE,DESCSkill스킬명(영문)02,Rare,Enemy,Shield,8,1,KeyStatusFury,0,0,ImgSkill스킬명(영문)02
-3,KeySkill스킬명(영문)03,NameSkill스킬명(영문)03,TRUE,DESCSkill스킬명(영문)03,Epic,Enemy,Healing,10,2,KeyStatusPoison,0,0,ImgSkill스킬명(영문)03
+1,KeySkill스킬명(영문)01,NameSkill스킬명(영문)01,TRUE,피해를 {N} 줍니다.,Common,Self,Attack,5,1,KeyStatusBurn,0,0,ImgSkill스킬명(영문)01
+2,KeySkill스킬명(영문)02,NameSkill스킬명(영문)02,FALSE,보호막을 {N} 얻습니다.,Rare,Enemy,Shield,8,1,KeyStatusFury,0,0,ImgSkill스킬명(영문)02
+3,KeySkill스킬명(영문)03,NameSkill스킬명(영문)03,TRUE,체력을 {N} 회복합니다.,Epic,Enemy,Healing,10,2,KeyStatusPoison,0,0,ImgSkill스킬명(영문)03
