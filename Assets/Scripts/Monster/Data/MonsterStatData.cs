@@ -21,12 +21,18 @@ public class MonsterStatData : CSVLoad, TableKey
         if (int.TryParse(values[1], out int hpValue))
             Hp = hpValue;
         else
+        {
+            Debug.LogError("Hp 파싱 실패. Level:" + Level);
             Hp = 100;
+        }
 
         // 2: Defense
         if (int.TryParse(values[2], out int defValue))
             Defense = defValue;
         else
+        {
+            Debug.LogError("Defense 파싱 실패. Level:" + Level);
             Defense = 0;
+        }
     }
 }

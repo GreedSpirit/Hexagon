@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 /// <summary>
 /// Monster 테이블의 데이터를 불러오는 클래스
@@ -35,9 +36,19 @@ public class MonsterData : CSVLoad, TableKey
 
         // 2: Name
         Name = values[2];
+        if(Name == "")
+        {
+            Debug.Log("Name이 비어있습니다. Id:" + Id);
+            Name = "???";
+        }
 
         // 3: Desc
         Desc = values[3];
+        if(Desc == "")
+        {
+            Debug.Log("Desc가 비어있습니다. Id:" + Id);
+            Desc = "???";
+        }
 
         // 4: MonGrade
         if (Enum.TryParse(values[4], out MonsterGrade gradeValue))
@@ -61,9 +72,13 @@ public class MonsterData : CSVLoad, TableKey
         if (float.TryParse(values[7], out float moveSpeedValue))
             MoveSpeed = moveSpeedValue;
         else
-            MoveSpeed = 1.0f;
+            MoveSpeed = 10.0f;
         // 8: SkillSet
         SkillSet = values[8];
+        if(SkillSet == "")
+        {
+            Debug.LogError("SkillSet이 비어있습니다. Id:" + Id);
+        }
 
         // 9: Model
         Model = values[9];
