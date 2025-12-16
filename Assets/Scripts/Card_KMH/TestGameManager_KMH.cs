@@ -15,12 +15,12 @@ public class TestGameManager_KMH : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        InitCardActions();      // 카드 동작 초기화
+        InitDeck();             // 덱 초기화
     }
 
     private void Start()
     {
-        InitCardActions();      // 카드 동작 초기화
-        InitDeck();             // 덱 초기화
     }
 
     // 동작 구성
