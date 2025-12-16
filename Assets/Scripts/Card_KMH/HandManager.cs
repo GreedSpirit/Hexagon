@@ -74,20 +74,24 @@ public class HandManager : MonoBehaviour
 
         foreach (var card in TestGameManager_KMH.Instance.Deck)
         {
-            int cardKey = card.Value.Id;
-            int cardLevel = card.Value.Level;
+            int cardKey = card.Key;
+            int cardLevel = card.Value;
 
             // cardKey 사용해서 테이블 정보 불러오기
-            CardData tempCardData = DataManager.Instance.GetCard(card.Value.Id);
+            CardData tempCardData = DataManager.Instance.GetCard(cardKey);
 
-            // 레벨, 사용 횟수
+            // 레벨, 사용 가능 횟수
             tempCardData.SetCardLevel(cardLevel);
 
+            // 카드 사용 가능 횟수
+            int cardNumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(cardLevel, tempCardData.CardGrade);
+
+
             // 사용 횟수 만큼 덱에 추가
-            for(int i = 0; i < tempCardData.NumberOfAvailable; i++)
+            for (int i = 0; i < cardNumberOfAvailable; i++)
             {
-                // cardKey 사용해서 테이블 정보 불러오기
-                CardData newCardData = DataManager.Instance.GetCard(card.Value.Id);
+                // 덱에 추가할 진짜 카드 데이터
+                CardData newCardData = DataManager.Instance.GetCard(cardKey);
 
                 // 카드 동작, 레벨, 사용 횟수 설정
                 newCardData.SetCardAction();

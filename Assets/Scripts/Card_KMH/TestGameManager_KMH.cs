@@ -10,17 +10,13 @@ public class TestGameManager_KMH : MonoBehaviour
     private Dictionary<CardType, ICardAction> _cardActions = new Dictionary<CardType, ICardAction>();
 
     // 덱 구성 (id, level)
-    public Dictionary<int, Card> Deck { get; private set; }
+    public Dictionary<int, int> Deck { get; private set; }
 
     private void Awake()
     {
         Instance = this;
         InitCardActions();      // 카드 동작 초기화
         InitDeck();             // 덱 초기화
-    }
-
-    private void Start()
-    {
     }
 
     // 동작 구성
@@ -39,15 +35,14 @@ public class TestGameManager_KMH : MonoBehaviour
         int count = 5;
 
         // 덱 생성
-        Deck = new Dictionary<int, Card>();
+        Deck = new Dictionary<int, int>();
 
         // 덱 구성 없으니 일단 랜덤 Id 카드 생성
-        for (int i = 0; i < count; i++)
+        for (int i = 1; i <= count; i++)
         {
-            Card card = new Card();
-            card.Id = Random.Range(1, DataManager.Instance.CardDict.Count);
-            card.Level = 1;
-            Deck[i] = card;
+            int randId = Random.Range(1, DataManager.Instance.CardDict.Count);
+
+            Deck[randId] = 1;
         }
     }
 
@@ -63,35 +58,42 @@ public class TestGameManager_KMH : MonoBehaviour
     }
 
 
+    // id 카드의 레벨 반환
+    public int GetCardLevel(int id)
+    {
+        return Deck[id];
+    }
+
+
     // 카드 등급과 레벨에 따른 사용 가능 횟수 반환
     public int GetCardNumberOfAvailable(int level, CardGrade grade)
     {
-        CardNumberOfAvailableData gradeData;
+        int numberOfAvailable;
 
         switch (grade)
         {
             case CardGrade.Common:
-                gradeData = DataManager.Instance.GetCommonCardData(level);
+                numberOfAvailable = DataManager.Instance.GetCommonCardData(level).NumberOfAvailable;
                 break;
             case CardGrade.Rare:
-                gradeData = DataManager.Instance.GetRareCardData(level);
+                numberOfAvailable = DataManager.Instance.GetRareCardData(level).NumberOfAvailable;
                 break;
             case CardGrade.Epic:
-                gradeData = DataManager.Instance.GetEpicCardData(level);
+                numberOfAvailable = DataManager.Instance.GetEpicCardData(level).NumberOfAvailable;
                 break;
             case CardGrade.Legendary:
-                gradeData = DataManager.Instance.GetLegendaryCardData(level);
+                numberOfAvailable = DataManager.Instance.GetLegendaryCardData(level).NumberOfAvailable;
                 break;
             default:
-                gradeData = null;
+                numberOfAvailable = 0;
                 break;
         }
 
-        return gradeData.NumberOfAvailable;
+        return numberOfAvailable;
     }
 
 
-    // 카드 강화
+    // 카드 강화 인벤토리용?
     public void UpgradePlayerCard(int id)
     {
         if (Deck.ContainsKey(id) == false)
@@ -100,23 +102,23 @@ public class TestGameManager_KMH : MonoBehaviour
             return;
         }
 
-        if(Deck[id].Level == 5)
+        if(Deck[id] == 5)
         {
             Debug.Log("최대 강화 입니다.");
             return;
         }
 
-        Deck[id].Level++;
+        Deck[id]++;
     }
     public void UpgradeMonsterCard(int id)
     {
 
-        if (Deck[id].Level == 999)
+        if (Deck[id] == 999)
         {
             Debug.Log("최대 강화 입니다.");
             return;
         }
 
-        Deck[id].Level++;
+        Deck[id]++;
     }
 }
