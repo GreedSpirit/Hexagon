@@ -77,8 +77,10 @@ public class InventoryManager : MonoBehaviour
 
         if (isDeckBuildingMode)
         {
-            // Quest 등급 제외 (CardData의 Grade 확인)
-            filteredList = UserCardList.Where(x => x.GetData().CardGrade != CardGrade.Quest).ToList();
+            // Quest 등급 제외 (CardData의 Grade 확인) 
+            // 아마 기획서 수정으로 인해 Quest 정의가 사라지면서 오류발생
+            // 당장은 보류
+            //filteredList = UserCardList.Where(x => x.GetData().CardGrade != CardGrade.Quest).ToList();
         }
 
         // 정렬 (2차 정렬은 이름순)
