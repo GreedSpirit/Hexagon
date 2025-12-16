@@ -1,6 +1,4 @@
-using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 public enum CardGrade   // 카드 등급
 {
@@ -15,7 +13,8 @@ public enum CardType    // 카드 타입
 {
     Null,       // 불러오기 실패
     Attack,     // 공격
-    Defence,    // 방어
+    Healing,    // 치유
+    Shield,     // 방어
     Spell,      // 주문
 }
 public enum Target
@@ -33,16 +32,14 @@ public class CardData : CSVLoad, TableKey
     public bool IsCard { get; set; }            // 카드 or 스킬
     public string Desc { get; set; }            // 설명
     public CardGrade CardGrade { get; set; }    // 등급
-    public CardType CardType { get; set; }      // 타입
-    public string CardImg { get; set; }         // 카드 이미지
     public Target Target { get; set; }          // 스킬 적용 대상
-    public int Attack { get; set; }             // 피해량
-    public int Healing { get; set; }            // 치유량
-    public int Shield { get; set; }             // 보호막량
+    public CardType CardType { get; set; }      // 타입
+    public int BaseValue { get; set; }          // 기본 능력치 수치
+    public int ValuePerValue { get; set; }      // 강화 증가 능력치 수치
     public string StatusEffect { get; set; }    // StatusEffect 테이블 Key
     public float StatusEffectValue { get; set; }// 스킬 사용 시 적용될 상태이상 스킬 효과
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
-    public string Vfx { get; set; }             // VFX 
+    public string CardImg { get; set; }         // 카드 이미지
 
 
     public void LoadFromCsv(string[] values)
@@ -68,45 +65,39 @@ public class CardData : CSVLoad, TableKey
         else
             CardGrade = CardGrade.Null;
 
-        if (Enum.TryParse(values[6], out CardType type))
-            CardType = type;
-        else
-            CardType = CardType.Null;
-
-        CardImg = values[7];
-
-        if (Enum.TryParse(values[8], out Target target))
+        if (Enum.TryParse(values[6], out Target target))
             Target = target;
         else
             Target = Target.Null;
 
-        if (int.TryParse(values[9], out int atk))
-            Attack = atk;
+        if (Enum.TryParse(values[7], out CardType type))
+            CardType = type;
         else
-            Attack = 0;
+            CardType = CardType.Null;
 
-        if (int.TryParse(values[10], out int heal))
-            Healing = heal;
+        if (int.TryParse(values[8], out int baseValue))
+            BaseValue = baseValue;
         else
-            Healing = 0;
+            BaseValue = 0;
 
-        if (int.TryParse(values[11], out int shield))
-            Shield = shield;
+        if (int.TryParse(values[9], out int valuePerLevel))
+            ValuePerValue = valuePerLevel;
         else
-            Shield = 0;
+            ValuePerValue = 0;
 
-        StatusEffect = values[12];
+        StatusEffect = values[10];
 
-        if (float.TryParse(values[13], out float statusValue))
+        if (float.TryParse(values[11], out float statusValue))
             StatusEffectValue = statusValue;
         else
             StatusEffectValue = 0;
 
-        if (int.TryParse(values[14], out int turn))
+        if (int.TryParse(values[12], out int turn))
             Turn = turn;
         else
             Turn = 0;
 
-        Vfx = values[15];
+        CardImg = values[13];
+
     }
 }

@@ -20,7 +20,10 @@ public class PlayerStat
     public int Level { get; private set; } = 1;
     public int Shield { get; private set; }
     public int CurrentExp { get; private set; }
-    public int CurrentHp {  get; private set; }    
+    public int CurrentHp {  get; private set; }
+
+    public float Buff {  get; private set; }
+    public float DeBuff {  get; private set; }
     
 
 
@@ -36,20 +39,20 @@ public class PlayerStat
     }
 
     private void LevelUp()
-    {
-        if (Level < LevelList.Count)
-        {
-            Level++;
-            SetStats();
-        }
-        else
+    {        
+        if (Level >= LevelList.Count)
         {
             Debug.Log("이미 최대 레벨입니다.");
-        }        
+            return;
+        }
+        Level++;
+        SetStats();
+                
     }
     public void GetDamage(int damage) //데미지를 입을 때마다 호출.
     {
-        int blockedDamage = damage - Defense; //방어력만큼 일단 감소
+        int reinforcedDamage = Mathf.FloorToInt(damage * (1 + DeBuff));
+        int blockedDamage = reinforcedDamage - Defense; //방어력만큼 일단 감소
         if (Shield > 0) //보호막이 있는 경우
         {
             Shield -= blockedDamage; //보호막이 대미지 흡수
@@ -96,11 +99,20 @@ public class PlayerStat
 
     public void GetExp(int exp) //경험치를 얻을 때마다 호출
     {
+        if (Level >= LevelList.Count)
+        {
+            CurrentExp = NeedExp;
+            return;
+        }
         CurrentExp += exp;
-        if (CurrentExp >= NeedExp)
+        if (CurrentExp >= NeedExp && Level < LevelList.Count)
         {
             CurrentExp -= NeedExp;
             LevelUp();
+        }
+        if (Level >= LevelList.Count)
+        {
+            CurrentExp = NeedExp;
         }
     }
 

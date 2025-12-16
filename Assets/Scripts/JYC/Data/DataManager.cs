@@ -23,7 +23,10 @@ public class DataManager : MonoBehaviour
     // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
     public Dictionary<int, CharacterLevelData> CharacterLevelDict { get; private set; }
     public Dictionary<int, CharacterStatData> CharacterStatDict { get; private set; }
-    // public Dictionary<int, CardLevelData> CardLevelDict { get; private set; }
+    public Dictionary<int, CardNumberOfAvailableData> CommonCardNoADict { get; private set; }
+    public Dictionary<int, CardNumberOfAvailableData> RareCardNoADict { get; private set; }
+    public Dictionary<int, CardNumberOfAvailableData> EpicCardNoADict { get; private set; }
+    public Dictionary<int, CardNumberOfAvailableData> LegendaryCardNoADict { get; private set; }
     // public Dictionary<int, SkillData> SkillDict { get; private set; }
     public Dictionary<int, DungeonData> DungeonDict { get; private set; }
     public Dictionary<int, StageData> StageDict { get; private set; }
@@ -33,6 +36,10 @@ public class DataManager : MonoBehaviour
     // (Key: string 기반)
     public Dictionary<string, CharacterData> CharacterKeyDict { get; private set; }
     public Dictionary<string, CardData> CardKeyDict { get; private set; }
+    public Dictionary<string, CardNumberOfAvailableData> CommonCardNoAKeyDict { get; private set; }
+    public Dictionary<string, CardNumberOfAvailableData> RareCardNoAKeyDict { get; private set; }
+    public Dictionary<string, CardNumberOfAvailableData> EpicCardNoAKeyDict { get; private set; }
+    public Dictionary<string, CardNumberOfAvailableData> LegendaryCardNoAKeyDict { get; private set; }
     public Dictionary<string, MonsterData> MonsterStatKeyDict { get; private set; }
     public Dictionary<string, MonsterSkillSetData> MonsterSkillSetKeyDict { get; private set; }
     public Dictionary<string, MonsterStatData> CommonMonsterStatDataKeyDict { get; private set; }
@@ -40,7 +47,6 @@ public class DataManager : MonoBehaviour
     // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
      public Dictionary<string, CharacterLevelData> CharacterLevelKeyDict { get; private set; }
      public Dictionary<string, CharacterStatData> CharacterStatKeyDict { get; private set; }
-    // public Dictionary<string, CardLevelData> CardLevelKeyDict { get; private set; }
     // public Dictionary<string, SkillData> SkillKeyDict { get; private set; }
     public Dictionary<string, DungeonData> DungeonKeyDict { get; private set; }
     public Dictionary<string, StageData> StageKeyDict { get; private set; }
@@ -72,11 +78,17 @@ public class DataManager : MonoBehaviour
         CharacterStatDict = LoadAndCreateKeyDict(CSVReader.Read<CharacterStatData>("CharacterStat"), out Dictionary<string, CharacterStatData> tempCharStatKeyDict);
         CharacterStatKeyDict = tempCharStatKeyDict;
 
-
+        // [Card]
         CardDict = LoadAndCreateKeyDict(CSVReader.Read<CardData>("Card"), out Dictionary<string, CardData> tempCardKeyDict);
         CardKeyDict = tempCardKeyDict;
-        // CardLevelDict = LoadAndCreateKeyDict(CSVReader.Read<CardLevelData>("CardLevel"), out Dictionary<string, CardLevelData> tempCardLevelKeyDict);
-        // CardLevelKeyDict = tempCardLevelKeyDict;
+        CommonCardNoADict = LoadAndCreateKeyDict(CSVReader.Read<CardNumberOfAvailableData>("CommonCardNoA"), out Dictionary<string, CardNumberOfAvailableData> tempCommonCardNoaKeyDict);
+        CommonCardNoAKeyDict = tempCommonCardNoaKeyDict;
+        RareCardNoADict = LoadAndCreateKeyDict(CSVReader.Read<CardNumberOfAvailableData>("RareCardNoA"), out Dictionary<string, CardNumberOfAvailableData> tempRareCardNoaKeyDict);
+        RareCardNoAKeyDict = tempRareCardNoaKeyDict;
+        EpicCardNoADict = LoadAndCreateKeyDict(CSVReader.Read<CardNumberOfAvailableData>("EpicCardNoA"), out Dictionary<string, CardNumberOfAvailableData> tempEpicCardNoaKeyDict);
+        EpicCardNoAKeyDict = tempEpicCardNoaKeyDict;
+        LegendaryCardNoADict = LoadAndCreateKeyDict(CSVReader.Read<CardNumberOfAvailableData>("LegandaryCardNoA"), out Dictionary<string, CardNumberOfAvailableData> tempLegandaryCardNoaKeyDict);
+        LegendaryCardNoAKeyDict = tempLegandaryCardNoaKeyDict;
 
         // [Monster]
         MonsterStatDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterData>("Monster"), out Dictionary<string, MonsterData> tempMonsterKeyDict);
@@ -168,8 +180,17 @@ public class DataManager : MonoBehaviour
     public CharacterStatData GetCharacterStat(int id) => CharacterStatDict.TryGetValue(id, out var data) ? data : null;
     public CharacterStatData GetCharacterStat(string key) => CharacterStatKeyDict.TryGetValue(key, out var data) ? data : null;
 
-    //public CardLevelData GetCardLevel(int id) => CardLevelDict.TryGetValue(id, out var data) ? data : null;
-    //public CardLevelData GetCardLevel(string key) => CardLevelKeyDict.TryGetValue(key, out var data) ? data : null;
+    public CardNumberOfAvailableData GetCommonCardLevel(int id) => CommonCardNoADict.TryGetValue(id, out var data) ? data : null;
+    public CardNumberOfAvailableData GetCommonCardLevel(string key) => CommonCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public CardNumberOfAvailableData GetRareCardLevel(int id) => RareCardNoADict.TryGetValue(id, out var data) ? data : null;
+    public CardNumberOfAvailableData GetRareCardLevel(string key) => RareCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public CardNumberOfAvailableData GetEpicCardLevel(int id) => EpicCardNoADict.TryGetValue(id, out var data) ? data : null;
+    public CardNumberOfAvailableData GetEpicCardLevel(string key) => EpicCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public CardNumberOfAvailableData GetLegendaryCardLevel(int id) => LegendaryCardNoADict.TryGetValue(id, out var data) ? data : null;
+    public CardNumberOfAvailableData GetLegendaryCardLevel(string key) => LegendaryCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
 
 
     //public SkillData GetSkill(int id) => SkillDict.TryGetValue(id, out var data) ? data : null;
