@@ -10,6 +10,7 @@ public enum MonsterGrade
     Boss
 }
 
+[System.Serializable]
 public class MonsterData : CSVLoad, TableKey
 {
     public int Id { get; set; }

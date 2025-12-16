@@ -19,6 +19,8 @@ public class MonsterStatus : MonoBehaviour
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
 
+    private string _selectedSkillKey = null; //선택된 스킬 키 임시 변수
+    private int _selectedSkillSlot = -1; //선택된 스킬 슬롯 인덱스 임시 변수
     public void InitMonsterStatus()
     {
         //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 불러오는 방식으로 변경할 수도 있음
@@ -39,10 +41,8 @@ public class MonsterStatus : MonoBehaviour
             _monsterMaxHP = Mathf.FloorToInt(500 * _monsterStatData.HpRate);
             _monsterDefense = Mathf.FloorToInt(10 * _monsterStatData.DefRate);
         }
-        _monsterCurHP = _monsterMaxHP;
-
-        //_monsterSkillSet = DataManager.Instance.GetMonsterSkillSetData(monsterData.SkillSet);
-        
+        _monsterSkillSet = DataManager.Instance.GetMonsterSkillSetData(_monsterStatData.SkillSet);
+        _monsterCurHP = _monsterMaxHP;        
     }
 
     private void Start()
@@ -143,7 +143,7 @@ public class MonsterStatus : MonoBehaviour
 
     // 스킬 사용 및 공격 로직 시작 ------------------------------------------------------------
 
-    private string GetRandomSkillFromSet() // 몬스터의 스킬셋에서 가중치에 따라 랜덤으로 스킬을 선택하는 함수
+    private void GetRandomSkillFromSet() // 몬스터의 스킬셋에서 가중치에 따라 랜덤으로 스킬을 선택하는 함수
     {
         float totalRate = 0f;
         foreach(var skillweight in _monsterSkillSet.skillWeights)
@@ -151,26 +151,36 @@ public class MonsterStatus : MonoBehaviour
             totalRate += skillweight.Item2;
         }
 
+        int idx = -1;
         float randomValue = Random.Range(0f, totalRate);
         float curSum = 0f;
 
         foreach(var skillSlot in _monsterSkillSet.skillWeights)
         {
+            idx++;
             curSum += skillSlot.Item2;
             if(randomValue <= curSum)
             {
-                return skillSlot.Item1;
+                Debug.Log("선택된 스킬 가중치: " + skillSlot.Item2);
+                Debug.Log("선택된 스킬 레벨: " + _monsterSkillSet.skillLevels[idx]);
+                _selectedSkillSlot = idx; //선택된 스킬 슬롯 인덱스 저장
+                _selectedSkillKey = skillSlot.Item1;
+                break;
             }
-        }
-        return null;        
+        }        
     }
 
     private void UseSkill() //턴마다 스킬을 사용하는 함수
     {
-        string skillKey = GetRandomSkillFromSet();
-        if(skillKey != null)
+        //_selectedSkillKey를 이용해서 스킬을 가져오고 _selectedSkillSlot 인덱스를 이용해서 스킬 레벨도 가져오기
+        if(_selectedSkillKey != null)
         {
             //스킬 사용 로직 추가
+            Debug.Log("몬스터가 스킬을 사용했습니다. 스킬 키: " + _selectedSkillKey + ", 스킬 레벨: " + _monsterSkillSet.skillLevels[_selectedSkillSlot]);
+        }
+        else
+        {
+            Debug.LogError("선택된 스킬이 없습니다.");
         }
     }
 
@@ -181,6 +191,16 @@ public class MonsterStatus : MonoBehaviour
     public void TestTakeDamage()
     {
         TakeDamage(10);
+    }
+
+    public void TestSelectSkill()
+    {
+        GetRandomSkillFromSet();
+    }
+
+    public void TestUseSkill()
+    {
+        UseSkill();
     }
     #endif
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[System.Serializable]
 public class MonsterStatData : CSVLoad, TableKey
 {
     public int Level { get; set; }
