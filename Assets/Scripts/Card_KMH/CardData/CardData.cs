@@ -7,7 +7,6 @@ public enum CardGrade   // 카드 등급
     Rare,       // 희귀, Index
     Epic,       // 영웅, Title
     Legendary,  // 전설, Codex
-    Quest,      // 퀘스트, Quest
 }
 public enum CardType    // 카드 타입
 {
@@ -41,8 +40,50 @@ public class CardData : CSVLoad, TableKey
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
     public string CardImg { get; set; }         // 카드 이미지
 
-    public int Level { get; set; } = 1;         // 레벨
 
+    public int Level { get; set; }              // 레벨
+    public int NumberOfAvailable { get; set; }  // 사용 가능 횟수
+    public ICardAction CardAction { get; set; } // 카드 행동
+
+
+
+    // 카드 레벨, 사용 가능 횟수 설정
+    public void SetCardLevel(int level)
+    {
+        // 레벨
+        Level = level;
+        // 사용 가능 횟수 (레벨, 카드 등급)
+        NumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(level, CardGrade);
+    }
+
+    // 카드 동작 설정
+    public void SetCardAction()
+    {
+        // 카드 타입에 맞는 동작 가져오기
+        CardAction = TestGameManager_KMH.Instance.GetAction(CardType);
+    }
+
+    // 카드 수치 계산 반환
+    public int GetCardValue()
+    {
+        return BaseValue + ((Level - 1) * ValuePerValue);
+    }
+
+    // 설명에 수치 적용
+    public string GetCardDescWithValue()
+    {
+        return GetCardDesc(Desc, GetCardValue());
+    }
+
+    // 문자 교체 {N} -> 수치
+    private string GetCardDesc(string desc, int value)
+    {
+        Debug.Log(desc);
+        Debug.Log(value);
+        string newDesc;
+        newDesc = desc.Replace("{N}", value.ToString());
+        return newDesc;
+    }
 
     public void LoadFromCsv(string[] values)
     {
@@ -53,7 +94,7 @@ public class CardData : CSVLoad, TableKey
 
         Key = values[1];
 
-        if (string.IsNullOrEmpty(Name))
+        if (string.IsNullOrEmpty(values[2]))
             Debug.LogError($"{Key} 의 Name이 비어있습니다.");
         else
             Name = values[2];
@@ -62,8 +103,6 @@ public class CardData : CSVLoad, TableKey
             IsCard = isCard;
         else
             IsCard = false;
-
-        Desc = values[4];
 
         if (Enum.TryParse(values[5], out CardGrade grade))
             CardGrade = grade;
@@ -111,7 +150,19 @@ public class CardData : CSVLoad, TableKey
         else
             Turn = 0;
 
-        CardImg = values[13];
+        // 카드만 설명, 이미지
+        if (IsCard == true)
+        {
+            Desc = values[4];
+            CardImg = values[13];
+        }
 
+        // 공격 카드인데 타겟이 Self라면 Enemy로
+        if (CardType == CardType.Attack && Target == Target.Self)
+            Target = Target.Enemy;
+
+        // 치유 카드인데 타겟이 Enemy라면 Self로
+        if (CardType == CardType.Healing && Target == Target.Enemy)
+            Target = Target.Self;
     }
 }

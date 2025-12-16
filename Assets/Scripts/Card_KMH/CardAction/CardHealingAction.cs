@@ -1,6 +1,10 @@
 using UnityEngine;
 
-public class CardHealingAction
+public class CardHealingAction : ICardAction
 {
-    
+    // 카드 사용
+    public void Use(CardData data, int value)
+    {
+        Debug.Log($"치유 카드 사용 : {value} 회복.");
+    }
 }

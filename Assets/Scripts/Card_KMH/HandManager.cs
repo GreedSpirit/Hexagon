@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour
@@ -33,13 +34,16 @@ public class HandManager : MonoBehaviour
     public float CardHalfHeight => _cardHalfHeight;
 
     // 덱의 카드 id 리스트
-    private Queue<Card> _deck;
+    private Queue<CardData> _deck;
 
     // 현재 들고 있는 카드 리스트
     private List<GameObject> _handCards = new List<GameObject>();
 
     // 카드 절반 높이
     private float _cardHalfHeight;
+
+    // 덱 시작 카드 수
+    private int _deckCardCount;
 
 
 
@@ -66,24 +70,53 @@ public class HandManager : MonoBehaviour
     private void SetupDeck()
     {
         // 덱 복사
-        List<Card> newDeck = TestGameManager_KMH.Instance.Deck;
+        List<CardData> newDeck = new List<CardData>();
 
-        _deckCount.text = $"Deck : {newDeck.Count} / {newDeck.Count}";
+        foreach (var card in TestGameManager_KMH.Instance.Deck)
+        {
+            int cardKey = card.Value.Id;
+            int cardLevel = card.Value.Level;
+
+            // cardKey 사용해서 테이블 정보 불러오기
+            CardData tempCardData = DataManager.Instance.GetCard(card.Value.Id);
+
+            // 레벨, 사용 횟수
+            tempCardData.SetCardLevel(cardLevel);
+
+            // 사용 횟수 만큼 덱에 추가
+            for(int i = 0; i < tempCardData.NumberOfAvailable; i++)
+            {
+                // cardKey 사용해서 테이블 정보 불러오기
+                CardData newCardData = DataManager.Instance.GetCard(card.Value.Id);
+
+                // 카드 동작, 레벨, 사용 횟수 설정
+                newCardData.SetCardAction();
+                newCardData.SetCardLevel(cardLevel);
+
+                // 덱에 추가
+                newDeck.Add(newCardData);
+            }
+        }
+
+        // 덱 카드 수 설정
+        _deckCardCount = newDeck.Count;
+
+        _deckCount.text = $"Deck : {_deckCardCount} / {_deckCardCount}";
 
         // 덱 섞기
         ShuffleDeck(newDeck);
 
         // 덱 설정 완료
-        _deck = new Queue<Card>(newDeck);
+        _deck = new Queue<CardData>(newDeck);
     }
 
     // 셔플 (Fisher Yates)
-    private void ShuffleDeck(List<Card> deck)
+    private void ShuffleDeck(List<CardData> deck)
     {
         for (int i = 0; i < deck.Count; i++)
         {
             int rand = Random.Range(0, deck.Count);
-            Card temp = deck[i];
+            CardData temp = deck[i];
             deck[i] = deck[rand];
             deck[rand] = temp;
         }
@@ -101,11 +134,12 @@ public class HandManager : MonoBehaviour
         }
 
         // 덱큐에서 카드 한장 뽑기
-        Card card = _deck.Dequeue();
-        int cardKey = card.Id;
+        CardData cardData = _deck.Dequeue();
 
-        _deckCount.text = $"Deck : {_deck.Count} / {10}";
+        // 덱 카드 수 갱신
+        _deckCount.text = $"Deck : {_deck.Count} / {_deckCardCount}";
 
+        // 오버 드로우 체크
         if (_handCards.Count >= _handLimit)
         {
             Debug.Log("오버 드로우 발생");
@@ -114,10 +148,7 @@ public class HandManager : MonoBehaviour
             return;
         }
 
-        // cardKey 사용해서 테이블 정보 불러오기
-        CardData data = DataManager.Instance.GetCard(cardKey);
-
-        // 카드 생성
+        // 카드 UI 생성
         GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
 
         // 설정
@@ -125,8 +156,8 @@ public class HandManager : MonoBehaviour
         CardUI cardUI = newCard.GetComponent<CardUI>();
 
         // 매니저 연결
-        cardLogic.Init(data, this);
-        cardUI.Init(data, this);
+        cardLogic.Init(cardData, this);
+        cardUI.Init(cardData, this);
         
         // 리스트 추가
         _handCards.Add(newCard);
