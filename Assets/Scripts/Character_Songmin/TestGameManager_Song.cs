@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class TestGameManager_Song : MonoBehaviour
 {
-    
-    void Start()
+    private void Start()
+    {
+        InitPlayer();
+    }
+
+    public void InitPlayer()
     {
         Player player = FindFirstObjectByType<Player>();
         PlayerStatInitializer initializer = new PlayerStatInitializer();
@@ -12,9 +16,9 @@ public class TestGameManager_Song : MonoBehaviour
         CharacterData characterData = DataManager.Instance.GetCharacter(1);
         List<CharacterLevelData> levelDatas = new List<CharacterLevelData>();
         List<CharacterStatData> statDatas = new List<CharacterStatData>();
-        
-        for (int i = 1;  i <= 100; i++)
-        {            
+
+        for (int i = 1; i <= 100; i++)
+        {
             CharacterLevelData levelData = DataManager.Instance.GetCharacterLevel(i);
             if (levelData == null)
             {
@@ -22,15 +26,13 @@ public class TestGameManager_Song : MonoBehaviour
             }
             levelDatas.Add(levelData);
         }
-        
+
         for (int i = 1; i <= 100; i++)
         {
             CharacterStatData statData = DataManager.Instance.GetCharacterStat(i);
             statDatas.Add(statData);
         }
         player.Init(initializer.InitPlayerStat(characterData, levelDatas, statDatas));
-             
     }
-
 
 }

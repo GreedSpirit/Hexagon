@@ -63,12 +63,14 @@ public class PlayerStat
         {
             CurrentHp -= blockedDamage;
         }
+        Die();
     }
 
 
     public void GetTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
     {
         CurrentHp -= damage;
+        Die();
     }
 
 
@@ -95,10 +97,20 @@ public class PlayerStat
     public void GetExp(int exp) //경험치를 얻을 때마다 호출
     {
         CurrentExp += exp;
-        if (CurrentExp > NeedExp)
+        if (CurrentExp >= NeedExp)
         {
             CurrentExp -= NeedExp;
             LevelUp();
+        }
+    }
+
+    private void Die()
+    {
+        if (CurrentHp <= 0)
+        {
+            CurrentHp = 0;
+            //죽는 매서드 호출
+            Debug.Log("플레이어 사망!");
         }
     }
 }

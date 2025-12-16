@@ -49,7 +49,10 @@ public class MonsterSkillSetData : CSVLoad, TableKey
         if (float.TryParse(values[4], out float slot1WeightValue))
             Slot1Weight = slot1WeightValue;
         else
+        {
+            Debug.LogError("Slot1Weight 파싱 실패. Id:" + Id);
             Slot1Weight = 0f;
+        }
 
         // 5: SkillSlot2
         SkillSlot2 = values[5];
@@ -62,7 +65,10 @@ public class MonsterSkillSetData : CSVLoad, TableKey
         if (float.TryParse(values[6], out float slot2WeightValue))
             Slot2Weight = slot2WeightValue;
         else
+        {
+            Debug.LogError("Slot2Weight 파싱 실패. Id:" + Id);
             Slot2Weight = 0f;
+        }
 
         // 7: SkillSlot3
         SkillSlot3 = values[7];
@@ -75,7 +81,10 @@ public class MonsterSkillSetData : CSVLoad, TableKey
         if (float.TryParse(values[8], out float slot3WeightValue))
             Slot3Weight = slot3WeightValue;
         else
+        {
+            Debug.LogError("Slot3Weight 파싱 실패. Id:" + Id);
             Slot3Weight = 0f;
+        }
 
         // 9: SkillSlot4
         SkillSlot4 = values[9];
@@ -88,7 +97,10 @@ public class MonsterSkillSetData : CSVLoad, TableKey
         if (float.TryParse(values[10], out float slot4WeightValue))
             Slot4Weight = slot4WeightValue;
         else
+        {
+            Debug.LogError("Slot4Weight 파싱 실패. Id:" + Id);
             Slot4Weight = 0f;
+        }
 
         if(SkillSlot4 != "" && MonGrade == MonsterGrade.Normal)
         {
