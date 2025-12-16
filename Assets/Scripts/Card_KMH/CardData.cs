@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public enum CardGrade   // 카드 등급
 {
@@ -16,7 +13,8 @@ public enum CardType    // 카드 타입
 {
     Null,       // 불러오기 실패
     Attack,     // 공격
-    Defence,    // 방어
+    Healing,    // 치유
+    Shield,     // 방어
     Spell,      // 주문
 }
 public enum Target

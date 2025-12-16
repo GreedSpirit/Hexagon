@@ -69,7 +69,7 @@ public class HandManager : MonoBehaviour
         int count = 10;
         List<int> allIds = new();
         for(int i = 0; i < count; i++)
-            allIds.Add(Random.Range(1,11));
+            allIds.Add(Random.Range(1,4));
 
         _deckCount.text = $"Deck : {count} / {count}";
 
