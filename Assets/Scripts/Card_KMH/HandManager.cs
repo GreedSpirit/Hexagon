@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour
@@ -20,6 +22,9 @@ public class HandManager : MonoBehaviour
     [SerializeField] int _startHandCount;       // 시작 시 뽑을 카드 수
     [SerializeField] int _handLimit;            // 핸드 소지 한계
 
+    [Space]
+    [SerializeField] TextMeshProUGUI _deckCount;
+
 
     public float MoveSpeed => _moveSpeed;
     public float ScaleSpeed => _scaleSpeed;
@@ -29,13 +34,16 @@ public class HandManager : MonoBehaviour
     public float CardHalfHeight => _cardHalfHeight;
 
     // 덱의 카드 id 리스트
-    private Queue<int> _deck;
+    private Queue<CardData> _deck;
 
     // 현재 들고 있는 카드 리스트
     private List<GameObject> _handCards = new List<GameObject>();
 
     // 카드 절반 높이
     private float _cardHalfHeight;
+
+    // 덱 시작 카드 수
+    private int _deckCardCount;
 
 
 
@@ -61,27 +69,56 @@ public class HandManager : MonoBehaviour
     // 덱 구성
     private void SetupDeck()
     {
-        // 테스트용 카드 10장
-        List<int> allIds = new();
-        for(int i = 0; i < 10; i++)
-            allIds.Add(Random.Range(1,11));
+        // 덱 복사
+        List<CardData> newDeck = new List<CardData>();
+
+        foreach (var card in TestGameManager_KMH.Instance.Deck)
+        {
+            int cardKey = card.Value.Id;
+            int cardLevel = card.Value.Level;
+
+            // cardKey 사용해서 테이블 정보 불러오기
+            CardData tempCardData = DataManager.Instance.GetCard(card.Value.Id);
+
+            // 레벨, 사용 횟수
+            tempCardData.SetCardLevel(cardLevel);
+
+            // 사용 횟수 만큼 덱에 추가
+            for(int i = 0; i < tempCardData.NumberOfAvailable; i++)
+            {
+                // cardKey 사용해서 테이블 정보 불러오기
+                CardData newCardData = DataManager.Instance.GetCard(card.Value.Id);
+
+                // 카드 동작, 레벨, 사용 횟수 설정
+                newCardData.SetCardAction();
+                newCardData.SetCardLevel(cardLevel);
+
+                // 덱에 추가
+                newDeck.Add(newCardData);
+            }
+        }
+
+        // 덱 카드 수 설정
+        _deckCardCount = newDeck.Count;
+
+        _deckCount.text = $"Deck : {_deckCardCount} / {_deckCardCount}";
 
         // 덱 섞기
-        ShuffleDeck(allIds);
+        ShuffleDeck(newDeck);
 
         // 덱 설정 완료
-        _deck = new Queue<int>(allIds);
+        _deck = new Queue<CardData>(newDeck);
     }
 
     // 셔플 (Fisher Yates)
-    private void ShuffleDeck(List<int> allIds)
+    private void ShuffleDeck(List<CardData> deck)
     {
-        for (int i = 0; i < allIds.Count; i++)
+        for (int i = 0; i < deck.Count; i++)
         {
-            int rand = Random.Range(0, allIds.Count);
-            int temp = allIds[i];
-            allIds[i] = allIds[rand];
-            allIds[rand] = temp;
+            int rand = Random.Range(0, deck.Count);
+            CardData temp = deck[i];
+            deck[i] = deck[rand];
+            deck[rand] = temp;
         }
     }
 
@@ -97,8 +134,12 @@ public class HandManager : MonoBehaviour
         }
 
         // 덱큐에서 카드 한장 뽑기
-        int cardKey = _deck.Dequeue();
+        CardData cardData = _deck.Dequeue();
 
+        // 덱 카드 수 갱신
+        _deckCount.text = $"Deck : {_deck.Count} / {_deckCardCount}";
+
+        // 오버 드로우 체크
         if (_handCards.Count >= _handLimit)
         {
             Debug.Log("오버 드로우 발생");
@@ -107,22 +148,19 @@ public class HandManager : MonoBehaviour
             return;
         }
 
-        // cardKey 사용해서 테이블 정보 불러오기
-        CardData data = DataManager.Instance.GetCard(cardKey);
-
-        // 카드 생성
-        GameObject card = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
+        // 카드 UI 생성
+        GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
 
         // 설정
-        Card cardLogic = card.GetComponent<Card>();
-        CardUI cardUI = card.GetComponent<CardUI>();
+        CardLogic cardLogic = newCard.GetComponent<CardLogic>();
+        CardUI cardUI = newCard.GetComponent<CardUI>();
 
         // 매니저 연결
-        cardLogic.Init(data, this);
-        cardUI.Init(data, this);
+        cardLogic.Init(cardData, this);
+        cardUI.Init(cardData, this);
         
         // 리스트 추가
-        _handCards.Add(card);
+        _handCards.Add(newCard);
 
         // 정렬
         AlignCards();

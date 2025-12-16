@@ -1,0 +1,8 @@
+카드 등급,카드 강화 단계,카드 사용 가능 횟수
+Enum,int,int
+CardGrade,Level,NumberOfAvailable
+Legendary,1,1
+Legendary,2,1
+Legendary,3,1
+Legendary,4,1
+Legendary,5,1

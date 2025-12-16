@@ -1,0 +1,8 @@
+카드 등급,카드 강화 단계,카드 사용 가능 횟수
+Enum,int,int
+CardGrade,Level,NumberOfAvailable
+Epic,1,2
+Epic,2,2
+Epic,3,2
+Epic,4,2
+Epic,5,3

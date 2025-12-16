@@ -74,5 +74,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# Excel temporary files
+~$*
+
+# Ignore custom ignored assets
 /Assets/_IgnoredAssets/*
 !/Assets/_IgnoredAssets/*.meta

@@ -53,9 +53,10 @@ public class Player : MonoBehaviour //나중에 싱글톤도 해주기
 
     
     /// UI 활성화 시 호출할 함수
-    public void PushHp()
+    public int PushHp()
     {
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);
+        return _stat.CurrentHp;
     }
     public void PushExp()
     {
@@ -87,7 +88,7 @@ public class Player : MonoBehaviour //나중에 싱글톤도 해주기
     public void GetHp(int hp) //체력을 회복할 때마다 호출
     {
         _stat.GetHp(hp);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);        
     }
 
     public void GetShield(int shield) //보호막을 얻을 때마다 호출
