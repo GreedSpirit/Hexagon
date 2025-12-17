@@ -4,5 +4,5 @@ Id,Key,Name,IsCard,Desc,CardGrade,Target,CardType,BaseValue,ValuePerLevel,Status
 1,KeySkill스킬명(영문)01,NameSkill스킬명(영문)01,TRUE,피해를 {N} 줍니다.,Common,Self,Attack,5,1,KeyStatusBurn,0,0,ImgSkill스킬명(영문)01
 2,KeySkill스킬명(영문)02,NameSkill스킬명(영문)02,FALSE,보호막을 {N} 얻습니다.,Rare,Enemy,Shield,8,1,KeyStatusFury,0,0,ImgSkill스킬명(영문)02
 3,KeySkill스킬명(영문)03,NameSkill스킬명(영문)03,TRUE,체력을 {N} 회복합니다.,Epic,Enemy,Healing,10,2,KeyStatusPoison,0,0,ImgSkill스킬명(영문)03
-4,KeySkill스킬명(영문)03,NameSkill스킬명(영문)04,TRUE,피해를 {N} 줍니다.,Rare,Enemy,Attack,10,2,KeyStatusPoison,0,0,ImgSkill스킬명(영문)04
-5,KeySkill스킬명(영문)03,NameSkill스킬명(영문)05,FALSE,체력을 {N} 회복합니다.,Epic,Enemy,Healing,10,2,KeyStatusPoison,0,0,ImgSkill스킬명(영문)05
+4,KeySkill스킬명(영문)04,NameSkill스킬명(영문)04,TRUE,피해를 {N} 줍니다.,Rare,Enemy,Attack,10,2,KeyStatusPoison,0,0,ImgSkill스킬명(영문)04
+5,KeySkill스킬명(영문)05,NameSkill스킬명(영문)05,FALSE,체력을 {N} 회복합니다.,Epic,Enemy,Healing,10,2,KeyStatusPoison,0,0,ImgSkill스킬명(영문)05
