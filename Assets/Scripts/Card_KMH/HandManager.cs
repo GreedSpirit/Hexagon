@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using System.Collections;
 
 public class HandManager : MonoBehaviour
 {
     [Header("카드 프리팹")]
     [SerializeField] GameObject cardPrefab;     // 카드 프리팹
 
-    [Header("카드 설정값")]
+    [Header("카드 설정")]
     [SerializeField] float _moveSpeed = 15f;        // 이동/회전 속도
     [SerializeField] float _scaleSpeed = 15f;       // 확대/축소 속도
     [SerializeField] float _hoverScale = 1.5f;      // 마우스 올렸을 때 커지는 배율
@@ -21,6 +22,9 @@ public class HandManager : MonoBehaviour
     [SerializeField] float _radius = 2000f;     // 부채꼴 반지름 (클수록 완만)
     [SerializeField] int _startHandCount;       // 시작 시 뽑을 카드 수
     [SerializeField] int _handLimit;            // 핸드 소지 한계
+
+    [Header("오버 드로우 설정")]
+    [SerializeField] Transform _overDrawPoint;    // 오버드로우 시 고정 위치
 
     [Space]
     [SerializeField] TextMeshProUGUI _deckCount;
@@ -57,7 +61,6 @@ public class HandManager : MonoBehaviour
     private CardUI _selectedCardUI;
 
 
-
     private void Start()
     {
         // 카드 높이
@@ -88,12 +91,11 @@ public class HandManager : MonoBehaviour
             // cardKey 사용해서 테이블 정보 불러오기
             CardData tempCardData = DataManager.Instance.GetCard(cardKey);
 
-            // 레벨, 사용 가능 횟수
+            // 레벨
             tempCardData.SetCardLevel(cardLevel);
 
             // 카드 사용 가능 횟수
             int cardNumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(cardLevel, tempCardData.CardGrade);
-
 
             // 사용 횟수 만큼 덱에 추가
             for (int i = 0; i < cardNumberOfAvailable; i++)
@@ -148,20 +150,24 @@ public class HandManager : MonoBehaviour
         // 덱큐에서 카드 한장 뽑기
         CardData cardData = _deck.Dequeue();
 
+        // 데이터에 맞는 카드 생성 ( out은 생성된 카드 UI - 오버드로우 처리용 )
+        GameObject newCard = InitDrawCard(cardData, out CardUI cardUI);
+
         // 덱 카드 수 갱신
         _deckCount.text = $"Deck : {_deck.Count} / {_deckCardCount}";
 
         // 오버 드로우 체크
         if (_handCards.Count >= _handLimit)
         {
-            Debug.Log("오버 드로우 발생");
-            // 나중에 카드 생성 이후로 위치 변경
-            // 카드 소멸 보여주기
+            // 오버드로우 발생
+            cardUI.OnOverDraw(_overDrawPoint);
+
+            // 핸드에 추가 안하고 바로 끝
             return;
         }
 
         // 리스트 추가
-        _handCards.Add(InitDrawCard(cardData));
+        _handCards.Add(newCard);
 
         // 정렬
         AlignCards();
@@ -169,14 +175,14 @@ public class HandManager : MonoBehaviour
 
 
     // 드로우 카드 초기화
-    private GameObject InitDrawCard(CardData cardData)
+    private GameObject InitDrawCard(CardData cardData, out CardUI cardUI)
     {
         // 카드 UI 생성
         GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
 
         // 설정
         CardLogic cardLogic = newCard.GetComponent<CardLogic>();
-        CardUI cardUI = newCard.GetComponent<CardUI>();
+        cardUI = newCard.GetComponent<CardUI>();
 
         // 타겟 (플레이어 OR 몬스터)
         IBattleUnit target = cardData.Target == Target.Self ? targetPlayer : targetMonster;

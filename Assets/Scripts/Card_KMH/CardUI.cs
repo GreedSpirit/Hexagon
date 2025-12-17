@@ -1,11 +1,15 @@
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
+using System.Collections;
 
 public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] Transform _visual;             // 실제 카드 비주얼 트랜스폼
+    [SerializeField] GameObject _selectedEdge;      // 선택 테두리
 
     [SerializeField] Image _img;                     // 카드 이미지
     [SerializeField] TextMeshProUGUI _nameText;      // 이름 텍스트
@@ -18,12 +22,14 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     private CardLogic _cardLogic;             // 카드 로직
     private CardData _cardData;          // 카드 데이터
     private HandManager _handManager;    // 핸드 매니저 (카드 제거 시 필요)
+    private CanvasGroup _canvasGroup;    // 오버드로우 소멸 테스트용
 
     private bool _isMouseOver = false;   // 마우스 오버
     private bool _isHovering = false;    // 호버 상태
     private bool _isDragging = false;    // 드래그 상태
     private bool _isReturning = false;   // 복귀 상태
     private bool _isSelected = false;    // 선택 상태
+    private bool _isOverDrawing = false; // 오버드로우 상태
 
     private Vector3 _basePos;            // 부채꼴 위치
     private Quaternion _baseRot;         // 부채꼴 회전
@@ -35,6 +41,22 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     private void Update()
     {
+        // 오버드로우 연출 중일 때
+        if (_isOverDrawing)
+        {
+            KeepCardOnTop();
+            return;
+        }
+
+        // 테스트용
+        // 마우스 우 클릭 뗄 때
+        if (Mouse.current.rightButton.wasReleasedThisFrame)
+        {
+            // 카드 선택 강제 취소
+            Cancel();
+            return;
+        }
+
         // 드래그 중일 때
         if (_isDragging)
         {
@@ -130,47 +152,11 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         else // 선택된 상태가 아니라면 선택
         {
             _isSelected = true;
+            // 크게
             OnHover();
-            _handManager.SetSelectedCard(this);
+            // 선택 테두리
+            _selectedEdge.SetActive(true);
         }
-    }
-
-    public void Deselect()
-    {
-        _isSelected = false;
-
-        // 복귀
-        transform.SetSiblingIndex(_siblingIndex);
-
-        OnPointerExit(null);
-
-        //// 복귀
-        //_isHovering = false;
-        //_isReturning = true;
-
-        //// 원래 순서로
-        //transform.SetSiblingIndex(_siblingIndex);
-
-
-    }
-
-    // 호버 상태 (클릭 선택 상태)
-    private void OnHover()
-    {
-        // 호버 상태
-        _isHovering = true;
-
-        // 바닥 띄우기 (핸드 매니저 y + 카드 높이 절반 * 호버 배율)
-        float yOffset = _handManager.transform.position.y + _handManager.CardHalfHeight * _handManager.HoverScale;
-
-        // 위로 이동, 회전 0, 확대
-        transform.position = new Vector3(transform.position.x, yOffset, transform.position.z);
-        transform.rotation = Quaternion.identity;
-        transform.localScale = Vector3.one * _handManager.HoverScale;
-
-        // 카드 비주얼 크기
-        // 부모와 동일하게
-        _visual.localScale = Vector3.one;
     }
 
     // ----------------------------------------------------------------
@@ -182,7 +168,11 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         _handManager.SetSelectedCard(this);
         _isSelected = true;                  // 드래그 중에도 선택 상태
         _isDragging = true;
+
+        // 드래그 시 즉시 호버 (다른 카드 선택 중일 때 대비)
+        OnHover();
         _isHovering = false;
+
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -194,6 +184,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        // 취소로 인한 예외 방지
+        if (_isDragging == false) return;
+
         // 드래그 끝
         _isDragging = false;
         _isReturning = true;
@@ -221,8 +214,16 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public void Init(CardData data, HandManager manager)
     {
         _cardLogic = GetComponent<CardLogic>();
+        _canvasGroup = GetComponent<CanvasGroup>();
+
         _cardData = data;
         _handManager = manager;
+
+        _isSelected = false;
+        _isReturning = false;
+        _isHovering = false;
+        _isMouseOver = false;
+        _isOverDrawing = false;
 
         // 비주얼 설정
         SetVisual();
@@ -256,6 +257,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
         else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
 
+        // 선택 테두리 기본 off
+        _selectedEdge.SetActive(false);
+
         // 카드 등급 색상
         SetGradeColor();
     }
@@ -284,6 +288,49 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         _edgeColor.color = color;
     }
 
+    // 카드 선택 해지
+    public void Deselect()
+    {
+        _isSelected = false;
+
+        // 복귀
+        transform.SetSiblingIndex(_siblingIndex);
+
+        OnPointerExit(null);
+    }
+
+    // 카드 선택, 드래그 취소 (우클릭)
+    private void Cancel()
+    {
+        // 드래그 상태 강제 해제
+        _isDragging = false;
+
+        // 선택 상태 해제
+        _isSelected = false;
+
+        // 핸드 매니저 카드 해지
+        _handManager.DeselectCard();
+    }
+
+    // 호버 상태 (클릭 선택 상태)
+    private void OnHover()
+    {
+        // 호버 상태
+        _isHovering = true;
+
+        // 바닥 띄우기 (핸드 매니저 y + 카드 높이 절반 * 호버 배율)
+        float yOffset = _handManager.transform.position.y + _handManager.CardHalfHeight * _handManager.HoverScale;
+
+        // 위로 이동, 회전 0, 확대
+        if (_isOverDrawing == false)     // 오버드로우 때는 위치 이동 방지
+            transform.position = new Vector3(transform.position.x, yOffset, transform.position.z);
+        transform.rotation = Quaternion.identity;
+        transform.localScale = Vector3.one * _handManager.HoverScale;
+
+        // 카드 비주얼 크기
+        // 부모와 동일하게
+        _visual.localScale = Vector3.one;
+    }
 
     // 카드 맨 위 고정
     private void KeepCardOnTop()
@@ -297,5 +344,52 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             // 마지막으로 변경
             transform.SetAsLastSibling();
         }
+    }
+
+    // 오버 드로우 카드면 호출
+    public void OnOverDraw(Transform targetPos)
+    {
+        // 마우스 입력 차단
+        _canvasGroup.blocksRaycasts = false;
+
+        // Update 차단
+        _isOverDrawing = true;
+
+        // 크게
+        OnHover();             
+
+        // 이동, 소멸 시작
+        StartCoroutine(OverDraw(targetPos));
+    }
+
+    // 오버 드로우 카드면 파괴
+    private IEnumerator OverDraw(Transform overDrawPoint)
+    {
+        // 이동 (카드와 오버드로우 포인트 거리 체크)
+        while (Vector3.Distance(transform.position, overDrawPoint.position) > 0.1f)
+        {
+            // 카드 위치를 오버드로우 포인트까지 이동
+            transform.position = Vector3.Lerp(transform.position, overDrawPoint.position, Time.deltaTime * _handManager.MoveSpeed);
+
+            yield return null;
+        }
+
+        float fadeTime = 0.5f; // 사라질 시간
+        float timer = 0f;
+
+        // 소멸
+        while (timer < fadeTime)
+        {
+            // 시간 증가
+            timer += Time.deltaTime;
+
+            // 남은 시간 비율로 알파값 1 에서 0으로
+            _canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / fadeTime);
+
+            yield return null;
+        }
+
+        // 삭제 (나중엔 반환)
+        Destroy(gameObject);
     }
 }
