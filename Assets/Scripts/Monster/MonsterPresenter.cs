@@ -11,7 +11,7 @@ public class MonsterPresenter : MonoBehaviour
 
     [Header("View")]
     [SerializeField] private MonsterNameView _monsterNameView;
-    [SerializeField] private List<HoverSensor> hoverSensors;
+    [SerializeField] private List<MonsterNameHoverSensor> hoverSensors;
 
     private int _hoverCount = 0; //호버 중첩 카운트
 
