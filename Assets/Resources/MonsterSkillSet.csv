@@ -1,6 +1,6 @@
 Id,MonsterSkillSet 테이블의 기본키,몬스터 등급 ,1번 스킬칸,1번 스킬칸 가중치 ,1번 스킬칸 스킬 레벨,2번 스킬칸 ,2번 스킬칸 가중치 ,2번 스킬칸 스킬 레벨,3번 스킬칸,3번 스킬칸 가중치 ,3번 스킬칸 스킬 레벨,4번 스킬칸 ,4번 스킬칸 가중치 ,4번 스킬칸 스킬 레벨
 int,string,Enum,string,float,int,string,float,int,string,float,int,string,float,int
 Id,Key,MonGrade,SkillSlot1,Slot1Weight,Slot1Level,SkillSlot2,Slot2Weight,Slot2Level,SkillSlot3,Slot3Weight ,Slot3Level,SkillSlot4,Slot4Weight,Slot4Level
-1,KeySkillSet0001,Normal,KeySkill스킬명(영문)01,2.5,1,KeySkill스킬명(영문)02,7.5,2,KeySkill스킬명(영문)03,1.1,1,KeySkill스킬명(영문)04,0.5,1
+1,KeySkillSet0001,Normal,KeySkill스킬명(영문)01,2.5,1,KeySkill스킬명(영문)02,7.5,2,KeySkill스킬명(영문)03,1.1,1,KeySkill스킬명(영문)04,0,1
 2,KeySkillSet0002,Boss,KeySkill스킬명(영문)01,2.5,3,KeySkill스킬명(영문)02,7.5,1,KeySkill스킬명(영문)03,1.2,1,KeySkill스킬명(영문)04,0.5,1
 3,KeySkillSet0003,Normal,KeySkill스킬명(영문)01,2.5,2,KeySkill스킬명(영문)02,7.5,4,KeySkill스킬명(영문)03,1.5,3,KeySkill스킬명(영문)04,0.5,1
