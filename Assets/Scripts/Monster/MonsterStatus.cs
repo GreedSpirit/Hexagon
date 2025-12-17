@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class MonsterStatus : MonoBehaviour, IBattleUnit
 {
+    public MonsterData MonsterData => _monsterData; //외부에서 몬스터 데이터에 접근할 수 있는 프로퍼티
     [SerializeField] private int _monsterId; //몬스터 데이터 ID
     [SerializeField] private int _monsterLevel; //추후 스테이지 테이블에서 불러올 내용
     [SerializeField] private MonsterGrade _monsterGrade;
@@ -26,6 +27,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private string _selectedSkillKey = null; //선택된 스킬 키 임시 변수
     private int _selectedSkillSlot = -1; //선택된 스킬 슬롯 인덱스 임시 변수
+    private int _selectedSkillValue = 0;
 
     public event System.Action OnEnemyActTurnEnd; // 몬스터 턴 종료 시점에 발행할 이벤트
 
@@ -67,7 +69,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         _monsterCurHP = _monsterMaxHP;        
     }
 
-    private void Start()
+    private void Awake()
     {
         // ID 방식 Key 방식 구별
         _monsterData = DataManager.Instance.GetMonsterStatData(1);
@@ -195,6 +197,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 _selectedSkillSlot = idx; //선택된 스킬 슬롯 인덱스 저장
                 _selectedSkillKey = skillSlot.Item1;
                 _currentSkillData = DataManager.Instance.GetCard(_selectedSkillKey); //선택된 스킬 카드 데이터 저장
+                _selectedSkillValue = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
+                //이곳에서 스킬 타입에 따른 아이콘과 수치 UI 갱신 로직 추가
                 break;
             }
         }        
@@ -210,24 +214,23 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             
             if(_currentSkillData.CardType == CardType.Attack)
             {
-                int damage = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
-                //Player.Instance.TakeDamage(damage);
-                Debug.Log("플레이어에게 " + damage + "의 데미지를 입혔습니다.");
+                //Player.Instance.TakeDamage(_selectedSkillValue);
+                Debug.Log("플레이어에게 " + _selectedSkillValue + "의 데미지를 입혔습니다.");
             }
             else if(_currentSkillData.CardType == CardType.Healing)
             {
-                int healAmount = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
-                GetHp(healAmount);
-                Debug.Log("몬스터가 " + healAmount + "의 체력을 회복했습니다.");
+                GetHp(_selectedSkillValue);
+                Debug.Log("몬스터가 " + _selectedSkillValue + "의 체력을 회복했습니다.");
             }
             else if(_currentSkillData.CardType == CardType.Shield)
             {
-                int shieldAmount = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
-                GetShield(shieldAmount);
-                Debug.Log("몬스터가 " + shieldAmount + "의 방어막을 얻었습니다.");
+                GetShield(_selectedSkillValue);
+                Debug.Log("몬스터가 " + _selectedSkillValue + "의 방어막을 얻었습니다.");
             }
             //사용 후 선택된 스킬 초기화 (방어 코드)
             _selectedSkillKey = null;
+            _selectedSkillValue = 0;
+            _selectedSkillSlot = -1;
         }
         else
         {
