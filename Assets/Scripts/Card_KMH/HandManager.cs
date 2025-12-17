@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
-using System.Collections;
 
 public class HandManager : MonoBehaviour
 {
