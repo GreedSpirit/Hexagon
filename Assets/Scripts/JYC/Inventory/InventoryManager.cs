@@ -26,11 +26,14 @@ public class InventoryManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-
         // 테스트용: 게임 시작 시 임의의 카드 추가 (나중에 삭제)
         AddCard(1, 5); // ID 1번 카드 5장
         AddCard(2, 1);
         AddCard(3, 10);
+        CurrentDeck.Add(1);
+        CurrentDeck.Add(3);
+        Debug.Log("테스트 카드 추가 완료");
+
     }
 
     // 카드 추가 로직 (99개 제한 반영)
@@ -90,5 +93,13 @@ public class InventoryManager : MonoBehaviour
             default:
                 return filteredList;
         }
+    }
+    // 현재 덱에 장착된 카드의 ID들을 담을 리스트 (임시로 가정)
+    public List<int> CurrentDeck = new List<int>();
+
+    // 해당 카드 ID가 덱에 포함되어 있는지 확인하는 함수
+    public bool IsCardInDeck(int cardId)
+    {
+        return CurrentDeck.Contains(cardId);
     }
 }
