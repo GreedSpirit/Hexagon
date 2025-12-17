@@ -33,7 +33,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     private int _siblingIndex;           // 정렬 순서
 
 
-
     private void Update()
     {
         // 드래그 중일 때

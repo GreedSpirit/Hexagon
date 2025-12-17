@@ -292,7 +292,7 @@ public class HandManager : MonoBehaviour
             // 카드 뽑기 종료 이벤트
             OnDrawEnd?.Invoke();
         }
-        //else if (phaseType == PhaseType.StartPhase)
+        else if (phaseType == PhaseType.Start)
         {
             // 초기 핸드 채우기
             for (int i = 0; i < _startHandCount; i++)
