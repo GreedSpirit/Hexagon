@@ -134,10 +134,12 @@ public class MonsterSkillSetData : CSVLoad, TableKey
             Debug.LogError("Slot4Level 파싱 실패. Id:" + Id);
             Slot4Level = 1;
         }        
+
         // 일반 몬스터의 경우 SkillSlot4는 어떤 일이 있어도 들어올 수 없기에 경고 표시
         if(SkillSlot4 != "" && MonGrade == MonsterGrade.Normal)
         {
             Debug.LogError("일반 몬스터의 SkillSlot4가 비어있지 않습니다. Id:" + Id);
+            SkillSlot4 = "";
             Slot4Weight = 0f;
         }
 
