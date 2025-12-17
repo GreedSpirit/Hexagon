@@ -4,14 +4,9 @@ using UnityEngine.UI;
 public class PlayerHpBar : MonoBehaviour
 {
     [SerializeField] private Slider _hpBar;
-
-    private void Awake()
-    {
-        if (_hpBar == null)
-        {
-            _hpBar = GetComponent<Slider>();
-        }
-    }
+    [SerializeField] private Slider _poisonBar;
+    [SerializeField] private Slider _burnBar;
+    
 
     public void OnEnable()
     {                
@@ -27,18 +22,20 @@ public class PlayerHpBar : MonoBehaviour
         
     }
 
-    public void UpdateHpBar(int currentHp, int Hp)
+    public void UpdateHpBar(int currentHp, int Hp, int poison, int burn)
     {
         if (currentHp != 0)
         {
-            _hpBar.value = (float)currentHp / Hp;
+            _hpBar.value = Mathf.Max(0, (float) (currentHp - poison - burn) / Hp);
+            _burnBar.value = Mathf.Max(0, (float)(currentHp - poison) / Hp);
+            _poisonBar.value = Mathf.Max(0, (float)currentHp / Hp);
         }
         else
         {
             _hpBar.value = 0;
-        }
-        
+        }        
     }
+    
 
     public void OnDisable()
     {
