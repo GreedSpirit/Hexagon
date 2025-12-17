@@ -1,6 +1,6 @@
-Id,MonsterSkillSet ΕΧΐΜΊνΐΗ ±βΊ»Ε°,Έσ½ΊΕΝ µξ±ή ,1Ήψ ½ΊΕ³Δ­,1Ήψ ½ΊΕ³Δ­ °΅ΑίΔ΅ ,1Ήψ ½ΊΕ³Δ­ ½ΊΕ³ ·ΉΊ§,2Ήψ ½ΊΕ³Δ­ ,2Ήψ ½ΊΕ³Δ­ °΅ΑίΔ΅ ,2Ήψ ½ΊΕ³Δ­ ½ΊΕ³ ·ΉΊ§,3Ήψ ½ΊΕ³Δ­,3Ήψ ½ΊΕ³Δ­ °΅ΑίΔ΅ ,3Ήψ ½ΊΕ³Δ­ ½ΊΕ³ ·ΉΊ§,4Ήψ ½ΊΕ³Δ­ ,4Ήψ ½ΊΕ³Δ­ °΅ΑίΔ΅ ,4Ήψ ½ΊΕ³Δ­ ½ΊΕ³ ·ΉΊ§
+Id,MonsterSkillSet ν…μ΄λΈ”μ κΈ°λ³Έν‚¤,λª¬μ¤ν„° λ“±κΈ‰ ,1λ² μ¤ν‚¬μΉΈ,1λ² μ¤ν‚¬μΉΈ κ°€μ¤‘μΉ ,1λ² μ¤ν‚¬μΉΈ μ¤ν‚¬ λ λ²¨,2λ² μ¤ν‚¬μΉΈ ,2λ² μ¤ν‚¬μΉΈ κ°€μ¤‘μΉ ,2λ² μ¤ν‚¬μΉΈ μ¤ν‚¬ λ λ²¨,3λ² μ¤ν‚¬μΉΈ,3λ² μ¤ν‚¬μΉΈ κ°€μ¤‘μΉ ,3λ² μ¤ν‚¬μΉΈ μ¤ν‚¬ λ λ²¨,4λ² μ¤ν‚¬μΉΈ ,4λ² μ¤ν‚¬μΉΈ κ°€μ¤‘μΉ ,4λ² μ¤ν‚¬μΉΈ μ¤ν‚¬ λ λ²¨
 int,string,Enum,string,float,int,string,float,int,string,float,int,string,float,int
 Id,Key,MonGrade,SkillSlot1,Slot1Weight,Slot1Level,SkillSlot2,Slot2Weight,Slot2Level,SkillSlot3,Slot3Weight ,Slot3Level,SkillSlot4,Slot4Weight,Slot4Level
-1,KeySkillSet0001,Normal,KeySkill½ΊΕ³Έν(ΏµΉ®)01,2.5,1,KeySkill½ΊΕ³Έν(ΏµΉ®)02,7.5,2,KeySkill½ΊΕ³Έν(ΏµΉ®)03,1.1,1,KeySkill½ΊΕ³Έν(ΏµΉ®)04,0,1
-2,KeySkillSet0002,Boss,KeySkill½ΊΕ³Έν(ΏµΉ®)01,2.5,3,KeySkill½ΊΕ³Έν(ΏµΉ®)02,7.5,1,KeySkill½ΊΕ³Έν(ΏµΉ®)03,1.2,1,KeySkill½ΊΕ³Έν(ΏµΉ®)04,0.5,1
-3,KeySkillSet0003,Normal,KeySkill½ΊΕ³Έν(ΏµΉ®)01,2.5,2,KeySkill½ΊΕ³Έν(ΏµΉ®)02,7.5,4,KeySkill½ΊΕ³Έν(ΏµΉ®)03,1.5,3,KeySkill½ΊΕ³Έν(ΏµΉ®)04,0.5,1
+1,KeySkillSet0001,Normal,KeySkillμ¤ν‚¬λª…(μλ¬Έ)01,2.5,1,KeySkillμ¤ν‚¬λª…(μλ¬Έ)02,7.5,2,KeySkillμ¤ν‚¬λª…(μλ¬Έ)03,1.1,1,KeySkillμ¤ν‚¬λª…(μλ¬Έ)04,0,1
+2,KeySkillSet0002,Boss,KeySkillμ¤ν‚¬λª…(μλ¬Έ)01,2.5,3,KeySkillμ¤ν‚¬λª…(μλ¬Έ)02,7.5,1,KeySkillμ¤ν‚¬λª…(μλ¬Έ)03,1.2,1,KeySkillμ¤ν‚¬λª…(μλ¬Έ)04,0.5,1
+3,KeySkillSet0003,Normal,KeySkillμ¤ν‚¬λª…(μλ¬Έ)01,2.5,2,KeySkillμ¤ν‚¬λª…(μλ¬Έ)02,7.5,4,KeySkillμ¤ν‚¬λª…(μλ¬Έ)03,1.5,3,KeySkillμ¤ν‚¬λª…(μλ¬Έ)04,0.5,1

@@ -207,7 +207,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         {
             //스킬 사용 로직 추가
             Debug.Log("몬스터가 스킬을 사용했습니다. 스킬 키: " + _selectedSkillKey + ", 스킬 레벨: " + _monsterSkillSet.skillLevels[_selectedSkillSlot]);
-            /*
+            
             if(_currentSkillData.CardType == CardType.Attack)
             {
                 int damage = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
@@ -226,7 +226,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 GetShield(shieldAmount);
                 Debug.Log("몬스터가 " + shieldAmount + "의 방어막을 얻었습니다.");
             }
-            */
+            //사용 후 선택된 스킬 초기화 (방어 코드)
+            _selectedSkillKey = null;
         }
         else
         {
