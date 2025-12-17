@@ -13,8 +13,7 @@ public class PlayerStat
     //레벨 업 할때마다 StatByLevels에서 꺼내어 갱신할 값
     public int Hp { get; private set; }
     public int Defense { get; private set; }
-    public int NeedExp { get; private set; }
-    public int TotalExp { get; private set; }
+    public int NeedExp { get; private set; }    
 
     //전투 중 갱신할 값.
     public int Level { get; private set; } = 1;
@@ -34,8 +33,7 @@ public class PlayerStat
         StatsByLevel stats = LevelList[Level -1];
         Hp = stats.Hp;
         Defense = stats.Defense;
-        NeedExp = stats.NeedExp;
-        TotalExp = stats.TotalExp;        
+        NeedExp = stats.NeedExp;        
     }
 
     private void LevelUp()
