@@ -5,7 +5,7 @@ using UnityEngine;
 /// 소환된 몬스터의 상태(체력, 방어력 등)를 관리하는 클래스
 /// </summary>
 
-public class MonsterStatus : MonoBehaviour
+public class MonsterStatus : MonoBehaviour, IBattleUnit
 {
     [SerializeField] private int _monsterId; //몬스터 데이터 ID
     [SerializeField] private int _monsterLevel; //추후 스테이지 테이블에서 불러올 내용
@@ -100,6 +100,19 @@ public class MonsterStatus : MonoBehaviour
         }
     }
 
+    public void GetHp(int hp) // 체력을 회복할 때 호출할 함수
+    {
+        _monsterCurHP += hp;
+        if (_monsterCurHP > _monsterMaxHP)
+            _monsterCurHP = _monsterMaxHP;
+        NotifyHpObservers(); //HP 변경 알림
+    }
+
+    public void GetShield(int shield) // 방어막을 얻을 때 호출할 함수
+    {
+        _monsterShield += shield;
+    }
+
     public void AddHpObserver(IMonsterHpObserver observer)
     {
         if (!_hpObservers.Contains(observer)) //방어 코드
@@ -127,6 +140,7 @@ public class MonsterStatus : MonoBehaviour
     private void Death()
     {
         //몬스터 죽음 처리 로직 추가
+        Debug.Log("몬스터가 죽었습니다. ID: " + _monsterId);
         if(_monsterGrade == MonsterGrade.Boss)
         {
             DropLoot();
