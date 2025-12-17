@@ -47,17 +47,7 @@ public class InventoryUI : MonoBehaviour
         // 슬롯 생성
         foreach (var userCard in list)
         {
-            if (IsDeckBuildingMode)
-            {
-                // 방금 InventoryManager에 추가한 함수를 호출
-                bool isEquipped = InventoryManager.Instance.IsCardInDeck(userCard.CardId);
-
-                // 덱에 없는 카드라면 슬롯을 생성하지 않고 건너뜀
-                if (isEquipped == false)
-                {
-                    continue;
-                }
-            }
+            
             GameObject go = Instantiate(slotPrefab, contentParent);
             var slot = go.GetComponent<InventorySlotUI>();
             slot.Init(userCard, this);

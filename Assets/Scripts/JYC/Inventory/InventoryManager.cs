@@ -62,16 +62,19 @@ public class InventoryManager : MonoBehaviour
     // 카드 목록 가져오기 (필터링 및 정렬 적용)
     public List<UserCard> GetSortedList(bool isDeckBuildingMode)
     {
+        Debug.Log($"[Manager] 필터링 요청 받음! 모드: {isDeckBuildingMode}");
+        string deckListStr = string.Join(", ", CurrentDeck);
+        Debug.Log($"[Manager] 현재 덱 리스트(ID): [{deckListStr}]");
         // 필터링 (덱 편성 모드일 때 퀘스트 카드 제외)
         // 기획 변경으로 'IsCard'가 true인 것만 덱에 넣을 수 있다고 가정
         var filteredList = UserCardList;
 
         if (isDeckBuildingMode)
         {
-            // 예: IsCard가 true인 것만 필터링 (아이템/스킬 구분) // 나중에 기획 변경 내용 확인 필요
-            filteredList = UserCardList.Where(x => x.GetData().IsCard).ToList();
+            // 덱 리스트(CurrentDeck)에 포함된 카드 ID만 남깁니다.
+            filteredList = UserCardList.Where(x => CurrentDeck.Contains(x.CardId)).ToList();
         }
-
+        Debug.Log($"[Manager] 필터링 결과: {filteredList.Count}개의 카드를 보냄");
         // 정렬 (2차 정렬은 이름순)
         switch (CurrentSortType)
         {
