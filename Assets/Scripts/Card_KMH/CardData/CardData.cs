@@ -42,18 +42,14 @@ public class CardData : CSVLoad, TableKey
 
 
     public int Level { get; set; }              // 레벨
-    public int NumberOfAvailable { get; set; }  // 사용 가능 횟수
     public ICardAction CardAction { get; set; } // 카드 행동
 
 
 
-    // 카드 레벨, 사용 가능 횟수 설정
+    // 카드 레벨
     public void SetCardLevel(int level)
     {
-        // 레벨
         Level = level;
-        // 사용 가능 횟수 (레벨, 카드 등급)
-        NumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(level, CardGrade);
     }
 
     // 카드 동작 설정

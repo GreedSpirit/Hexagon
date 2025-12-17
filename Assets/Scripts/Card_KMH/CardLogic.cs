@@ -17,18 +17,13 @@ public class CardLogic : MonoBehaviour
     // 카드 사용 시도
     public void TryUse()
     {
-        // 사용 횟수 조건 검사
-        if (Data.NumberOfAvailable <= 0)
-        {
-            Debug.Log($"카드 사용 가능 횟수가 0 입니다");
-            return;
-        }
-
         // 계산된 카드 수치
         int value = Data.GetCardValue();
 
         // 사용
         Data.CardAction.Use(Data, value);
+
+        // 사용 가능 횟수 차감
 
         // 핸드 제거
         _handManager.UseCard(gameObject);

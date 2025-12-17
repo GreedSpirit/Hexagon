@@ -176,11 +176,14 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         else Debug.LogError("TypeText 가 할당되어있지 않습니다.");
         if (_levelText != null) _levelText.text = _cardData.Level.ToString();
         else Debug.LogError("LevelText 가 할당되어있지 않습니다.");
-        if (_numberOfAvailableText != null) _numberOfAvailableText.text = _cardData.NumberOfAvailable.ToString("N0");
-        else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
 
         if (_cardData.IsCard == true &&_descText != null) _descText.text = _cardData.GetCardDescWithValue();
         else if(_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
+
+        // 카드 사용 가능 횟수 (덱 구성, 인벤토리에서만 가능하게)
+        int numberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(_cardData.Level, _cardData.CardGrade);
+        if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
+        else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
 
         // 카드 등급 색상
         SetGradeColor();
