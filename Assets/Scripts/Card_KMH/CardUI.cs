@@ -114,6 +114,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             case CardUIState.Disappear:
                 transform.SetParent(_handManager.transform.parent, true);   // 바깥으로 끄집어내기 (절대 가려지지 않게)
                 transform.SetAsLastSibling();
+                _canvasGroup.blocksRaycasts = false;                        // 마우스 처리 안되게
                 // 크기를 호버 크기로
                 transform.localScale = Vector3.one * _handManager.HoverScale;
                 if (_visual != null) _visual.localScale = Vector3.one;
