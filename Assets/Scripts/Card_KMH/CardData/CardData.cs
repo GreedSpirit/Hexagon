@@ -74,8 +74,6 @@ public class CardData : CSVLoad, TableKey
     // 문자 교체 {N} -> 수치
     private string GetCardDesc(string desc, int value)
     {
-        Debug.Log(desc);
-        Debug.Log(value);
         string newDesc;
         newDesc = desc.Replace("{N}", value.ToString());
         return newDesc;

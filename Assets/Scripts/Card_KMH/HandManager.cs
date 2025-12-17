@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using System;
+using TMPro;
 
 public class HandManager : MonoBehaviour
 {
@@ -32,12 +32,17 @@ public class HandManager : MonoBehaviour
     public float UseScreenRatio => _useScreenRatio;
     public float HoverVisualScaleOffset => _hoverVisualScaleOffset;
     public float CardHalfHeight => _cardHalfHeight;
+    public CardUI SelectedCard => _selectedCardUI;
+
 
     // 덱의 카드 id 리스트
     private Queue<CardData> _deck;
 
     // 현재 들고 있는 카드 리스트
     private List<GameObject> _handCards = new List<GameObject>();
+
+    // 드로우 끝나면 호출
+    public event Action OnDrawEnd;
 
     // 카드 절반 높이
     private float _cardHalfHeight;
@@ -48,8 +53,8 @@ public class HandManager : MonoBehaviour
     private IBattleUnit targetPlayer;     // 타겟 플레이어 
     private IBattleUnit targetMonster;    // 타겟 몬스터
 
-    // 선택된 카드
-    private GameObject _selectedCard;
+    // 선택된 카드 UI (1회 클릭)
+    private CardUI _selectedCardUI;
 
 
 
@@ -66,12 +71,6 @@ public class HandManager : MonoBehaviour
 
         // 덱 구성
         SetupDeck();
-
-        // 핸드 채우기
-        for(int i = 0; i< _startHandCount; i++)
-        {
-            DrawCard();
-        }
     }
 
 
@@ -128,7 +127,7 @@ public class HandManager : MonoBehaviour
     {
         for (int i = 0; i < deck.Count; i++)
         {
-            int rand = Random.Range(0, deck.Count);
+            int rand = UnityEngine.Random.Range(0, deck.Count);
             CardData temp = deck[i];
             deck[i] = deck[rand];
             deck[rand] = temp;
@@ -161,6 +160,17 @@ public class HandManager : MonoBehaviour
             return;
         }
 
+        // 리스트 추가
+        _handCards.Add(InitDrawCard(cardData));
+
+        // 정렬
+        AlignCards();
+    }
+
+
+    // 드로우 카드 초기화
+    private GameObject InitDrawCard(CardData cardData)
+    {
         // 카드 UI 생성
         GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
 
@@ -168,23 +178,24 @@ public class HandManager : MonoBehaviour
         CardLogic cardLogic = newCard.GetComponent<CardLogic>();
         CardUI cardUI = newCard.GetComponent<CardUI>();
 
-        // 타겟
+        // 타겟 (플레이어 OR 몬스터)
         IBattleUnit target = cardData.Target == Target.Self ? targetPlayer : targetMonster;
 
         // 매니저 연결
         cardLogic.Init(cardData, this, target);
         cardUI.Init(cardData, this);
-        
-        // 리스트 추가
-        _handCards.Add(newCard);
 
-        // 정렬
-        AlignCards();
+        return newCard;
     }
 
     // 카드 사용
     public void UseCard(GameObject card)
     {
+        if (card == _selectedCardUI.gameObject)
+        {
+            _selectedCardUI = null;
+        }
+
         // 핸드 리스트에서 제외
         _handCards.Remove(card);
         // 삭제 (나중에 풀링)
@@ -226,22 +237,68 @@ public class HandManager : MonoBehaviour
             Vector3 position = center + (direction * (_radius + _cardHalfHeight));
 
             // 카드 위치 설정
-            _handCards[i].GetComponent<CardUI>().SetBase(position, rotation);
+            _handCards[i].GetComponent<CardUI>().SetBase(position, rotation, i);
 
             // 맨 위로 설정
             _handCards[i].transform.SetSiblingIndex(i);
         }
     }
 
-    // 플레이어 타겟 설정
+    // 카드 클릭 선택
+    public void SetSelectedCard(CardUI cardUI)
+    {
+        // 이미 선택된 카드면 무시
+        if (_selectedCardUI == cardUI) return;
+
+        // 선택된 카드 있으면 하이라이트 꺼지게
+        if (_selectedCardUI != null)
+            _selectedCardUI.Deselect();
+
+        // 선택 카드 등록
+        _selectedCardUI = cardUI;
+    }
+    
+    // 카드 선택 해제 (다른 카드 선택, 빈 공간, 턴 종료, 별도 키 입력)
+    public void DeselectCard()
+    {
+        if (_selectedCardUI != null)
+        {
+            _selectedCardUI.Deselect();
+            _selectedCardUI = null;
+        }
+    }
+
+    // 타겟 플레이어 설정
     private void SetPlayerTarget()
     {
         targetPlayer = Player.Instance;
     }
 
-    // 몬스터 타겟 설정
+    // 타겟 몬스터 설정
     public void SetMonsterTarget(IBattleUnit newTarget)
     {
         targetMonster = newTarget;
+    }
+
+    // 페이즈 변경 시 호출
+    public void OnPhaseChanged(PhaseType phaseType)
+    {
+        // 드로우 페이즈일 때
+        if(phaseType == PhaseType.Draw)
+        {
+            // 카드 뽑기
+            DrawCard();
+
+            // 카드 뽑기 종료 이벤트
+            OnDrawEnd?.Invoke();
+        }
+        //else if (phaseType == PhaseType.StartPhase)
+        {
+            // 초기 핸드 채우기
+            for (int i = 0; i < _startHandCount; i++)
+            {
+                DrawCard();
+            }
+        }
     }
 }
