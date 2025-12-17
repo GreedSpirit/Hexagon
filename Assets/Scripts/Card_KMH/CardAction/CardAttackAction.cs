@@ -3,7 +3,7 @@ using UnityEngine;
 public class CardAttackAction : ICardAction
 {
     // 카드 사용
-    public void Use(CardData data, int value)
+    public void Use(CardData data, int value, IBattleUnit target)
     {
         Debug.Log($"공격 카드 사용 : {value} 피해.");
     }
