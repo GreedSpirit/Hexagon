@@ -1,7 +1,6 @@
 using System;
-using UnityEngine;
 
-public class PhaseChanger : MonoBehaviour
+public class PhaseChanger
 {
     IPhase _currentPhase;
     public event Action<PhaseType> OnPhaseChanged; // 몬스터, 플레이어 등 행동 주체들이 알맞은 행동을 할 수 있도록 현재 페이즈를 알림으로 쏴줌
