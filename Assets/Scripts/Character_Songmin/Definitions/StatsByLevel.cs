@@ -2,6 +2,5 @@ public struct StatsByLevel
 {
     public int Hp;
     public int Defense;
-    public int NeedExp;
-    public int TotalExp;
+    public int NeedExp;    
 }
