@@ -10,6 +10,8 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] GameObject _turnUI;
 
     public TurnTimer Timer { get; private set; }
+    Coroutine _timerCoroutine;
+
     public int TurnCount { get; private set; } = 0;
 
     private void Awake()
@@ -32,12 +34,18 @@ public class BattleUIManager : MonoBehaviour
 
     public void StartTimer() //플레이어 턴 시작 시 배틀매니저에 연결해서 실행
     {
-        Timer.Stop();
-        StartCoroutine(Timer.Timer());
+        StopTimer();        
+        _timerCoroutine = StartCoroutine(Timer.Timer());
     }
 
     public void StopTimer() //플레이어 턴 끝날 시 배틀 매니저에서 실행
     {
+        if (_timerCoroutine != null)
+        {
+            StopCoroutine(_timerCoroutine);
+            _timerCoroutine = null;
+        }
+
         Timer.Stop();
         _timerObject.SetActive(false);
     }

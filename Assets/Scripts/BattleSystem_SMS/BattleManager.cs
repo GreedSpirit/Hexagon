@@ -13,7 +13,7 @@ public class BattleManager : MonoBehaviour
     PhaseChanger _phaseChanger;
     
 
-    MonsterStatus _currentMonster;
+    [SerializeField] MonsterStatus _currentMonster;
     PhaseType _currentPhase;
 
     private void Awake()
@@ -22,29 +22,33 @@ public class BattleManager : MonoBehaviour
     }
     private void Start()
     {
-        _turnEndButton.onClick.AddListener(OnTurnEndButtonClick);
+        //UI용 구독        
         _battleUIManager.Timer.OnTimeOver += EndPlayerPhase;
-        
 
-        //현재 페이즈를 PhaseType 자료형으로 전달해 주는 구독 연결
-        //_phaseChanger.OnPhaseChanged += _handManager.(드로우 턴에 드로우 하게 만드는 매서드); (핸드 매니저의 드로우 판단 매서드가 인자값으로 PhaseType을 받아 PhaseType.Draw일 경우에만 드로우하도록 하면 좋을듯)
-        _phaseChanger.OnPhaseChanged += _currentMonster.ChangePhase;
+
+        //페이즈 알림용 구독
+        _phaseChanger.OnPhaseChanged += _handManager.OnPhaseChanged;
+        _phaseChanger.OnPhaseChanged += _currentMonster.ChangePhase;        
         _phaseChanger.OnPhaseChanged += GetCurrentPhase;
 
-        //---------------------------------------------------------------------
-        //행동이 끝났음을 전달받는 구독 연결
 
-        //(배틀 시작 주체가 발행한 시작 시점 액션) += StartBattle();
-        //HandManager가 발행한 Draw 끝난 시점 액션 += EndDrawPhase();
+        //행동 마침 알림 구독        
+        _handManager.OnDrawEnd += EndDrawPhase;
         _currentMonster.OnEnemyActTurnEnd += EndMonsterActPhase;
-
-        //나중에 Destroy에서 구독 해제도 해줄것
+        
     }
 
     private void OnDestroy() //파괴 시 구독관계 해제
     {
-        _turnEndButton.onClick.RemoveListener(OnTurnEndButtonClick);
+        //UI용 구독        
+        _battleUIManager.Timer.OnTimeOver -= EndPlayerPhase;
+
+        //페이즈 알림용 구독
+        _phaseChanger.OnPhaseChanged -= _handManager.OnPhaseChanged;        
         _phaseChanger.OnPhaseChanged -= _currentMonster.ChangePhase;
+        _phaseChanger.OnPhaseChanged -= GetCurrentPhase;
+
+        //행동 마침 알림 구독
         _currentMonster.OnEnemyActTurnEnd -= EndMonsterActPhase;
     }
 
@@ -52,9 +56,9 @@ public class BattleManager : MonoBehaviour
     // 페이즈 변경용 함수
     //----------------------------------------------------------------
     public void StartBattle()//배틀 시작할 때 호출
-    {
+    {        
         _handManager.SetMonsterTarget(_currentMonster); //핸드 매니저에게 타겟 알려주기
-        
+        _phaseChanger.ChangePhase(new StartPhase());
 
         if (Player.Instance.PushHp() >= _currentMonster.MonsterCurHP)
         {
@@ -67,39 +71,31 @@ public class BattleManager : MonoBehaviour
         }
     }
     public void EndDrawPhase()
-    {
-        if (_currentPhase != PhaseType.Draw)
-        {
-            return;
-        }
-        _phaseChanger.ChangePhase(new PlayerActPhase());
-        _battleUIManager.StartTimer();
+    {       
+        _phaseChanger.ChangePhase(new PlayerActPhase());        
     }
 
     public void EndPlayerPhase()//플레이어 턴 종료 단추에 연결
-    {
-        if (_currentPhase != PhaseType.PlayerAct)
-        {
-            return;
-        }        
+    {               
         _battleUIManager.StopTimer();
         _phaseChanger.ChangePhase(new EnemyActPhase());
     }
 
     public void EndMonsterActPhase()
-    {
-        if (_currentPhase != PhaseType.EnemyAct)
-        {
-            return;
-        }
+    {        
         _battleUIManager.CountTurn();
+        Player.Instance.ResetShield();
         _phaseChanger.ChangePhase(new DrawPhase());
     }
     //-----------------------------------------------------------------
 
     private void GetCurrentPhase(PhaseType phase) //PhaseChanger와 연동해서 현재 페이즈를 받아오는 함수(내부 구독용)
     {
-        _currentPhase = phase;        
+        _currentPhase = phase;
+        if (phase == PhaseType.PlayerAct)
+        {
+            _battleUIManager.StartTimer();
+        }        
     }
 
     public void OnTurnEndButtonClick()
