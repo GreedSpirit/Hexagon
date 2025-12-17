@@ -1,4 +1,4 @@
-Id,´øÀü Å×ÀÌºíÀÇ ±âº»Å°,´øÀü ÀÌ¸§,´øÀü ¼³¸í,´øÀü ÇØ±İ ·¹º§,½ºÅ×ÀÌÁö(¸Ê) °³¼ö,´øÀü ¿Ï·á º¸»ó,
+Id,ë˜ì „ í…Œì´ë¸”ì˜ ê¸°ë³¸í‚¤,ë˜ì „ ì´ë¦„,ë˜ì „ ì„¤ëª…,ë˜ì „ í•´ê¸ˆ ë ˆë²¨,ìŠ¤í…Œì´ì§€(ë§µ) ê°œìˆ˜,ë˜ì „ ì™„ë£Œ ë³´ìƒ,
 int,string,string,string,int,int,string,
 Id,DungeonKey,Name,Desc,RequiredLevel,NumberOfStages,Reward,
 1,Key_Dungeon_Dungeon01EngName,Name_Dungeon_Dungeon01EngName,Desc_Dungeon_Dungeon01EngName,1,3,,

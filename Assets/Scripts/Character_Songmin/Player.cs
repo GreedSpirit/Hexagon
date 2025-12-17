@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 외부와 상호작용할 '플레이어 캐릭터'는 이거 하나. 
 /// </summary>
-public class Player : MonoBehaviour //나중에 싱글톤도 해주기
+public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 {   
     PlayerStat _stat;
     public static Player Instance;
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour //나중에 싱글톤도 해주기
 
 
     /// 이하 함수들은 전투 중 외부에서 호출.      
-    public void GetDamage(int damage) //데미지를 입을 때마다 호출.
+    public void TakeDamage(int damage) //데미지를 입을 때마다 호출.
     {
         _stat.GetDamage(damage);
         OnShieldChanged?.Invoke(_stat.Shield);
@@ -78,7 +78,7 @@ public class Player : MonoBehaviour //나중에 싱글톤도 해주기
     }
 
 
-    public void GetTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
+    public void TakeTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
     {
         _stat.GetTrueDamage(damage);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);

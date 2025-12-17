@@ -5,7 +5,7 @@ using UnityEngine;
 /// 소환된 몬스터의 상태(체력, 방어력 등)를 관리하는 클래스
 /// </summary>
 
-public class MonsterStatus : MonoBehaviour
+public class MonsterStatus : MonoBehaviour, IBattleUnit
 {
     [SerializeField] private int _monsterId; //몬스터 데이터 ID
     [SerializeField] private int _monsterLevel; //추후 스테이지 테이블에서 불러올 내용
@@ -20,11 +20,29 @@ public class MonsterStatus : MonoBehaviour
     [SerializeField] private MonsterData _monsterData;
     [SerializeField] private MonsterSkillSetData _monsterSkillSet;
     [SerializeField] private MonsterStatData _monsterStatData;
+    [SerializeField] private CardData _currentSkillData; //현재 사용될 예정인 스킬 카드 데이터
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
 
     private string _selectedSkillKey = null; //선택된 스킬 키 임시 변수
     private int _selectedSkillSlot = -1; //선택된 스킬 슬롯 인덱스 임시 변수
+
+    public event System.Action OnEnemyActTurnEnd; // 몬스터 턴 종료 시점에 발행할 이벤트
+
+    public void ChangePhase(PhaseType newPhase) //OnPhaseChanged 이벤트 구독용 함수
+    {
+        //유저 드로우 턴 페이즈일 때 행동
+        if(newPhase == PhaseType.Draw)
+        {
+            GetRandomSkillFromSet();
+        }
+        else if(newPhase == PhaseType.EnemyAct)
+        {
+            UseSkill();
+            OnEnemyActTurnEnd?.Invoke(); //몬스터 턴 종료 이벤트 발행
+        }
+    }
+
     public void InitMonsterStatus()
     {
         //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 불러오는 방식으로 변경할 수도 있음
@@ -100,6 +118,19 @@ public class MonsterStatus : MonoBehaviour
         }
     }
 
+    public void GetHp(int hp) // 체력을 회복할 때 호출할 함수
+    {
+        _monsterCurHP += hp;
+        if (_monsterCurHP > _monsterMaxHP)
+            _monsterCurHP = _monsterMaxHP;
+        NotifyHpObservers(); //HP 변경 알림
+    }
+
+    public void GetShield(int shield) // 방어막을 얻을 때 호출할 함수
+    {
+        _monsterShield += shield;
+    }
+
     public void AddHpObserver(IMonsterHpObserver observer)
     {
         if (!_hpObservers.Contains(observer)) //방어 코드
@@ -127,6 +158,7 @@ public class MonsterStatus : MonoBehaviour
     private void Death()
     {
         //몬스터 죽음 처리 로직 추가
+        Debug.Log("몬스터가 죽었습니다. ID: " + _monsterId);
         if(_monsterGrade == MonsterGrade.Boss)
         {
             DropLoot();
@@ -162,6 +194,7 @@ public class MonsterStatus : MonoBehaviour
                 Debug.Log("선택된 스킬 레벨: " + _monsterSkillSet.skillLevels[idx]);
                 _selectedSkillSlot = idx; //선택된 스킬 슬롯 인덱스 저장
                 _selectedSkillKey = skillSlot.Item1;
+                _currentSkillData = DataManager.Instance.GetCard(_selectedSkillKey); //선택된 스킬 카드 데이터 저장
                 break;
             }
         }        
@@ -174,6 +207,27 @@ public class MonsterStatus : MonoBehaviour
         {
             //스킬 사용 로직 추가
             Debug.Log("몬스터가 스킬을 사용했습니다. 스킬 키: " + _selectedSkillKey + ", 스킬 레벨: " + _monsterSkillSet.skillLevels[_selectedSkillSlot]);
+            
+            if(_currentSkillData.CardType == CardType.Attack)
+            {
+                int damage = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
+                //Player.Instance.TakeDamage(damage);
+                Debug.Log("플레이어에게 " + damage + "의 데미지를 입혔습니다.");
+            }
+            else if(_currentSkillData.CardType == CardType.Healing)
+            {
+                int healAmount = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
+                GetHp(healAmount);
+                Debug.Log("몬스터가 " + healAmount + "의 체력을 회복했습니다.");
+            }
+            else if(_currentSkillData.CardType == CardType.Shield)
+            {
+                int shieldAmount = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
+                GetShield(shieldAmount);
+                Debug.Log("몬스터가 " + shieldAmount + "의 방어막을 얻었습니다.");
+            }
+            //사용 후 선택된 스킬 초기화 (방어 코드)
+            _selectedSkillKey = null;
         }
         else
         {

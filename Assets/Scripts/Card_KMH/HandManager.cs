@@ -45,6 +45,12 @@ public class HandManager : MonoBehaviour
     // 덱 시작 카드 수
     private int _deckCardCount;
 
+    private IBattleUnit targetPlayer;     // 타겟 플레이어 
+    private IBattleUnit targetMonster;    // 타겟 몬스터
+
+    // 선택된 카드
+    private GameObject _selectedCard;
+
 
 
     private void Start()
@@ -54,6 +60,9 @@ public class HandManager : MonoBehaviour
 
         // 높이 절반
         _cardHalfHeight = cardHeight / 2f;
+
+        // 타겟 플레이어
+        SetPlayerTarget();
 
         // 덱 구성
         SetupDeck();
@@ -159,8 +168,11 @@ public class HandManager : MonoBehaviour
         CardLogic cardLogic = newCard.GetComponent<CardLogic>();
         CardUI cardUI = newCard.GetComponent<CardUI>();
 
+        // 타겟
+        IBattleUnit target = cardData.Target == Target.Self ? targetPlayer : targetMonster;
+
         // 매니저 연결
-        cardLogic.Init(cardData, this);
+        cardLogic.Init(cardData, this, target);
         cardUI.Init(cardData, this);
         
         // 리스트 추가
@@ -219,5 +231,17 @@ public class HandManager : MonoBehaviour
             // 맨 위로 설정
             _handCards[i].transform.SetSiblingIndex(i);
         }
+    }
+
+    // 플레이어 타겟 설정
+    private void SetPlayerTarget()
+    {
+        targetPlayer = Player.Instance;
+    }
+
+    // 몬스터 타겟 설정
+    public void SetMonsterTarget(IBattleUnit newTarget)
+    {
+        targetMonster = newTarget;
     }
 }

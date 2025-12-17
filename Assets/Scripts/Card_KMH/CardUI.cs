@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
-public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] Transform _visual;             // 실제 카드 비주얼 트랜스폼
 
@@ -23,6 +23,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     private bool _isHovering = false;    // 호버 상태
     private bool _isDragging = false;    // 드래그 상태
     private bool _isReturning = false;   // 복귀 상태
+    private bool _isSelected = false;    // 선택 상태
 
     private Vector3 _basePos;            // 부채꼴 위치
     private Quaternion _baseRot;         // 부채꼴 회전
@@ -74,6 +75,27 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
         // 호버 상태 전환
         OnHover();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (_isReturning) return;// 복귀 중 무시
+
+        // 선택된 상태라면 사용 시도
+        if (_isSelected)
+        {
+            _cardLogic.TryUse();
+
+            // 일단 사용 시도 후 선택 해제
+            // _handManager.DeSelect();
+        }
+        // 선택된 상태가 아니라면 선택
+        else
+        {
+            _isSelected = true;
+            //_handManager.SelectCard(this);
+        }
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -212,5 +234,4 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
         _edgeColor.color = color;
     }
-
 }

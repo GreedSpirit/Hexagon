@@ -1,0 +1,4 @@
+Id,CharacterKey의 기본키 값,캐릭터 이름,캐릭터 이동속도,캐릭터 이미지 리소스
+int,string,string,float,string
+Id,Key,Name,MoveSpeed,Img
+1,KeyCharacterHaru,NameCharHaru,3.5,ImgChar0001
