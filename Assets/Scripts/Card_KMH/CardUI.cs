@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
-public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] Transform _visual;             // 실제 카드 비주얼 트랜스폼
 
@@ -28,16 +28,30 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
     private Vector3 _basePos;            // 부채꼴 위치
     private Quaternion _baseRot;         // 부채꼴 회전
 
+    private Vector3 dragPos;             // 드래그 좌표
+
     private int _siblingIndex;           // 정렬 순서
 
 
 
     private void Update()
     {
-        // 드래그 중일 때 무시
-        if (_isDragging) return;
+        // 드래그 중일 때
+        if (_isDragging)
+        {
+            // 항상 맨 앞으로
+            KeepCardOnTop();
+            // 카드가 드래그 위치 따라가게
+            transform.position = Vector3.Lerp(transform.position, dragPos, Time.deltaTime * _handManager.MoveSpeed);
+            return;
+        }
         // 호버 중일 때 무시
-        if (_isHovering) return;
+        if (_isHovering)
+        {
+            // 항상 맨 앞으로
+            KeepCardOnTop();
+            return;
+        }
 
         // 원위치
         transform.position = Vector3.Lerp(transform.position, _basePos, Time.deltaTime * _handManager.MoveSpeed);
@@ -57,8 +71,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
                 // 복귀 완료
                 _isReturning = false;
 
-                // 근데 마우스 올라가 있으면 호버 상태로 전환
-                if (_isMouseOver)
+                // 마우스 올라가 있으면 호버 상태로 전환
+                // 근데 선택된 카드 없어야 함
+                if (_isMouseOver &&_handManager.SelectedCard == null)
                     OnHover();
             }
         }
@@ -72,46 +87,75 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
         if (_isDragging) return; // 드래그 중 무시
         _isMouseOver = true;     // 마우스 오버
         if (_isReturning) return;// 복귀 중 무시
+        if (_handManager.SelectedCard != null) return;  // 선택된 카드 있으면 무시
 
         // 호버 상태 전환
         OnHover();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (_isReturning) return;// 복귀 중 무시
-
-        // 선택된 상태라면 사용 시도
-        if (_isSelected)
-        {
-            _cardLogic.TryUse();
-
-            // 일단 사용 시도 후 선택 해제
-            // _handManager.DeSelect();
-        }
-        // 선택된 상태가 아니라면 선택
-        else
-        {
-            _isSelected = true;
-            //_handManager.SelectCard(this);
-        }
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (_isDragging) return;  // 드래그 중엔 무시
 
-        // 복귀
-        _isMouseOver = false;
-        _isHovering = false;
-        _isReturning = true;
+        _isMouseOver = false;     // 마우스 오버 상태 끝
 
-        // 원래 순서로 복귀
-        transform.SetSiblingIndex(_siblingIndex);
+        if (_isSelected) return;  // 선택 된 상태면 무시
+         
+        if (_isHovering)          // 호버 상태 라면
+        {
+            // 복귀
+            _isHovering = false;
+            _isReturning = true;
+
+            // 원래 순서로 복귀
+            transform.SetSiblingIndex(_siblingIndex);
+        }
     }
 
-    // 호버 상태
+    public void OnPointerDown(PointerEventData eventData) { }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (_isReturning) return;// 복귀 중 무시
+        if (_isDragging) return; // 드래그로 인한 클릭 방지
+
+        // 선택된 상태라면 사용 시도
+        if (_isSelected)
+        {
+            // 카드 사용 시도
+            _cardLogic.TryUse();
+
+            // 사용 시도 후 선택 해제
+            _handManager.DeselectCard();
+        }
+        else // 선택된 상태가 아니라면 선택
+        {
+            _isSelected = true;
+            OnHover();
+            _handManager.SetSelectedCard(this);
+        }
+    }
+
+    public void Deselect()
+    {
+        _isSelected = false;
+
+        // 복귀
+        transform.SetSiblingIndex(_siblingIndex);
+
+        OnPointerExit(null);
+
+        //// 복귀
+        //_isHovering = false;
+        //_isReturning = true;
+
+        //// 원래 순서로
+        //transform.SetSiblingIndex(_siblingIndex);
+
+
+    }
+
+    // 호버 상태 (클릭 선택 상태)
     private void OnHover()
     {
         // 호버 상태
@@ -128,10 +172,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
         // 카드 비주얼 크기
         // 부모와 동일하게
         _visual.localScale = Vector3.one;
-
-        // 옆 카드에 가려지지 않게 맨 앞으로 가져옴
-        _siblingIndex = transform.GetSiblingIndex();
-        transform.SetAsLastSibling();
     }
 
     // ----------------------------------------------------------------
@@ -139,14 +179,17 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
     public void OnBeginDrag(PointerEventData eventData)
     {
         // 드래그 시작
+        // 선택된 카드로 등록
+        _handManager.SetSelectedCard(this);
+        _isSelected = true;                  // 드래그 중에도 선택 상태
         _isDragging = true;
         _isHovering = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        // 카드가 마우스 위치에 따라옴
-        transform.position = eventData.position;
+        // 드래그 위치 설정
+        dragPos = eventData.position;
         transform.rotation = Quaternion.identity;
     }
 
@@ -163,9 +206,14 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
         // 화면의 UseScreenRatio퍼센트보다 높을 시 사용 시도
         bool isUse = eventData.position.y > Screen.height * _handManager.UseScreenRatio;
 
-        // 사용 시도
         if (isUse)
+        {
+            // 사용 시도
             _cardLogic.TryUse();
+        }
+
+        // 선택 해제
+        _handManager.DeselectCard();
     }
 
     // ----------------------------------------------------------------
@@ -182,10 +230,12 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
     }
     
     // 카드 부채꼴 위치 지정 함수
-    public void SetBase(Vector3 pos, Quaternion rot)
+    public void SetBase(Vector3 pos, Quaternion rot, int index)
     {
         _basePos = pos;
         _baseRot = rot;
+
+        _siblingIndex = index;
     }
 
     // 카드 데이터에 맞게 비주얼 갱신
@@ -233,5 +283,20 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler,
         }
 
         _edgeColor.color = color;
+    }
+
+
+    // 카드 맨 위 고정
+    private void KeepCardOnTop()
+    {
+        // 카드 수
+        int lastIndex = transform.parent.childCount - 1;
+
+        // 내 현재 순서가 마지막이 아니라면
+        if (transform.GetSiblingIndex() < lastIndex)
+        {
+            // 마지막으로 변경
+            transform.SetAsLastSibling();
+        }
     }
 }
