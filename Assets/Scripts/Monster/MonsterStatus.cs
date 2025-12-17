@@ -34,7 +34,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     public void ChangePhase(PhaseType newPhase) //OnPhaseChanged 이벤트 구독용 함수
     {
         //유저 드로우 턴 페이즈일 때 행동
-        if(newPhase == PhaseType.Draw)
+        if(newPhase == PhaseType.Draw || newPhase == PhaseType.Start)
         {
             GetRandomSkillFromSet();
         }
@@ -176,6 +176,17 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private void GetRandomSkillFromSet() // 몬스터의 스킬셋에서 가중치에 따라 랜덤으로 스킬을 선택하는 함수
     {
+        if(_monsterSkillSet == null || _monsterSkillSet.skillWeights.Count == 0)
+        {
+            Debug.LogError("몬스터 스킬셋 데이터가 없거나 스킬이 설정되어 있지 않습니다.");
+            return;
+        }
+        if(_selectedSkillKey != null)
+        {
+            // 선턴을 잡을 경우 or 버그 방지 방어 코드 겸용
+            Debug.Log("이미 선택된 스킬이 있습니다. 스킬 선택을 건너뜁니다.");
+            return;
+        }
         float totalRate = 0f;
         foreach(var skillweight in _monsterSkillSet.skillWeights)
         {
@@ -227,7 +238,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 GetShield(_selectedSkillValue);
                 Debug.Log("몬스터가 " + _selectedSkillValue + "의 방어막을 얻었습니다.");
             }
-            //사용 후 선택된 스킬 초기화 (방어 코드)
+            //사용 후 선택된 스킬 초기화 (방어 코드 및 선턴을 잡을 경우 예외 사항)
             _selectedSkillKey = null;
             _selectedSkillValue = 0;
             _selectedSkillSlot = -1;

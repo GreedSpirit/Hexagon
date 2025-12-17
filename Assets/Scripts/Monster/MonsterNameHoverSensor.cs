@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 /// Collider가 있거나 Image에 Raycast Target이 켜져 있어야 함
 /// </summary>
 
-public class HoverSensor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MonsterNameHoverSensor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public event Action OnEnter;
     public event Action OnExit;
