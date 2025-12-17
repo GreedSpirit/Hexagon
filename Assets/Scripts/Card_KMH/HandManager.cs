@@ -236,7 +236,7 @@ public class HandManager : MonoBehaviour
     // 플레이어 타겟 설정
     private void SetPlayerTarget()
     {
-        //targetPlayer = Player.Instance;
+        targetPlayer = Player.Instance;
     }
 
     // 몬스터 타겟 설정

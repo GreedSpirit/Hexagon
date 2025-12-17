@@ -2,11 +2,9 @@ using UnityEngine;
 
 public class CardLogic : MonoBehaviour
 {
-    public CardData Data { get; private set; } // CSV 单捞磐
-
+    public CardData Data { get; private set; } // 单捞磐
+    private IBattleUnit target;                // 鸥百
     private HandManager _handManager;
-
-    private IBattleUnit target;             // 鸥百
 
     public void Init(CardData data, HandManager manager, IBattleUnit newTarget)
     {
