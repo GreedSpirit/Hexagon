@@ -1,7 +1,8 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HandManager : MonoBehaviour
 {
@@ -22,8 +23,8 @@ public class HandManager : MonoBehaviour
     [SerializeField] int _startHandCount;       // 시작 시 뽑을 카드 수
     [SerializeField] int _handLimit;            // 핸드 소지 한계
 
-    [Header("오버 드로우 설정")]
-    [SerializeField] Transform _overDrawPoint;    // 오버드로우 시 고정 위치
+    [Header("소멸 위치 설정")]
+    [SerializeField] Transform _disappearPoint;    // 소멸 고정 위치
 
     [Space]
     [SerializeField] TextMeshProUGUI _deckCount;
@@ -73,6 +74,20 @@ public class HandManager : MonoBehaviour
 
         // 덱 구성
         SetupDeck();
+    }
+
+    private void Update()
+    {
+        // 우클릭 릴리즈
+        if (Mouse.current.rightButton.wasReleasedThisFrame)
+        {
+            // 선택된 카드가 있을 때 && 선택 카드의 드래그 상태
+            if (SelectedCard != null && SelectedCard.IsDragging == false)
+            {
+                // 카드 선택 해지
+                DeselectCard();
+            }
+        }
     }
 
 
@@ -159,7 +174,7 @@ public class HandManager : MonoBehaviour
         if (_handCards.Count >= _handLimit)
         {
             // 오버드로우 발생
-            cardUI.OnOverDraw(_overDrawPoint);
+            cardUI.OnDisappear(_disappearPoint);
 
             // 핸드에 추가 안하고 바로 끝
             return;
@@ -171,7 +186,6 @@ public class HandManager : MonoBehaviour
         // 정렬
         AlignCards();
     }
-
 
     // 드로우 카드 초기화
     private GameObject InitDrawCard(CardData cardData, out CardUI cardUI)
@@ -193,18 +207,22 @@ public class HandManager : MonoBehaviour
         return newCard;
     }
 
+
+
     // 카드 사용
     public void UseCard(GameObject card)
     {
+        // 사용된 카드가 선택된 UI와 같아야
         if (card == _selectedCardUI.gameObject)
         {
+            // 소멸
+            _selectedCardUI.OnDisappear(_disappearPoint);
             _selectedCardUI = null;
         }
 
         // 핸드 리스트에서 제외
         _handCards.Remove(card);
-        // 삭제 (나중에 풀링)
-        Destroy(card.gameObject);
+
         // 남은 카드 재정렬
         AlignCards();           
     }
@@ -249,6 +267,9 @@ public class HandManager : MonoBehaviour
         }
     }
 
+
+
+
     // 카드 클릭 선택
     public void SetSelectedCard(CardUI cardUI)
     {
@@ -272,6 +293,9 @@ public class HandManager : MonoBehaviour
             _selectedCardUI = null;
         }
     }
+
+
+
 
     // 타겟 플레이어 설정
     private void SetPlayerTarget()
