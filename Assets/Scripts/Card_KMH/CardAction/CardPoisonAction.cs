@@ -10,6 +10,6 @@ public class CardPoisonAction : ICardAction
             return;
         }
         Debug.Log("중독 상태이상 사용");
-        //target.상태이상 적용();
+        //target.();
     }
 }

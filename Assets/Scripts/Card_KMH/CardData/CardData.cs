@@ -78,7 +78,7 @@ public class CardData : CSVLoad, TableKey
         if (string.IsNullOrEmpty(Desc)) return;
 
         Desc.Replace("{N}", GetCardValue().ToString());
-        Desc.Replace("{S}", StatusEffectValue.ToString());
+        Desc.Replace("{SEV}", StatusEffectValue.ToString());
         Desc.Replace("{Turn}", Turn.ToString());
     }
 
