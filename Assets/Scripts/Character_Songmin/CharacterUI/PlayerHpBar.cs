@@ -7,7 +7,10 @@ public class PlayerHpBar : MonoBehaviour
     [SerializeField] private Slider _hpBar;
     [SerializeField] private Slider _hitBar;
     [SerializeField] private Slider _poisonBar;
-    [SerializeField] private Slider _burnBar;    
+    [SerializeField] private Slider _burnBar;
+
+    float _hitTarget;
+    Coroutine _hitRoutine;
 
     public void OnEnable()
     {                
@@ -27,28 +30,41 @@ public class PlayerHpBar : MonoBehaviour
     {
         if (currentHp > 0)
         {
-            //_hitBar.value = (float)currentHp / Hp;
-            _hpBar.value = Mathf.Max(0, (float) (currentHp - poison - burn) / Hp);
-            _burnBar.value = Mathf.Max(0, (float)(currentHp - poison) / Hp);
-            _poisonBar.value = Mathf.Max(0, (float)currentHp / Hp);
+            float hpValue = Mathf.Max(0, (float)(currentHp - poison - burn) / Hp);
+            float burnValue = Mathf.Max(0, (float)(currentHp - poison) / Hp);
+            float poisonValue = Mathf.Max(0, (float)currentHp / Hp);
+
+
+            _hpBar.value = hpValue;
+            _burnBar.value = burnValue;
+            _poisonBar.value = poisonValue;
+
+            _hitTarget = hpValue;
         }
         else
         {
             _hpBar.value = 0;
         }
-        //StartCoroutine(BarAnimation(_hpBar.value));
+        if (_hitRoutine != null)
+        {
+            StopCoroutine(_hitRoutine);
+        }
+        _hitRoutine = StartCoroutine(BarAnimation());
     }
 
-    public IEnumerator BarAnimation(float targetValue)
+    public IEnumerator BarAnimation()
     {
-        while (_hpBar.value >= targetValue)
+        while (_hitBar.value > _hitTarget)
         {
-            _hitBar.value = Mathf.Lerp(_hpBar.value, targetValue, Time.deltaTime * 5);
+            _hitBar.value = Mathf.Lerp(_hitBar.value, _hitTarget, Time.deltaTime * 5f);
+            
+            if (Mathf.Abs(_hitBar.value - _hitTarget) < 0.002f)
+            {
+                _hitBar.value = _hitTarget;
+                break;
+            }
+
             yield return null;
-        }
-        if (_hpBar.value < targetValue)
-        {
-            _hpBar.value = targetValue;
         }
     }
 
