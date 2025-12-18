@@ -25,9 +25,13 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
     private List<IMonsterSkillObserver> _skillObservers = new List<IMonsterSkillObserver>();
+    private List<IMonsterEffectObserver> _effectObservers = new List<IMonsterEffectObserver>();
     private string _selectedSkillKey = null; //선택된 스킬 키 임시 변수
     private int _selectedSkillSlot = -1; //선택된 스킬 슬롯 인덱스 임시 변수
     private int _selectedSkillValue = -1;
+
+    private List<MonsterStatusEffectInstance> _statusEffects = new List<MonsterStatusEffectInstance>(); //몬스터에게 적용된 상태 이상 효과 인스턴스 목록
+    public List<MonsterStatusEffectInstance> StatusEffects => _statusEffects;
 
     public event System.Action OnEnemyActTurnEnd; // 몬스터 턴 종료 시점에 발행할 이벤트
 
@@ -90,7 +94,12 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수
     {
-        damage = (int)Mathf.Max((damage -  Mathf.Min(_monsterDefense, 7)) * (1 + _monsterDebuff), 0); //방어력 적용(방어력 최대가 7이라서 7까지만 적용)
+        damage = (int)Mathf.Max(damage -  Mathf.Min(_monsterDefense, 7), 0); //방어력 적용(방어력 최대가 7이라서 7까지만 적용)
+        if (HasEffect("Vulnerable"))
+        {
+            damage = Mathf.FloorToInt(damage * 1.5f); // 50% 추가 피해
+            Debug.Log("취약 효과로 인하여 50% 추가 피해를 입습니다");
+        }
         if(_monsterShield > 0)
         {
             int shieldDamage = Mathf.Min(_monsterShield, damage);
@@ -205,7 +214,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             
             if(_currentSkillData.CardType == CardType.Attack)
             {
-                //Player.Instance.TakeDamage(_selectedSkillValue);
+                Player.Instance.TakeDamage(_selectedSkillValue);
                 Debug.Log("플레이어에게 " + _selectedSkillValue + "의 데미지를 입혔습니다.");
             }
             else if(_currentSkillData.CardType == CardType.Healing)
@@ -230,6 +239,88 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
     }
 
+    // 상태이상 효과 관련 메서드 ------------------------------------------------------------
+    //상태이상 Key와 Duration, Stack를 받아서 상태이상을 적용하는 함수
+    public void AddStatusEffect(string effectKey, int duration, int stack)
+    {
+        // 추후 데이터 읽어오는 로직 추가
+        var tableData = DataManager.Instance.GetStatusEffectData(effectKey);
+
+        var existingEffect = _statusEffects.Find(e => e.Key == effectKey);
+
+        if(existingEffect != null)
+        {
+            existingEffect.Duration += duration;
+            existingEffect.Stack += stack;
+        }
+        else
+        {
+            MonsterStatusEffectInstance newEffect = new MonsterStatusEffectInstance()
+            {
+                Id = tableData.Id,
+                Key = tableData.Key,
+                Name = tableData.Name,
+                Type = tableData.BuffType,
+                Duration = duration,
+                Stack = stack,
+                AppliedTime = Time.time // 적용 시점을 위함, 나중에 턴으로 바꿀수도
+            };
+            
+            _statusEffects.Add(newEffect);            
+        }
+
+        _statusEffects.Sort((a, b) => a.GetSortOrder(b)); //정렬
+
+        NotifyEffectObservers();
+    }
+
+    public void TickStatusEffects() //지속 시간 감소를 위한 메서드
+    {
+        for(int i = _statusEffects.Count - 1; i >= 0; i--) // RemoveAt이 앞에서부터 될 경우 오류 발생 가능
+        {
+            _statusEffects[i].Duration--;
+            _statusEffects[i].Stack--;
+            if(_statusEffects[i].Duration <= 0 && _statusEffects[i].Stack <= 0)
+            {
+                _statusEffects.RemoveAt(i);
+            }
+        }
+        _statusEffects.Sort((a, b) => a.GetSortOrder(b)); //정렬
+        NotifyEffectObservers();
+    }
+
+    /// <summary>
+    /// 특정 효과가 걸려있는지 확인하고 스택 수치를 반환하는 함수
+    /// </summary>
+    
+    public bool HasEffect(string effectKey)
+    {
+        return _statusEffects.Exists(e => e.Key == effectKey);
+    }
+    public int GetEffectStack(string effectKey)
+    {
+        var effect = _statusEffects.Find(e => e.Key == effectKey);
+        return effect != null ? effect.Stack : 0;
+    }
+
+    public void ProcessDotEffects()
+    {
+        int poisionStack = GetEffectStack("Poison");
+        if(poisionStack > 0)
+        {
+            Debug.Log("중독 피해 : " + poisionStack);
+            TakeTrueDamage(poisionStack);
+        }
+
+        int burnStack = GetEffectStack("Burn");
+        if(burnStack > 0)
+        {
+            Debug.Log("화상 피해 : " + burnStack);
+            TakeTrueDamage(burnStack);
+        }
+
+        //지속 시간 감소는 턴이 끝날 때 일괄적으로 TickStatusEffects()에서 처리
+    }
 
 
     //! 유니티 에디터를 사용할 때 체력 소모 이벤트에 대한 테스트를 위한 코드 추후 삭제 필요
@@ -327,6 +418,24 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         foreach (var observer in _skillObservers)
         {
             observer.OnMonsterSkillSelected(_currentSkillData, _selectedSkillValue);
+        }
+    }
+
+    public void AddEffectObserVer(IMonsterEffectObserver observer)
+    {
+        if(!_effectObservers.Contains(observer)) _effectObservers.Add(observer);
+    }
+
+    public void RemoveEffectObserver(IMonsterEffectObserver observer)
+    {
+        if(!_effectObservers.Contains(observer)) _effectObservers.Remove(observer);
+    }
+
+    private void NotifyEffectObservers()
+    {
+        foreach (var observer in _effectObservers)
+        {
+            observer.OnMonsterEffectChanged(_statusEffects);
         }
     }
 
