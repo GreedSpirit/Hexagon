@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class TestGameManager_KMH : MonoBehaviour
@@ -58,19 +57,15 @@ public class TestGameManager_KMH : MonoBehaviour
     // 덱 구성
     private void InitDeck()
     {
-        // 테스트용 카드 5장
-        int count = 5;
-
         // 덱 생성
         Deck = new Dictionary<int, int>();
 
-        // 덱 구성 없으니 일단 랜덤 Id 카드 생성
-        for (int i = 1; i <= count; i++)
+        // 덱 구성 없으니 일단 카드 데이터 전부
+        for (int i = 1; i <= DataManager.Instance.CardDict.Count; i++)
         {
-            int randId = Random.Range(1, DataManager.Instance.CardDict.Count + 1);
             //int id = DataManager.Instance.CardDict[i].Id;
             // 기본 레벨 1
-            Deck[randId] = 1;
+            Deck[i] = 1;
         }
     }
 
