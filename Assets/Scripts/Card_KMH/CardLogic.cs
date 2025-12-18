@@ -20,11 +20,20 @@ public class CardLogic : MonoBehaviour
     // 카드 사용 시도
     public void TryUse()
     {
-        // 계산된 카드 수치
+        // 계산된 카드 수치 (상태이상 X)
         int value = Data.GetCardValue();
 
-        // 사용 (CardData, CardValue, IBattleUnit)
-        Data.CardAction.Use(Data, value, target);
+        // 상태이상 효과 불러오기
+        StatusEffectData statusEffect = Data.GetStatusEffectData();
+
+        // 모든 행동 실행
+        foreach (ICardAction action in Data.CardActions)
+        {
+            action.Use(statusEffect, value, target);
+        }
+
+        // 사용 (StatusEffectData, CardValue, IBattleUnit)
+        //Data.CardActions.Use(null, value, target);
 
         // 핸드 제거
         _handManager.UseCard(gameObject);
