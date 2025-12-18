@@ -8,7 +8,7 @@ using UnityEngine;
 public class MonsterStatus : MonoBehaviour, IBattleUnit
 {
     public MonsterData MonsterData => _monsterData; //외부에서 몬스터 데이터에 접근할 수 있는 프로퍼티
-    [SerializeField] private int _monsterId; //몬스터 데이터 ID
+    [SerializeField] private int _monsterId = 1; //몬스터 데이터 ID
     [SerializeField] private int _monsterLevel; //추후 스테이지 테이블에서 불러올 내용
     [SerializeField] private MonsterGrade _monsterGrade;
     [SerializeField] private int _monsterMaxHP;
@@ -24,10 +24,14 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     [SerializeField] private CardData _currentSkillData; //현재 사용될 예정인 스킬 카드 데이터
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
-
+    private List<IMonsterSkillObserver> _skillObservers = new List<IMonsterSkillObserver>();
+    private List<IMonsterEffectObserver> _effectObservers = new List<IMonsterEffectObserver>();
     private string _selectedSkillKey = null; //선택된 스킬 키 임시 변수
     private int _selectedSkillSlot = -1; //선택된 스킬 슬롯 인덱스 임시 변수
-    private int _selectedSkillValue = 0;
+    private int _selectedSkillValue = -1;
+
+    private List<MonsterStatusEffectInstance> _statusEffects = new List<MonsterStatusEffectInstance>(); //몬스터에게 적용된 상태 이상 효과 인스턴스 목록
+    public List<MonsterStatusEffectInstance> StatusEffects => _statusEffects;
 
     public event System.Action OnEnemyActTurnEnd; // 몬스터 턴 종료 시점에 발행할 이벤트
 
@@ -45,7 +49,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
     }
 
-    public void InitMonsterStatus()
+    public void InitMonsterStatus() //몬스터 스탯 초기화 함수
     {
         //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 불러오는 방식으로 변경할 수도 있음
         _monsterGrade = _monsterData.MonGrade;
@@ -69,7 +73,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         _monsterCurHP = _monsterMaxHP;        
     }
 
-    private void Awake()
+    private void Start()
     {
         // ID 방식 Key 방식 구별
         _monsterData = DataManager.Instance.GetMonsterStatData(1);
@@ -84,12 +88,18 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             Debug.Log("데이터 로드 성공");
             InitMonsterStatus();
             NotifyHpObservers(); //초기 HP 상태 갱신
+            NotifySkillObservers(); //초기 스킬 상태 갱신
         }
     }
 
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수
     {
-        damage = (int)Mathf.Max((damage -  Mathf.Min(_monsterDefense, 7)) * (1 + _monsterDebuff), 0); //방어력 적용(방어력 최대가 7이라서 7까지만 적용)
+        damage = (int)Mathf.Max(damage -  Mathf.Min(_monsterDefense, 7), 0); //방어력 적용(방어력 최대가 7이라서 7까지만 적용)
+        if (HasEffect("Vulnerable"))
+        {
+            damage = Mathf.FloorToInt(damage * 1.5f); // 50% 추가 피해
+            Debug.Log("취약 효과로 인하여 50% 추가 피해를 입습니다");
+        }
         if(_monsterShield > 0)
         {
             int shieldDamage = Mathf.Min(_monsterShield, damage);
@@ -131,30 +141,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     public void GetShield(int shield) // 방어막을 얻을 때 호출할 함수
     {
         _monsterShield += shield;
-    }
-
-    public void AddHpObserver(IMonsterHpObserver observer)
-    {
-        if (!_hpObservers.Contains(observer)) //방어 코드
-        {
-            _hpObservers.Add(observer);
-        }
-    }
-
-    public void RemoveHpObserver(IMonsterHpObserver observer)
-    {
-        if (_hpObservers.Contains(observer)) //방어 코드
-        {
-            _hpObservers.Remove(observer);
-        }
-    }
-
-    private void NotifyHpObservers() //옵저버들에게 HP 변경 알림
-    {
-        foreach (var observer in _hpObservers)
-        {
-            observer.OnMonsterHpChanged(_monsterCurHP, _monsterMaxHP);
-        }
+        _monsterShield = Mathf.Min(_monsterShield, 99); //방어막 최대치 제한
+        NotifyHpObservers(); //쉴드 변경 알림
     }
 
     private void Death()
@@ -210,6 +198,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 _currentSkillData = DataManager.Instance.GetCard(_selectedSkillKey); //선택된 스킬 카드 데이터 저장
                 _selectedSkillValue = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
                 //이곳에서 스킬 타입에 따른 아이콘과 수치 UI 갱신 로직 추가
+                NotifySkillObservers(); //?선택된 스킬을 알림으로써 UI 갱신
                 break;
             }
         }        
@@ -225,7 +214,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             
             if(_currentSkillData.CardType == CardType.Attack)
             {
-                //Player.Instance.TakeDamage(_selectedSkillValue);
+                Player.Instance.TakeDamage(_selectedSkillValue);
                 Debug.Log("플레이어에게 " + _selectedSkillValue + "의 데미지를 입혔습니다.");
             }
             else if(_currentSkillData.CardType == CardType.Healing)
@@ -240,8 +229,9 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             }
             //사용 후 선택된 스킬 초기화 (방어 코드 및 선턴을 잡을 경우 예외 사항)
             _selectedSkillKey = null;
-            _selectedSkillValue = 0;
+            _selectedSkillValue = -1;
             _selectedSkillSlot = -1;
+            NotifySkillObservers(); //스킬 사용 후 스킬 초기화 알림
         }
         else
         {
@@ -249,6 +239,88 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
     }
 
+    // 상태이상 효과 관련 메서드 ------------------------------------------------------------
+    //상태이상 Key와 Duration, Stack를 받아서 상태이상을 적용하는 함수
+    public void AddStatusEffect(string effectKey, int duration, int stack)
+    {
+        // 추후 데이터 읽어오는 로직 추가
+        var tableData = DataManager.Instance.GetStatusEffectData(effectKey);
+
+        var existingEffect = _statusEffects.Find(e => e.Key == effectKey);
+
+        if(existingEffect != null)
+        {
+            existingEffect.Duration += duration;
+            existingEffect.Stack += stack;
+        }
+        else
+        {
+            MonsterStatusEffectInstance newEffect = new MonsterStatusEffectInstance()
+            {
+                Id = tableData.Id,
+                Key = tableData.Key,
+                Name = tableData.Name,
+                Type = tableData.BuffType,
+                Duration = duration,
+                Stack = stack,
+                AppliedTime = Time.time // 적용 시점을 위함, 나중에 턴으로 바꿀수도
+            };
+            
+            _statusEffects.Add(newEffect);            
+        }
+
+        _statusEffects.Sort((a, b) => a.GetSortOrder(b)); //정렬
+
+        NotifyEffectObservers();
+    }
+
+    public void TickStatusEffects() //지속 시간 감소를 위한 메서드
+    {
+        for(int i = _statusEffects.Count - 1; i >= 0; i--) // RemoveAt이 앞에서부터 될 경우 오류 발생 가능
+        {
+            _statusEffects[i].Duration--;
+            _statusEffects[i].Stack--;
+            if(_statusEffects[i].Duration <= 0 && _statusEffects[i].Stack <= 0)
+            {
+                _statusEffects.RemoveAt(i);
+            }
+        }
+        _statusEffects.Sort((a, b) => a.GetSortOrder(b)); //정렬
+        NotifyEffectObservers();
+    }
+
+    /// <summary>
+    /// 특정 효과가 걸려있는지 확인하고 스택 수치를 반환하는 함수
+    /// </summary>
+    
+    public bool HasEffect(string effectKey)
+    {
+        return _statusEffects.Exists(e => e.Key == effectKey);
+    }
+    public int GetEffectStack(string effectKey)
+    {
+        var effect = _statusEffects.Find(e => e.Key == effectKey);
+        return effect != null ? effect.Stack : 0;
+    }
+
+    public void ProcessDotEffects()
+    {
+        int poisionStack = GetEffectStack("Poison");
+        if(poisionStack > 0)
+        {
+            Debug.Log("중독 피해 : " + poisionStack);
+            TakeTrueDamage(poisionStack);
+        }
+
+        int burnStack = GetEffectStack("Burn");
+        if(burnStack > 0)
+        {
+            Debug.Log("화상 피해 : " + burnStack);
+            TakeTrueDamage(burnStack);
+        }
+
+        //지속 시간 감소는 턴이 끝날 때 일괄적으로 TickStatusEffects()에서 처리
+    }
 
 
     //! 유니티 에디터를 사용할 때 체력 소모 이벤트에 대한 테스트를 위한 코드 추후 삭제 필요
@@ -268,5 +340,103 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         UseSkill();
     }
     #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // 옵저버 패턴 관련 메서드 ------------------------------------------------------------
+    public void AddHpObserver(IMonsterHpObserver observer)
+    {
+        if (!_hpObservers.Contains(observer)) //방어 코드
+        {
+            _hpObservers.Add(observer);
+        }
+    }
+
+    public void RemoveHpObserver(IMonsterHpObserver observer)
+    {
+        if (_hpObservers.Contains(observer)) //방어 코드
+        {
+            _hpObservers.Remove(observer);
+        }
+    }
+
+    private void NotifyHpObservers() //옵저버들에게 HP 변경 알림
+    {
+        foreach (var observer in _hpObservers)
+        {
+            observer.OnMonsterHpChanged(_monsterCurHP, _monsterMaxHP, _monsterShield);
+        }
+    }
+
+    public void AddSkillObserver(IMonsterSkillObserver observer)
+    {
+        if (!_skillObservers.Contains(observer)) //방어 코드
+        {
+            _skillObservers.Add(observer);
+        }
+    }
+    public void RemoveSkillObserver(IMonsterSkillObserver observer)
+    {
+        if (_skillObservers.Contains(observer)) //방어 코드
+        {
+            _skillObservers.Remove(observer);
+        }
+    }
+    private void NotifySkillObservers() //옵저버들에게 스킬 변경 알림
+    {
+        foreach (var observer in _skillObservers)
+        {
+            observer.OnMonsterSkillSelected(_currentSkillData, _selectedSkillValue);
+        }
+    }
+
+    public void AddEffectObserVer(IMonsterEffectObserver observer)
+    {
+        if(!_effectObservers.Contains(observer)) _effectObservers.Add(observer);
+    }
+
+    public void RemoveEffectObserver(IMonsterEffectObserver observer)
+    {
+        if(!_effectObservers.Contains(observer)) _effectObservers.Remove(observer);
+    }
+
+    private void NotifyEffectObservers()
+    {
+        foreach (var observer in _effectObservers)
+        {
+            observer.OnMonsterEffectChanged(_statusEffects);
+        }
+    }
 
 }

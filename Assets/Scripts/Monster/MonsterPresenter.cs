@@ -22,10 +22,9 @@ public class MonsterPresenter : MonoBehaviour
 
         // 2. View 초기화
         _monsterNameView.Init();
-        _monsterNameView.SetName(_monsterStatus.MonsterData.Name);
         Debug.Log("Monster Name: " + _monsterStatus.MonsterData.Name);
 
-        // 3. HoverSensor 이벤트 구독
+        // 3. NameHoverSensor 이벤트 구독
         foreach(var sensor in hoverSensors)
         {
             sensor.OnEnter += HandleHoverEnter;
@@ -35,6 +34,7 @@ public class MonsterPresenter : MonoBehaviour
 
     private void HandleHoverEnter()
     {
+        _monsterNameView.SetName(_monsterStatus.MonsterData.Name);
         _hoverCount++;
         bool shouldShow = _hoverCount > 0;
         _monsterNameView.HoverNameView(shouldShow);
