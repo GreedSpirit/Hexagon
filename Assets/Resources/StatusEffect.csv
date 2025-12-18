@@ -4,3 +4,4 @@ Id,Key,Name,Desc,BuffType,EffectLogic,ValueFormula,DecreaseType,MaxChar,MaxMon,I
 1,KeyStatusBurn,NameStatusBurn,DsecStatusBurn,DoT,TurnEndDmg,1.0,Stack,99,99,ImgStatusBurn
 2,KeyStatusPoison,NameStatusPoison,DescStatusPoison,DoT,TurnEndDmg,1.0,Stack,99,99,ImgStatusPoison
 3,KeyStatusVulnerable,NameStatusVulnerable,DescStatusVulnerable,DeBuff,DmgTaken,0.5,Turn,8,,ImgStatusVulnerable
+4,KeyStatusFury,NameStatusFury,DescStatusFury,DoT,TurnEndDmg,1.0,Stack,99,99,ImgStatusFury

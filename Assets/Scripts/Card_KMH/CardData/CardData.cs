@@ -49,13 +49,13 @@ public class CardData : CSVLoad, TableKey
 
 
     // 카드 레벨
-    public void SetCardLevel(int level)
+    public void SetLevel(int level)
     {
         Level = level;
     }
 
     // 카드 동작 설정
-    public void SetCardAction()
+    public void SetAction()
     {
         CardActions = new List<ICardAction>();
 
@@ -73,18 +73,31 @@ public class CardData : CSVLoad, TableKey
     }
 
     // 카드 설명 설정
-    public void SetCardDesc()
+    public void SetDesc()
     {
         // 카드 설명 있을 때만
         if (string.IsNullOrEmpty(Desc)) return;
 
         StringBuilder sb = new StringBuilder(Desc);
 
+        sb.Replace("{D}", GetCardValue().ToString());
         sb.Replace("{N}", GetCardValue().ToString());
         sb.Replace("{SEV}", StatusEffectValue.ToString());
         sb.Replace("{Turn}", Turn.ToString());
 
         Desc = sb.ToString();
+    }
+
+    // 강화, 약화일 때 StatusEffectValue 를 0 으로
+    // 도트일 때 Turn 을 0으로
+    public void SetStatusValue()
+    {
+        StatusEffectData statusEffect = DataManager.Instance.GetStatusEffectData(StatusEffect);
+
+        if (statusEffect.BuffType == BuffType.Buff || statusEffect.BuffType == BuffType.DeBuff)
+            StatusEffectValue = 0;
+        else
+            Turn = 0;
     }
 
     // 카드 수치 계산 반환

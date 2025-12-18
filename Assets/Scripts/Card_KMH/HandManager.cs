@@ -108,7 +108,7 @@ public class HandManager : MonoBehaviour
             CardData tempCardData = DataManager.Instance.GetCard(cardKey);
 
             // 레벨
-            tempCardData.SetCardLevel(cardLevel);
+            tempCardData.SetLevel(cardLevel);
 
             // 카드 사용 가능 횟수
             int cardNumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(cardLevel, tempCardData.CardGrade);
@@ -119,10 +119,11 @@ public class HandManager : MonoBehaviour
                 // 덱에 추가할 진짜 카드 데이터
                 CardData newCardData = DataManager.Instance.GetCard(cardKey);
 
-                // 카드 동작, 설명, 레벨, 사용 횟수 설정
-                newCardData.SetCardAction();
-                newCardData.SetCardDesc();
-                newCardData.SetCardLevel(cardLevel);
+                // 카드 동작, 설명, 레벨, 사용 횟수 등 설정
+                newCardData.SetAction();
+                newCardData.SetDesc();
+                newCardData.SetStatusValue();
+                newCardData.SetLevel(cardLevel);
 
                 // 덱에 추가
                 newDeck.Add(newCardData);
