@@ -573,6 +573,7 @@ GameObject:
   - component: {fileID: 6529171942363824244}
   - component: {fileID: 5262980168448069836}
   - component: {fileID: 3831209829223011880}
+  - component: {fileID: 3740721133348638191}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -673,8 +674,6 @@ MonoBehaviour:
   _monsterCurHP: 0
   _monsterDefense: 10
   _monsterShield: 0
-  _monsterBuff: 0
-  _monsterDebuff: 0
   _monsterSkillSet:
     skillLevels: 
 --- !u!70 &6529171942363824244
@@ -743,6 +742,20 @@ MonoBehaviour:
   hoverSensors:
   - {fileID: 5262980168448069836}
   - {fileID: 7829236978042225666}
+--- !u!114 &3740721133348638191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058029459828295100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b4e9b10b8b49974db4ff5c66eaa3f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterDeathEffect
+  fadeDuration: 1.5
+  sinkDistance: 0.5
 --- !u!1 &6514550268546475294
 GameObject:
   m_ObjectHideFlags: 0
