@@ -7,15 +7,7 @@ public class PlayerHpBar : MonoBehaviour
     [SerializeField] private Slider _hpBar;
     [SerializeField] private Slider _hitBar;
     [SerializeField] private Slider _poisonBar;
-    [SerializeField] private Slider _burnBar;
-
-    int targetHp;
-    int targetPoison;
-    int targetBurn;
-
-    bool _hpDone;
-    bool _poisonDone;
-    bool _burnDone;
+    [SerializeField] private Slider _burnBar;    
 
     public void OnEnable()
     {                
@@ -35,6 +27,7 @@ public class PlayerHpBar : MonoBehaviour
     {
         if (currentHp > 0)
         {
+            //_hitBar.value = (float)currentHp / Hp;
             _hpBar.value = Mathf.Max(0, (float) (currentHp - poison - burn) / Hp);
             _burnBar.value = Mathf.Max(0, (float)(currentHp - poison) / Hp);
             _poisonBar.value = Mathf.Max(0, (float)currentHp / Hp);
@@ -42,15 +35,24 @@ public class PlayerHpBar : MonoBehaviour
         else
         {
             _hpBar.value = 0;
-        }        
+        }
+        //StartCoroutine(BarAnimation(_hpBar.value));
     }
 
-    //public IEnumerator BarAnimation()
-    //{
-    //    _hpBar.value = Mathf.Lerp(_hpBar.value, targetValue, Time.deltaTime * 5);
-    //}
+    public IEnumerator BarAnimation(float targetValue)
+    {
+        while (_hpBar.value >= targetValue)
+        {
+            _hitBar.value = Mathf.Lerp(_hpBar.value, targetValue, Time.deltaTime * 5);
+            yield return null;
+        }
+        if (_hpBar.value < targetValue)
+        {
+            _hpBar.value = targetValue;
+        }
+    }
 
-    
+
 
     public void OnDisable()
     {
