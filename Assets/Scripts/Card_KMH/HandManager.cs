@@ -117,8 +117,9 @@ public class HandManager : MonoBehaviour
                 // 덱에 추가할 진짜 카드 데이터
                 CardData newCardData = DataManager.Instance.GetCard(cardKey);
 
-                // 카드 동작, 레벨, 사용 횟수 설정
+                // 카드 동작, 설명, 레벨, 사용 횟수 설정
                 newCardData.SetCardAction();
+                newCardData.SetCardDesc();
                 newCardData.SetCardLevel(cardLevel);
 
                 // 덱에 추가

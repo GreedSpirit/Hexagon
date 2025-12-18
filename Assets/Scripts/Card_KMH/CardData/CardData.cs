@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+
 public enum CardGrade   // 카드 등급
 {
     Null,       // 불러오기 실패
@@ -37,14 +38,13 @@ public class CardData : CSVLoad, TableKey
     public int BaseValue { get; set; }          // 기본 능력치 수치
     public int ValuePerValue { get; set; }      // 강화 증가 능력치 수치
     public string StatusEffect { get; set; }    // StatusEffect 테이블 Key
-    public float StatusEffectValue { get; set; }// 스킬 사용 시 적용될 상태이상 스킬 효과
+    public int StatusEffectValue { get; set; }  // 스킬 사용 시 적용될 상태이상 스킬 효과
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
     public string CardImg { get; set; }         // 카드 이미지
 
 
     public int Level { get; set; }              // 레벨
     public List<ICardAction> CardActions { get; set; } // 카드 행동 리스트 (공격, 방어, 치유, 주문, 상태이상)
-
 
 
     // 카드 레벨
@@ -71,24 +71,18 @@ public class CardData : CSVLoad, TableKey
         }
     }
 
+    // 카드 설명 설정
+    public void SetCardDesc()
+    {
+        Desc.Replace("{N}", GetCardValue().ToString());
+        Desc.Replace("{S}", StatusEffectValue.ToString());
+        Desc.Replace("{Turn}", Turn.ToString());
+    }
+
     // 카드 수치 계산 반환
     public int GetCardValue()
     {
         return BaseValue + ((Level - 1) * ValuePerValue);
-    }
-
-    // 설명에 수치 적용
-    public string GetCardDescWithValue()
-    {
-        return GetCardDesc(Desc, GetCardValue());
-    }
-
-    // 문자 교체 {N} -> 수치
-    private string GetCardDesc(string desc, int value)
-    {
-        string newDesc;
-        newDesc = desc.Replace("{N}", value.ToString());
-        return newDesc;
     }
 
     // 상태이상 효과 데이터 반환
@@ -152,7 +146,7 @@ public class CardData : CSVLoad, TableKey
 
         StatusEffect = values[10];
 
-        if (float.TryParse(values[11], out float statusValue))
+        if (int.TryParse(values[11], out int statusValue))
             StatusEffectValue = statusValue;
         else
             StatusEffectValue = 0;
