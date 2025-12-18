@@ -3,7 +3,7 @@ using UnityEngine;
 public class CardShieldAction : ICardAction
 {
     // 카드 사용
-    public void Use(CardData data, int value, IBattleUnit target)
+    public void Use(StatusEffectData statusData, int value, IBattleUnit target)
     {
         if(target == null)
         {

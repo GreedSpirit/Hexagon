@@ -7,7 +7,9 @@ public class TestGameManager_KMH : MonoBehaviour
     public static TestGameManager_KMH Instance;
     
     // 카드 타입 별 동작
-    private Dictionary<CardType, ICardAction> _cardActions = new Dictionary<CardType, ICardAction>();
+    private Dictionary<CardType, ICardAction> _cardTypeActions = new Dictionary<CardType, ICardAction>();
+    // 카드 상태이상 별 동작
+    private Dictionary<string, ICardAction> _cardStatusActions = new Dictionary<string, ICardAction>();
 
     // 덱 구성 (id, level)
     public Dictionary<int, int> Deck { get; private set; }
@@ -19,7 +21,7 @@ public class TestGameManager_KMH : MonoBehaviour
         InitDeck();             // 덱 초기화
 
 
-        PrintStatusEffectList();    // 상태이상 데이터 목록 테스트
+        //PrintStatusEffectList();    // 상태이상 데이터 목록 테스트
     }
 
     void PrintStatusEffectList()
@@ -40,10 +42,17 @@ public class TestGameManager_KMH : MonoBehaviour
     // 동작 구성
     private void InitCardActions()
     {
-        _cardActions.Add(CardType.Attack, new CardAttackAction());
-        _cardActions.Add(CardType.Healing, new CardHealingAction());
-        _cardActions.Add(CardType.Shield, new CardShieldAction());
-        _cardActions.Add(CardType.Spell, new CardSpellAction());
+        // 카드 타입
+        _cardTypeActions.Add(CardType.Attack, new CardAttackAction());
+        _cardTypeActions.Add(CardType.Healing, new CardHealingAction());
+        _cardTypeActions.Add(CardType.Shield, new CardShieldAction());
+        _cardTypeActions.Add(CardType.Spell, new CardSpellAction());
+
+        // 카드 상태이상 임시
+        _cardStatusActions.Add("KeyStatusPoison", new CardPoisonAction());
+        _cardStatusActions.Add("KeyStatusBurn", new CardBurnAction());
+        _cardStatusActions.Add("KeyStatusFury", new CardFuryAction());
+        _cardStatusActions.Add("KeyStatusVulnerable", new CardVulnerableAction());
     }
 
     // 덱 구성
@@ -66,14 +75,24 @@ public class TestGameManager_KMH : MonoBehaviour
     }
 
 
-    // 동작 반환
-    public ICardAction GetAction(CardType type)
+    // 동작 반환 (CardType)
+    public bool GetAction(CardType type, out ICardAction action)
     {
-        if (_cardActions.TryGetValue(type, out ICardAction action))
-            return action;
+        if (_cardTypeActions.TryGetValue(type, out action))
+            return true;
 
         Debug.LogWarning($"{type}에 해당하는 행동이 없습니다.");
-        return null;
+        return false;
+    }
+
+    // 동작 반환 (StatusEffect)
+    public bool GetAction(string statusEffect, out ICardAction action)
+    {
+        if (_cardStatusActions.TryGetValue(statusEffect, out action))
+            return true;
+
+            Debug.LogWarning($"{statusEffect}에 해당하는 행동이 없습니다.");
+        return false;
     }
 
 
