@@ -72,8 +72,12 @@ public class MonsterData : CSVLoad, TableKey
         // 7: MoveSpeed
         if (float.TryParse(values[7], out float moveSpeedValue))
             MoveSpeed = moveSpeedValue;
+            if(MoveSpeed < 0f)
+                MoveSpeed = 0.0f;
+            else if(MoveSpeed > 10.0f)
+                MoveSpeed = 10.0f;
         else
-            MoveSpeed = 10.0f;
+            MoveSpeed = 5.0f;
         // 8: SkillSet
         SkillSet = values[8];
         if(SkillSet == "")

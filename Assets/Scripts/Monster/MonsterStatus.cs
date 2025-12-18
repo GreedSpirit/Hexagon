@@ -8,7 +8,7 @@ using UnityEngine;
 public class MonsterStatus : MonoBehaviour, IBattleUnit
 {
     public MonsterData MonsterData => _monsterData; //외부에서 몬스터 데이터에 접근할 수 있는 프로퍼티
-    [SerializeField] private int _monsterId; //몬스터 데이터 ID
+    [SerializeField] private int _monsterId = 1; //몬스터 데이터 ID
     [SerializeField] private int _monsterLevel; //추후 스테이지 테이블에서 불러올 내용
     [SerializeField] private MonsterGrade _monsterGrade;
     [SerializeField] private int _monsterMaxHP;
@@ -24,10 +24,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     [SerializeField] private CardData _currentSkillData; //현재 사용될 예정인 스킬 카드 데이터
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
-
+    private List<IMonsterSkillObserver> _skillObservers = new List<IMonsterSkillObserver>();
     private string _selectedSkillKey = null; //선택된 스킬 키 임시 변수
     private int _selectedSkillSlot = -1; //선택된 스킬 슬롯 인덱스 임시 변수
-    private int _selectedSkillValue = 0;
+    private int _selectedSkillValue = -1;
 
     public event System.Action OnEnemyActTurnEnd; // 몬스터 턴 종료 시점에 발행할 이벤트
 
@@ -45,7 +45,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
     }
 
-    public void InitMonsterStatus()
+    public void InitMonsterStatus() //몬스터 스탯 초기화 함수
     {
         //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 불러오는 방식으로 변경할 수도 있음
         _monsterGrade = _monsterData.MonGrade;
@@ -69,7 +69,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         _monsterCurHP = _monsterMaxHP;        
     }
 
-    private void Awake()
+    private void Start()
     {
         // ID 방식 Key 방식 구별
         _monsterData = DataManager.Instance.GetMonsterStatData(1);
@@ -84,6 +84,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             Debug.Log("데이터 로드 성공");
             InitMonsterStatus();
             NotifyHpObservers(); //초기 HP 상태 갱신
+            NotifySkillObservers(); //초기 스킬 상태 갱신
         }
     }
 
@@ -131,30 +132,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     public void GetShield(int shield) // 방어막을 얻을 때 호출할 함수
     {
         _monsterShield += shield;
-    }
-
-    public void AddHpObserver(IMonsterHpObserver observer)
-    {
-        if (!_hpObservers.Contains(observer)) //방어 코드
-        {
-            _hpObservers.Add(observer);
-        }
-    }
-
-    public void RemoveHpObserver(IMonsterHpObserver observer)
-    {
-        if (_hpObservers.Contains(observer)) //방어 코드
-        {
-            _hpObservers.Remove(observer);
-        }
-    }
-
-    private void NotifyHpObservers() //옵저버들에게 HP 변경 알림
-    {
-        foreach (var observer in _hpObservers)
-        {
-            observer.OnMonsterHpChanged(_monsterCurHP, _monsterMaxHP);
-        }
+        _monsterShield = Mathf.Min(_monsterShield, 99); //방어막 최대치 제한
+        NotifyHpObservers(); //쉴드 변경 알림
     }
 
     private void Death()
@@ -210,6 +189,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 _currentSkillData = DataManager.Instance.GetCard(_selectedSkillKey); //선택된 스킬 카드 데이터 저장
                 _selectedSkillValue = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
                 //이곳에서 스킬 타입에 따른 아이콘과 수치 UI 갱신 로직 추가
+                NotifySkillObservers(); //?선택된 스킬을 알림으로써 UI 갱신
                 break;
             }
         }        
@@ -240,8 +220,9 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             }
             //사용 후 선택된 스킬 초기화 (방어 코드 및 선턴을 잡을 경우 예외 사항)
             _selectedSkillKey = null;
-            _selectedSkillValue = 0;
+            _selectedSkillValue = -1;
             _selectedSkillSlot = -1;
+            NotifySkillObservers(); //스킬 사용 후 스킬 초기화 알림
         }
         else
         {
@@ -268,5 +249,85 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         UseSkill();
     }
     #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // 옵저버 패턴 관련 메서드 ------------------------------------------------------------
+    public void AddHpObserver(IMonsterHpObserver observer)
+    {
+        if (!_hpObservers.Contains(observer)) //방어 코드
+        {
+            _hpObservers.Add(observer);
+        }
+    }
+
+    public void RemoveHpObserver(IMonsterHpObserver observer)
+    {
+        if (_hpObservers.Contains(observer)) //방어 코드
+        {
+            _hpObservers.Remove(observer);
+        }
+    }
+
+    private void NotifyHpObservers() //옵저버들에게 HP 변경 알림
+    {
+        foreach (var observer in _hpObservers)
+        {
+            observer.OnMonsterHpChanged(_monsterCurHP, _monsterMaxHP, _monsterShield);
+        }
+    }
+
+    public void AddSkillObserver(IMonsterSkillObserver observer)
+    {
+        if (!_skillObservers.Contains(observer)) //방어 코드
+        {
+            _skillObservers.Add(observer);
+        }
+    }
+    public void RemoveSkillObserver(IMonsterSkillObserver observer)
+    {
+        if (_skillObservers.Contains(observer)) //방어 코드
+        {
+            _skillObservers.Remove(observer);
+        }
+    }
+    private void NotifySkillObservers() //옵저버들에게 스킬 변경 알림
+    {
+        foreach (var observer in _skillObservers)
+        {
+            observer.OnMonsterSkillSelected(_currentSkillData, _selectedSkillValue);
+        }
+    }
 
 }
