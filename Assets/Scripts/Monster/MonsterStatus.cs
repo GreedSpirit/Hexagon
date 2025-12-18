@@ -56,7 +56,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
         if(_monsterGrade == MonsterGrade.Normal)
         {
-            _monsterLevel = 3; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
+            _monsterLevel = 1; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
             _monsterStatData = DataManager.Instance.GetCommonMonsterStatData(_monsterLevel);
 
             _monsterMaxHP = Mathf.FloorToInt(_monsterStatData.Hp * _monsterData.HpRate); 
