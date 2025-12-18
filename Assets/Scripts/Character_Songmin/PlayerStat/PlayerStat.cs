@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerStat
 {
     //Initalizer에서 초기에 한 번만 받아오는 값
-    public string Name { get;  set; }
+    public string Name { get; set; }
     public float MoveSpeed { get; set; }
 
     //Initializer에서 미리 받아올 레벨 별 스탯 일람.
@@ -19,28 +19,29 @@ public class PlayerStat
     public int Level { get; private set; } = 1;
     public int Shield { get; private set; } //보호막
     public int CurrentExp { get; private set; } //현재 보유 중인 경험치
-    public int CurrentHp {  get; private set; } //현재 체력
+    public int CurrentHp { get; private set; } //현재 체력
 
-    public float Buff {  get; private set; } //강화(공격 데미지 상승률)
-    public float DeBuff {  get; private set; } //약화(피격 데미지 상승률)
+    public float Buff { get; private set; } //강화(공격 데미지 상승률)
+    public float DeBuff { get; private set; } //약화(피격 데미지 상승률)
 
     public int Poison { get; private set; } //독 중첩 스택
     public int Burn { get; private set; } //화상 중첩 스택
-    
+
+    public List<StatusEffectInstance> StatusEffectDatas { get; private set; } //현재 걸려 있는 상태이상 목록
 
 
 
-    
     public void SetStats()//맨 처음 캐릭터 생성할 때 및 레벨업 이후 호출.
     {
-        StatsByLevel stats = LevelList[Level -1];
+        StatusEffectDatas = new List<StatusEffectInstance>();
+        StatsByLevel stats = LevelList[Level - 1];
         Hp = stats.Hp;
         Defense = stats.Defense;
-        NeedExp = stats.NeedExp;        
+        NeedExp = stats.NeedExp;
     }
 
     private void LevelUp()
-    {        
+    {
         if (Level >= LevelList.Count)
         {
             Debug.Log("이미 최대 레벨입니다.");
@@ -48,7 +49,7 @@ public class PlayerStat
         }
         Level++;
         SetStats();
-                
+
     }
     public void GetDamage(int damage) //데미지를 입을 때마다 호출.
     {
@@ -61,7 +62,7 @@ public class PlayerStat
             {
                 CurrentHp += Shield;
                 Shield = 0;
-            }            
+            }
         }
         else //보호막이 없는 경우
         {
@@ -70,13 +71,33 @@ public class PlayerStat
         Die();
     }
 
+    public void ApplyStatusEffect()
+    {
+        foreach (var effect in StatusEffectDatas)
+        {
+            if (effect.Data.Key == "KeyStatusPoison")
+            {
+                ApplyPoison();
+                effect.Stack--;
+            }
+            else if (effect.Data.Key == "KeyStatusBurn")
+            {
+                ApplyBurn();
+                effect.Stack--;
+            }
+            else if (effect.Data.BuffType == BuffType.Buff || effect.Data.BuffType == BuffType.DeBuff)
+            {
+                effect.Duration--;
+            }
+        }       
+    }
 
     public void ApplyPoison()
     {
         if (Poison <= 0)
         {
             return;
-        }
+        }        
         Poison--;
         GetTrueDamage(Poison);                
     }
@@ -88,7 +109,7 @@ public class PlayerStat
             return;
         }
         Burn--;
-        GetTrueDamage(Poison);
+        GetTrueDamage(Burn);
     }
 
 
@@ -128,12 +149,13 @@ public class PlayerStat
         Shield = 0;
     }
 
-    public void ResetCondition() //전투상황 종료 시 호출
+    public void ResetStatusEffect() //전투상황 종료 시 호출
     {
         Poison = 0;
         Burn = 0;
         Buff = 0;
         DeBuff = 0;
+        StatusEffectDatas.Clear();
     }
 
     public void GetExp(int exp) //경험치를 얻을 때마다 호출
@@ -163,5 +185,65 @@ public class PlayerStat
             //죽는 매서드 호출
             Debug.Log("플레이어 사망!");
         }
+    }
+    public void AddStatusEffect(string effectKey, int duration, int stack)
+    {
+        StatusEffectData statusEffectData = DataManager.Instance.GetStatusEffectData(effectKey);
+        switch (statusEffectData.BuffType)
+        {
+            case BuffType.Buff:
+                break;
+            case BuffType.DeBuff:
+                break;
+            case BuffType.DoT:
+                AddDoT(statusEffectData, duration, stack);
+                break;
+            default:
+                Debug.Log("정의된 형태의 상태 이상이 아닙니다.");
+                break;            
+        }
+    }
+
+    private void AddDoT(StatusEffectData data, int duration, int stack)
+    {
+        StatusEffectInstance statusEffectInstance = new StatusEffectInstance();
+        switch (data.Key)
+        {
+            case "KeyStatusBurn":
+                GetBurn(duration + stack);                
+                break;
+
+            case "KeyStatusPoison":                
+                GetPoison(duration + stack);
+                break;
+        }
+        statusEffectInstance.Stack += stack;
+        statusEffectInstance.Data.Name = DataManager.Instance.GetString(data.Name)?.Korean;
+        statusEffectInstance.Data.Key = data.Key;
+        StatusEffectDatas.Add(statusEffectInstance);
+    }
+
+    private void AddBuff(StatusEffectData data, int duration, int stack)
+    {
+        StatusEffectInstance statusEffectInstance = new StatusEffectInstance();        
+        statusEffectInstance.Data.Key = data.Key;
+        statusEffectInstance.Data.Name = DataManager.Instance.GetString(data.Name)?.Korean;
+        statusEffectInstance.Data.ValueFormula = data.ValueFormula;
+        statusEffectInstance.Duration += duration;
+
+        Buff = statusEffectInstance.Data.ValueFormula;
+        StatusEffectDatas.Add(statusEffectInstance);
+    }
+
+    private void AddDeBuff(StatusEffectData data, int duration, int stack)
+    {
+        StatusEffectInstance statusEffectInstance = new StatusEffectInstance();
+        statusEffectInstance.Data.Key = data.Key;
+        statusEffectInstance.Data.Name = DataManager.Instance.GetString(data.Name)?.Korean;        
+        statusEffectInstance.Data.ValueFormula = data.ValueFormula;
+        statusEffectInstance.Duration += duration;
+
+        DeBuff = statusEffectInstance.Data.ValueFormula;
+        StatusEffectDatas.Add(statusEffectInstance);
     }
 }

@@ -84,14 +84,11 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
-    public void ApplyConditions()
+    public void ApplyStatusEffect()
     {
-        _stat.ApplyPoison();
+        _stat.ApplyStatusEffect();        
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-        PushTotalConditionDamage();
-        _stat.ApplyBurn();
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-        PushTotalConditionDamage();
+        PushTotalConditionDamage();        
     }
 
 
@@ -109,16 +106,16 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     }
     
 
-    public void TakeTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
-    {
-        _stat.GetPoison(-1);
-        _stat.GetTrueDamage(_stat.Poison);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+    //public void TakeTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
+    //{
+    //    _stat.GetPoison(-1);
+    //    _stat.GetTrueDamage(_stat.Poison);
+    //    OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
 
-        _stat.GetBurn(-1);
-        _stat.GetTrueDamage(_stat.Burn);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-    }    
+    //    _stat.GetBurn(-1);
+    //    _stat.GetTrueDamage(_stat.Burn);
+    //    OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+    //}    
 
     
 
@@ -142,7 +139,8 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 
     public void ResetCondition()
     {
-        _stat.ResetCondition();
+        _stat.ResetStatusEffect();
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
 
@@ -152,5 +150,11 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
         OnLevelChanged?.Invoke(_stat.Level);
+    }
+
+    public void AddStatusEffect(string effectKey, int duration, int stack)
+    {
+        StatusEffectData statusEffectData = DataManager.Instance.GetStatusEffectData(effectKey);        
+
     }
 }

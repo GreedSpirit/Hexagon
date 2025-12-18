@@ -10,10 +10,11 @@ public class TestGameManager_Song : MonoBehaviour
 
     public void InitPlayer()
     {
-        Player player = FindFirstObjectByType<Player>();
+        Player player = Player.Instance;
         PlayerStatInitializer initializer = new PlayerStatInitializer();
 
         CharacterData characterData = DataManager.Instance.GetCharacter(1);
+        StringData stringData = DataManager.Instance.GetString(1);
         List<CharacterLevelData> levelDatas = new List<CharacterLevelData>();
         List<CharacterStatData> statDatas = new List<CharacterStatData>();
 
