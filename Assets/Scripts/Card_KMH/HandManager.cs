@@ -305,14 +305,15 @@ public class HandManager : MonoBehaviour
     }
 
 
-    // 대상의 상태이상 수치 변하면 실행
+    // 대상의 상태이상 수치 변하면
+    // 아니면 상태이상 감소 사이클 다 돌면
     public void TargetStatusValueChanged()
     {
-        // 플레이어 강화 수치 (임시)
+        // 플레이어 강화 수치 (임시, 받아와야 함) 
         float playerBuffValue = 0.5f;
-        // 몬스터 약화 수치  (임시)
+        // 몬스터 약화 수치  (임시, 받아오기 가능하긴 함)
         float monsterDeBuffValue = 0;
-        // 몬스터 방어력  (임시)
+        // 몬스터 방어력  (임시, 받아와야 함)
         int monsterDefence = 1;
 
         // 타겟 몬스터
