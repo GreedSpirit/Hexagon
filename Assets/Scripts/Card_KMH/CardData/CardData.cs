@@ -48,7 +48,13 @@ public class CardData : CSVLoad, TableKey
     // DoT일 때 Turn 을 0으로
     public void SetStatusValue()
     {
+        // 상태이상 비어있으면 무시
+        if (string.IsNullOrEmpty(StatusEffect)) return;
+
         StatusEffectData statusEffect = DataManager.Instance.GetStatusEffectData(StatusEffect);
+
+        // 혹시나 이름 안맞으면
+        if (statusEffect == null) return;
 
         if (statusEffect.BuffType == BuffType.Buff || statusEffect.BuffType == BuffType.DeBuff)
             StatusEffectValue = 0;

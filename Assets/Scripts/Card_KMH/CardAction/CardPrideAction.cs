@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CardFuryAction : ICardAction
+public class CardPrideAction : ICardAction
 {
     public void Use(string statusEffectKey, int value, int statusValue, int turn, IBattleUnit target)
     {
@@ -13,7 +13,7 @@ public class CardFuryAction : ICardAction
         // 스택, 지속시간 둘 다 0 이면 무시
         if (turn == 0 && statusValue == 0) return;
 
-        Debug.Log("격노 사용");
+        Debug.Log("오만 사용");
         //target.적용();
     }
 }

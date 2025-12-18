@@ -32,7 +32,7 @@ public class TestGameManager_KMH : MonoBehaviour
         // 카드 상태이상 임시
         _cardStatusActions.Add("KeyStatusPoison", new CardPoisonAction());
         _cardStatusActions.Add("KeyStatusBurn", new CardBurnAction());
-        _cardStatusActions.Add("KeyStatusFury", new CardFuryAction());
+        _cardStatusActions.Add("KeyStatusPride", new CardPrideAction());
         _cardStatusActions.Add("KeyStatusVulnerable", new CardVulnerableAction());
     }
 
