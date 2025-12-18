@@ -1,114 +1,149 @@
-using UnityEngine.EventSystems;
+ï»¿using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
+enum CardUIState
+{
+    Idle,       // ê¸°ë³¸
+    Hover,      // ë§ˆìš°ìŠ¤ ì˜¤ë²„
+    Selected,   // ì„ íƒ
+    Drag,       // ë“œë˜ê·¸
+    Return,     // ë³µê·€
+    Disappear   // ì†Œë©¸
+}
+
 public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField] Transform _visual;             // ½ÇÁ¦ Ä«µå ºñÁÖ¾ó Æ®·£½ºÆû
+    [SerializeField] Transform _visual;Â  Â  Â  Â  Â  Â  Â // ì‹¤ì œ ì¹´ë“œ ë¹„ì£¼ì–¼ íŠ¸ëœìŠ¤í¼
+    [SerializeField] GameObject _selectedEdge;      // ì„ íƒ í…Œë‘ë¦¬
 
-    [SerializeField] Image _img;                     // Ä«µå ÀÌ¹ÌÁö
-    [SerializeField] TextMeshProUGUI _nameText;      // ÀÌ¸§ ÅØ½ºÆ®
-    [SerializeField] TextMeshProUGUI _descText;      // ¼³¸í ÅØ½ºÆ®
-    [SerializeField] TextMeshProUGUI _typeText;      // Å¸ÀÔ ÅØ½ºÆ®
-    [SerializeField] TextMeshProUGUI _levelText;     // ·¹º§ ÅØ½ºÆ®
-    [SerializeField] TextMeshProUGUI _numberOfAvailableText;      // »ç¿ë °¡´É È½¼ö ÅØ½ºÆ®
-    [SerializeField] Image _edgeColor;              // µî±Ş »ö
-
-    private CardLogic _cardLogic;             // Ä«µå ·ÎÁ÷
-    private CardData _cardData;          // Ä«µå µ¥ÀÌÅÍ
-    private HandManager _handManager;    // ÇÚµå ¸Å´ÏÀú (Ä«µå Á¦°Å ½Ã ÇÊ¿ä)
-
-    private bool _isMouseOver = false;   // ¸¶¿ì½º ¿À¹ö
-    private bool _isHovering = false;    // È£¹ö »óÅÂ
-    private bool _isDragging = false;    // µå·¡±× »óÅÂ
-    private bool _isReturning = false;   // º¹±Í »óÅÂ
-    private bool _isSelected = false;    // ¼±ÅÃ »óÅÂ
-
-    private Vector3 _basePos;            // ºÎÃ¤²Ã À§Ä¡
-    private Quaternion _baseRot;         // ºÎÃ¤²Ã È¸Àü
-
-    private Vector3 dragPos;             // µå·¡±× ÁÂÇ¥
-
-    private int _siblingIndex;           // Á¤·Ä ¼ø¼­
+    [Header("ì¹´ë“œ UI ìš”ì†Œ")]
+Â  Â  [SerializeField] Image _img;Â  Â  Â  Â  Â  Â  Â  Â  Â  Â  Â // ì¹´ë“œ ì´ë¯¸ì§€
+Â  Â  [SerializeField] TextMeshProUGUI _nameText;Â  Â  Â  // ì´ë¦„ í…ìŠ¤íŠ¸
+Â  Â  [SerializeField] TextMeshProUGUI _descText;Â  Â  Â  // ì„¤ëª… í…ìŠ¤íŠ¸
+Â  Â  [SerializeField] TextMeshProUGUI _typeText;Â  Â  Â  // íƒ€ì… í…ìŠ¤íŠ¸
+Â  Â  [SerializeField] TextMeshProUGUI _levelText;Â  Â  Â // ë ˆë²¨ í…ìŠ¤íŠ¸
+Â  Â  [SerializeField] TextMeshProUGUI _numberOfAvailableText;Â  Â  Â  // ì‚¬ìš© ê°€ëŠ¥ íšŸìˆ˜ í…ìŠ¤íŠ¸
+Â  Â  [SerializeField] Image _edgeColor;Â  Â  Â  Â  Â  Â  Â  // ë“±ê¸‰ ìƒ‰
 
 
+    // HandManagerì—ì„œ ìš°í´ë¦­, íœ í´ë¦­ ë“±ìœ¼ë¡œ ì„ íƒ ì·¨ì†Œ ì‹œ ì‚¬ìš©
+    public bool IsDragging => _currentState == CardUIState.Drag;
 
-    private void Update()
+
+    private CardLogic _cardLogic;Â  Â  Â  Â  // ì¹´ë“œ ë¡œì§
+Â  Â  private CardData _cardData;Â  Â  Â  Â  Â  // ì¹´ë“œ ë°ì´í„°
+Â  Â  private HandManager _handManager;Â  Â  // í•¸ë“œ ë§¤ë‹ˆì € (ì¹´ë“œ ì œê±° ì‹œ í•„ìš”)
+    private CanvasGroup _canvasGroup;    // ì†Œë©¸ í…ŒìŠ¤íŠ¸ìš©
+
+    // ì¹´ë“œ ìƒíƒœ
+    private CardUIState _currentState = CardUIState.Idle;
+
+Â  Â  private Vector3 _basePos;Â  Â  Â  Â  Â  Â  // ë¶€ì±„ê¼´ ìœ„ì¹˜
+Â  Â  private Quaternion _baseRot;Â  Â  Â  Â  Â // ë¶€ì±„ê¼´ íšŒì „
+
+Â  Â  private Vector3 _dragPos;Â  Â  Â  Â  Â  Â  Â // ë“œë˜ê·¸ ì¢Œí‘œ
+
+Â  Â  private int _siblingIndex;Â  Â  Â  Â  Â  Â // ì •ë ¬ ìˆœì„œ
+
+
+Â  Â  private void Update()
     {
-        // µå·¡±× ÁßÀÏ ¶§
-        if (_isDragging)
+        // ìƒíƒœë³„ ìœ„ì¹˜ ì´ë™ ë¡œì§
+        switch (_currentState)
         {
-            // Ç×»ó ¸Ç ¾ÕÀ¸·Î
-            KeepCardOnTop();
-            // Ä«µå°¡ µå·¡±× À§Ä¡ µû¶ó°¡°Ô
-            transform.position = Vector3.Lerp(transform.position, dragPos, Time.deltaTime * _handManager.MoveSpeed);
-            return;
-        }
-        // È£¹ö ÁßÀÏ ¶§ ¹«½Ã
-        if (_isHovering)
-        {
-            // Ç×»ó ¸Ç ¾ÕÀ¸·Î
-            KeepCardOnTop();
-            return;
-        }
+            case CardUIState.Idle:
+                ReturnToIdlePosition();// ê¸°ë³¸ ìœ„ì¹˜ë¡œ ì´ë™
+                break;
 
-        // ¿øÀ§Ä¡
-        transform.position = Vector3.Lerp(transform.position, _basePos, Time.deltaTime * _handManager.MoveSpeed);
-        transform.rotation = Quaternion.Lerp(transform.rotation, _baseRot, Time.deltaTime * _handManager.MoveSpeed);
-        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, Time.deltaTime * _handManager.ScaleSpeed);
+            case CardUIState.Hover:
+            case CardUIState.Selected:
+                MoveToHoverPosition(); // í˜¸ë²„, ì„ íƒ ìœ„ì¹˜ ì´ë™
+                break;
 
-        // Ä«µå ºñÁÖ¾ó Å©±â
-        // ¿É¼Â¸¸Å­ Å©°Ô
-        _visual.localScale = Vector3.Lerp(_visual.localScale, Vector3.one * _handManager.HoverVisualScaleOffset, Time.deltaTime * _handManager.ScaleSpeed);
+            case CardUIState.Drag:
+                MoveToDragPosition();  // ë“œë˜ê·¸ ìœ„ì¹˜ ì´ë™
+                break;
 
-        // º¹±Í Áß
-        if (_isReturning)
-        {
-            // ¿ø·¡ À§Ä¡¶û °¡±î¿ö Áö¸é 
-            if (Vector3.Distance(transform.position, _basePos) < 1f)
-            {
-                // º¹±Í ¿Ï·á
-                _isReturning = false;
-
-                // ¸¶¿ì½º ¿Ã¶ó°¡ ÀÖÀ¸¸é È£¹ö »óÅÂ·Î ÀüÈ¯
-                // ±Ùµ¥ ¼±ÅÃµÈ Ä«µå ¾ø¾î¾ß ÇÔ
-                if (_isMouseOver &&_handManager.SelectedCard == null)
-                    OnHover();
-            }
+            case CardUIState.Return:
+                ReturnToIdlePosition();// ê¸°ë³¸ ìœ„ì¹˜ë¡œ ì´ë™
+                CheckReturnDistance(); // ë³µê·€ ì²´í¬
+                break;
         }
     }
 
 
-    // ----------------------------------------------------------------
-
-    public void OnPointerEnter(PointerEventData eventData)
+    // ìƒíƒœ ì „í™˜
+    private void ChangeState(CardUIState newState)
     {
-        if (_isDragging) return; // µå·¡±× Áß ¹«½Ã
-        _isMouseOver = true;     // ¸¶¿ì½º ¿À¹ö
-        if (_isReturning) return;// º¹±Í Áß ¹«½Ã
-        if (_handManager.SelectedCard != null) return;  // ¼±ÅÃµÈ Ä«µå ÀÖÀ¸¸é ¹«½Ã
+        if (_currentState == newState) return; // ê°™ì€ ìƒíƒœë©´ ë¬´ì‹œ
 
-        // È£¹ö »óÅÂ ÀüÈ¯
-        OnHover();
+        // ìƒíƒœ ë‚˜ê°ˆ ë•Œ
+        switch (_currentState)
+        {
+            case CardUIState.Selected:          // ì„ íƒ, ë“œë˜ê·¸ ìƒíƒœ
+            case CardUIState.Drag:
+            case CardUIState.Hover:
+                _selectedEdge.SetActive(false); // í…Œë‘ë¦¬ ë„ê¸°
+                break;
+        }
+
+        _currentState = newState;
+
+        // ìƒíƒœ ì „í™˜ë  ë•Œ
+        switch (_currentState)
+        {
+            case CardUIState.Idle:
+            case CardUIState.Return:
+                transform.SetSiblingIndex(_siblingIndex); // ìˆœì„œ ë³µêµ¬
+                break;
+
+            case CardUIState.Hover:
+                transform.SetAsLastSibling(); // ë§¨ ìœ„ë¡œ
+                _selectedEdge.SetActive(true);// í…Œë‘ë¦¬ í™œì„±í™”
+                break;
+            case CardUIState.Selected:
+            case CardUIState.Drag:
+                transform.SetAsLastSibling();
+                _handManager.SetSelectedCard(this); // ì„ íƒ ì¹´ë“œ ë“±ë¡
+                _selectedEdge.SetActive(true);
+                break;
+            case CardUIState.Disappear:
+                transform.SetParent(_handManager.transform.parent, true);   // ë°”ê¹¥ìœ¼ë¡œ ë„ì§‘ì–´ë‚´ê¸° (ì ˆëŒ€ ê°€ë ¤ì§€ì§€ ì•Šê²Œ)
+                transform.SetAsLastSibling();
+                _canvasGroup.blocksRaycasts = false;                        // ë§ˆìš°ìŠ¤ ì²˜ë¦¬ ì•ˆë˜ê²Œ
+                // í¬ê¸°ë¥¼ í˜¸ë²„ í¬ê¸°ë¡œ
+                transform.localScale = Vector3.one * _handManager.HoverScale;
+                if (_visual != null) _visual.localScale = Vector3.one;
+                break;
+        }
+    }
+
+Â  Â  // ----------------------------------------------------------------
+
+Â  Â  public void OnPointerEnter(PointerEventData eventData)
+    {
+        // ê¸°ë³¸ ìƒíƒœì¼ ë•Œ
+        if (_currentState != CardUIState.Idle) return;
+
+        // ë‹¤ë¥¸ ì¹´ë“œ ì„ íƒë˜ì–´ ìˆìœ¼ë©´ ë¬´ì‹œ
+        if (_handManager.SelectedCard != null) return;
+
+        // í˜¸ë²„ ìƒíƒœë¡œ ì „í™˜
+        ChangeState(CardUIState.Hover);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_isDragging) return;  // µå·¡±× Áß¿£ ¹«½Ã
-
-        _isMouseOver = false;     // ¸¶¿ì½º ¿À¹ö »óÅÂ ³¡
-
-        if (_isSelected) return;  // ¼±ÅÃ µÈ »óÅÂ¸é ¹«½Ã
-         
-        if (_isHovering)          // È£¹ö »óÅÂ ¶ó¸é
+        // í˜¸ë²„ ìƒíƒœì¼ ë•Œ
+        // ì„ íƒ ìƒíƒœë©´ ë§ˆìš°ìŠ¤ ë‚˜ê°€ë„ ìœ ì§€
+        if (_currentState == CardUIState.Hover)
         {
-            // º¹±Í
-            _isHovering = false;
-            _isReturning = true;
-
-            // ¿ø·¡ ¼ø¼­·Î º¹±Í
-            transform.SetSiblingIndex(_siblingIndex);
+            // ê¸°ë³¸ ìƒíƒœë¡œ ì „í™˜
+            ChangeState(CardUIState.Idle);
         }
     }
 
@@ -116,120 +151,118 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (_isReturning) return;// º¹±Í Áß ¹«½Ã
-        if (_isDragging) return; // µå·¡±×·Î ÀÎÇÑ Å¬¸¯ ¹æÁö
+        // ì¢Œí´ë¦­ ë¦´ë¦¬ì¦ˆ ì•„ë‹ˆë©´ ë¬´ì‹œ
+        if (eventData.button != PointerEventData.InputButton.Left) return;
 
-        // ¼±ÅÃµÈ »óÅÂ¶ó¸é »ç¿ë ½Ãµµ
-        if (_isSelected)
+        // ë“œë˜ê·¸, ë³µê·€ ìƒíƒœëŠ” ë¬´ì‹œ
+        if (_currentState == CardUIState.Drag || _currentState == CardUIState.Return) return;
+
+        // ë‹¤ë¥¸ ì¹´ë“œ ì„ íƒë˜ì–´ ìˆì„ ê²½ìš°
+        if (_handManager.SelectedCard != null && _handManager.SelectedCard != this)
         {
-            // Ä«µå »ç¿ë ½Ãµµ
+            // ê¸°ì¡´ ì„ íƒ ì¹´ë“œ í•´ì œ
+            _handManager.SelectedCard.Deselect();
+
+            // ì„ íƒ ìƒíƒœë¡œ ì „í™˜
+            ChangeState(CardUIState.Selected);
+            return;
+        }
+
+        // ì„ íƒ ìƒíƒœë¼ë©´
+        if (_currentState == CardUIState.Selected)
+        {
+            // 2 ë²ˆì§¸ ì„ íƒ í´ë¦­ì€ ì‚¬ìš© ì‹œë„
             _cardLogic.TryUse();
 
-            // »ç¿ë ½Ãµµ ÈÄ ¼±ÅÃ ÇØÁ¦
+            // ì¹´ë“œ ì„ íƒ í•´ì œ
             _handManager.DeselectCard();
         }
-        else // ¼±ÅÃµÈ »óÅÂ°¡ ¾Æ´Ï¶ó¸é ¼±ÅÃ
+        else
         {
-            _isSelected = true;
-            OnHover();
-            _handManager.SetSelectedCard(this);
+            // ì„ íƒ ìƒíƒœë¡œ ì „í™˜
+            ChangeState(CardUIState.Selected);
         }
     }
 
-    public void Deselect()
+Â  Â  // ----------------------------------------------------------------
+
+Â  Â  public void OnBeginDrag(PointerEventData eventData)
     {
-        _isSelected = false;
+        // ì¢Œí´ë¦­ ë“œë˜ê·¸ ì•„ë‹ˆë©´ ë¬´ì‹œ
+        if (eventData.button != PointerEventData.InputButton.Left) return;
 
-        // º¹±Í
-        transform.SetSiblingIndex(_siblingIndex);
+        // ë‹¤ë¥¸ ì¹´ë“œê°€ ì„ íƒëœ ìƒíƒœ ë“œë˜ê·¸ í•˜ë©´
+        if (_handManager.SelectedCard != null && _handManager.SelectedCard != this)
+        {
+            _handManager.SelectedCard.Deselect(); // ê¸°ì¡´ ì¹´ë“œ í•´ì§€
+        }
 
-        OnPointerExit(null);
+        // ë“œë˜ê·¸ ìƒíƒœë¡œ ì „í™˜
+        ChangeState(CardUIState.Drag);
 
-        //// º¹±Í
-        //_isHovering = false;
-        //_isReturning = true;
-
-        //// ¿ø·¡ ¼ø¼­·Î
-        //transform.SetSiblingIndex(_siblingIndex);
-
-
-    }
-
-    // È£¹ö »óÅÂ (Å¬¸¯ ¼±ÅÃ »óÅÂ)
-    private void OnHover()
-    {
-        // È£¹ö »óÅÂ
-        _isHovering = true;
-
-        // ¹Ù´Ú ¶ç¿ì±â (ÇÚµå ¸Å´ÏÀú y + Ä«µå ³ôÀÌ Àı¹İ * È£¹ö ¹èÀ²)
-        float yOffset = _handManager.transform.position.y + _handManager.CardHalfHeight * _handManager.HoverScale;
-
-        // À§·Î ÀÌµ¿, È¸Àü 0, È®´ë
-        transform.position = new Vector3(transform.position.x, yOffset, transform.position.z);
-        transform.rotation = Quaternion.identity;
-        transform.localScale = Vector3.one * _handManager.HoverScale;
-
-        // Ä«µå ºñÁÖ¾ó Å©±â
-        // ºÎ¸ğ¿Í µ¿ÀÏÇÏ°Ô
-        _visual.localScale = Vector3.one;
-    }
-
-    // ----------------------------------------------------------------
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        // µå·¡±× ½ÃÀÛ
-        // ¼±ÅÃµÈ Ä«µå·Î µî·Ï
-        _handManager.SetSelectedCard(this);
-        _isSelected = true;                  // µå·¡±× Áß¿¡µµ ¼±ÅÃ »óÅÂ
-        _isDragging = true;
-        _isHovering = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        // µå·¡±× À§Ä¡ ¼³Á¤
-        dragPos = eventData.position;
-        transform.rotation = Quaternion.identity;
+Â  Â  Â  Â  // ë“œë˜ê·¸ ìœ„ì¹˜ ì„¤ì •
+        if (_currentState == CardUIState.Drag)
+        {
+            _dragPos = eventData.position;
+            transform.rotation = Quaternion.identity;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // µå·¡±× ³¡
-        _isDragging = false;
-        _isReturning = true;
+        // ë“œë˜ê·¸ í’€ë¦¬ê³  í˜¸ì¶œ ì‹œ ë¬´ì‹œ
+        if (_currentState != CardUIState.Drag) return;
 
-        // ¿ø·¡ ¼ø¼­·Î º¹±Í
-        transform.SetSiblingIndex(_siblingIndex);
+        // ì¢Œí´ë¦­ ë“œë˜ê·¸ ì¤‘ ìš°í´ë¦­, íœ í´ë¦­ ë“±ìœ¼ë¡œ í˜¸ì¶œë  ì‹œ ë¬´ì‹œ
+        if (Mouse.current.leftButton.wasReleasedThisFrame == false)
+        {
+            // ê·¸ëƒ¥ ë³µê·€ ìƒíƒœë¡œ
+            _handManager.DeselectCard();
+            ChangeState(CardUIState.Return);
+            return;
+        }
 
-        // ³õÀ» ¶§ À§Ä¡
-        // È­¸éÀÇ UseScreenRatioÆÛ¼¾Æ®º¸´Ù ³ôÀ» ½Ã »ç¿ë ½Ãµµ
+        // ì‚¬ìš© ë²”ìœ„ ì²´í¬
         bool isUse = eventData.position.y > Screen.height * _handManager.UseScreenRatio;
 
         if (isUse)
         {
-            // »ç¿ë ½Ãµµ
+            // ì‚¬ìš© ì‹œë„
             _cardLogic.TryUse();
         }
+        else
+        {
+            // ì‚¬ìš© ì•ˆ í•˜ë©´ ë³µê·€ ìƒíƒœ
+            ChangeState(CardUIState.Return);
+        }
 
-        // ¼±ÅÃ ÇØÁ¦
+        // ì„ íƒ ì¹´ë“œ í•´ì§€
         _handManager.DeselectCard();
     }
 
     // ----------------------------------------------------------------
 
-    // Ã¹ »ı¼º ÃÊ±âÈ­
-    public void Init(CardData data, HandManager manager)
+Â  Â  // ì²« ìƒì„± ì´ˆê¸°í™”
+Â  Â  public void Init(CardData data, HandManager manager)
     {
         _cardLogic = GetComponent<CardLogic>();
+        _canvasGroup = GetComponent<CanvasGroup>();
+
         _cardData = data;
         _handManager = manager;
 
-        // ºñÁÖ¾ó ¼³Á¤
+        // ë¹„ì£¼ì–¼ ì„¤ì •
         SetVisual();
+
+        // ìƒíƒœ ì„¤ì •
+        ChangeState(CardUIState.Idle);
     }
-    
-    // Ä«µå ºÎÃ¤²Ã À§Ä¡ ÁöÁ¤ ÇÔ¼ö
+
+    // ì¹´ë“œ ë¶€ì±„ê¼´ ìœ„ì¹˜ ì§€ì • í•¨ìˆ˜
     public void SetBase(Vector3 pos, Quaternion rot, int index)
     {
         _basePos = pos;
@@ -238,31 +271,34 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         _siblingIndex = index;
     }
 
-    // Ä«µå µ¥ÀÌÅÍ¿¡ ¸Â°Ô ºñÁÖ¾ó °»½Å
-    private void SetVisual()
+Â  Â  // ì¹´ë“œ ë°ì´í„°ì— ë§ê²Œ ë¹„ì£¼ì–¼ ê°±ì‹ 
+Â  Â  private void SetVisual()
     {
-        // img = (data.CardImg);
-        if (_nameText != null) _nameText.text = _cardData.Name;
-        else Debug.LogError("NameText °¡ ÇÒ´çµÇ¾îÀÖÁö ¾Ê½À´Ï´Ù.");
+Â  Â  Â  Â  // img = (data.CardImg);
+Â  Â  Â  Â  if (_nameText != null) _nameText.text = _cardData.Name;
+        else Debug.LogError("NameText ê°€ í• ë‹¹ë˜ì–´ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.");
         if (_typeText != null) _typeText.text = _cardData.CardType.ToString();
-        else Debug.LogError("TypeText °¡ ÇÒ´çµÇ¾îÀÖÁö ¾Ê½À´Ï´Ù.");
+        else Debug.LogError("TypeText ê°€ í• ë‹¹ë˜ì–´ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.");
         if (_levelText != null) _levelText.text = _cardData.Level.ToString();
-        else Debug.LogError("LevelText °¡ ÇÒ´çµÇ¾îÀÖÁö ¾Ê½À´Ï´Ù.");
+        else Debug.LogError("LevelText ê°€ í• ë‹¹ë˜ì–´ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.");
 
-        if (_cardData.IsCard == true &&_descText != null) _descText.text = _cardData.GetCardDescWithValue();
-        else if(_descText == null) Debug.LogError("DescText °¡ ÇÒ´çµÇ¾îÀÖÁö ¾Ê½À´Ï´Ù.");
+        if (_cardData.IsCard == true && _descText != null) _descText.text = _cardData.GetCardDescWithValue();
+        else if (_descText == null) Debug.LogError("DescText ê°€ í• ë‹¹ë˜ì–´ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.");
 
-        // Ä«µå »ç¿ë °¡´É È½¼ö (µ¦ ±¸¼º, ÀÎº¥Åä¸®¿¡¼­¸¸ °¡´ÉÇÏ°Ô)
-        int numberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(_cardData.Level, _cardData.CardGrade);
+Â  Â  Â  Â  // ì¹´ë“œ ì‚¬ìš© ê°€ëŠ¥ íšŸìˆ˜ (ë± êµ¬ì„±, ì¸ë²¤í† ë¦¬ì—ì„œë§Œ ê°€ëŠ¥í•˜ê²Œ)
+Â  Â  Â  Â  int numberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(_cardData.Level, _cardData.CardGrade);
         if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
-        else Debug.LogError("NumberOfAvailableText °¡ ÇÒ´çµÇ¾îÀÖÁö ¾Ê½À´Ï´Ù.");
+        else Debug.LogError("NumberOfAvailableText ê°€ í• ë‹¹ë˜ì–´ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.");
 
-        // Ä«µå µî±Ş »ö»ó
-        SetGradeColor();
+        // ì„ íƒ í…Œë‘ë¦¬
+        _selectedEdge.SetActive(false);
+
+Â  Â  Â  Â  // ì¹´ë“œ ë“±ê¸‰ ìƒ‰ìƒ
+Â  Â  Â  Â  SetGradeColor();
     }
 
-    // Ä«µå µî±Ş »ö»ó
-    private void SetGradeColor()
+Â  Â  // ì¹´ë“œ ë“±ê¸‰ ìƒ‰ìƒ
+Â  Â  private void SetGradeColor()
     {
         Color color = new Color();
 
@@ -285,18 +321,120 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         _edgeColor.color = color;
     }
 
-
-    // Ä«µå ¸Ç À§ °íÁ¤
-    private void KeepCardOnTop()
+    // ê¸°ë³¸ ìƒíƒœ ìœ„ì¹˜ë¡œ ì´ë™
+    private void ReturnToIdlePosition()
     {
-        // Ä«µå ¼ö
-        int lastIndex = transform.parent.childCount - 1;
+        // ì¹´ë“œ
+        transform.position = Vector3.Lerp(transform.position, _basePos, Time.deltaTime * _handManager.MoveSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, _baseRot, Time.deltaTime * _handManager.MoveSpeed);
+        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, Time.deltaTime * _handManager.ScaleSpeed);
 
-        // ³» ÇöÀç ¼ø¼­°¡ ¸¶Áö¸·ÀÌ ¾Æ´Ï¶ó¸é
-        if (transform.GetSiblingIndex() < lastIndex)
+        // ì¹´ë“œ ë¹„ì£¼ì–¼
+        if (_visual != null)
+            _visual.localScale = Vector3.Lerp(_visual.localScale, Vector3.one * _handManager.HoverVisualScaleOffset, Time.deltaTime * _handManager.ScaleSpeed);
+    }
+
+    // í˜¸ë²„ ìƒíƒœ ìœ„ì¹˜ë¡œ ì´ë™
+    private void MoveToHoverPosition()
+    {
+Â  Â  Â  Â  // ë°”ë‹¥ ë„ìš°ê¸° (í•¸ë“œ ë§¤ë‹ˆì € y + ì¹´ë“œ ë†’ì´ ì ˆë°˜ * í˜¸ë²„ ë°°ìœ¨)
+Â  Â  Â  Â  float yOffset = _handManager.transform.position.y + _handManager.CardHalfHeight * _handManager.HoverScale;
+
+        // í˜¸ë²„ ì‹œ ë¶€ë“œëŸ¬ìš´ ì´ë™ ì›í•˜ë©´ ì£¼ì„ ì‚¬ìš©í•˜ê¸°
+        //Vector3 targetPos = new Vector3(transform.position.x, yOffset, transform.position.z);
+        //transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * _handManager.MoveSpeed);
+
+        // Xì¶• ìœ ì§€í•˜ê³  Yì¶•ë§Œ ë„ì›€
+        transform.position = new Vector3(transform.position.x, yOffset, transform.position.z);
+        transform.rotation = Quaternion.identity;
+        transform.localScale = Vector3.one * _handManager.HoverScale;
+        
+        // ë¹„ì£¼ì–¼ í¬ê¸°
+        // ë¶€ëª¨ì™€ ë™ì¼í•˜ê²Œ
+        if(_visual != null)
+             _visual.localScale = Vector3.one;
+    }
+
+    // ë“œë˜ê·¸ ìƒíƒœ ìœ„ì¹˜ë¡œ ì´ë™
+    private void MoveToDragPosition()
+    {
+        // ìš°í´ë¦­ ì·¨ì†Œ ì²´í¬ ( HandManagerê°€ ì²´í¬ ëª» í•œ ê²½ìš° )
+        if (Mouse.current.rightButton.wasReleasedThisFrame)
         {
-            // ¸¶Áö¸·À¸·Î º¯°æ
-            transform.SetAsLastSibling();
+            _handManager.DeselectCard();     // ì„ íƒ ì¹´ë“œ í•´ì§€
+            ChangeState(CardUIState.Return); // ê°•ì œ ë³µê·€
+            return;
         }
+        transform.position = Vector3.Lerp(transform.position, _dragPos, Time.deltaTime * _handManager.MoveSpeed);
+        transform.localScale = Vector3.one * _handManager.HoverScale;
+
+        // ë¹„ì£¼ì–¼ í¬ê¸°
+        // ë¶€ëª¨ì™€ ë™ì¼í•˜ê²Œ
+        if (_visual != null)
+            _visual.localScale = Vector3.one;
+    }
+
+    // ë³µê·€ ìƒíƒœ ìœ„ì¹˜ë¡œ ì´ë™
+    private void CheckReturnDistance()
+    {
+        // ê±°ì˜ ë„ì°©í–ˆìœ¼ë©´
+        if (Vector3.Distance(transform.position, _basePos) < 0.1f)
+        {
+            // ê¸°ë³¸ ìƒíƒœë¡œ ì „í™˜
+            ChangeState(CardUIState.Idle);
+        }
+    }
+
+Â  Â  // ì¹´ë“œ ì„ íƒ í•´ì§€
+Â  Â  public void Deselect()
+    {
+        // ì„ íƒ ìƒíƒœì¼ ë•Œ
+        if (_currentState == CardUIState.Selected)
+        {
+            // ë³µê·€ ìƒíƒœë¡œ ì „í™˜
+            ChangeState(CardUIState.Return);
+        }
+    }
+
+Â  Â  // ì¹´ë“œ ì†Œë©¸ í˜¸ì¶œ
+Â  Â  public void OnDisappear(Transform disappearPoint)
+    {
+        // ì†Œë©¸ ìƒíƒœë¡œ ì „í™˜
+        ChangeState(CardUIState.Disappear);
+
+        // ë§¤ê°œë³€ìˆ˜ í•„ìš”í•´ì„œ ì—¬ê¸°ì„œ ì‹œì‘
+        // ì´ë™, ì†Œë©¸ ì‹œì‘
+        StartCoroutine(CardDisappear(disappearPoint));
+    }
+
+Â  Â  // ì†Œë©¸
+Â  Â  private IEnumerator CardDisappear(Transform disappearPoint)
+    {
+Â  Â  Â  Â  // ì´ë™ (ì¹´ë“œì™€ ì†Œë©¸ í¬ì¸íŠ¸ ê±°ë¦¬ ì²´í¬)
+Â  Â  Â  Â  while (Vector3.Distance(transform.position, disappearPoint.position) > 0.1f)
+        {
+Â  Â  Â  Â  Â  Â  // ì¹´ë“œ ìœ„ì¹˜ë¥¼ ì†Œë©¸ í¬ì¸íŠ¸ê¹Œì§€ ì´ë™
+Â  Â  Â  Â  Â  Â  transform.position = Vector3.Lerp(transform.position, disappearPoint.position, Time.deltaTime * _handManager.MoveSpeed);
+
+            yield return null;
+        }
+
+        float fadeTime = 0.5f; // ì‚¬ë¼ì§ˆ ì‹œê°„
+Â  Â  Â  Â  float timer = 0f;
+
+Â  Â  Â  Â  // ì†Œë©¸
+Â  Â  Â  Â  while (timer < fadeTime)
+        {
+Â  Â  Â  Â  Â  Â  // ì‹œê°„ ì¦ê°€
+Â  Â  Â  Â  Â  Â  timer += Time.deltaTime;
+
+Â  Â  Â  Â  Â  Â  // ë‚¨ì€ ì‹œê°„ ë¹„ìœ¨ë¡œ ì•ŒíŒŒê°’ 1 ì—ì„œ 0ìœ¼ë¡œ
+Â  Â  Â  Â  Â  Â  _canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / fadeTime);
+
+            yield return null;
+        }
+
+Â  Â  Â  Â  // ì‚­ì œ (ë‚˜ì¤‘ì—” ë°˜í™˜)
+Â  Â  Â  Â  Destroy(gameObject);
     }
 }

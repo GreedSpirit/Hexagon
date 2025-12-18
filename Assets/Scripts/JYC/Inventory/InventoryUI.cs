@@ -7,7 +7,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Transform contentParent;       // Scroll View의 Content
     [SerializeField] GameObject slotPrefab;         // InventorySlotUI 프리팹
     [SerializeField] TMP_Dropdown sortDropdown;     // 정렬 드롭다운
-
+    [SerializeField] TextMeshProUGUI modeText;   //  현재 모드를 표시할 텍스트 (인벤토리 덱편집,전체 보기 전환용)
     private List<InventorySlotUI> _slots = new List<InventorySlotUI>();
     private InventorySlotUI _currentSelectedSlot;   // 현재 선택된 슬롯
 
@@ -47,6 +47,17 @@ public class InventoryUI : MonoBehaviour
         // 슬롯 생성
         foreach (var userCard in list)
         {
+            if (IsDeckBuildingMode)
+            {
+                // 방금 InventoryManager에 추가한 함수를 호출
+                bool isEquipped = InventoryManager.Instance.IsCardInDeck(userCard.CardId);
+
+                // 덱에 없는 카드라면 슬롯을 생성하지 않고 건너뜀
+                if (isEquipped == false)
+                {
+                    continue;
+                }
+            }
             GameObject go = Instantiate(slotPrefab, contentParent);
             var slot = go.GetComponent<InventorySlotUI>();
             slot.Init(userCard, this);
@@ -95,6 +106,20 @@ public class InventoryUI : MonoBehaviour
         {
             _currentSelectedSlot.SetSelected(false);
             _currentSelectedSlot = null;
+        }
+    }
+    public void OnClickToggleDeckMode()
+    {
+        // 모드 반전 (true -> false, false -> true)
+        IsDeckBuildingMode = !IsDeckBuildingMode;
+
+        // 화면 갱신 (그래야 필터링이 적용됨)
+        RefreshInventory();
+
+        // 텍스트 변경으로 현재 상태 알려주기
+        if (modeText != null)
+        {
+            modeText.text = IsDeckBuildingMode ? "현재: 덱 편집 모드" : "현재: 전체 보기";
         }
     }
 }

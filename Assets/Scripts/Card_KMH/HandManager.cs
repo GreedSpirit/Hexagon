@@ -1,14 +1,15 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HandManager : MonoBehaviour
 {
     [Header("카드 프리팹")]
     [SerializeField] GameObject cardPrefab;     // 카드 프리팹
 
-    [Header("카드 설정값")]
+    [Header("카드 설정")]
     [SerializeField] float _moveSpeed = 15f;        // 이동/회전 속도
     [SerializeField] float _scaleSpeed = 15f;       // 확대/축소 속도
     [SerializeField] float _hoverScale = 1.5f;      // 마우스 올렸을 때 커지는 배율
@@ -21,6 +22,9 @@ public class HandManager : MonoBehaviour
     [SerializeField] float _radius = 2000f;     // 부채꼴 반지름 (클수록 완만)
     [SerializeField] int _startHandCount;       // 시작 시 뽑을 카드 수
     [SerializeField] int _handLimit;            // 핸드 소지 한계
+
+    [Header("소멸 위치 설정")]
+    [SerializeField] Transform _disappearPoint;    // 소멸 고정 위치
 
     [Space]
     [SerializeField] TextMeshProUGUI _deckCount;
@@ -57,7 +61,6 @@ public class HandManager : MonoBehaviour
     private CardUI _selectedCardUI;
 
 
-
     private void Start()
     {
         // 카드 높이
@@ -71,6 +74,20 @@ public class HandManager : MonoBehaviour
 
         // 덱 구성
         SetupDeck();
+    }
+
+    private void Update()
+    {
+        // 우클릭 릴리즈
+        if (Mouse.current.rightButton.wasReleasedThisFrame)
+        {
+            // 선택된 카드가 있을 때 && 선택 카드의 드래그 상태
+            if (SelectedCard != null && SelectedCard.IsDragging == false)
+            {
+                // 카드 선택 해지
+                DeselectCard();
+            }
+        }
     }
 
 
@@ -88,12 +105,11 @@ public class HandManager : MonoBehaviour
             // cardKey 사용해서 테이블 정보 불러오기
             CardData tempCardData = DataManager.Instance.GetCard(cardKey);
 
-            // 레벨, 사용 가능 횟수
+            // 레벨
             tempCardData.SetCardLevel(cardLevel);
 
             // 카드 사용 가능 횟수
             int cardNumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(cardLevel, tempCardData.CardGrade);
-
 
             // 사용 횟수 만큼 덱에 추가
             for (int i = 0; i < cardNumberOfAvailable; i++)
@@ -148,35 +164,38 @@ public class HandManager : MonoBehaviour
         // 덱큐에서 카드 한장 뽑기
         CardData cardData = _deck.Dequeue();
 
+        // 데이터에 맞는 카드 생성 ( out은 생성된 카드 UI - 오버드로우 처리용 )
+        GameObject newCard = InitDrawCard(cardData, out CardUI cardUI);
+
         // 덱 카드 수 갱신
         _deckCount.text = $"Deck : {_deck.Count} / {_deckCardCount}";
 
         // 오버 드로우 체크
         if (_handCards.Count >= _handLimit)
         {
-            Debug.Log("오버 드로우 발생");
-            // 나중에 카드 생성 이후로 위치 변경
-            // 카드 소멸 보여주기
+            // 오버드로우 발생
+            cardUI.OnDisappear(_disappearPoint);
+
+            // 핸드에 추가 안하고 바로 끝
             return;
         }
 
         // 리스트 추가
-        _handCards.Add(InitDrawCard(cardData));
+        _handCards.Add(newCard);
 
         // 정렬
         AlignCards();
     }
 
-
     // 드로우 카드 초기화
-    private GameObject InitDrawCard(CardData cardData)
+    private GameObject InitDrawCard(CardData cardData, out CardUI cardUI)
     {
         // 카드 UI 생성
         GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
 
         // 설정
         CardLogic cardLogic = newCard.GetComponent<CardLogic>();
-        CardUI cardUI = newCard.GetComponent<CardUI>();
+        cardUI = newCard.GetComponent<CardUI>();
 
         // 타겟 (플레이어 OR 몬스터)
         IBattleUnit target = cardData.Target == Target.Self ? targetPlayer : targetMonster;
@@ -188,18 +207,22 @@ public class HandManager : MonoBehaviour
         return newCard;
     }
 
+
+
     // 카드 사용
     public void UseCard(GameObject card)
     {
+        // 사용된 카드가 선택된 UI와 같아야
         if (card == _selectedCardUI.gameObject)
         {
+            // 소멸
+            _selectedCardUI.OnDisappear(_disappearPoint);
             _selectedCardUI = null;
         }
 
         // 핸드 리스트에서 제외
         _handCards.Remove(card);
-        // 삭제 (나중에 풀링)
-        Destroy(card.gameObject);
+
         // 남은 카드 재정렬
         AlignCards();           
     }
@@ -244,6 +267,9 @@ public class HandManager : MonoBehaviour
         }
     }
 
+
+
+
     // 카드 클릭 선택
     public void SetSelectedCard(CardUI cardUI)
     {
@@ -267,6 +293,9 @@ public class HandManager : MonoBehaviour
             _selectedCardUI = null;
         }
     }
+
+
+
 
     // 타겟 플레이어 설정
     private void SetPlayerTarget()
@@ -292,7 +321,7 @@ public class HandManager : MonoBehaviour
             // 카드 뽑기 종료 이벤트
             OnDrawEnd?.Invoke();
         }
-        //else if (phaseType == PhaseType.StartPhase)
+        else if (phaseType == PhaseType.Start)
         {
             // 초기 핸드 채우기
             for (int i = 0; i < _startHandCount; i++)

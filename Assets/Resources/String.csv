@@ -1,0 +1,7 @@
+﻿Id,스트링 테이블의 기본키,한국어,영어,,,,,,,,,
+int,String,String,String,,,,,,,,,
+Id,StringKey,Korean,English,,,,,,,,,
+1,NameCardSwipe,휘둘러치기,Swipe,,,,,,,,,
+2,DescCard00001,피해를 {N} 줍니다.,Deal {N} damage.,,,,,,,,,
+3,NameCharacterHaru,하루,Haru,,,,,,,,,
+4,NameMonsterLion,사자,Lion,,,,,,,,,

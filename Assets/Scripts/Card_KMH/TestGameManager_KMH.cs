@@ -40,8 +40,9 @@ public class TestGameManager_KMH : MonoBehaviour
         // 덱 구성 없으니 일단 랜덤 Id 카드 생성
         for (int i = 1; i <= count; i++)
         {
-            int randId = Random.Range(1, DataManager.Instance.CardDict.Count);
-
+            int randId = Random.Range(1, DataManager.Instance.CardDict.Count + 1);
+            //int id = DataManager.Instance.CardDict[i].Id;
+            // 기본 레벨 1
             Deck[randId] = 1;
         }
     }

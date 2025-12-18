@@ -11,18 +11,21 @@ public class PlayerStat
     public List<StatsByLevel> LevelList { get; set; }
 
     //레벨 업 할때마다 StatByLevels에서 꺼내어 갱신할 값
-    public int Hp { get; private set; }
-    public int Defense { get; private set; }
-    public int NeedExp { get; private set; }    
+    public int Hp { get; private set; } //최대 체력
+    public int Defense { get; private set; } //방어력
+    public int NeedExp { get; private set; } //레벨업까지 필요한 경험치
 
     //전투 중 갱신할 값.
     public int Level { get; private set; } = 1;
-    public int Shield { get; private set; }
-    public int CurrentExp { get; private set; }
-    public int CurrentHp {  get; private set; }
+    public int Shield { get; private set; } //보호막
+    public int CurrentExp { get; private set; } //현재 보유 중인 경험치
+    public int CurrentHp {  get; private set; } //현재 체력
 
-    public float Buff {  get; private set; }
-    public float DeBuff {  get; private set; }
+    public float Buff {  get; private set; } //강화(공격 데미지 상승률)
+    public float DeBuff {  get; private set; } //약화(피격 데미지 상승률)
+
+    public int Poison { get; private set; } //독 중첩 스택
+    public int Burn { get; private set; } //화상 중첩 스택
     
 
 
@@ -68,6 +71,37 @@ public class PlayerStat
     }
 
 
+    public void ApplyPoison()
+    {
+        if (Poison <= 0)
+        {
+            return;
+        }
+        Poison--;
+        GetTrueDamage(Poison);                
+    }
+
+    public void ApplyBurn()
+    {
+        if (Burn <= 0)
+        {
+            return;
+        }
+        Burn--;
+        GetTrueDamage(Poison);
+    }
+
+
+    public void GetPoison(int stack)
+    {
+        Poison += stack;        
+    }
+
+    public void GetBurn(int stack)
+    {
+        Burn += stack;        
+    }
+
     public void GetTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
     {
         CurrentHp -= damage;
@@ -94,6 +128,13 @@ public class PlayerStat
         Shield = 0;
     }
 
+    public void ResetCondition() //전투상황 종료 시 호출
+    {
+        Poison = 0;
+        Burn = 0;
+        Buff = 0;
+        DeBuff = 0;
+    }
 
     public void GetExp(int exp) //경험치를 얻을 때마다 호출
     {

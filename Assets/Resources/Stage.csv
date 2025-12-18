@@ -1,0 +1,6 @@
+﻿Id,스테이지 테이블의 기본키,던전 테이블의 기본키 기재,소환될 몬스터,스테이지(맵) 배경 이미지 리소스,스테이지(맵) 배경 BGM 리소스
+int,string,string,string,string,string
+Id,StageKey,Dungeon,SpawnMonster,Img,bgm
+1,Stage_Dungeon01_10101,Key_Dungeon_Dungeon01EngName,Key_Monster_MonsterEngName01,Img_Stage_Background_01,Bgm_Stage_Stage01
+2,Stage_Dungeon01_10102,Key_Dungeon_Dungeon01EngName,Key_Monster_MonsterEngName01,Img_Stage_Background_01,Bgm_Stage_Stage01
+3,Stage_Dungeon01_10103,Key_Dungeon_Dungeon01EngName,Key_Boss_Monster_MonsterEngName02,Img_Stage_Background_01,Bgm_Stage_Stage01
