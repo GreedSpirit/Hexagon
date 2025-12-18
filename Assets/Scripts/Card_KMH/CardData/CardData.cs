@@ -88,12 +88,6 @@ public class CardData : CSVLoad, TableKey
         return BaseValue + ((Level - 1) * ValuePerValue);
     }
 
-    // 상태이상 효과 데이터 반환
-    public StatusEffectData GetStatusEffectData()
-    {
-        return DataManager.Instance.GetStatusEffectData(StatusEffect);
-    }
-
     public void LoadFromCsv(string[] values)
     {
         if (int.TryParse(values[0], out int idValue))

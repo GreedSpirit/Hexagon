@@ -73,23 +73,25 @@ public class PlayerStat
 
     public void ApplyStatusEffect()
     {
-        foreach (var effect in StatusEffectDatas)
-        {
-            if (effect.Data.Key == "KeyStatusPoison")
-            {
-                ApplyPoison();
-                effect.Stack--;
-            }
-            else if (effect.Data.Key == "KeyStatusBurn")
-            {
-                ApplyBurn();
-                effect.Stack--;
-            }
-            else if (effect.Data.BuffType == BuffType.Buff || effect.Data.BuffType == BuffType.DeBuff)
-            {
-                effect.Duration--;
-            }
-        }       
+        //foreach (var effect in StatusEffectDatas)
+        //{
+        //    if (effect.Data.Key == "KeyStatusPoison")
+        //    {
+        //        ApplyPoison();
+        //        effect.Stack--;
+        //    }
+        //    else if (effect.Data.Key == "KeyStatusBurn")
+        //    {
+        //        ApplyBurn();
+        //        effect.Stack--;
+        //    }
+        //    else if (effect.Data.BuffType == BuffType.Buff || effect.Data.BuffType == BuffType.DeBuff)
+        //    {
+        //        effect.Duration--;
+        //    }
+        //}
+        ApplyPoison();
+        ApplyBurn();
     }
 
     public void ApplyPoison()

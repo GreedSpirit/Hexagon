@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CardVulnerableAction : ICardAction
 {
-    public void Use(StatusEffectData statusData, int value, int statusValue, int turn, IBattleUnit target)
+    public void Use(string statusEffectKey, int value, int statusValue, int turn, IBattleUnit target)
     {
         if (target == null)
         {

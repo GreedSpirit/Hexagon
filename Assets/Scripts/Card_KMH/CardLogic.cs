@@ -17,10 +17,7 @@ public class CardLogic : MonoBehaviour
     public void TryUse()
     {
         // 계산된 카드 수치 (상태이상 X)
-        int value = Data.GetCardValue();
-
-        // 상태이상 효과 불러오기
-        StatusEffectData statusEffect = Data.GetStatusEffectData();
+        int cardValue = Data.GetCardValue();
 
         // 모든 행동 실행
         foreach (ICardAction action in Data.CardActions)
@@ -28,8 +25,8 @@ public class CardLogic : MonoBehaviour
             // 타겟 설정
             IBattleUnit target = Data.Target == Target.Self ? _handManager.TargetPlayer : _handManager.TargetMonster;
 
-            // 사용 (상태이상 데이터, 계산 수치, 상태이상 부여 수치, 턴 수치, 적용 대상)
-            action.Use(statusEffect, value, Data.StatusEffectValue, Data.Turn, target);
+            // 사용 (상태이상 키, 카드 계산 수치, 상태이상 부여 수치, 턴 수치, 적용 대상)
+            action.Use(Data.StatusEffect, cardValue, Data.StatusEffectValue, Data.Turn, target);
         }
 
         // 핸드 제거
