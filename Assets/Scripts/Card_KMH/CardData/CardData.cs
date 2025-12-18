@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 using System;
 
 public enum CardGrade   // 카드 등급
@@ -77,9 +78,13 @@ public class CardData : CSVLoad, TableKey
         // 카드 설명 있을 때만
         if (string.IsNullOrEmpty(Desc)) return;
 
-        Desc = Desc.Replace("{N}", GetCardValue().ToString())
-           .Replace("{SEV}", StatusEffectValue.ToString())
-           .Replace("{Turn}", Turn.ToString());
+        StringBuilder sb = new StringBuilder(Desc);
+
+        sb.Replace("{N}", GetCardValue().ToString());
+        sb.Replace("{SEV}", StatusEffectValue.ToString());
+        sb.Replace("{Turn}", Turn.ToString());
+
+        Desc = sb.ToString();
     }
 
     // 카드 수치 계산 반환

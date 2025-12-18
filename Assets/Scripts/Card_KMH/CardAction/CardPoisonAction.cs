@@ -9,6 +9,10 @@ public class CardPoisonAction : ICardAction
             Debug.LogError("Target 이 Null 입니다.");
             return;
         }
+
+        // 스택, 지속시간 둘 다 0 이면 무시
+        if (turn == 0 && statusValue == 0) return;
+
         Debug.Log($"중독 사용 : {statusValue} 부여");
         target.AddStatusEffect(statusEffectKey, statusValue, turn);
     }
