@@ -86,6 +86,8 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 
     public void ApplyStatusEffect()
     {
+        Debug.Log("플레이어 상태이상 대미지 적용");
+        Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
         _stat.ApplyStatusEffect();        
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         PushTotalConditionDamage();        
