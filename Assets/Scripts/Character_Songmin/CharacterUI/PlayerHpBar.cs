@@ -1,12 +1,21 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHpBar : MonoBehaviour
 {
     [SerializeField] private Slider _hpBar;
+    [SerializeField] private Slider _hitBar;
     [SerializeField] private Slider _poisonBar;
     [SerializeField] private Slider _burnBar;
-    
+
+    int targetHp;
+    int targetPoison;
+    int targetBurn;
+
+    bool _hpDone;
+    bool _poisonDone;
+    bool _burnDone;
 
     public void OnEnable()
     {                
@@ -24,7 +33,7 @@ public class PlayerHpBar : MonoBehaviour
 
     public void UpdateHpBar(int currentHp, int Hp, int poison, int burn)
     {
-        if (currentHp != 0)
+        if (currentHp > 0)
         {
             _hpBar.value = Mathf.Max(0, (float) (currentHp - poison - burn) / Hp);
             _burnBar.value = Mathf.Max(0, (float)(currentHp - poison) / Hp);
@@ -35,6 +44,12 @@ public class PlayerHpBar : MonoBehaviour
             _hpBar.value = 0;
         }        
     }
+
+    //public IEnumerator BarAnimation()
+    //{
+    //    _hpBar.value = Mathf.Lerp(_hpBar.value, targetValue, Time.deltaTime * 5);
+    //}
+
     
 
     public void OnDisable()
