@@ -25,7 +25,7 @@ public class PlayerHpText : MonoBehaviour
         }
     }
 
-    public void UpdateHpText(int currentHp, int Hp)
+    public void UpdateHpText(int currentHp, int Hp, int poison, int burn)
     {
         _hpText.text = $"{currentHp}  /  {Hp}";
     }

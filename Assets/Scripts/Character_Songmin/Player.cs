@@ -10,7 +10,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     public static Player Instance;
 
     
-    public Action<int, int> OnHpChanged; //체력 수치 변화할 때마다 호출.
+    public Action<int, int, int, int> OnHpChanged; //체력 수치 변화할 때마다 호출.    
     public Action<int> OnShieldChanged; //보호막 수치 변화할 때마다 호출.
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
     public Action<int> OnLevelChanged; //레벨업할 때마다 호출.
@@ -55,13 +55,20 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     /// UI 활성화 시 호출할 함수
     public int PushHp()
     {
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         return _stat.CurrentHp;
     }
     public void PushExp()
     {
         OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
     }
+
+    public int PushTotalConditionDamage()
+    {
+        int total = _stat.Poison + _stat.Burn;
+        return total;
+    }
+
     public void PushLevel()
     {
         OnLevelChanged?.Invoke(_stat.Level);
@@ -70,25 +77,55 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 
 
     /// 이하 함수들은 전투 중 외부에서 호출.      
-    public void TakeDamage(int damage) //데미지를 입을 때마다 호출.
+    public void TakeDamage(int damage) //공격 데미지를 입을 때마다 호출.
     {
         _stat.GetDamage(damage);
         OnShieldChanged?.Invoke(_stat.Shield);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
+    public void ApplyConditions()
+    {
+        _stat.ApplyPoison();
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        PushTotalConditionDamage();
+        _stat.ApplyBurn();
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        PushTotalConditionDamage();
+    }
+
+
+
+    public void GetPoisonStack(int stack)
+    {
+        _stat.GetPoison(stack);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+    }
+
+    public void GetBurnStack(int stack)
+    {
+        _stat.GetBurn(stack);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+    }
+    
 
     public void TakeTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
     {
-        _stat.GetTrueDamage(damage);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);
-    }
+        _stat.GetPoison(-1);
+        _stat.GetTrueDamage(_stat.Poison);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
 
+        _stat.GetBurn(-1);
+        _stat.GetTrueDamage(_stat.Burn);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+    }    
+
+    
 
     public void GetHp(int hp) //체력을 회복할 때마다 호출
     {
         _stat.GetHp(hp);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);        
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
     public void GetShield(int shield) //보호막을 얻을 때마다 호출
@@ -103,11 +140,16 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         OnShieldChanged?.Invoke(_stat.Shield);
     }
 
+    public void ResetCondition()
+    {
+        _stat.ResetCondition();
+    }
+
 
     public void GetExp(int exp)
     {
         _stat.GetExp(exp);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
         OnLevelChanged?.Invoke(_stat.Level);
     }
