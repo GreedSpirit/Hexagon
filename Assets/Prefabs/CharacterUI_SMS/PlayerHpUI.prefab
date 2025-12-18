@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2493894984254804222}
   - component: {fileID: 8644120749744634340}
   - component: {fileID: 4503828365715755527}
-  - component: {fileID: 887670125121763505}
   m_Layer: 5
   m_Name: HpText
   m_TagString: Untagged
@@ -137,19 +136,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &887670125121763505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247675242137467103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a0ba3bbf8468d542a8d8fee2ee6c7d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHpText
-  _hpText: {fileID: 4503828365715755527}
 --- !u!1 &2383609865398151377
 GameObject:
   m_ObjectHideFlags: 0
