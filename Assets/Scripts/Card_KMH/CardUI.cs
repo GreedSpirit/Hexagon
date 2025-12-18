@@ -282,7 +282,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (_levelText != null) _levelText.text = _cardData.Level.ToString();
         else Debug.LogError("LevelText 가 할당되어있지 않습니다.");
 
-        if (_cardData.IsCard == true && _descText != null) _descText.text = _cardData.GetCardDescWithValue();
+        if (_cardData.IsCard == true && _descText != null) _descText.text = _cardData.Desc;
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
 
         // 카드 사용 가능 횟수 (덱 구성, 인벤토리에서만 가능하게)
