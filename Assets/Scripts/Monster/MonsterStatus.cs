@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// 소환된 몬스터의 상태(체력, 방어력 등)를 관리하는 클래스
@@ -94,12 +96,18 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수
     {
-        damage = (int)Mathf.Max(damage -  Mathf.Min(_monsterDefense, 7), 0); //방어력 적용(방어력 최대가 7이라서 7까지만 적용)
-        if (HasEffect("Vulnerable"))
+        float multiplier = 1.0f;
+        var vulnerableMods = _statusEffects.FindAll(e => e.EffectLogic == EffectLogic.DmgTagen);
+
+        foreach(var mod in vulnerableMods)
         {
-            damage = Mathf.FloorToInt(damage * 1.5f); // 50% 추가 피해
-            Debug.Log("취약 효과로 인하여 50% 추가 피해를 입습니다");
+            multiplier += mod.Value;
         }
+
+        damage = (int)Mathf.Max(damage -  Mathf.Min(_monsterDefense, 7), 0); //방어력 적용(방어력 최대가 7이라서 7까지만 적용)
+        damage = Mathf.FloorToInt(damage * multiplier);
+
+
         if(_monsterShield > 0)
         {
             int shieldDamage = Mathf.Min(_monsterShield, damage);
@@ -263,6 +271,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 Type = tableData.BuffType,
                 Duration = duration,
                 Stack = stack,
+                EffectLogic = tableData.EffectLogic,
+                Value = tableData.ValueFormula,
                 AppliedTime = Time.time // 적용 시점을 위함, 나중에 턴으로 바꿀수도
             };
             
@@ -288,38 +298,58 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         _statusEffects.Sort((a, b) => a.GetSortOrder(b)); //정렬
         NotifyEffectObservers();
     }
-
-    /// <summary>
-    /// 특정 효과가 걸려있는지 확인하고 스택 수치를 반환하는 함수
-    /// </summary>
     
-    public bool HasEffect(string effectKey)
-    {
-        return _statusEffects.Exists(e => e.Key == effectKey);
-    }
     public int GetEffectStack(string effectKey)
     {
         var effect = _statusEffects.Find(e => e.Key == effectKey);
         return effect != null ? effect.Stack : 0;
     }
 
-    public void ProcessDotEffects()
+    public IEnumerator ProcessDotEffectsCoroutine()
     {
-        int poisionStack = GetEffectStack("Poison");
+        int poisionStack = GetDotDamageByType("KeyStatusPoison");
         if(poisionStack > 0)
         {
             Debug.Log("중독 피해 : " + poisionStack);
             TakeTrueDamage(poisionStack);
+            yield return new WaitForSeconds(0.5f);
         }
 
-        int burnStack = GetEffectStack("Burn");
+        int burnStack = GetDotDamageByType("KeyStatusBurn");
         if(burnStack > 0)
         {
             Debug.Log("화상 피해 : " + burnStack);
             TakeTrueDamage(burnStack);
+            yield return new WaitForSeconds(0.5f);
         }
 
         //지속 시간 감소는 턴이 끝날 때 일괄적으로 TickStatusEffects()에서 처리
+    }
+
+    public int GetTotalDotDamage()
+    {
+        int damage = 0;
+        var dots = _statusEffects.FindAll(e => e.EffectLogic == EffectLogic.TurnEndDmg);
+        foreach (var dot in dots)
+        {
+            damage += dot.Stack;
+        }
+        return damage;
+    }
+
+    public int GetDotDamageByType(string key)
+    {
+        var effect = _statusEffects.Find(e => e.Key == key);
+        if(effect != null && effect.EffectLogic == EffectLogic.TurnEndDmg)
+        {
+            return effect.Stack;
+        }
+        return 0;
+    }
+
+    public void ApplyStatusEffect() //IBattleUnit
+    {
+        
     }
 
 
