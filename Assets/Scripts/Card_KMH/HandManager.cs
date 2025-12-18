@@ -343,7 +343,6 @@ public class HandManager : MonoBehaviour
         // 드로우 페이즈일 때
         if(phaseType == PhaseType.Draw)
         {
-            Debug.Log("턴 드로우");
             // 카드 뽑기
             DrawCard();
 
@@ -355,7 +354,6 @@ public class HandManager : MonoBehaviour
             // 초기 핸드 채우기
             for (int i = 0; i < _startHandCount; i++)
             {
-                Debug.Log("시작 드로우");
                 DrawCard();
             }
         }

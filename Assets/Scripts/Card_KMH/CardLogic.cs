@@ -42,7 +42,7 @@ public class CardLogic : MonoBehaviour
         }
 
         // 상태이상, 효과 아니면 무시
-        if (Data.StatusEffect == null) return;
+        if (string.IsNullOrEmpty(Data.StatusEffect)) return;
 
         //  카드 상태이상에 맞는 동작 가져오기
         if (TestGameManager_KMH.Instance.GetAction(Data.StatusEffect, out ICardAction statusAction))
