@@ -74,6 +74,9 @@ public class CardData : CSVLoad, TableKey
     // 카드 설명 설정
     public void SetCardDesc()
     {
+        // 카드 설명 있을 때만
+        if (string.IsNullOrEmpty(Desc)) return;
+
         Desc.Replace("{N}", GetCardValue().ToString());
         Desc.Replace("{S}", StatusEffectValue.ToString());
         Desc.Replace("{Turn}", Turn.ToString());
