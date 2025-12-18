@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CardBurnAction : ICardAction
 {
-    public void Use(StatusEffectData statusData, int value, IBattleUnit target)
+    public void Use(StatusEffectData statusData, int value, int statusValue, int turn, IBattleUnit target)
     {
         if (target == null)
         {

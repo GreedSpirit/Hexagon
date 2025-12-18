@@ -29,11 +29,9 @@ public class CardLogic : MonoBehaviour
         // 모든 행동 실행
         foreach (ICardAction action in Data.CardActions)
         {
-            action.Use(statusEffect, value, target);
+            // 사용 (상태이상 데이터, 계산 수치, 상태이상 부여 수치, 턴 수치, 적용 대상)
+            action.Use(statusEffect, value, Data.StatusEffectValue, Data.Turn, target);
         }
-
-        // 사용 (StatusEffectData, CardValue, IBattleUnit)
-        //Data.CardActions.Use(null, value, target);
 
         // 핸드 제거
         _handManager.UseCard(gameObject);

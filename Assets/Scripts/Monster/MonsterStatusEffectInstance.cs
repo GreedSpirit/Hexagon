@@ -9,6 +9,8 @@ public class MonsterStatusEffectInstance
     public string Key;
     public string Name;
     public BuffType Type;
+    public EffectLogic EffectLogic;
+    public float Value;
     public int Duration;
     public int Stack;
     public float AppliedTime; // 적용 시점
