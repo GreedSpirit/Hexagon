@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
-public enum StatusEffectTypeTemp
+public enum StatusEffectType
 {
     Null,       // 없음
-    Boost,      // 공격력 강화
+    Fury,       // 공격력 강화
     Vulnerable, // 취약
     Poison,     // 독
     Burn,       // 화상
@@ -13,14 +13,13 @@ public enum BuffType // 강화 약화 상태이상 효과 분류
     Null,
     Buff,           // 대상 강화
     DeBuff,         // 대상 약화
-    Dot,            // 턴 종료 시 피해
+    DoT,            // 턴 종료 시 피해
 }
 public enum EffectLogic // 강화 약화 상태이상 효과 적용 형태
 {
     Null,
     StatMod,        // 능력치 변경
-    Accuracy,       // 공격 타입 카드 명중률
-    DmgTagen,       // 받는 피해
+    DmgTaken,       // 받는 피해
     TurnEndDmg,     // 턴 종료 시 피해
 }
 public enum DecreaseType // 턴 종료 시 감소 형태
@@ -133,5 +132,22 @@ public class StatusEffectData : CSVLoad, TableKey
         }
         else
             Img = values[10];
+
+        if(nullCount >= 8)
+        {
+            Debug.LogError($"{Key} 의 모든 요소가 비어있습니다.");
+        }
+
+        if(MaxChar < 0)
+        {
+            MaxChar = 0;
+            Debug.LogError($"{Key} 의 MaxChar가 음수입니다.");
+        }
+
+        if (MaxMon < 0)
+        {
+            MaxMon = 0;
+            Debug.LogError($"{Key} 의 MaxMon가 음수입니다.");
+        }
     }
 }

@@ -1,5 +1,6 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 public enum CardGrade   // 카드 등급
 {
     Null,       // 불러오기 실패
@@ -42,7 +43,7 @@ public class CardData : CSVLoad, TableKey
 
 
     public int Level { get; set; }              // 레벨
-    public ICardAction CardAction { get; set; } // 카드 행동
+    public List<ICardAction> CardActions { get; set; } // 카드 행동 리스트 (공격, 방어, 치유, 주문, 상태이상)
 
 
 
@@ -55,8 +56,19 @@ public class CardData : CSVLoad, TableKey
     // 카드 동작 설정
     public void SetCardAction()
     {
+        CardActions = new List<ICardAction>();
+
         // 카드 타입에 맞는 동작 가져오기
-        CardAction = TestGameManager_KMH.Instance.GetAction(CardType);
+        if (TestGameManager_KMH.Instance.GetAction(CardType, out ICardAction typeAction))
+        {
+            CardActions.Add(typeAction);
+        }
+
+        //  카드 상태이상에 맞는 동작 가져오기
+        if (TestGameManager_KMH.Instance.GetAction(StatusEffect, out ICardAction statusAction))
+        {
+            CardActions.Add(typeAction);
+        }
     }
 
     // 카드 수치 계산 반환
@@ -77,6 +89,12 @@ public class CardData : CSVLoad, TableKey
         string newDesc;
         newDesc = desc.Replace("{N}", value.ToString());
         return newDesc;
+    }
+
+    // 상태이상 효과 데이터 반환
+    public StatusEffectData GetStatusEffectData()
+    {
+        return DataManager.Instance.GetStatusEffectData(StatusEffect);
     }
 
     public void LoadFromCsv(string[] values)
