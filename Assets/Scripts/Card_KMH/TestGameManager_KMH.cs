@@ -17,6 +17,24 @@ public class TestGameManager_KMH : MonoBehaviour
         Instance = this;
         InitCardActions();      // 카드 동작 초기화
         InitDeck();             // 덱 초기화
+
+
+        PrintStatusEffectList();    // 상태이상 데이터 목록 테스트
+    }
+
+    void PrintStatusEffectList()
+    {
+        for(int i = 1; i <= 3; i++)
+        {
+            StatusEffectData effect = DataManager.Instance.GetStatusEffectData(i);
+
+            Debug.Log(effect.Id);
+            Debug.Log(effect.Name);
+            Debug.Log(effect.Key);
+            Debug.Log(effect.ValueFormula);
+            Debug.Log(effect.BuffType);
+            Debug.Log(effect.DecreaseType);
+        }
     }
 
     // 동작 구성
