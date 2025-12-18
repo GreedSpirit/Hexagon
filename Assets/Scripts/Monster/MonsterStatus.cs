@@ -18,8 +18,6 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     public int MonsterCurHP => _monsterCurHP; // 외부에서 몬스터의 현재 체력에 접근할 수 있는 프로퍼티
     [SerializeField] private int _monsterDefense;
     [SerializeField] private int _monsterShield = 0;
-    [SerializeField] private float _monsterBuff = 0;
-    [SerializeField] private float _monsterDebuff = 0;
     [SerializeField] private MonsterData _monsterData;
     [SerializeField] private MonsterSkillSetData _monsterSkillSet;
     [SerializeField] private MonsterStatData _monsterStatData;
@@ -97,7 +95,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수
     {
         float multiplier = 1.0f;
-        var vulnerableMods = _statusEffects.FindAll(e => e.EffectLogic == EffectLogic.DmgTagen);
+        var vulnerableMods = _statusEffects.FindAll(e => e.EffectLogic == EffectLogic.DmgTaken);
 
         foreach(var mod in vulnerableMods)
         {
@@ -157,6 +155,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         //몬스터 죽음 처리 로직 추가
         Debug.Log("몬스터가 죽었습니다. ID: " + _monsterId);
+        GetComponent<MonsterDeathEffect>().Die();
         if(_monsterGrade == MonsterGrade.Boss)
         {
             DropLoot();
@@ -222,7 +221,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             
             if(_currentSkillData.CardType == CardType.Attack)
             {
-                Player.Instance.TakeDamage(_selectedSkillValue);
+                Player.Instance.TakeDamage(_selectedSkillValue); //추후 인자값으로 공격 강화 상태를 받을수도있음
                 Debug.Log("플레이어에게 " + _selectedSkillValue + "의 데미지를 입혔습니다.");
             }
             else if(_currentSkillData.CardType == CardType.Healing)
@@ -251,8 +250,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     //상태이상 Key와 Duration, Stack를 받아서 상태이상을 적용하는 함수
     public void AddStatusEffect(string effectKey, int duration, int stack)
     {
-        // 추후 데이터 읽어오는 로직 추가
         var tableData = DataManager.Instance.GetStatusEffectData(effectKey);
+        Debug.Log(tableData == null);
 
         var existingEffect = _statusEffects.Find(e => e.Key == effectKey);
 
@@ -298,12 +297,6 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         _statusEffects.Sort((a, b) => a.GetSortOrder(b)); //정렬
         NotifyEffectObservers();
     }
-    
-    public int GetEffectStack(string effectKey)
-    {
-        var effect = _statusEffects.Find(e => e.Key == effectKey);
-        return effect != null ? effect.Stack : 0;
-    }
 
     public IEnumerator ProcessDotEffectsCoroutine()
     {
@@ -326,7 +319,15 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         //지속 시간 감소는 턴이 끝날 때 일괄적으로 TickStatusEffects()에서 처리
     }
 
-    public int GetTotalDotDamage()
+    public IEnumerator ProcessDotEffects()
+    {
+        int totalDotDmg = 0;
+        totalDotDmg = GetDotDamageByType("KeyStatusPoison") + GetDotDamageByType("KeyStatusBurn");
+        TakeTrueDamage(totalDotDmg);
+        yield return new WaitForSeconds(0.5f);
+    }
+
+    public int GetTotalDotDamage() //도트뎀으로 얻는 총 데미지를 얻고 싶을 때 사용할 메서드
     {
         int damage = 0;
         var dots = _statusEffects.FindAll(e => e.EffectLogic == EffectLogic.TurnEndDmg);
@@ -337,7 +338,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         return damage;
     }
 
-    public int GetDotDamageByType(string key)
+    public int GetDotDamageByType(string key) //각 타입에 따라서 어느정도의 데미지가 들어오는지 받기
     {
         var effect = _statusEffects.Find(e => e.Key == key);
         if(effect != null && effect.EffectLogic == EffectLogic.TurnEndDmg)
@@ -349,7 +350,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     public void ApplyStatusEffect() //IBattleUnit
     {
-        
+        StartCoroutine(ProcessDotEffects());
+        TickStatusEffects();
     }
 
 
@@ -368,6 +370,15 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     public void TestUseSkill()
     {
         UseSkill();
+    }
+
+    public void TestPosion()
+    {
+        AddStatusEffect("KeyStatusPoison", 0, 2);
+    }
+    public void TestBurn()
+    {
+        AddStatusEffect("KeyStatusBurn", 0, 2);
     }
     #endif
 

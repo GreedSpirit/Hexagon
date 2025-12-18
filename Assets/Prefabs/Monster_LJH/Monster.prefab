@@ -878,7 +878,7 @@ MonoBehaviour:
   _greenBar: {fileID: 5791249376942298865}
   _orangeBar: {fileID: 8398096476205280670}
   _redBar: {fileID: 3129286668994930023}
-  _lerpSpeed: 5
+  _lerpSpeed: 3
 --- !u!1 &7265606978468375189
 GameObject:
   m_ObjectHideFlags: 0

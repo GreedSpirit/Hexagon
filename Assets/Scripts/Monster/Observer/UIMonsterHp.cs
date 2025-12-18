@@ -59,7 +59,7 @@ public class UIMonsterHp : MonoBehaviour, IMonsterHpObserver, IMonsterEffectObse
         UpdateText(currentHp, shield);
     }
 
-    // 상태 이상(중독/화상)이 추가/삭제될 때도 예상 데미지 구간을 다시 그려야 함
+    // 상태 이상(중독/화상)이 추가/삭제될 때
     public void OnMonsterEffectChanged(List<MonsterStatusEffectInstance> effects)
     {
         UpdateBars();
