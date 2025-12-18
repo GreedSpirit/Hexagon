@@ -143,11 +143,21 @@ public class StatusEffectData : CSVLoad, TableKey
             MaxChar = 0;
             Debug.LogError($"{Key} 의 MaxChar가 음수입니다.");
         }
+        else if (MaxChar > 99)
+        {
+            MaxChar = 99;
+            Debug.LogError($"{Key} 의 MaxChar가 99를 초과했습니다.");
+        }
 
         if (MaxMon < 0)
         {
             MaxMon = 0;
             Debug.LogError($"{Key} 의 MaxMon가 음수입니다.");
+        }
+        else if (MaxMon > 99)
+        {
+            MaxMon = 99;
+            Debug.LogError($"{Key} 의 MaxMon가 99를 초과했습니다.");
         }
     }
 }
