@@ -14,6 +14,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     public Action<int> OnShieldChanged; //보호막 수치 변화할 때마다 호출.
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
     public Action<int> OnLevelChanged; //레벨업할 때마다 호출.
+    public Action<int> OnDefenseChanged; //방어력 변화할 때마다 호출.
 
     private void Awake() //임시 유사 싱글톤 처리
     {
@@ -61,6 +62,10 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     public void PushExp()
     {
         OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
+    }
+    public void PushDefense()
+    {
+        OnDefenseChanged?.Invoke(_stat.Defense);
     }
 
     public int PushTotalConditionDamage()
