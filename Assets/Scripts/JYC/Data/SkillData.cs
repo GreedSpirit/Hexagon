@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 상태이상 종류 (임의로 작성, 나중에 수정 가능)
-public enum StatusEffectType
+public enum StatusEffectTemp
 {
     Null,       // 없음
     Poison,     // 독
@@ -32,7 +32,7 @@ public class SkillData : CSVLoad, TableKey
     public int IncreaseShield { get; set; }     // 보호막 증가분
 
     // 상태이상 관련
-    public StatusEffectType StatusEffect { get; set; } // 상태이상 종류 (Enum)
+    public StatusEffectTemp StatusEffect { get; set; } // 상태이상 종류 (Enum)
     public int StatusEffectStack { get; set; }     // 상태이상 스택
     public int Duration { get; set; }              // 지속 시간
 
@@ -90,9 +90,9 @@ public class SkillData : CSVLoad, TableKey
         // 10: StatusEffect (Enum 파싱)
         // 엑셀에 정수(0, 1...)로 적혀있다고 가정하고 파싱
         if (int.TryParse(values[10], out vInt))
-            StatusEffect = (StatusEffectType)vInt;
+            StatusEffect = (StatusEffectTemp)vInt;
         else
-            StatusEffect = StatusEffectType.Null;
+            StatusEffect = StatusEffectTemp.Null;
 
         // 11: StatusEffectStack
         if (int.TryParse(values[11], out vInt)) StatusEffectStack = vInt;
