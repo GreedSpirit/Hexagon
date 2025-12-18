@@ -67,6 +67,10 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     {
         OnDefenseChanged?.Invoke(_stat.Defense);
     }
+    public void PushShield()
+    {
+        OnShieldChanged?.Invoke(_stat.Shield);
+    }
 
     public int PushTotalConditionDamage()
     {
