@@ -1,13 +1,13 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerShieldText : MonoBehaviour
+public class PlayerShieldUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _shieldText;
     [SerializeField] GameObject _shieldObject;
     
 
-    public void OnEnable()
+    public void Start()
     {
         if (Player.Instance != null)
         {
@@ -21,12 +21,7 @@ public class PlayerShieldText : MonoBehaviour
         }
     }
 
-    public void UpdateShieldText(int shield)
-    {
-        _shieldText.text = $"{shield}";
-    }
-
-    public void OnDisable()
+    public void OnDestroy()
     {
         if (Player.Instance != null)
         {
@@ -38,6 +33,12 @@ public class PlayerShieldText : MonoBehaviour
             Debug.LogError("Player.Instance가 생성되지 않았습니다.");
         }
     }
+
+    public void UpdateShieldText(int shield)
+    {
+        _shieldText.text = $"{shield}";
+    }
+
     public void OnOffShieldUI(int shield)
     {
         if (shield <= 0)

@@ -8,15 +8,7 @@ public class PlayerExpBar : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] private Slider _expBar;
     [SerializeField] private GameObject _expText;
 
-    private void Awake()
-    {
-        if (_expBar == null)
-        {
-            _expBar = GetComponent<Slider>();
-        }
-    }
-
-    public void OnEnable()
+    public void Start()
     {
         if (Player.Instance != null)
         {
@@ -28,7 +20,22 @@ public class PlayerExpBar : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             Debug.LogError("Player.Instance가 생성되지 않았습니다.");
         }
 
+    }    
+
+    public void OnDestroy()
+    {
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnExpChanged -= UpdateExpBar;
+        }
+        else
+        {
+            Debug.LogError("Player.Instance가 생성되지 않았습니다.");
+        }
     }
+
+
+
 
     public void UpdateExpBar(int currentExp, int needExp)
     {
@@ -42,19 +49,6 @@ public class PlayerExpBar : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
 
     }
-
-    public void OnDisable()
-    {
-        if (Player.Instance != null)
-        {
-            Player.Instance.OnExpChanged -= UpdateExpBar;
-        }
-        else
-        {
-            Debug.LogError("Player.Instance가 생성되지 않았습니다.");
-        }
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         _expText.SetActive(true);

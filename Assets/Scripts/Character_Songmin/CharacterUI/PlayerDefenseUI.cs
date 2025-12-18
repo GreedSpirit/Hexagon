@@ -4,15 +4,9 @@ using UnityEngine;
 public class PlayerDefenseText : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _defenseText;
-    private void Awake()
-    {
-        if (_defenseText == null)
-        {
-            _defenseText = GetComponent<TextMeshProUGUI>();
-        }
-    }
+    
 
-    public void OnEnable()
+    public void Start()
     {
         if (Player.Instance != null)
         {
@@ -25,12 +19,7 @@ public class PlayerDefenseText : MonoBehaviour
         }
     }
 
-    public void UpdateDefenseText(int defense)
-    {
-        _defenseText.text = $"{defense}";
-    }
-
-    public void OnDisable()
+    public void OnDestroy()
     {
         if (Player.Instance != null)
         {
@@ -41,4 +30,11 @@ public class PlayerDefenseText : MonoBehaviour
             Debug.LogError("Player.Instance가 생성되지 않았습니다.");
         }
     }
+
+
+    public void UpdateDefenseText(int defense)
+    {
+        _defenseText.text = $"{defense}";
+    }
+
 }
