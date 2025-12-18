@@ -32,7 +32,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, DungeonData> DungeonDict { get; private set; }
     public Dictionary<int, StageData> StageDict { get; private set; }
     public Dictionary<int, StringData> StringDict { get; private set; }
-
+    public Dictionary<int, RewardData> RewardDict { get; private set; }
     // (Key: string 기반)
     public Dictionary<string, CharacterData> CharacterKeyDict { get; private set; }
     public Dictionary<string, CardData> CardKeyDict { get; private set; }
@@ -50,6 +50,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<string, DungeonData> DungeonKeyDict { get; private set; }
     public Dictionary<string, StageData> StageKeyDict { get; private set; }
     public Dictionary<string, StringData> StringKeyDict { get; private set; }
+    public Dictionary<string, RewardData> RewardKeyDict { get; private set; }
 
 
     private void Awake()
@@ -118,6 +119,9 @@ public class DataManager : MonoBehaviour
         StringDict = LoadAndCreateKeyDict(CSVReader.Read<StringData>("String"), out Dictionary<string, StringData> tempStringKeyDict);
         StringKeyDict = tempStringKeyDict;
 
+        // [Reward]
+        RewardDict = LoadAndCreateKeyDict(CSVReader.Read<RewardData>("Reward"), out Dictionary<string, RewardData> tempRewardKeyDict);
+        RewardKeyDict = tempRewardKeyDict;
 
         // 테스트 로그
         Debug.Log($"데이터 로드 완료. Character 개수: {CharacterDict.Count}");
@@ -207,5 +211,6 @@ public class DataManager : MonoBehaviour
 
     public StringData GetString(int id) => StringDict.TryGetValue(id, out var data) ? data : null;
     public StringData GetString(string key) => StringKeyDict.TryGetValue(key, out var data) ? data : null;
-
+    public RewardData GetReward(int id) => RewardDict.TryGetValue(id, out var data) ? data : null;
+    public RewardData GetReward(string key) => RewardKeyDict.TryGetValue(key, out var data) ? data : null;
 }

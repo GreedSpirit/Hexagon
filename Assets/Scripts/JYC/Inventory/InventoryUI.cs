@@ -112,4 +112,5 @@ public class InventoryUI : MonoBehaviour
             modeText.text = IsDeckBuildingMode ? "현재: 덱 편집 모드" : "현재: 전체 보기";
         }
     }
+
 }
