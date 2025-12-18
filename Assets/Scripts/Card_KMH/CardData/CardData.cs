@@ -67,7 +67,7 @@ public class CardData : CSVLoad, TableKey
         //  카드 상태이상에 맞는 동작 가져오기
         if (TestGameManager_KMH.Instance.GetAction(StatusEffect, out ICardAction statusAction))
         {
-            CardActions.Add(typeAction);
+            CardActions.Add(statusAction);
         }
     }
 
@@ -77,9 +77,9 @@ public class CardData : CSVLoad, TableKey
         // 카드 설명 있을 때만
         if (string.IsNullOrEmpty(Desc)) return;
 
-        Desc.Replace("{N}", GetCardValue().ToString());
-        Desc.Replace("{SEV}", StatusEffectValue.ToString());
-        Desc.Replace("{Turn}", Turn.ToString());
+        Desc = Desc.Replace("{N}", GetCardValue().ToString())
+           .Replace("{SEV}", StatusEffectValue.ToString())
+           .Replace("{Turn}", Turn.ToString());
     }
 
     // 카드 수치 계산 반환
