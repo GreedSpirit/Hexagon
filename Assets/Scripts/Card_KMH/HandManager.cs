@@ -37,6 +37,8 @@ public class HandManager : MonoBehaviour
     public float HoverVisualScaleOffset => _hoverVisualScaleOffset;
     public float CardHalfHeight => _cardHalfHeight;
     public CardUI SelectedCard => _selectedCardUI;
+    public IBattleUnit TargetPlayer => _targetPlayer;
+    public IBattleUnit TargetMonster => _targetMonster;
 
 
     // 덱의 카드 id 리스트
@@ -54,8 +56,8 @@ public class HandManager : MonoBehaviour
     // 덱 시작 카드 수
     private int _deckCardCount;
 
-    private IBattleUnit targetPlayer;     // 타겟 플레이어 
-    private IBattleUnit targetMonster;    // 타겟 몬스터
+    private IBattleUnit _targetPlayer;     // 타겟 플레이어 
+    private IBattleUnit _targetMonster;    // 타겟 몬스터
 
     // 선택된 카드 UI (1회 클릭)
     private CardUI _selectedCardUI;
@@ -198,11 +200,8 @@ public class HandManager : MonoBehaviour
         CardLogic cardLogic = newCard.GetComponent<CardLogic>();
         cardUI = newCard.GetComponent<CardUI>();
 
-        // 타겟 (플레이어 OR 몬스터)
-        IBattleUnit target = cardData.Target == Target.Self ? targetPlayer : targetMonster;
-
         // 매니저 연결
-        cardLogic.Init(cardData, this, target);
+        cardLogic.Init(cardData, this);
         cardUI.Init(cardData, this);
 
         return newCard;
@@ -301,13 +300,13 @@ public class HandManager : MonoBehaviour
     // 타겟 플레이어 설정
     private void SetPlayerTarget()
     {
-        targetPlayer = Player.Instance;
+        _targetPlayer = Player.Instance;
     }
 
     // 타겟 몬스터 설정
     public void SetMonsterTarget(IBattleUnit newTarget)
     {
-        targetMonster = newTarget;
+        _targetMonster = newTarget;
     }
 
     // 페이즈 변경 시 호출

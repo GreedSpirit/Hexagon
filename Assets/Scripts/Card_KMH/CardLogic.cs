@@ -3,18 +3,14 @@ using UnityEngine;
 public class CardLogic : MonoBehaviour
 {
     public CardData Data { get; private set; } // 데이터
-    private IBattleUnit target;                // 타겟
     private HandManager _handManager;
 
-    public void Init(CardData data, HandManager manager, IBattleUnit newTarget)
+    public void Init(CardData data, HandManager manager)
     {
         // 카드 데이터
         Data = data;
 
         _handManager = manager;
-
-        // 타겟
-        target = newTarget;
     }
 
     // 카드 사용 시도
@@ -29,6 +25,9 @@ public class CardLogic : MonoBehaviour
         // 모든 행동 실행
         foreach (ICardAction action in Data.CardActions)
         {
+            // 타겟 설정
+            IBattleUnit target = Data.Target == Target.Self ? _handManager.TargetPlayer : _handManager.TargetMonster;
+
             // 사용 (상태이상 데이터, 계산 수치, 상태이상 부여 수치, 턴 수치, 적용 대상)
             action.Use(statusEffect, value, Data.StatusEffectValue, Data.Turn, target);
         }
