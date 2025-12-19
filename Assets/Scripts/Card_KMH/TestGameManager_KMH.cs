@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using UnityEngine;
 
 public class TestGameManager_KMH : MonoBehaviour
@@ -42,9 +43,12 @@ public class TestGameManager_KMH : MonoBehaviour
         // 덱 생성
         Deck = new Dictionary<int, int>();
 
-        // 모든 카드 데이터 예외 처리 함수 하나
+        // 모든 카드 데이터 한글 설정, 예외 처리
         foreach(var cardData in DataManager.Instance.CardDict)
+        {
+            cardData.Value.SetString();
             cardData.Value.SetStatusValue();
+        }
 
         // 덱 구성 없으니 일단 카드 데이터 전부
         for (int i = 1; i <= DataManager.Instance.CardDict.Count; i++)

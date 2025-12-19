@@ -59,6 +59,8 @@ public class HandManager : MonoBehaviour
     private IBattleUnit _targetPlayer;     // 타겟 플레이어 
     private IBattleUnit _targetMonster;    // 타겟 몬스터
 
+    private float _playerBuff;             // 플레이어 강화 수치
+
     // 선택된 카드 UI (1회 클릭)
     private CardUI _selectedCardUI;
 
@@ -265,7 +267,7 @@ public class HandManager : MonoBehaviour
 
 
 
-    // 카드 클릭 선택
+    // 카드 선택
     public void SetSelectedCard(CardUI cardUI)
     {
         // 이미 선택된 카드면 무시
@@ -304,34 +306,37 @@ public class HandManager : MonoBehaviour
         _targetMonster = newTarget;
     }
 
+    // 플레이어 강화 수치 설정
+    public void SetPlayerBuff(float playerBuff)
+    {
+        _playerBuff = playerBuff;
+    }
+
 
     // 대상의 상태이상 수치 변하면
     // 아니면 상태이상 감소 사이클 다 돌면
     public void TargetStatusValueChanged()
     {
-        // 플레이어 강화 수치 (임시, 받아와야 함) 
-        float playerBuffValue = 0.5f;
-        // 몬스터 약화 수치  (임시, 받아오기 가능하긴 함)
-        float monsterDeBuffValue = 0;
-        // 몬스터 방어력  (임시, 받아와야 함)
-        int monsterDefence = 1;
+        // 플레이어 강화 수치
+        float playerBuff = _playerBuff;
+        // 몬스터 약화 수치
+        float monsterDeBuff = 0;
+        // 몬스터 방어력
+        int monsterDef = 0;
 
-        // 타겟 몬스터
+        // 타겟 몬스터 수치
         if(_targetMonster is MonsterStatus monster)
         {
-            // 적용 상태이상 다 불러와서 
-            foreach (var monsterStatusEffect in monster.StatusEffects)
-            {
-                // 적용 형태가 받는 피해량이면 합산
-                if(monsterStatusEffect.EffectLogic == EffectLogic.DmgTaken)
-                    monsterDeBuffValue += (int)monsterStatusEffect.Value;
-            }
+            // 약화 수치
+            //monsterDeBuff = monster.Get
+            // 방어력
+            monsterDef = monster.GetMonsterDefense();
         }
 
         // 모든 카드 설명 변경
         foreach (var card in _handCards)
         {
-            card.UpdateDealAndDesc(playerBuffValue, monsterDeBuffValue, monsterDefence);
+            card.UpdateDealAndDesc(playerBuff, monsterDeBuff, monsterDef);
             card.gameObject.GetComponent<CardUI>().SetDescText();
         }
     }
@@ -357,9 +362,15 @@ public class HandManager : MonoBehaviour
                 DrawCard();
             }
         }
-        //else if (phaseType == PhaseType.)
-        //{
-
-        //}
+        // 플레이어턴 끝나면 선택 카드 해제
+        else if (phaseType == PhaseType.EnemyAct)
+        {
+            // 선택된 카드가 있을 때 && 선택 카드의 드래그 상태
+            if (SelectedCard != null && SelectedCard.IsDragging == false)
+            {
+                // 카드 선택 해지
+                DeselectCard();
+            }
+        }
     }
 }
