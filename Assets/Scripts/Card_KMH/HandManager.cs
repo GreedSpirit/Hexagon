@@ -36,6 +36,8 @@ public class HandManager : MonoBehaviour
     public float UseScreenRatio => _useScreenRatio;
     public float HoverVisualScaleOffset => _hoverVisualScaleOffset;
     public float CardHalfHeight => _cardHalfHeight;
+    public int HandCount => _handCards.Count;               // 스테이지 종료 시 체크
+    public int DeckCount => _deck.Count;                    // 스테이지 종료 시 체크
     public CardUI SelectedCard => _selectedCardUI;
     public IBattleUnit TargetPlayer => _targetPlayer;
     public IBattleUnit TargetMonster => _targetMonster;
@@ -327,7 +329,14 @@ public class HandManager : MonoBehaviour
         // 타겟 몬스터 수치
         if(_targetMonster is MonsterStatus monster)
         {
-            // 약화 수치
+            // 약화
+            // 걸린 효과 전부 체크
+            foreach (var monsterStatusEffect in monster.StatusEffects)
+            {
+                // 로직이 받는 피해량 타입이면
+                if (monsterStatusEffect.EffectLogic == EffectLogic.DmgTaken)
+                    monsterDeBuff += monsterStatusEffect.Value;
+            }
             //monsterDeBuff = monster.Get
             // 방어력
             monsterDef = monster.GetMonsterDefense();
