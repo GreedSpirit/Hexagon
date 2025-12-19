@@ -60,7 +60,7 @@ public class BattleManager : MonoBehaviour
         _handManager.SetMonsterTarget(_currentMonster); //핸드 매니저에게 타겟 알려주기
         _phaseChanger.ChangePhase(new StartPhase());
 
-        if (Player.Instance.PushHp() >= _currentMonster.MonsterCurHP)
+        if (Player.Instance.GetCurrentHp() >= _currentMonster.MonsterCurHP)
         {
             _battleUIManager.CountTurn();
             _phaseChanger.ChangePhase(new DrawPhase());
@@ -78,6 +78,7 @@ public class BattleManager : MonoBehaviour
     public void EndPlayerPhase()//플레이어 턴 종료 단추에 연결
     {               
         _battleUIManager.StopTimer();
+        Player.Instance.ApplyStatusEffect();
         _phaseChanger.ChangePhase(new EnemyActPhase());
     }
 
@@ -85,6 +86,7 @@ public class BattleManager : MonoBehaviour
     {        
         _battleUIManager.CountTurn();
         Player.Instance.ResetShield();
+        _currentMonster.ApplyStatusEffect();
         _phaseChanger.ChangePhase(new DrawPhase());
     }
     //-----------------------------------------------------------------

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnityEditor.Timeline.Actions;
+using System.Data.SqlTypes;
 using UnityEngine;
 
 public class TestGameManager_KMH : MonoBehaviour
@@ -7,7 +7,9 @@ public class TestGameManager_KMH : MonoBehaviour
     public static TestGameManager_KMH Instance;
     
     // 카드 타입 별 동작
-    private Dictionary<CardType, ICardAction> _cardActions = new Dictionary<CardType, ICardAction>();
+    private Dictionary<CardType, ICardAction> _cardTypeActions = new Dictionary<CardType, ICardAction>();
+    // 카드 상태이상 별 동작
+    private Dictionary<string, ICardAction> _cardStatusActions = new Dictionary<string, ICardAction>();
 
     // 덱 구성 (id, level)
     public Dictionary<int, int> Deck { get; private set; }
@@ -17,45 +19,65 @@ public class TestGameManager_KMH : MonoBehaviour
         Instance = this;
         InitCardActions();      // 카드 동작 초기화
         InitDeck();             // 덱 초기화
-    }
 
+    }
     // 동작 구성
     private void InitCardActions()
     {
-        _cardActions.Add(CardType.Attack, new CardAttackAction());
-        _cardActions.Add(CardType.Healing, new CardHealingAction());
-        _cardActions.Add(CardType.Shield, new CardShieldAction());
-        _cardActions.Add(CardType.Spell, new CardSpellAction());
+        // 카드 타입
+        _cardTypeActions.Add(CardType.Attack, new CardAttackAction());
+        _cardTypeActions.Add(CardType.Healing, new CardHealingAction());
+        _cardTypeActions.Add(CardType.Shield, new CardShieldAction());
+        _cardTypeActions.Add(CardType.Spell, new CardSpellAction());
+
+        // 카드 상태이상 임시
+        _cardStatusActions.Add("KeyStatusPoison", new CardPoisonAction());
+        _cardStatusActions.Add("KeyStatusBurn", new CardBurnAction());
+        _cardStatusActions.Add("KeyStatusPride", new CardPrideAction());
+        _cardStatusActions.Add("KeyStatusVulnerable", new CardVulnerableAction());
     }
 
     // 덱 구성
     private void InitDeck()
     {
-        // 테스트용 카드 5장
-        int count = 5;
-
         // 덱 생성
         Deck = new Dictionary<int, int>();
 
-        // 덱 구성 없으니 일단 랜덤 Id 카드 생성
-        for (int i = 1; i <= count; i++)
+        // 모든 카드 데이터 한글 설정, 예외 처리
+        foreach(var cardData in DataManager.Instance.CardDict)
         {
-            int randId = Random.Range(1, DataManager.Instance.CardDict.Count + 1);
+            cardData.Value.SetString();
+            cardData.Value.SetStatusValue();
+        }
+
+        // 덱 구성 없으니 일단 카드 데이터 전부
+        for (int i = 1; i <= DataManager.Instance.CardDict.Count; i++)
+        {
             //int id = DataManager.Instance.CardDict[i].Id;
             // 기본 레벨 1
-            Deck[randId] = 1;
+            Deck[i] = 1;
         }
     }
 
 
-    // 동작 반환
-    public ICardAction GetAction(CardType type)
+    // 동작 반환 (CardType)
+    public bool GetAction(CardType type, out ICardAction action)
     {
-        if (_cardActions.TryGetValue(type, out ICardAction action))
-            return action;
+        if (_cardTypeActions.TryGetValue(type, out action))
+            return true;
 
         Debug.LogWarning($"{type}에 해당하는 행동이 없습니다.");
-        return null;
+        return false;
+    }
+
+    // 동작 반환 (StatusEffect)
+    public bool GetAction(string statusEffect, out ICardAction action)
+    {
+        if (_cardStatusActions.TryGetValue(statusEffect, out action))
+            return true;
+
+            Debug.LogWarning($"{statusEffect}에 해당하는 행동이 없습니다.");
+        return false;
     }
 
 

@@ -3,7 +3,7 @@ using UnityEngine;
 public class CardHealingAction : ICardAction
 {
     // 카드 사용
-    public void Use(CardData data, int value, IBattleUnit target)
+    public void Use(string statusEffectKey, int value, int statusValue, int turn, IBattleUnit target)
     {
         if (target == null)
         {

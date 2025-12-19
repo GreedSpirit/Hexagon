@@ -1,7 +1,42 @@
-﻿Id,스트링 테이블의 기본키,한국어,영어,,,,,,,,,
-int,String,String,String,,,,,,,,,
-Id,StringKey,Korean,English,,,,,,,,,
-1,NameCardSwipe,휘둘러치기,Swipe,,,,,,,,,
-2,DescCard00001,피해를 {N} 줍니다.,Deal {N} damage.,,,,,,,,,
-3,NameCharacterHaru,하루,Haru,,,,,,,,,
-4,NameMonsterLion,사자,Lion,,,,,,,,,
+Id,스트링 테이블의 기본키값,한국어
+int,string,string
+Id,Key,Korean
+1,NameCharacterErion,에리온
+2,NameCard01,금서 투척
+3,NameCard02,기록 되감기
+4,NameCard03,글자의 장막
+5,NameCard4,오만의 선포
+6,NameCard5,취약
+7,NameCard6,금서: 압살
+8,NameCard7,독의 꽃
+9,NameCard8,잿더미
+10,DescCard01,두꺼운 양장본 금서를 던져 피해를 {D} 줍니다.
+11,DescCard02,상처를 되감아 체력을 {N} 회복합니다.
+12,DescCard03,금서 속 글자들이 대상을 감싸 보호막을 {N} 얻습니다.
+13,DescCard4,오만을 {turns} 얻습니다.
+14,DescCard5,취약을 {Turns} 부여합니다.
+15,DescCard6,금서로 거대한 옥좌를 소환해 피해를 {D} 줍니다.
+16,DescCard7,지면에 꽃을 심어 다가오는 적에게 중독을 {SEV} 부여합니다.
+17,DescCard8,다 타버린 금서의 페이지를 적에게 부착해 화상을 {SEV} 부여합니다.
+18,NameStatusBurn,화상
+19,NameStatusPoison,중독
+20,NameStatusVulnerable,취약
+21,NameStatusPride,오만
+22,DsecStatusBurn,자신의 턴 시작 전 {표기 방법 미정}의 피해를 받고 화상이 1 감소합니다.
+23,DescStatusPoison,자신의 턴 시작 전 {표기 방법 미정}의 피해를 받고 중독이 1 감소합니다.
+24,DescStatusVulnerable,공격으로부터 50% 더 많은 피해를 받습니다.
+25,DescStatusPride,공격이 50% 더 많은 피해를 줍니다.
+26,NameMonster01,유령
+27,NameMonster02,찢어진 고서
+28,NameMonster03,하수인
+29,NameMonster04,몬스터 4
+30,NameMonster05,보스 1
+31,NameMonster06,보스 2
+32,NameMonster07,상태 이상만 있어요
+33,DescMonster01,몬스터 1
+34,DescMonster02,몬스터 2
+35,DescMonster03,몬스터 3
+36,DescMonster04,몬스터 4
+37,DescMonster05,보스 1
+38,DescMonster06,보스 2
+39,DescMonster07,상태 이상만 있어요

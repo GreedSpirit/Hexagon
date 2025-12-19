@@ -27,11 +27,12 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, CardNumberOfAvailableData> RareCardNoADict { get; private set; }
     public Dictionary<int, CardNumberOfAvailableData> EpicCardNoADict { get; private set; }
     public Dictionary<int, CardNumberOfAvailableData> LegendaryCardNoADict { get; private set; }
+    public Dictionary<int, StatusEffectData> StatusEffectDict { get; private set; }
     // public Dictionary<int, SkillData> SkillDict { get; private set; }
     public Dictionary<int, DungeonData> DungeonDict { get; private set; }
     public Dictionary<int, StageData> StageDict { get; private set; }
     public Dictionary<int, StringData> StringDict { get; private set; }
-
+    public Dictionary<int, RewardData> RewardDict { get; private set; }
     // (Key: string 기반)
     public Dictionary<string, CharacterData> CharacterKeyDict { get; private set; }
     public Dictionary<string, CardData> CardKeyDict { get; private set; }
@@ -39,6 +40,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<string, CardNumberOfAvailableData> RareCardNoAKeyDict { get; private set; }
     public Dictionary<string, CardNumberOfAvailableData> EpicCardNoAKeyDict { get; private set; }
     public Dictionary<string, CardNumberOfAvailableData> LegendaryCardNoAKeyDict { get; private set; }
+    public Dictionary<string, StatusEffectData> StatusEffectKeyDict { get; private set; }
     public Dictionary<string, MonsterData> MonsterStatKeyDict { get; private set; }
     public Dictionary<string, MonsterSkillSetData> MonsterSkillSetKeyDict { get; private set; }
     public Dictionary<string, MonsterStatData> CommonMonsterStatDataKeyDict { get; private set; }
@@ -48,6 +50,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<string, DungeonData> DungeonKeyDict { get; private set; }
     public Dictionary<string, StageData> StageKeyDict { get; private set; }
     public Dictionary<string, StringData> StringKeyDict { get; private set; }
+    public Dictionary<string, RewardData> RewardKeyDict { get; private set; }
 
 
     private void Awake()
@@ -86,6 +89,10 @@ public class DataManager : MonoBehaviour
         LegendaryCardNoADict = LoadAndCreateKeyDict(CSVReader.Read<CardNumberOfAvailableData>("LegendaryCardNoA"), out Dictionary<string, CardNumberOfAvailableData> tempLegandaryCardNoaKeyDict);
         LegendaryCardNoAKeyDict = tempLegandaryCardNoaKeyDict;
 
+        // [Status]
+        StatusEffectDict = LoadAndCreateKeyDict(CSVReader.Read<StatusEffectData>("StatusEffect"), out Dictionary<string, StatusEffectData> tempStatusKeyDict);
+        StatusEffectKeyDict = tempStatusKeyDict;
+
         // [Monster]
         MonsterStatDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterData>("Monster"), out Dictionary<string, MonsterData> tempMonsterKeyDict);
         MonsterStatKeyDict = tempMonsterKeyDict;
@@ -112,6 +119,9 @@ public class DataManager : MonoBehaviour
         StringDict = LoadAndCreateKeyDict(CSVReader.Read<StringData>("String"), out Dictionary<string, StringData> tempStringKeyDict);
         StringKeyDict = tempStringKeyDict;
 
+        // [Reward]
+        RewardDict = LoadAndCreateKeyDict(CSVReader.Read<RewardData>("Reward"), out Dictionary<string, RewardData> tempRewardKeyDict);
+        RewardKeyDict = tempRewardKeyDict;
 
         // 테스트 로그
         Debug.Log($"데이터 로드 완료. Character 개수: {CharacterDict.Count}");
@@ -186,6 +196,10 @@ public class DataManager : MonoBehaviour
     public CardNumberOfAvailableData GetLegendaryCardData(string key) => LegendaryCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
 
 
+    public StatusEffectData GetStatusEffectData(int id) => StatusEffectDict.TryGetValue(id, out var data) ? data : null;
+    public StatusEffectData GetStatusEffectData(string key) => StatusEffectKeyDict.TryGetValue(key, out var data) ? data : null;
+
+
     //public SkillData GetSkill(int id) => SkillDict.TryGetValue(id, out var data) ? data : null;
     //public SkillData GetSkill(string key) => SkillKeyDict.TryGetValue(key, out var data) ? data : null;
 
@@ -197,5 +211,6 @@ public class DataManager : MonoBehaviour
 
     public StringData GetString(int id) => StringDict.TryGetValue(id, out var data) ? data : null;
     public StringData GetString(string key) => StringKeyDict.TryGetValue(key, out var data) ? data : null;
-
+    public RewardData GetReward(int id) => RewardDict.TryGetValue(id, out var data) ? data : null;
+    public RewardData GetReward(string key) => RewardKeyDict.TryGetValue(key, out var data) ? data : null;
 }

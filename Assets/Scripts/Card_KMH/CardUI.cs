@@ -279,14 +279,17 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         else Debug.LogError("NameText 가 할당되어있지 않습니다.");
         if (_typeText != null) _typeText.text = _cardData.CardType.ToString();
         else Debug.LogError("TypeText 가 할당되어있지 않습니다.");
-        if (_levelText != null) _levelText.text = _cardData.Level.ToString();
+        if (_levelText != null) _levelText.text = _cardLogic.Level.ToString();
         else Debug.LogError("LevelText 가 할당되어있지 않습니다.");
 
-        if (_cardData.IsCard == true && _descText != null) _descText.text = _cardData.GetCardDescWithValue();
+        if (_cardData.IsCard == true && _descText != null) _descText.text = _cardData.Desc;
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
 
+        // 설명 설정
+        SetDescText();
+
         // 카드 사용 가능 횟수 (덱 구성, 인벤토리에서만 가능하게)
-        int numberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(_cardData.Level, _cardData.CardGrade);
+        int numberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(_cardLogic.Level, _cardData.CardGrade);
         if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
         else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
 
@@ -319,6 +322,15 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         }
 
         _edgeColor.color = color;
+    }
+
+    // 설명 설정
+    public void SetDescText()
+    {
+        if (_cardData.IsCard == true && _descText != null)
+            _descText.text = _cardLogic.Desc;
+        
+        else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
     }
 
     // 기본 상태 위치로 이동

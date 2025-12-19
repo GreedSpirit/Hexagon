@@ -1,0 +1,7 @@
+Id,StatusEffect 테이블의 기본키,효과의 이름,효과의 설명,효과 분류,효과 적용 형태,효과 고정 계수 혹은 배율,턴 종료 감소하는 형태,캐릭터에게 적용되는 최대 수치,몬스터에게 적용되는 최대 수치,효과의 아이콘 이미지
+int,string,string,string,Enum,Enum,float,enum,int,int,string
+Id,Key,Name,Desc,BuffType,EffectLogic,ValueFormula,DecreaseType,MaxChar,MaxMon,Img
+1,KeyStatusBurn,NameStatusBurn,DsecStatusBurn,DoT,TurnEndDmg,1.0,Stack,99,99,ImgStatusBurn
+2,KeyStatusPoison,NameStatusPoison,DescStatusPoison,DoT,TurnEndDmg,1.0,Stack,99,99,ImgStatusPoison
+3,KeyStatusVulnerable,NameStatusVulnerable,DescStatusVulnerable,DeBuff,DmgTaken,0.5,Turn,8,99,ImgStatusVulnerable
+4,KeyStatusPride,NameStatusPride,DescStatusPride,Buff,StatMod,0.5,Turn,4,99,ImgStatusPride

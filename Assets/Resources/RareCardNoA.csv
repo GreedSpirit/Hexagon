@@ -3,6 +3,8 @@ Enum,int,int
 CardGrade,Level,NumberOfAvailable
 Rare,1,3
 Rare,2,3
-Rare,3,3
-Rare,4,3
+Rare,3,4
+Rare,4,4
 Rare,5,4
+Rare,6,5
+Rare,7,5

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.U2D.Animation;
 using UnityEngine;
 
 /// <summary>
@@ -8,10 +7,10 @@ using UnityEngine;
 /// </summary>
 public class PlayerStatInitializer
 {
-    public PlayerStat InitPlayerStat(CharacterData characterData, List<CharacterLevelData> levelDatas, List<CharacterStatData> statDatas)//인자값으로 CharactoerLevel 테이블, Character 테이블, String 테이블을 받게 할 것(파서 제작 이후)        
+    public PlayerStat InitPlayerStat(CharacterData characterData, List<CharacterLevelData> levelDatas, List<CharacterStatData> statDatas, string name)//인자값으로 CharactoerLevel 테이블, Character 테이블, String 테이블을 받게 할 것(파서 제작 이후)        
     {
         PlayerStat stat = new PlayerStat();
-        stat.Name = SetName();
+        stat.Name = name;
         stat.MoveSpeed = SetMoveSpeed(characterData);
         stat.LevelList = FillLevelList(levelDatas, statDatas);
         stat.SetStats();
@@ -45,11 +44,10 @@ public class PlayerStatInitializer
         return statsByLevel;
     }
 
-    private string SetName() //인자값 : CharacterData characterData, StringData stringData
+    private string SetName(CharacterData characterData)
     {
         string name = "???";
-        //string key = Character 테이블에 id : 1 의 Name
-        //name =  String Table에 id : key의 한국어나 영어
+        
         return name;
     }
     private float SetMoveSpeed(CharacterData characterData)//인자값 : Character 테이블

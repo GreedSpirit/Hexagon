@@ -1,5 +1,8 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
+using System;
+
 public enum CardGrade   // 카드 등급
 {
     Null,       // 불러오기 실패
@@ -36,47 +39,58 @@ public class CardData : CSVLoad, TableKey
     public int BaseValue { get; set; }          // 기본 능력치 수치
     public int ValuePerValue { get; set; }      // 강화 증가 능력치 수치
     public string StatusEffect { get; set; }    // StatusEffect 테이블 Key
-    public float StatusEffectValue { get; set; }// 스킬 사용 시 적용될 상태이상 스킬 효과
+    public int StatusEffectValue { get; set; }  // 스킬 사용 시 적용될 상태이상 스킬 효과
     public int Turn { get; set; }               // 강화, 약화 지속 턴 수
     public string CardImg { get; set; }         // 카드 이미지
 
 
-    public int Level { get; set; }              // 레벨
-    public ICardAction CardAction { get; set; } // 카드 행동
-
-
-
-    // 카드 레벨
-    public void SetCardLevel(int level)
+    // 한글 설정
+    public void SetString()
     {
-        Level = level;
+        // 이름
+        StringData stringNameData = DataManager.Instance.GetString(Name);
+        
+        // 설명
+        StringData stringDescData = null;
+
+
+        if (stringNameData != null) Name = stringNameData.Korean;
+        else
+            Debug.LogError($"Id {Id} 카드의 {Name} 이 String 테이블에 존재하지 않습니다.");
+
+        // 카드
+        if (IsCard == true)
+        {
+            // Desc 비어있는지 체크
+            if(string.IsNullOrEmpty(Desc) == false)
+            {
+                // 가져오기 시도
+                stringDescData = DataManager.Instance.GetString(Desc);
+                // 있으면 한글 설정
+                if (stringDescData != null) Desc = stringDescData.Korean;
+                else Debug.LogError($"Id {Id} 카드의 {Desc} 이 String 테이블에 존재하지 않습니다.");
+            }
+            else
+                Debug.LogError($"Id {Id} 카드의 Desc 가 비어있습니다.");
+        }
     }
 
-    // 카드 동작 설정
-    public void SetCardAction()
+    // 강화, 약화일 때 StatusEffectValue 를 0 으로
+    // DoT일 때 Turn 을 0으로
+    public void SetStatusValue()
     {
-        // 카드 타입에 맞는 동작 가져오기
-        CardAction = TestGameManager_KMH.Instance.GetAction(CardType);
-    }
+        // 상태이상 비어있으면 무시
+        if (string.IsNullOrEmpty(StatusEffect)) return;
 
-    // 카드 수치 계산 반환
-    public int GetCardValue()
-    {
-        return BaseValue + ((Level - 1) * ValuePerValue);
-    }
+        StatusEffectData statusEffect = DataManager.Instance.GetStatusEffectData(StatusEffect);
 
-    // 설명에 수치 적용
-    public string GetCardDescWithValue()
-    {
-        return GetCardDesc(Desc, GetCardValue());
-    }
+        // 혹시나 이름 안맞으면
+        if (statusEffect == null) return;
 
-    // 문자 교체 {N} -> 수치
-    private string GetCardDesc(string desc, int value)
-    {
-        string newDesc;
-        newDesc = desc.Replace("{N}", value.ToString());
-        return newDesc;
+        if (statusEffect.BuffType == BuffType.Buff || statusEffect.BuffType == BuffType.DeBuff)
+            StatusEffectValue = 0;
+        else
+            Turn = 0;
     }
 
     public void LoadFromCsv(string[] values)
@@ -134,7 +148,7 @@ public class CardData : CSVLoad, TableKey
 
         StatusEffect = values[10];
 
-        if (float.TryParse(values[11], out float statusValue))
+        if (int.TryParse(values[11], out int statusValue))
             StatusEffectValue = statusValue;
         else
             StatusEffectValue = 0;

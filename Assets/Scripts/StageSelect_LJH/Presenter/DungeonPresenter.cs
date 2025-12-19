@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DungeonPresenter : MonoBehaviour
@@ -82,6 +83,8 @@ public class DungeonPresenter : MonoBehaviour
         {
             Debug.Log($"던전 입장: {_selectedDungeonData.Name}");
             // 던전 입장 로직 추가
+            SceneManager.LoadScene(1); // 예시: 던전 씬 로드 추후 이름을 이용한 씬 이름으로 이동
+            //SceneManager.LoadScene(_selectedDungeonData.Name);
         }
         else
         {

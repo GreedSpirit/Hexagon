@@ -4,21 +4,26 @@ using UnityEngine.EventSystems;
 
 public class PlayerLevelText : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI _levelText;
-    private void Awake()
-    {
-        if (_levelText == null)
-        {
-            _levelText = GetComponent<TextMeshProUGUI>();
-        }
-    }
+    [SerializeField] TextMeshProUGUI _levelText;    
 
-    public void OnEnable()
+    public void Start()
     {
         if (Player.Instance != null)
         {
             Player.Instance.OnLevelChanged += UpdateLevelText;
             Player.Instance.PushLevel();
+        }
+        else
+        {
+            Debug.LogError("Player.Instance가 생성되지 않았습니다.");
+        }
+    }    
+
+    public void OnDestroy()
+    {
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnLevelChanged -= UpdateLevelText;
         }
         else
         {
@@ -30,16 +35,4 @@ public class PlayerLevelText : MonoBehaviour
     {
         _levelText.text = $"Lv {level}";
     }
-
-    public void OnDisable()
-    {
-        if (Player.Instance != null)
-        {
-            Player.Instance.OnLevelChanged -= UpdateLevelText;
-        }
-        else
-        {
-            Debug.LogError("Player.Instance가 생성되지 않았습니다.");
-        }
-    }    
 }
