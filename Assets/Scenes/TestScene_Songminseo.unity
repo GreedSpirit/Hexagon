@@ -530,7 +530,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1671153130}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: GetBurnStack
+        m_MethodName: AddBurn
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3575,6 +3575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c9c7cb2e014d074ea0e6501b8a6b3c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDefenseText
+  _defenseText: {fileID: 952616958}
 --- !u!1 &941482785
 GameObject:
   m_ObjectHideFlags: 0
@@ -4296,6 +4297,18 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3950293054457702299, guid: 7d9b56f33b488c64099269d9325e4c9e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950293054457702299, guid: 7d9b56f33b488c64099269d9325e4c9e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950293054457702299, guid: 7d9b56f33b488c64099269d9325e4c9e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3970219356996639265, guid: 7d9b56f33b488c64099269d9325e4c9e, type: 3}
       propertyPath: m_Icon
       value: 
@@ -4315,6 +4328,14 @@ PrefabInstance:
     - target: {fileID: 7265606978468375189, guid: 7d9b56f33b488c64099269d9325e4c9e, type: 3}
       propertyPath: m_Icon
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759824018616487983, guid: 7d9b56f33b488c64099269d9325e4c9e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759824018616487983, guid: 7d9b56f33b488c64099269d9325e4c9e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4826,7 +4847,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1671153130}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: GetPoisonStack
+        m_MethodName: AddPoison
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6954,6 +6975,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc88e47769a7b7c4f9df2338c67b6577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShieldText
+  _shieldText: {fileID: 1337235757}
+  _shieldObject: {fileID: 760825522}
 --- !u!1 &1891242518
 GameObject:
   m_ObjectHideFlags: 0
