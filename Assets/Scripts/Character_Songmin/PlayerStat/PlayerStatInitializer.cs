@@ -47,7 +47,7 @@ public class PlayerStatInitializer
     private string SetName(CharacterData characterData)
     {
         string name = "???";
-        string key = DataManager.Instance.GetCharacter(1).Name;
+        string key = DataManager.Instance.GetCharacter(0).Name;
         name = DataManager.Instance.GetString(key)?.Korean;
         return name;
     }

@@ -15,6 +15,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
     public Action<int> OnLevelChanged; //레벨업할 때마다 호출.
     public Action<int> OnDefenseChanged; //방어력 변화할 때마다 호출.
+    public Action OnStatusEffectChanged; //상태이상 변화할 때마다 호출
 
     private void Awake() //임시 유사 싱글톤 처리
     {
@@ -105,7 +106,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     }
     public int GetFullHp()
     {
-        return _stat.CurrentHp;
+        return _stat.Hp;
     }
 
 
@@ -117,28 +118,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
-    public void ApplyStatusEffect()
-    {
-        Debug.Log("플레이어 상태이상 대미지 적용");        
-        _stat.ApplyStatusEffect();
-        Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-        PushTotalConditionDamage();
-    }
-
-
-
-    public void GetPoisonStack(int stack)
-    {
-        _stat.GetPoison(stack);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-    }
-
-    public void GetBurnStack(int stack)
-    {
-        _stat.GetBurn(stack);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-    }
+      
         
 
     public void GetHp(int hp) //체력을 회복할 때마다 호출
@@ -175,8 +155,15 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     }
 
     public void AddStatusEffect(string effectKey, int duration, int stack)
-    {
-        StatusEffectData statusEffectData = DataManager.Instance.GetStatusEffectData(effectKey);        
-
+    {        
+        _stat.AddStatusEffect(effectKey, duration, stack);
     }
+
+    public void ApplyStatusEffect()
+    {
+        Debug.Log("플레이어 상태이상 대미지 적용");
+        _stat.ApplyStatusEffect();
+        Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+    }  
 }
