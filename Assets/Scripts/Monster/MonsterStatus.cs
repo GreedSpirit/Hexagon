@@ -62,12 +62,12 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             _monsterMaxHP = Mathf.FloorToInt(_monsterStatData.Hp * _monsterData.HpRate); 
             _monsterDefense = Mathf.FloorToInt(_monsterStatData.Defense * _monsterData.DefRate);
         }
-        else if(_monsterGrade == MonsterGrade.Boss)
+        else if(_monsterGrade == MonsterGrade.BOSS)
         {
             _monsterLevel = 1; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
-            // 500은 임시 기본 체력 수치, 추후 _monsterLevel 값을 이용해서 BossMonsterStat 테이블에서 수치 갖고오기
-            _monsterMaxHP = Mathf.FloorToInt(500 * _monsterData.HpRate);
-            _monsterDefense = Mathf.FloorToInt(10 * _monsterData.DefRate);
+            _monsterStatData = DataManager.Instance.GetBossMonsterStatData(_monsterLevel);
+            _monsterMaxHP = Mathf.FloorToInt(_monsterStatData.Hp * _monsterData.HpRate);
+            _monsterDefense = Mathf.FloorToInt(_monsterStatData.Defense * _monsterData.DefRate);
         }
         _monsterSkillSet = DataManager.Instance.GetMonsterSkillSetData(_monsterData.SkillSet);
         _monsterCurHP = _monsterMaxHP;        
@@ -76,7 +76,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     private void Start()
     {
         // ID 방식 Key 방식 구별
-        _monsterData = DataManager.Instance.GetMonsterStatData(1);
+        _monsterData = DataManager.Instance.GetMonsterStatData(_monsterId);
         //_monsterStatData = DataManager.Instance.GetMonsterStatData("KeyMonsterGhost0001");
         if(_monsterData == null)
         {
@@ -124,6 +124,18 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         return multiplier;
     }
 
+    private float GetStatModMultiplier()
+    {
+        float multiplier = 1.0f;
+        var StatMods = _statusEffects.FindAll(e => e.EffectLogic == EffectLogic.StatMod);
+
+        foreach(var mod in StatMods)
+        {
+            multiplier += mod.Value;
+        }
+        return multiplier;
+    }
+
     public int GetMonsterDefense()
     {
         return Mathf.Min(_monsterDefense, 7);
@@ -162,7 +174,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         //몬스터 죽음 처리 로직 추가
         Debug.Log("몬스터가 죽었습니다. ID: " + _monsterId);
         GetComponent<MonsterDeathEffect>().Die();
-        if(_monsterGrade == MonsterGrade.Boss)
+        if(_monsterGrade == MonsterGrade.BOSS)
         {
             DropLoot();
         }
@@ -210,6 +222,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 _selectedSkillKey = skillSlot.Item1;
                 _currentSkillData = DataManager.Instance.GetCard(_selectedSkillKey); //선택된 스킬 카드 데이터 저장
                 _selectedSkillValue = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
+                _selectedSkillValue = Mathf.FloorToInt(_selectedSkillValue * GetStatModMultiplier());
                 //이곳에서 스킬 타입에 따른 아이콘과 수치 UI 갱신 로직 추가
                 NotifySkillObservers(); //?선택된 스킬을 알림으로써 UI 갱신
                 break;
@@ -227,6 +240,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             
             if(_currentSkillData.CardType == CardType.Attack)
             {
+                
                 Player.Instance.TakeDamage(_selectedSkillValue); //추후 인자값으로 공격 강화 상태를 받을수도있음
                 Debug.Log("플레이어에게 " + _selectedSkillValue + "의 데미지를 입혔습니다.");
             }
@@ -240,6 +254,16 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 GetShield(_selectedSkillValue);
                 Debug.Log("몬스터가 " + _selectedSkillValue + "의 방어막을 얻었습니다.");
             }
+
+            if(_currentSkillData.Target == Target.Self)
+            {
+                AddStatusEffect(_currentSkillData.StatusEffect, _currentSkillData.StatusEffectValue, _currentSkillData.Turn);
+            }
+            else if(_currentSkillData.Target == Target.Enemy){
+                Player.Instance.AddStatusEffect(_currentSkillData.StatusEffect, _currentSkillData.StatusEffectValue, _currentSkillData.Turn);
+            }
+
+
             //사용 후 선택된 스킬 초기화 (방어 코드 및 선턴을 잡을 경우 예외 사항)
             _selectedSkillKey = null;
             _selectedSkillValue = -1;
@@ -256,8 +280,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     //상태이상 Key와 Duration, Stack를 받아서 상태이상을 적용하는 함수
     public void AddStatusEffect(string effectKey, int duration, int stack)
     {
+        if(effectKey == "") return;
         var tableData = DataManager.Instance.GetStatusEffectData(effectKey);
-        Debug.Log(tableData == null);
 
         var existingEffect = _statusEffects.Find(e => e.Key == effectKey);
 
@@ -287,6 +311,9 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         _statusEffects.Sort((a, b) => a.GetSortOrder(b)); //정렬
 
         NotifyEffectObservers();
+        _selectedSkillValue = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
+        _selectedSkillValue = Mathf.FloorToInt(_selectedSkillValue * GetStatModMultiplier());
+        NotifySkillObservers(); //만약 상대방이 나에게 상태이상을 걸었을 때 밸류를 다시 체크해서 UI에 반영
     }
 
     public void TickStatusEffects() //지속 시간 감소를 위한 메서드
@@ -327,8 +354,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     public IEnumerator ProcessDotEffects()
     {
-        int totalDotDmg = 0;
-        totalDotDmg = GetDotDamageByType("KeyStatusPoison") + GetDotDamageByType("KeyStatusBurn");
+        int totalDotDmg = GetDotDamageByType("KeyStatusPoison") + GetDotDamageByType("KeyStatusBurn");
         TakeTrueDamage(totalDotDmg);
         yield return new WaitForSeconds(0.5f);
     }
@@ -385,6 +411,15 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     public void TestBurn()
     {
         AddStatusEffect("KeyStatusBurn", 0, 2);
+    }
+    public void TestPride()
+    {
+        AddStatusEffect("KeyStatusPride", 2, 0);
+    }
+
+    public void TestVulnerable()
+    {
+        AddStatusEffect("KeyStatusVulnerable", 2, 0);
     }
     #endif
 
