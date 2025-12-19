@@ -44,6 +44,21 @@ public class CardData : CSVLoad, TableKey
     public string CardImg { get; set; }         // 카드 이미지
 
 
+    // 한글 설정
+    public void SetString()
+    {
+        StringData stringNameData = DataManager.Instance.GetString(Name);
+        StringData stringDescData = DataManager.Instance.GetString(Desc);
+
+        if(stringNameData != null) Name = stringNameData.Korean;
+        else
+            Debug.LogError($"{Id} 카드의 {Name} 이 String 테이블에 존재하지 않습니다.");
+
+        if (stringDescData != null) Desc = stringDescData.Korean;
+        else
+            Debug.LogError($"{Id} 카드의 {Desc} 이 String 테이블에 존재하지 않습니다.");
+    }
+
     // 강화, 약화일 때 StatusEffectValue 를 0 으로
     // DoT일 때 Turn 을 0으로
     public void SetStatusValue()
