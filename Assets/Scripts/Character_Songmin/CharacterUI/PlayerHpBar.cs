@@ -8,7 +8,7 @@ public class PlayerHpBar : MonoBehaviour
     [SerializeField] private Slider _poisonBar;
     [SerializeField] private Slider _burnBar;
 
-    float _preHpValue;
+    
     float _hitTarget;
     Coroutine _hitRoutine;
 
@@ -41,38 +41,26 @@ public class PlayerHpBar : MonoBehaviour
 
 
     public void UpdateHpBar(int currentHp, int Hp, int poison, int burn)
-    {        
-        
+    {
+
         float hpValue = Mathf.Max(0f, (float)(currentHp - poison - burn) / Hp);
         float burnValue = Mathf.Max(0, (float)(currentHp - poison) / Hp);
         float poisonValue = Mathf.Max(0, (float)currentHp / Hp);
         _hitTarget = poisonValue;
 
-        //if (_preHpValue > hpValue)
-        //{            
-            _hpBar.value = hpValue;
-            _burnBar.value = burnValue;
-            _poisonBar.value = poisonValue;
-            
 
-            if (_hitRoutine != null)
-            {
-                StopCoroutine(_hitRoutine);
-            }
-            _hitRoutine = StartCoroutine(HitBarAnimation());
-            _preHpValue = hpValue;
-            return;
-        //}
-        //else
-        //{
-        //    if (_hitRoutine != null)
-        //    {
-        //        StopCoroutine(_hitRoutine);
-        //    }
-        //    _hitRoutine = StartCoroutine(HealBarAnimation(hpValue, burnValue, poisonValue));
-        //    _preHpValue = hpValue;
-        //    return;
-        //}
+        _hpBar.value = hpValue;
+        _burnBar.value = burnValue;
+        _poisonBar.value = poisonValue;
+
+
+        if (_hitRoutine != null)
+        {
+            StopCoroutine(_hitRoutine);
+        }
+        _hitRoutine = StartCoroutine(HitBarAnimation());
+        Debug.Log($"hpValue = {hpValue}");
+        return;
     }
 
 
