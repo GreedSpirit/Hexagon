@@ -6,26 +6,25 @@ using UnityEngine;
 public class StringData : CSVLoad, TableKey
 {
  
-    //  ø¢ºø ƒ√∑≥∏Ì∞˙ ¿œƒ°Ω√≈≤ «¡∑Œ∆€∆º
+    //  ÔøΩÔøΩÔøΩÔøΩ ÔøΩ√∑ÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩƒ°ÔøΩÔøΩ≈≤ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ∆º
     public int Id { get; set; }
-    public string StringKey { get; set; }   // ø¢ºø ƒ√∑≥∏Ì: StringKey
+    public string StringKey { get; set; }   // ÔøΩÔøΩÔøΩÔøΩ ÔøΩ√∑ÔøΩÔøΩÔøΩ: StringKey
     public string Korean { get; set; }
     public string English { get; set; }
 
-    // DataManager∞° 'Key'∑Œ ¡¢±Ÿ«œ∏È 'StringKey'∏¶ π›»Ø
+    // DataManagerÔøΩÔøΩ 'Key'ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩœ∏ÔøΩ 'StringKey'ÔøΩÔøΩ ÔøΩÔøΩ»Ø
     string TableKey.Key
     {
         get { return StringKey; }
     }
 
 
-    // CSV µ•¿Ã≈Õ ∆ƒΩÃ
+    // CSV ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩƒΩÔøΩ
     public void LoadFromCsv(string[] values)
     {
-        // Id
-        if (values.Length > 0)
+        // 0: Id
+        if (int.TryParse(values[0], out int idValue))
         {
-            int.TryParse(values[0], out int idValue);
             Id = idValue;
         }
         else
@@ -33,26 +32,13 @@ public class StringData : CSVLoad, TableKey
             Id = 0;
         }
 
-        // Key (StringKey)
-        if (values.Length > 1)
-        {
-            StringKey = values[1];
-        }
+        // 1: StringKey
+        StringKey = values[1];
 
-        // Korean
-        if (values.Length > 2)
-        {
-            Korean = values[2];
-        }
+        // 2: Korean
+        Korean = values[2];
 
-        // English (µ•¿Ã≈Õ∞° ¿÷¿ª ∂ß∏∏ ∆ƒΩÃ«œµµ∑œ æ»¿¸¿Âƒ° √ﬂ∞°)
-        if (values.Length > 3)
-        {
-            English = values[3];
-        }
-        else
-        {
-            English = ""; // µ•¿Ã≈Õ∞° æ¯¿∏∏È ∫Û πÆ¿⁄ø≠∑Œ √≥∏Æ
-        }
+        // 3: English
+        //English = values[3];
     }
 }
