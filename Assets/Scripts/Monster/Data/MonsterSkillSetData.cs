@@ -47,6 +47,7 @@ public class MonsterSkillSetData : CSVLoad, TableKey
 
         // 3: SkillSlot1
         SkillSlot1 = values[3];
+        Debug.Log(SkillSlot1 + " " + Id);
         if(SkillSlot1 == "")
         {
             Debug.Log("SkillSlot1이 비어있습니다. Id:" + Id);
@@ -79,7 +80,8 @@ public class MonsterSkillSetData : CSVLoad, TableKey
             Slot2Weight = slot2WeightValue;
         else
         {
-            Debug.LogError("Slot2Weight 파싱 실패. Id:" + Id);
+            if(SkillSlot2 != "")
+                Debug.LogError("Slot2Weight 파싱 실패. Id:" + Id);
             Slot2Weight = 0f;
         }
         // 8: Slot2Level
@@ -87,7 +89,8 @@ public class MonsterSkillSetData : CSVLoad, TableKey
             Slot2Level = slot2LevelValue;
         else
         {
-            Debug.LogError("Slot2Level 파싱 실패. Id:" + Id);
+            if(SkillSlot2 != "")
+                Debug.LogError("Slot2Level 파싱 실패. Id:" + Id);
             Slot2Level = 1;
         }
         // 9: SkillSlot3
@@ -101,7 +104,8 @@ public class MonsterSkillSetData : CSVLoad, TableKey
             Slot3Weight = slot3WeightValue;
         else
         {
-            Debug.LogError("Slot3Weight 파싱 실패. Id:" + Id);
+            if(SkillSlot3 != "")
+                Debug.LogError("Slot3Weight 파싱 실패. Id:" + Id);
             Slot3Weight = 0f;
         }
         // 11: Slot3Level
@@ -109,7 +113,8 @@ public class MonsterSkillSetData : CSVLoad, TableKey
             Slot3Level = slot3LevelValue;
         else
         {
-            Debug.LogError("Slot3Level 파싱 실패. Id:" + Id);
+            if(SkillSlot3 != "")
+                Debug.LogError("Slot3Level 파싱 실패. Id:" + Id);
             Slot3Level = 1;
         }
         // 12: SkillSlot4
@@ -123,7 +128,8 @@ public class MonsterSkillSetData : CSVLoad, TableKey
             Slot4Weight = slot4WeightValue;
         else
         {
-            Debug.LogError("Slot4Weight 파싱 실패. Id:" + Id);
+            if(SkillSlot4 != "")
+                Debug.LogError("Slot4Weight 파싱 실패. Id:" + Id);
             Slot4Weight = 0f;
         }
         // 14: Slot4Level
@@ -131,7 +137,8 @@ public class MonsterSkillSetData : CSVLoad, TableKey
             Slot4Level = slot4LevelValue;
         else
         {
-            Debug.LogError("Slot4Level 파싱 실패. Id:" + Id);
+            if(SkillSlot4 != "")
+                Debug.LogError("Slot4Level 파싱 실패. Id:" + Id);
             Slot4Level = 1;
         }        
 
