@@ -1,6 +1,6 @@
-ï»¿Id,ìŠ¤í…Œì´ì§€ í…Œì´ë¸”ì˜ ê¸°ë³¸í‚¤,ë˜ì „ í…Œì´ë¸”ì˜ ê¸°ë³¸í‚¤ ê¸°ì¬,ì†Œí™˜ë  ëª¬ìŠ¤í„°,ìŠ¤í…Œì´ì§€(ë§µ) ë°°ê²½ ì´ë¯¸ì§€ ë¦¬ì†ŒìŠ¤,ìŠ¤í…Œì´ì§€(ë§µ) ë°°ê²½ BGM ë¦¬ì†ŒìŠ¤
+Id,½ºÅ×ÀÌÁö Å×ÀÌºíÀÇ ±âº»Å°,´øÀü Å×ÀÌºíÀÇ ±âº»Å° ±âÀç,¼ÒÈ¯µÉ ¸ó½ºÅÍ,½ºÅ×ÀÌÁö(¸Ê) ¹è°æ ÀÌ¹ÌÁö ¸®¼Ò½º,½ºÅ×ÀÌÁö(¸Ê) ¹è°æ BGM ¸®¼Ò½º
 int,string,string,string,string,string
 Id,StageKey,Dungeon,SpawnMonster,Img,bgm
-1,Stage_Dungeon01_10101,Key_Dungeon_Dungeon01EngName,Key_Monster_MonsterEngName01,Img_Stage_Background_01,Bgm_Stage_Stage01
-2,Stage_Dungeon01_10102,Key_Dungeon_Dungeon01EngName,Key_Monster_MonsterEngName01,Img_Stage_Background_01,Bgm_Stage_Stage01
-3,Stage_Dungeon01_10103,Key_Dungeon_Dungeon01EngName,Key_Boss_Monster_MonsterEngName02,Img_Stage_Background_01,Bgm_Stage_Stage01
+1,KeyDungeon01Stage001,KeyDungeon01,KeyMonsterGhost0001,ImgStageBackground001,BgmStage001
+2,KeyDungeon01Stage002,KeyDungeon01,KeyMonsterGhost0002,ImgStageBackground002,BgmStage002
+3,KeyDungeon01Stage003,KeyDungeon01,KeyMonsterGhost0003,ImgStageBackground003,BgmStage003
