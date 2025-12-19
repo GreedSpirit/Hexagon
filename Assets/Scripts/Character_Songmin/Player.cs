@@ -166,6 +166,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     {
         _stat.ResetStatusEffect();
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
 
 
