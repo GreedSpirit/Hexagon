@@ -327,8 +327,10 @@ public class HandManager : MonoBehaviour
         // 타겟 몬스터 수치
         if(_targetMonster is MonsterStatus monster)
         {
-            // monsterDeBuff = monster.
-            // monsterDef = monster.
+            // 약화 수치
+            //monsterDeBuff = monster.Get
+            // 방어력
+            monsterDef = monster.GetMonsterDefense();
         }
 
         // 모든 카드 설명 변경
