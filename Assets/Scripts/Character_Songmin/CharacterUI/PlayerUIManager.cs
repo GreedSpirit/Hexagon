@@ -2,31 +2,25 @@ using UnityEngine;
 
 public class PlayerUIManager : MonoBehaviour
 {
-    [SerializeField] GameObject _playerExpBar;
-    [SerializeField] GameObject _playerHpBar;
-    [SerializeField] GameObject _playerHpText;    
-    [SerializeField] GameObject _playerLevelText;    
+    [SerializeField] GameObject _playerStatUI;
 
-    private void Start()
-    {
-        OnOffPlayerStatUi(true);
-    }
+    //private void Start()
+    //{
+    //    OnOffPlayerStatUi(true);        
+    //}
 
     public void OnOffPlayerStatUi(bool readyToShow)
     {
         if(readyToShow)
         {
-            _playerExpBar.SetActive(true);
-            _playerHpBar.SetActive(true);
-            _playerHpText.SetActive(true);
-            _playerLevelText.SetActive(true);
+            _playerStatUI.SetActive(true);            
         }
         else
         {
-            _playerExpBar.SetActive(false);
-            _playerHpBar.SetActive(false);
-            _playerHpText.SetActive(false);
-            _playerLevelText.SetActive(false);
+            _playerStatUI.SetActive(false);            
         }            
-    }        
+    }
+
+    
+
 }

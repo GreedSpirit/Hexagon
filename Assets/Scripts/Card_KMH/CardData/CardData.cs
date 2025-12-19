@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 using System;
 
 public enum CardGrade   // 카드 등급
@@ -43,52 +44,22 @@ public class CardData : CSVLoad, TableKey
     public string CardImg { get; set; }         // 카드 이미지
 
 
-    public int Level { get; set; }              // 레벨
-    public List<ICardAction> CardActions { get; set; } // 카드 행동 리스트 (공격, 방어, 치유, 주문, 상태이상)
-
-
-    // 카드 레벨
-    public void SetCardLevel(int level)
+    // 강화, 약화일 때 StatusEffectValue 를 0 으로
+    // DoT일 때 Turn 을 0으로
+    public void SetStatusValue()
     {
-        Level = level;
-    }
+        // 상태이상 비어있으면 무시
+        if (string.IsNullOrEmpty(StatusEffect)) return;
 
-    // 카드 동작 설정
-    public void SetCardAction()
-    {
-        CardActions = new List<ICardAction>();
+        StatusEffectData statusEffect = DataManager.Instance.GetStatusEffectData(StatusEffect);
 
-        // 카드 타입에 맞는 동작 가져오기
-        if (TestGameManager_KMH.Instance.GetAction(CardType, out ICardAction typeAction))
-        {
-            CardActions.Add(typeAction);
-        }
+        // 혹시나 이름 안맞으면
+        if (statusEffect == null) return;
 
-        //  카드 상태이상에 맞는 동작 가져오기
-        if (TestGameManager_KMH.Instance.GetAction(StatusEffect, out ICardAction statusAction))
-        {
-            CardActions.Add(typeAction);
-        }
-    }
-
-    // 카드 설명 설정
-    public void SetCardDesc()
-    {
-        Desc.Replace("{N}", GetCardValue().ToString());
-        Desc.Replace("{S}", StatusEffectValue.ToString());
-        Desc.Replace("{Turn}", Turn.ToString());
-    }
-
-    // 카드 수치 계산 반환
-    public int GetCardValue()
-    {
-        return BaseValue + ((Level - 1) * ValuePerValue);
-    }
-
-    // 상태이상 효과 데이터 반환
-    public StatusEffectData GetStatusEffectData()
-    {
-        return DataManager.Instance.GetStatusEffectData(StatusEffect);
+        if (statusEffect.BuffType == BuffType.Buff || statusEffect.BuffType == BuffType.DeBuff)
+            StatusEffectValue = 0;
+        else
+            Turn = 0;
     }
 
     public void LoadFromCsv(string[] values)

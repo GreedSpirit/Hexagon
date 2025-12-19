@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TestGameManager_Song : MonoBehaviour
 {
@@ -10,10 +11,11 @@ public class TestGameManager_Song : MonoBehaviour
 
     public void InitPlayer()
     {
-        Player player = FindFirstObjectByType<Player>();
+        Player player = Player.Instance;
         PlayerStatInitializer initializer = new PlayerStatInitializer();
 
         CharacterData characterData = DataManager.Instance.GetCharacter(1);
+        StringData stringData = DataManager.Instance.GetString(1);
         List<CharacterLevelData> levelDatas = new List<CharacterLevelData>();
         List<CharacterStatData> statDatas = new List<CharacterStatData>();
 
@@ -33,6 +35,11 @@ public class TestGameManager_Song : MonoBehaviour
             statDatas.Add(statData);
         }
         player.Init(initializer.InitPlayerStat(characterData, levelDatas, statDatas));
+    }
+
+    public void LoadScene()
+    {
+        SceneManager.LoadScene(0);
     }
 
 }

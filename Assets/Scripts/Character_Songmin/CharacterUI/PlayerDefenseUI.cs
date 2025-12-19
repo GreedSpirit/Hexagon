@@ -1,29 +1,29 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerExpText : MonoBehaviour
+public class PlayerDefenseText : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI _expText;
+    [SerializeField] TextMeshProUGUI _defenseText;
     
 
     public void Start()
     {
         if (Player.Instance != null)
         {
-            Player.Instance.OnExpChanged += UpdateExpText;
-            Player.Instance.PushExp();
+            Player.Instance.OnDefenseChanged += UpdateDefenseText;
+            Player.Instance.PushDefense();
         }
         else
         {
             Debug.LogError("Player.Instance가 생성되지 않았습니다.");
         }
-    }    
+    }
 
     public void OnDestroy()
     {
         if (Player.Instance != null)
         {
-            Player.Instance.OnExpChanged -= UpdateExpText;
+            Player.Instance.OnDefenseChanged -= UpdateDefenseText;
         }
         else
         {
@@ -31,8 +31,10 @@ public class PlayerExpText : MonoBehaviour
         }
     }
 
-    public void UpdateExpText(int currentExp, int exp)
+
+    public void UpdateDefenseText(int defense)
     {
-        _expText.text = $"{currentExp}  /  {exp}";
+        _defenseText.text = $"{defense}";
     }
+
 }

@@ -56,7 +56,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
         if(_monsterGrade == MonsterGrade.Normal)
         {
-            _monsterLevel = 3; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
+            _monsterLevel = 1; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
             _monsterStatData = DataManager.Instance.GetCommonMonsterStatData(_monsterLevel);
 
             _monsterMaxHP = Mathf.FloorToInt(_monsterStatData.Hp * _monsterData.HpRate); 
@@ -94,18 +94,6 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수
     {
-        float multiplier = 1.0f;
-        var vulnerableMods = _statusEffects.FindAll(e => e.EffectLogic == EffectLogic.DmgTaken);
-
-        foreach(var mod in vulnerableMods)
-        {
-            multiplier += mod.Value;
-        }
-
-        damage = (int)Mathf.Max(damage -  Mathf.Min(_monsterDefense, 7), 0); //방어력 적용(방어력 최대가 7이라서 7까지만 적용)
-        damage = Mathf.FloorToInt(damage * multiplier);
-
-
         if(_monsterShield > 0)
         {
             int shieldDamage = Mathf.Min(_monsterShield, damage);
@@ -121,6 +109,24 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         {
             Death();
         }
+    }
+
+    public float TakenDamageMultiplier() //약화 효과가 걸려있다면 데미지의 배율을 결정해서 정보를 전달
+    {
+        float multiplier = 1.0f;
+        var vulnerableMods = _statusEffects.FindAll(e => e.EffectLogic == EffectLogic.DmgTaken);
+
+        foreach(var mod in vulnerableMods)
+        {
+            multiplier += mod.Value;
+        }
+
+        return multiplier;
+    }
+
+    public int GetMonsterDefense()
+    {
+        return Mathf.Min(_monsterDefense, 7);
     }
 
     public void TakeTrueDamage(int damage) // 방어력 무시 데미지(상태 이상 데미지)를 입을 때 호출할 함수
@@ -462,7 +468,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
     }
 
-    public void AddEffectObserVer(IMonsterEffectObserver observer)
+    public void AddEffectObserver(IMonsterEffectObserver observer)
     {
         if(!_effectObservers.Contains(observer)) _effectObservers.Add(observer);
     }

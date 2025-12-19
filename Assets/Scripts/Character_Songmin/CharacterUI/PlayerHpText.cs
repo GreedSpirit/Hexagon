@@ -4,15 +4,8 @@ using UnityEngine;
 public class PlayerHpText : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _hpText;
-    private void Awake()
-    {
-        if (_hpText == null)
-        {
-            _hpText = GetComponent<TextMeshProUGUI>();
-        }
-    }
-
-    public void OnEnable()
+    
+    public void Start()
     {        
         if (Player.Instance != null)
         {
@@ -25,12 +18,7 @@ public class PlayerHpText : MonoBehaviour
         }
     }
 
-    public void UpdateHpText(int currentHp, int Hp, int poison, int burn)
-    {
-        _hpText.text = $"{currentHp}  /  {Hp}";
-    }
-
-    public void OnDisable()
+    public void OnDestroy()
     {
         if (Player.Instance != null)
         {
@@ -40,5 +28,11 @@ public class PlayerHpText : MonoBehaviour
         {
             Debug.LogError("Player.Instance가 생성되지 않았습니다.");
         }
+    }
+
+
+    public void UpdateHpText(int currentHp, int Hp, int poison, int burn)
+    {
+        _hpText.text = $"{currentHp}  /  {Hp}";
     }
 }

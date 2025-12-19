@@ -24,7 +24,7 @@ public class UIMonsterHp : MonoBehaviour, IMonsterHpObserver, IMonsterEffectObse
     private void Awake()
     {
         _monsterStatus.AddHpObserver(this);
-        _monsterStatus.AddEffectObserVer(this); // 효과 변경 시에도 체력바 갱신 필요 (도트 예상 구간 때문)
+        _monsterStatus.AddEffectObserver(this); // 효과 변경 시에도 체력바 갱신 필요 (도트 예상 구간 때문)
     }
 
     private void OnDestroy()

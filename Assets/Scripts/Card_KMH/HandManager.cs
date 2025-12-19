@@ -37,13 +37,15 @@ public class HandManager : MonoBehaviour
     public float HoverVisualScaleOffset => _hoverVisualScaleOffset;
     public float CardHalfHeight => _cardHalfHeight;
     public CardUI SelectedCard => _selectedCardUI;
+    public IBattleUnit TargetPlayer => _targetPlayer;
+    public IBattleUnit TargetMonster => _targetMonster;
 
 
     // 덱의 카드 id 리스트
-    private Queue<CardData> _deck;
+    private Queue<int> _deck;
 
-    // 현재 들고 있는 카드 리스트
-    private List<GameObject> _handCards = new List<GameObject>();
+    // 현재 들고 있는 카드 리스트 (로직)
+    private List<CardLogic> _handCards = new List<CardLogic>();
 
     // 드로우 끝나면 호출
     public event Action OnDrawEnd;
@@ -54,8 +56,8 @@ public class HandManager : MonoBehaviour
     // 덱 시작 카드 수
     private int _deckCardCount;
 
-    private IBattleUnit targetPlayer;     // 타겟 플레이어 
-    private IBattleUnit targetMonster;    // 타겟 몬스터
+    private IBattleUnit _targetPlayer;     // 타겟 플레이어 
+    private IBattleUnit _targetMonster;    // 타겟 몬스터
 
     // 선택된 카드 UI (1회 클릭)
     private CardUI _selectedCardUI;
@@ -95,7 +97,7 @@ public class HandManager : MonoBehaviour
     private void SetupDeck()
     {
         // 덱 복사
-        List<CardData> newDeck = new List<CardData>();
+        List<int> newDeck = new List<int>();
 
         foreach (var card in TestGameManager_KMH.Instance.Deck)
         {
@@ -103,27 +105,16 @@ public class HandManager : MonoBehaviour
             int cardLevel = card.Value;
 
             // cardKey 사용해서 테이블 정보 불러오기
-            CardData tempCardData = DataManager.Instance.GetCard(cardKey);
-
-            // 레벨
-            tempCardData.SetCardLevel(cardLevel);
+            CardData cardData = DataManager.Instance.GetCard(cardKey);
 
             // 카드 사용 가능 횟수
-            int cardNumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(cardLevel, tempCardData.CardGrade);
+            int cardNumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(cardLevel, cardData.CardGrade);
 
-            // 사용 횟수 만큼 덱에 추가
+            // 사용 횟수 만큼
             for (int i = 0; i < cardNumberOfAvailable; i++)
             {
-                // 덱에 추가할 진짜 카드 데이터
-                CardData newCardData = DataManager.Instance.GetCard(cardKey);
-
-                // 카드 동작, 설명, 레벨, 사용 횟수 설정
-                newCardData.SetCardAction();
-                newCardData.SetCardDesc();
-                newCardData.SetCardLevel(cardLevel);
-
-                // 덱에 추가
-                newDeck.Add(newCardData);
+                // 덱에 id 추가
+                newDeck.Add(cardKey);
             }
         }
 
@@ -136,16 +127,16 @@ public class HandManager : MonoBehaviour
         ShuffleDeck(newDeck);
 
         // 덱 설정 완료
-        _deck = new Queue<CardData>(newDeck);
+        _deck = new Queue<int>(newDeck);
     }
 
     // 셔플 (Fisher Yates)
-    private void ShuffleDeck(List<CardData> deck)
+    private void ShuffleDeck(List<int> deck)
     {
         for (int i = 0; i < deck.Count; i++)
         {
             int rand = UnityEngine.Random.Range(0, deck.Count);
-            CardData temp = deck[i];
+            int temp = deck[i];
             deck[i] = deck[rand];
             deck[rand] = temp;
         }
@@ -163,10 +154,24 @@ public class HandManager : MonoBehaviour
         }
 
         // 덱큐에서 카드 한장 뽑기
-        CardData cardData = _deck.Dequeue();
+        int cardID = _deck.Dequeue();
 
-        // 데이터에 맞는 카드 생성 ( out은 생성된 카드 UI - 오버드로우 처리용 )
-        GameObject newCard = InitDrawCard(cardData, out CardUI cardUI);
+        // ID 에 맞는 카드 데이터 가져오기
+        CardData cardData = DataManager.Instance.GetCard(cardID);
+
+        // ID 에 맞는 카드 레벨 가져오기
+        int level = TestGameManager_KMH.Instance.Deck[cardID];
+
+        // 카드 UI 생성
+        GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
+
+        // 설정
+        CardLogic cardLogic = newCard.GetComponent<CardLogic>();
+        CardUI cardUI = newCard.GetComponent<CardUI>();
+
+        // 매니저 연결
+        cardLogic.Init(cardData, this, level);
+        cardUI.Init(cardData, this);
 
         // 덱 카드 수 갱신
         _deckCount.text = $"Deck : {_deck.Count} / {_deckCardCount}";
@@ -182,39 +187,21 @@ public class HandManager : MonoBehaviour
         }
 
         // 리스트 추가
-        _handCards.Add(newCard);
+        _handCards.Add(cardLogic);
+
+        // 카드 내용 대상 상태이상 따라 한 번 체크
+        TargetStatusValueChanged();
 
         // 정렬
         AlignCards();
     }
 
-    // 드로우 카드 초기화
-    private GameObject InitDrawCard(CardData cardData, out CardUI cardUI)
-    {
-        // 카드 UI 생성
-        GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
-
-        // 설정
-        CardLogic cardLogic = newCard.GetComponent<CardLogic>();
-        cardUI = newCard.GetComponent<CardUI>();
-
-        // 타겟 (플레이어 OR 몬스터)
-        IBattleUnit target = cardData.Target == Target.Self ? targetPlayer : targetMonster;
-
-        // 매니저 연결
-        cardLogic.Init(cardData, this, target);
-        cardUI.Init(cardData, this);
-
-        return newCard;
-    }
-
-
 
     // 카드 사용
-    public void UseCard(GameObject card)
+    public void UseCard(GameObject cardObject)
     {
         // 사용된 카드가 선택된 UI와 같아야
-        if (card == _selectedCardUI.gameObject)
+        if (cardObject == _selectedCardUI.gameObject)
         {
             // 소멸
             _selectedCardUI.OnDisappear(_disappearPoint);
@@ -222,7 +209,14 @@ public class HandManager : MonoBehaviour
         }
 
         // 핸드 리스트에서 제외
-        _handCards.Remove(card);
+        foreach (var card in _handCards)
+        {
+            if(cardObject == card.gameObject)
+            {
+                _handCards.Remove(card);
+                break;
+            }
+        }
 
         // 남은 카드 재정렬
         AlignCards();           
@@ -261,10 +255,10 @@ public class HandManager : MonoBehaviour
             Vector3 position = center + (direction * (_radius + _cardHalfHeight));
 
             // 카드 위치 설정
-            _handCards[i].GetComponent<CardUI>().SetBase(position, rotation, i);
+            _handCards[i].gameObject.GetComponent<CardUI>().SetBase(position, rotation, i);
 
             // 맨 위로 설정
-            _handCards[i].transform.SetSiblingIndex(i);
+            _handCards[i].gameObject.transform.SetSiblingIndex(i);
         }
     }
 
@@ -301,14 +295,47 @@ public class HandManager : MonoBehaviour
     // 타겟 플레이어 설정
     private void SetPlayerTarget()
     {
-        targetPlayer = Player.Instance;
+        _targetPlayer = Player.Instance;
     }
 
     // 타겟 몬스터 설정
     public void SetMonsterTarget(IBattleUnit newTarget)
     {
-        targetMonster = newTarget;
+        _targetMonster = newTarget;
     }
+
+
+    // 대상의 상태이상 수치 변하면
+    // 아니면 상태이상 감소 사이클 다 돌면
+    public void TargetStatusValueChanged()
+    {
+        // 플레이어 강화 수치 (임시, 받아와야 함) 
+        float playerBuffValue = 0.5f;
+        // 몬스터 약화 수치  (임시, 받아오기 가능하긴 함)
+        float monsterDeBuffValue = 0;
+        // 몬스터 방어력  (임시, 받아와야 함)
+        int monsterDefence = 1;
+
+        // 타겟 몬스터
+        if(_targetMonster is MonsterStatus monster)
+        {
+            // 적용 상태이상 다 불러와서 
+            foreach (var monsterStatusEffect in monster.StatusEffects)
+            {
+                // 적용 형태가 받는 피해량이면 합산
+                if(monsterStatusEffect.EffectLogic == EffectLogic.DmgTaken)
+                    monsterDeBuffValue += (int)monsterStatusEffect.Value;
+            }
+        }
+
+        // 모든 카드 설명 변경
+        foreach (var card in _handCards)
+        {
+            card.UpdateDealAndDesc(playerBuffValue, monsterDeBuffValue, monsterDefence);
+            card.gameObject.GetComponent<CardUI>().SetDescText();
+        }
+    }
+
 
     // 페이즈 변경 시 호출
     public void OnPhaseChanged(PhaseType phaseType)
@@ -330,5 +357,9 @@ public class HandManager : MonoBehaviour
                 DrawCard();
             }
         }
+        //else if (phaseType == PhaseType.)
+        //{
+
+        //}
     }
 }

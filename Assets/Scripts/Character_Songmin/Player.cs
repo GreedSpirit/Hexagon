@@ -14,6 +14,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     public Action<int> OnShieldChanged; //보호막 수치 변화할 때마다 호출.
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
     public Action<int> OnLevelChanged; //레벨업할 때마다 호출.
+    public Action<int> OnDefenseChanged; //방어력 변화할 때마다 호출.
 
     private void Awake() //임시 유사 싱글톤 처리
     {
@@ -49,18 +50,39 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         PushHp();
         PushExp();
         PushLevel();
+        PushDefense();
+        PushShield();      
     }
 
     
     /// UI 활성화 시 호출할 함수
-    public int PushHp()
+    public void PushHp()
     {
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-        return _stat.CurrentHp;
+        if (_stat != null)
+        {
+            OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);            
+        }        
     }
     public void PushExp()
     {
-        OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
+        if (_stat != null)
+        {
+            OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
+        }        
+    }
+    public void PushDefense()
+    {
+        if (_stat != null)
+        {
+            OnDefenseChanged?.Invoke(_stat.Defense);
+        }            
+    }
+    public void PushShield()
+    {
+        if (_stat != null)
+        {
+            OnShieldChanged?.Invoke(_stat.Shield);
+        }            
     }
 
     public int PushTotalConditionDamage()
@@ -71,9 +93,20 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 
     public void PushLevel()
     {
-        OnLevelChanged?.Invoke(_stat.Level);
+        if (_stat != null)
+        {
+            OnLevelChanged?.Invoke(_stat.Level);
+        }        
     }
 
+    public int GetCurrentHp()
+    {
+        return _stat.CurrentHp;
+    }
+    public int GetFullHp()
+    {
+        return _stat.CurrentHp;
+    }
 
 
     /// 이하 함수들은 전투 중 외부에서 호출.      
@@ -84,12 +117,11 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
-    public void ApplyConditions()
+    public void ApplyStatusEffect()
     {
-        _stat.ApplyPoison();
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-        PushTotalConditionDamage();
-        _stat.ApplyBurn();
+        Debug.Log("플레이어 상태이상 대미지 적용");        
+        _stat.ApplyStatusEffect();
+        Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         PushTotalConditionDamage();
     }
@@ -107,20 +139,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         _stat.GetBurn(stack);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
-    
-
-    public void TakeTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
-    {
-        _stat.GetPoison(-1);
-        _stat.GetTrueDamage(_stat.Poison);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-
-        _stat.GetBurn(-1);
-        _stat.GetTrueDamage(_stat.Burn);
-        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-    }    
-
-    
+        
 
     public void GetHp(int hp) //체력을 회복할 때마다 호출
     {
@@ -142,7 +161,8 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 
     public void ResetCondition()
     {
-        _stat.ResetCondition();
+        _stat.ResetStatusEffect();
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
 
@@ -152,5 +172,11 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
         OnLevelChanged?.Invoke(_stat.Level);
+    }
+
+    public void AddStatusEffect(string effectKey, int duration, int stack)
+    {
+        StatusEffectData statusEffectData = DataManager.Instance.GetStatusEffectData(effectKey);        
+
     }
 }

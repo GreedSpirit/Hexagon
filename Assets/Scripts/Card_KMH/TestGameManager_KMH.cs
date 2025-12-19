@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class TestGameManager_KMH : MonoBehaviour
@@ -20,25 +19,7 @@ public class TestGameManager_KMH : MonoBehaviour
         InitCardActions();      // 카드 동작 초기화
         InitDeck();             // 덱 초기화
 
-
-        //PrintStatusEffectList();    // 상태이상 데이터 목록 테스트
     }
-
-    void PrintStatusEffectList()
-    {
-        for(int i = 1; i <= 3; i++)
-        {
-            StatusEffectData effect = DataManager.Instance.GetStatusEffectData(i);
-
-            Debug.Log(effect.Id);
-            Debug.Log(effect.Name);
-            Debug.Log(effect.Key);
-            Debug.Log(effect.ValueFormula);
-            Debug.Log(effect.BuffType);
-            Debug.Log(effect.DecreaseType);
-        }
-    }
-
     // 동작 구성
     private void InitCardActions()
     {
@@ -51,26 +32,26 @@ public class TestGameManager_KMH : MonoBehaviour
         // 카드 상태이상 임시
         _cardStatusActions.Add("KeyStatusPoison", new CardPoisonAction());
         _cardStatusActions.Add("KeyStatusBurn", new CardBurnAction());
-        _cardStatusActions.Add("KeyStatusFury", new CardFuryAction());
+        _cardStatusActions.Add("KeyStatusPride", new CardPrideAction());
         _cardStatusActions.Add("KeyStatusVulnerable", new CardVulnerableAction());
     }
 
     // 덱 구성
     private void InitDeck()
     {
-        // 테스트용 카드 5장
-        int count = 5;
-
         // 덱 생성
         Deck = new Dictionary<int, int>();
 
-        // 덱 구성 없으니 일단 랜덤 Id 카드 생성
-        for (int i = 1; i <= count; i++)
+        // 모든 카드 데이터 예외 처리 함수 하나
+        foreach(var cardData in DataManager.Instance.CardDict)
+            cardData.Value.SetStatusValue();
+
+        // 덱 구성 없으니 일단 카드 데이터 전부
+        for (int i = 1; i <= DataManager.Instance.CardDict.Count; i++)
         {
-            int randId = Random.Range(1, DataManager.Instance.CardDict.Count + 1);
             //int id = DataManager.Instance.CardDict[i].Id;
             // 기본 레벨 1
-            Deck[randId] = 1;
+            Deck[i] = 1;
         }
     }
 
