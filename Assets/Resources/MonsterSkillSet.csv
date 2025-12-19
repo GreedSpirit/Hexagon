@@ -5,6 +5,6 @@ Id,Key,MonGrade,SkillSlot1,Slot1Weight,Slot1Level,SkillSlot2,Slot2Weight,Slot2Le
 2,KeySkillSet02,Normal,KeyCard6,5,1,KeyCard7,10.1,3,KeyCard02,4.5,1,,,
 3,KeySkillSet03,Normal,KeyCard01,6.4,2,KeyCard8,5.4,7,KeyCard5,4.7,2,,,
 4,KeySkillSet04,Normal,KeyCard03,3.4,2,KeyCard5,10.5,4.7,KeyCard4,5.9,4,,,
-5,KeySkillSet05,BOSS,KeyCard5,6.4,3,KeyCard7,4.5,5,KeyCard8,5.9,6,KeyCard03,7,8.5
-6,KeySkillSet06,BOSS,KeyCard4,5.5,1,KeyCard01,10.1,6,KeyCard7,4.8,3,KeyCard6,7.8,5
-7,KeySkillSet07,BOSS,KeyCard4,5,5,KeyCard5,5,5,KeyCard7,5,5,KeyCard8,5,5
+5,KeySkillSet05,Boss,KeyCard5,6.4,3,KeyCard7,4.5,5,KeyCard8,5.9,6,KeyCard03,7,8.5
+6,KeySkillSet06,Boss,KeyCard4,5.5,1,KeyCard01,10.1,6,KeyCard7,4.8,3,KeyCard6,7.8,5
+7,KeySkillSet07,Boss,KeyCard4,5,5,KeyCard5,5,5,KeyCard7,5,5,KeyCard8,5,5

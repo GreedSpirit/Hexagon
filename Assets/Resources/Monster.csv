@@ -1,6 +1,4 @@
-Id,Monster 테이블의 기본키,몬스터의 이름,몬스터 설명,"몬스터 등급
-Normal: 일반
-Boss: 우두머리",몬스터의 체력 배수,몬스터의 방어력 배수,몬스터 이동 속도 수치,몬스터가 사용할 SkillSet,몬스터 모델링 리소스명
+Id,Monster 테이블의 기본키,몬스터의 이름,몬스터 설명,"몬스터 등급 Normal: 일반 Boss: 우두머리",몬스터의 체력 배수,몬스터의 방어력 배수,몬스터 이동 속도 수치,몬스터가 사용할 SkillSet,몬스터 모델링 리소스명
 int,string,string,string,Enum,float,float,float,string,string
 Id,MonsterKey,Name,Desc,MonGrade,HpRate,DefRate,MoveSpeed,SkillSet,Model
 1,KeyMonster01,NameMonster01,DescMonster01,Normal,0.5,1.1,2.9,KeySkillSet01,ModelMoster01
