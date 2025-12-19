@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerShieldUI : MonoBehaviour
+public class PlayerShieldText : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _shieldText;
     [SerializeField] GameObject _shieldObject;

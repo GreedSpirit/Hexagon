@@ -138,39 +138,58 @@ public class PlayerStat
     public void AddStatusEffect(string effectKey, int duration, int stack)
     {
         StatusEffectData data = DataManager.Instance.GetStatusEffectData(effectKey);
-                
-        if (StatusEffects.ContainsKey(data))
-        {
-            StatusEffects[data] += duration + stack;
 
-            if (data.Key == "KeyStatusBurn")
+        if (data == null)
+        {
+            Debug.LogError($"StatusEffectData null: {effectKey}");
+            return;
+        }
+
+        // Dictionary에 이미 들어있는 "동일 Key 문자열"의 data 찾기
+        StatusEffectData existingData = null;
+        foreach (var key in StatusEffects.Keys)
+        {
+            if (key != null && key.Key == data.Key)
+            {
+                existingData = key;
+                break;
+            }
+        }
+
+        // 이미 걸린 상태이상
+        if (existingData != null)
+        {
+            StatusEffects[existingData] += duration + stack;
+
+            if (existingData.Key == "KeyStatusBurn")
             {
                 Burn += duration + stack;
-                if (StatusEffects[data] > data.MaxChar)
+                if (StatusEffects[existingData] > existingData.MaxChar)
                 {
-                    StatusEffects[data] = data.MaxChar;
-                    Burn = data.MaxChar;
+                    StatusEffects[existingData] = existingData.MaxChar;
+                    Burn = existingData.MaxChar;
                 }
             }
-            if (data.Key == "KeyStatusPoison")
+            else if (existingData.Key == "KeyStatusPoison")
             {
                 Poison += duration + stack;
-                if (StatusEffects[data] > data.MaxChar)
-                {   
-                    StatusEffects[data] = data.MaxChar;
-                    Poison = data.MaxChar;
+                if (StatusEffects[existingData] > existingData.MaxChar)
+                {
+                    StatusEffects[existingData] = existingData.MaxChar;
+                    Poison = existingData.MaxChar;
                 }
             }
-            if (StatusEffects[data] > data.MaxChar)
+
+            if (StatusEffects[existingData] > existingData.MaxChar)
             {
-                StatusEffects[data] = data.MaxChar;             
+                StatusEffects[existingData] = existingData.MaxChar;
             }
-
-
         }
+        // 새 상태이상
         else
         {
-            StatusEffects.Add(data, stack + duration);
+            StatusEffects.Add(data, duration + stack);
+
             if (data.BuffType == BuffType.Buff)
             {
                 Buff += data.ValueFormula;
@@ -178,6 +197,14 @@ public class PlayerStat
             else if (data.BuffType == BuffType.DeBuff)
             {
                 DeBuff += data.ValueFormula;
+            }
+            else if (data.Key == "KeyStatusBurn")
+            {
+                Burn += stack;
+            }
+            else if (data.Key == "KeyStatusPoison")
+            {
+                Poison += stack;
             }
 
             if (StatusEffects[data] > data.MaxChar)
@@ -187,15 +214,22 @@ public class PlayerStat
         }
     }
 
-    public void ApplyStatusEffect()
-    {            
-        List<StatusEffectData> removeList = new List<StatusEffectData>();
 
-        foreach (var pair in StatusEffects)
-        {
-            StatusEffectData data = pair.Key;
-            int stackOrDuration = pair.Value;
+    public void ApplyStatusEffect()
+    {
+        if (StatusEffects == null || StatusEffects.Count == 0)
+        {            
+            return;
+        }
+
             
+        List<StatusEffectData> removeList = new List<StatusEffectData>();
+        var keys = new List<StatusEffectData>(StatusEffects.Keys); // foreach 순회용 복사본
+
+        foreach (var data in keys)
+        {            
+            int stackOrDuration = StatusEffects[data];
+
 
             // 지속 효과 적용
             if (data.BuffType == BuffType.DoT)
@@ -236,6 +270,6 @@ public class PlayerStat
             {
                 DeBuff -= data.ValueFormula;
             }
-        }
+        }        
     }
 }
