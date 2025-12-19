@@ -60,7 +60,7 @@ public class BattleManager : MonoBehaviour
         _handManager.SetMonsterTarget(_currentMonster); //핸드 매니저에게 타겟 알려주기
         _phaseChanger.ChangePhase(new StartPhase());
 
-        if (Player.Instance.PushHp() >= _currentMonster.MonsterCurHP)
+        if (Player.Instance.GetCurrentHp() >= _currentMonster.MonsterCurHP)
         {
             _battleUIManager.CountTurn();
             _phaseChanger.ChangePhase(new DrawPhase());

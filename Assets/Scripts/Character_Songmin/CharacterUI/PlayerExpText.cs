@@ -4,16 +4,9 @@ using UnityEngine;
 public class PlayerExpText : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _expText;
+    
 
-    private void Awake()
-    {
-        if (_expText == null)
-        {
-            _expText = GetComponent<TextMeshProUGUI>();
-        }
-    }
-
-    public void OnEnable()
+    public void Start()
     {
         if (Player.Instance != null)
         {
@@ -24,14 +17,9 @@ public class PlayerExpText : MonoBehaviour
         {
             Debug.LogError("Player.Instance가 생성되지 않았습니다.");
         }
-    }
+    }    
 
-    public void UpdateExpText(int currentExp, int exp)
-    {
-        _expText.text = $"{currentExp}  /  {exp}";
-    }
-
-    public void OnDisable()
+    public void OnDestroy()
     {
         if (Player.Instance != null)
         {
@@ -41,5 +29,10 @@ public class PlayerExpText : MonoBehaviour
         {
             Debug.LogError("Player.Instance가 생성되지 않았습니다.");
         }
+    }
+
+    public void UpdateExpText(int currentExp, int exp)
+    {
+        _expText.text = $"{currentExp}  /  {exp}";
     }
 }

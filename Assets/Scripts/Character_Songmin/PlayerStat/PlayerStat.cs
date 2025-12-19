@@ -49,7 +49,7 @@ public class PlayerStat
         }
         Level++;
         SetStats();
-
+        GetHp(Hp);
     }
     public void GetDamage(int damage) //데미지를 입을 때마다 호출.
     {
