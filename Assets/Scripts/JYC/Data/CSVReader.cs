@@ -16,24 +16,35 @@ public class CSVReader
         }
 
         // 엔터키 처리 (\r\n 또는 \n)
-        string[] lines = data.text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        string[] lines = data.text.Replace("\r\n", "\n").Split('\n');
 
-        if (lines.Length < 4) return list; // 헤더(1~3행) 제외 데이터가 없으면 리턴
-
-        // 4행(인덱스 3)부터 실제 데이터 시작
-        for (int i = 3; i < lines.Length; i++)
+        // i = 0 부터 시작
+        for (int i = 0; i < lines.Length; i++)
         {
-            string[] values = lines[i].Split(',');
+            string line = lines[i];
+
+            // 빈 줄이나 주석(#) 처리
+            if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
+
+            string[] values = line.Split(',');
 
             // 데이터가 비어있으면 건너뛰기
-            if (values.Length == 0 || string.IsNullOrEmpty(values[0])) continue;
+            if (values.Length == 0 || string.IsNullOrWhiteSpace(values[0])) continue;
 
-            T entry = new T();
+            // 첫 번째 칸(ID)이 '숫자'가 아니면 헤더나 잘못된 줄로 간주하고 무시!
+            if (!int.TryParse(values[0], out int _)) continue;
 
-            // LoadFromCsv 함수 호출
-            entry.LoadFromCsv(values);
-
-            list.Add(entry);
+            try
+            {
+                T entry = new T();
+                entry.LoadFromCsv(values); // 각 데이터 클래스의 파싱 로직 실행
+                list.Add(entry);
+            }
+            catch (Exception e)
+            {
+                // 에러가 나도 멈추지 않고 로그만 찍고 다음 줄로 넘어감
+                Debug.LogError($"CSV 파싱 오류 ({file} - {i}번 줄): {e.Message}");
+            }
         }
 
         return list;

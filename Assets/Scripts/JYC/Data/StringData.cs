@@ -22,9 +22,10 @@ public class StringData : CSVLoad, TableKey
     // CSV 데이터 파싱
     public void LoadFromCsv(string[] values)
     {
-        // 0: Id
-        if (int.TryParse(values[0], out int idValue))
+        // Id
+        if (values.Length > 0)
         {
+            int.TryParse(values[0], out int idValue);
             Id = idValue;
         }
         else
@@ -32,13 +33,26 @@ public class StringData : CSVLoad, TableKey
             Id = 0;
         }
 
-        // 1: StringKey
-        StringKey = values[1];
+        // Key (StringKey)
+        if (values.Length > 1)
+        {
+            StringKey = values[1];
+        }
 
-        // 2: Korean
-        Korean = values[2];
+        // Korean
+        if (values.Length > 2)
+        {
+            Korean = values[2];
+        }
 
-        // 3: English
-        English = values[3];
+        // English (데이터가 있을 때만 파싱하도록 안전장치 추가)
+        if (values.Length > 3)
+        {
+            English = values[3];
+        }
+        else
+        {
+            English = ""; // 데이터가 없으면 빈 문자열로 처리
+        }
     }
 }

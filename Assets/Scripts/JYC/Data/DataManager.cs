@@ -141,7 +141,7 @@ public class DataManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"ID 중복: {typeof(T).Name} 테이블에서 ID {data.Id}가 중복되었습니다.");
+                Debug.LogWarning($"ID 중복 발생 (무시됨): {typeof(T).Name} 테이블 - ID {data.Id}");
             }
 
             // Key 딕셔너리에 추가
@@ -151,7 +151,7 @@ public class DataManager : MonoBehaviour
             }
             else if (!string.IsNullOrEmpty(data.Key))
             {
-                Debug.LogError($"Key 중복/누락: {typeof(T).Name} 테이블에서 ID {data.Id}, Key {data.Key} 처리에 문제가 있습니다.");
+                Debug.LogWarning($"Key 중복 발생 (무시됨): {typeof(T).Name} 테이블 - Key {data.Key}");
             }
         }
         return idDict;
