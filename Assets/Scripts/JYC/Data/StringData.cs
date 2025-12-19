@@ -6,20 +6,20 @@ using UnityEngine;
 public class StringData : CSVLoad, TableKey
 {
  
-    //  ¿¢¼¿ ÄÃ·³¸í°ú ÀÏÄ¡½ÃÅ² ÇÁ·ÎÆÛÆ¼
+    //  ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½Å² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
     public int Id { get; set; }
-    public string StringKey { get; set; }   // ¿¢¼¿ ÄÃ·³¸í: StringKey
+    public string StringKey { get; set; }   // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½: StringKey
     public string Korean { get; set; }
     public string English { get; set; }
 
-    // DataManager°¡ 'Key'·Î Á¢±ÙÇÏ¸é 'StringKey'¸¦ ¹ÝÈ¯
+    // DataManagerï¿½ï¿½ 'Key'ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ 'StringKey'ï¿½ï¿½ ï¿½ï¿½È¯
     string TableKey.Key
     {
         get { return StringKey; }
     }
 
 
-    // CSV µ¥ÀÌÅÍ ÆÄ½Ì
+    // CSV ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä½ï¿½
     public void LoadFromCsv(string[] values)
     {
         // 0: Id
@@ -39,6 +39,6 @@ public class StringData : CSVLoad, TableKey
         Korean = values[2];
 
         // 3: English
-        English = values[3];
+        //English = values[3];
     }
 }
