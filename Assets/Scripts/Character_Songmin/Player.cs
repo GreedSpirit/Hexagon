@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -124,6 +125,11 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     {
         return _stat.Hp;
     }
+
+    public int GetLevel()
+    {
+        return _stat.Level;
+    }
     //------------------------------------------------------
 
     /// 이하 함수들은 전투 중 외부에서 호출.      
@@ -172,9 +178,10 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     }
 
     public void AddStatusEffect(string effectKey, int duration, int stack)
-    {        
+    {
         _stat.AddStatusEffect(effectKey, duration, stack);
-        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
+        OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);        
     }
 
     public void ApplyStatusEffect()
@@ -185,4 +192,16 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }  
+
+    public void AddPoison(int stack)
+    {
+        AddStatusEffect("KeyStatusPoison", 0, stack);
+        Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
+    }
+
+    public void AddBurn(int stack)
+    {
+        AddStatusEffect("KeyStatusBurn", 0, stack);
+        Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
+    }
 }
