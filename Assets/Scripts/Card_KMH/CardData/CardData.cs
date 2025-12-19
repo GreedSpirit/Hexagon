@@ -73,6 +73,11 @@ public class CardData : CSVLoad, TableKey
             else
                 Debug.LogError($"Id {Id} 카드의 Desc 가 비어있습니다.");
         }
+        // 스킬
+        else
+        {
+            Desc = "";
+        }
     }
 
     // 강화, 약화일 때 StatusEffectValue 를 0 으로
