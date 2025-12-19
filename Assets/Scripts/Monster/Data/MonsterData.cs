@@ -7,7 +7,7 @@ using UnityEngine;
 public enum MonsterGrade
 {
     Normal,
-    BOSS
+    Boss
 }
 
 [System.Serializable]

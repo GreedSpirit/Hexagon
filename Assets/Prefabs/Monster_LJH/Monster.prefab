@@ -761,7 +761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efff4f3d13bf1184bba370b43638ca54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterStatus
-  _monsterId: 0
+  _monsterId: 1
   _monsterLevel: 0
   _monsterGrade: 0
   _monsterMaxHP: 100

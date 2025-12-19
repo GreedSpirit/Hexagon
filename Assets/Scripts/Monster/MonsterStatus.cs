@@ -62,7 +62,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             _monsterMaxHP = Mathf.FloorToInt(_monsterStatData.Hp * _monsterData.HpRate); 
             _monsterDefense = Mathf.FloorToInt(_monsterStatData.Defense * _monsterData.DefRate);
         }
-        else if(_monsterGrade == MonsterGrade.BOSS)
+        else if(_monsterGrade == MonsterGrade.Boss)
         {
             _monsterLevel = 1; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
             _monsterStatData = DataManager.Instance.GetBossMonsterStatData(_monsterLevel);
@@ -174,7 +174,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         //몬스터 죽음 처리 로직 추가
         Debug.Log("몬스터가 죽었습니다. ID: " + _monsterId);
         GetComponent<MonsterDeathEffect>().Die();
-        if(_monsterGrade == MonsterGrade.BOSS)
+        if(_monsterGrade == MonsterGrade.Boss)
         {
             DropLoot();
         }
@@ -189,6 +189,11 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private void GetRandomSkillFromSet() // 몬스터의 스킬셋에서 가중치에 따라 랜덤으로 스킬을 선택하는 함수
     {
+        if(_monsterSkillSet == null)
+        {
+            Debug.LogError("몬스터 스킬셋 데이터가");
+            return;
+        }
         if(_monsterSkillSet == null || _monsterSkillSet.skillWeights.Count == 0)
         {
             Debug.LogError("몬스터 스킬셋 데이터가 없거나 스킬이 설정되어 있지 않습니다.");
@@ -221,6 +226,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 _selectedSkillSlot = idx; //선택된 스킬 슬롯 인덱스 저장
                 _selectedSkillKey = skillSlot.Item1;
                 _currentSkillData = DataManager.Instance.GetCard(_selectedSkillKey); //선택된 스킬 카드 데이터 저장
+                Debug.Log(_currentSkillData == null);
+                Debug.Log(_currentSkillData.BaseValue);
+                Debug.Log(_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1);
+                Debug.Log(_currentSkillData.ValuePerValue);
                 _selectedSkillValue = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
                 _selectedSkillValue = Mathf.FloorToInt(_selectedSkillValue * GetStatModMultiplier());
                 //이곳에서 스킬 타입에 따른 아이콘과 수치 UI 갱신 로직 추가
