@@ -14,6 +14,6 @@ public class CardPoisonAction : ICardAction
         if (turn == 0 && statusValue == 0) return;
 
         Debug.Log($"중독 사용 : {statusValue} 부여");
-        target.AddStatusEffect(statusEffectKey, statusValue, turn);
+        target.AddStatusEffect(statusEffectKey, turn, statusValue);
     }
 }

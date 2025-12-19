@@ -42,7 +42,7 @@ public class UpgradeManager : MonoBehaviour
 
         int level = TestGameManager_KMH.Instance.Deck[cardId];
 
-        // 재화 체크 (카드 재료 수)
+        // 재화 체크 (카드 수, 재화)
 
         // 레벨 증가
         level++;
@@ -51,8 +51,8 @@ public class UpgradeManager : MonoBehaviour
 
         Debug.Log($"{cardId}번 카드 강화 성공. 현재 레벨: {level}");
 
-        // 강화 최대 레벨 체크 (임시 최대 레벨 5)
-        if (level >= 5)
+        // 강화 최대 레벨 체크 (임시 최대 레벨 7)
+        if (level >= 7)
         {
             button.interactable = false;
             Debug.Log("최대 레벨입니다.");
