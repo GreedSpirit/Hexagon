@@ -28,11 +28,21 @@ public class InventoryUI : MonoBehaviour
         // UI와 데이터 매니저에 저장된 값 적용
         sortDropdown.value = savedSortIndex;
         InventoryManager.Instance.CurrentSortType = (InventoryManager.SortType)savedSortIndex;
-
+        // 덱이 바뀌면 자동으로 RefreshInventory()가 실행됩니다.
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.OnDeckChanged += RefreshInventory;
+        }
         // 인벤토리 초기화
         RefreshInventory();
     }
-
+    private void OnDestroy()
+    {
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.OnDeckChanged -= RefreshInventory;
+        }
+    }
     // 인벤토리 갱신 (데이터 로드 -> 정렬 -> 슬롯 생성)
     public void RefreshInventory()
     {

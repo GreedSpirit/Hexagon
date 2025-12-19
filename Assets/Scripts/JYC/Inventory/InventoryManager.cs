@@ -11,6 +11,7 @@ public class InventoryManager : MonoBehaviour
 
     public List<UserCard> UserCardList { get; private set; } = new List<UserCard>();
     public List<int> CurrentDeck = new List<int>(); // 현재 덱 (ID 리스트)
+    public event Action OnDeckChanged; // 덱 상태가 변경될 때 UI에게 알리는 이벤트
 
     // 덱 최대 개수 제한 (일단 임시로 제한, 기획서에 따라 수정)
     private const int MAX_DECK_COUNT = 30;
@@ -94,6 +95,8 @@ public class InventoryManager : MonoBehaviour
         // 변경 사항을 내 로컬 리스트(CurrentDeck)에도 반영
         SyncDeckFromGameManager();
 
+        OnDeckChanged?.Invoke();
+
         return true; 
     }
     // 매니저의 덱 정보를 내 리스트로 가져오는 함수
@@ -106,6 +109,7 @@ public class InventoryManager : MonoBehaviour
         {
             CurrentDeck.Add(key);
         }
+        OnDeckChanged?.Invoke();
     }
 
     // 카드 추가 로직 (99개 제한 반영)
