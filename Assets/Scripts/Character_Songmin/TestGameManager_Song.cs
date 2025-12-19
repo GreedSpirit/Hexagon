@@ -15,7 +15,8 @@ public class TestGameManager_Song : MonoBehaviour
         PlayerStatInitializer initializer = new PlayerStatInitializer();
 
         CharacterData characterData = DataManager.Instance.GetCharacter(1);
-        StringData stringData = DataManager.Instance.GetString(1);
+        string key = characterData.Name;
+        //string name =  DataManager.Instance.GetString(key)?.Korean;
         List<CharacterLevelData> levelDatas = new List<CharacterLevelData>();
         List<CharacterStatData> statDatas = new List<CharacterStatData>();
 
@@ -34,7 +35,7 @@ public class TestGameManager_Song : MonoBehaviour
             CharacterStatData statData = DataManager.Instance.GetCharacterStat(i);
             statDatas.Add(statData);
         }
-        player.Init(initializer.InitPlayerStat(characterData, levelDatas, statDatas));
+        player.Init(initializer.InitPlayerStat(characterData, levelDatas, statDatas, name));
     }
 
     public void LoadScene()

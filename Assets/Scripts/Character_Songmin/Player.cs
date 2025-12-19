@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,7 +16,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
     public Action<int> OnLevelChanged; //레벨업할 때마다 호출.
     public Action<int> OnDefenseChanged; //방어력 변화할 때마다 호출.
-    public Action OnStatusEffectChanged; //상태이상 변화할 때마다 호출
+    public Action<Dictionary<StatusEffectData, int>> OnStatusEffectChanged; //상태이상 변화할 때마다 호출
 
     private void Awake() //임시 유사 싱글톤 처리
     {
@@ -32,18 +33,14 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 
     private void Start() //파싱 되었는지 테스트용 코드
     {
-        Debug.Log($"{_stat.Name}");
-        Debug.Log($"남은 경험치 : {_stat.NeedExp}");
-        Debug.Log($"체력 : {_stat.Hp}");
-        Debug.Log($"현재 체력 : {_stat.CurrentHp}");
-        Debug.Log($"방어력 : {_stat.Defense}");
-        Debug.Log($"이동속도 : {_stat.MoveSpeed}");
+        
         
     }
 
     
 
     ///게임 매니저에서 호출할 함수
+    //연결된 UI 초기값도 여기서 할당
     public void Init(PlayerStat stat)
     {
         _stat = stat;
@@ -52,7 +49,14 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         PushExp();
         PushLevel();
         PushDefense();
-        PushShield();      
+        PushShield();
+        PushStatusEffects();
+        Debug.Log($"{_stat.Name}");
+        Debug.Log($"남은 경험치 : {_stat.NeedExp}");
+        Debug.Log($"체력 : {_stat.Hp}");
+        Debug.Log($"현재 체력 : {_stat.CurrentHp}");
+        Debug.Log($"방어력 : {_stat.Defense}");
+        Debug.Log($"이동속도 : {_stat.MoveSpeed}");
     }
 
     
@@ -97,8 +101,20 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         if (_stat != null)
         {
             OnLevelChanged?.Invoke(_stat.Level);
-        }        
+        }
     }
+
+    public void PushStatusEffects()
+    {
+        if (_stat != null)
+        {
+            OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
+        }
+    }
+
+
+
+    //------------------------------------------------------
 
     public int GetCurrentHp()
     {
@@ -108,7 +124,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     {
         return _stat.Hp;
     }
-
+    //------------------------------------------------------
 
     /// 이하 함수들은 전투 중 외부에서 호출.      
     public void TakeDamage(int damage) //공격 데미지를 입을 때마다 호출.
@@ -116,6 +132,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         _stat.GetDamage(damage);
         OnShieldChanged?.Invoke(_stat.Shield);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
 
       
@@ -157,6 +174,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     public void AddStatusEffect(string effectKey, int duration, int stack)
     {        
         _stat.AddStatusEffect(effectKey, duration, stack);
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
 
     public void ApplyStatusEffect()
@@ -165,5 +183,6 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
         _stat.ApplyStatusEffect();
         Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }  
 }

@@ -3575,7 +3575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c9c7cb2e014d074ea0e6501b8a6b3c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDefenseText
-  _defenseText: {fileID: 952616958}
 --- !u!1 &941482785
 GameObject:
   m_ObjectHideFlags: 0
@@ -4700,6 +4699,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1267088009}
+  - component: {fileID: 1267088010}
   m_Layer: 5
   m_Name: PlayerStatusEffectUI
   m_TagString: Untagged
@@ -4727,6 +4727,20 @@ RectTransform:
   m_AnchoredPosition: {x: -880, y: 280}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1267088010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267088008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13a24f03325c5c44b6a272029837c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatusEffectUI
+  _statusIconPrefab: {fileID: 6066593603138591707, guid: 6a35f12aa53945b4aa28b594d033c14d, type: 3}
+  _iconParent: {fileID: 1756393323}
 --- !u!1 &1314103568
 GameObject:
   m_ObjectHideFlags: 0
@@ -6357,7 +6371,7 @@ GameObject:
   - component: {fileID: 1756393323}
   - component: {fileID: 1756393326}
   - component: {fileID: 1756393325}
-  - component: {fileID: 1756393324}
+  - component: {fileID: 1756393327}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -6384,30 +6398,6 @@ RectTransform:
   m_AnchoredPosition: {x: 201.74396, y: -9.987305}
   m_SizeDelta: {x: 403.4879, y: 19.9746}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1756393324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756393322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 2
-  m_ConstraintCount: 6
 --- !u!114 &1756393325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6446,6 +6436,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756393322}
   m_CullTransparentMesh: 1
+--- !u!114 &1756393327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756393322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 50, y: 50}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &1805479816
 GameObject:
   m_ObjectHideFlags: 0
@@ -6940,8 +6954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc88e47769a7b7c4f9df2338c67b6577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShieldText
-  _shieldText: {fileID: 1337235757}
-  _shieldObject: {fileID: 760825522}
 --- !u!1 &1891242518
 GameObject:
   m_ObjectHideFlags: 0
