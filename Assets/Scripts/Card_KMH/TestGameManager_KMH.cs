@@ -32,7 +32,7 @@ public class TestGameManager_KMH : MonoBehaviour
         // 카드 상태이상 임시
         _cardStatusActions.Add("KeyStatusPoison", new CardPoisonAction());
         _cardStatusActions.Add("KeyStatusBurn", new CardBurnAction());
-        _cardStatusActions.Add("KeyStatusFury", new CardFuryAction());
+        _cardStatusActions.Add("KeyStatusPride", new CardPrideAction());
         _cardStatusActions.Add("KeyStatusVulnerable", new CardVulnerableAction());
     }
 
@@ -41,6 +41,10 @@ public class TestGameManager_KMH : MonoBehaviour
     {
         // 덱 생성
         Deck = new Dictionary<int, int>();
+
+        // 모든 카드 데이터 예외 처리 함수 하나
+        foreach(var cardData in DataManager.Instance.CardDict)
+            cardData.Value.SetStatusValue();
 
         // 덱 구성 없으니 일단 카드 데이터 전부
         for (int i = 1; i <= DataManager.Instance.CardDict.Count; i++)

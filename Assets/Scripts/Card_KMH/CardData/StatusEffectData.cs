@@ -3,7 +3,7 @@ using UnityEngine;
 public enum StatusEffectType
 {
     Null,       // 없음
-    Fury,       // 공격력 강화
+    Pride,      // 오만
     Vulnerable, // 취약
     Poison,     // 독
     Burn,       // 화상

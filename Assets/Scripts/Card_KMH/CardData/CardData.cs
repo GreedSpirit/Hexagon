@@ -44,66 +44,22 @@ public class CardData : CSVLoad, TableKey
     public string CardImg { get; set; }         // 카드 이미지
 
 
-    public int Level { get; set; }              // 레벨
-    public List<ICardAction> CardActions { get; set; } // 카드 행동 리스트 (공격, 방어, 치유, 주문, 상태이상)
-
-
-    // 카드 레벨
-    public void SetLevel(int level)
-    {
-        Level = level;
-    }
-
-    // 카드 동작 설정
-    public void SetAction()
-    {
-        CardActions = new List<ICardAction>();
-
-        // 카드 타입에 맞는 동작 가져오기
-        if (TestGameManager_KMH.Instance.GetAction(CardType, out ICardAction typeAction))
-        {
-            CardActions.Add(typeAction);
-        }
-
-        //  카드 상태이상에 맞는 동작 가져오기
-        if (TestGameManager_KMH.Instance.GetAction(StatusEffect, out ICardAction statusAction))
-        {
-            CardActions.Add(statusAction);
-        }
-    }
-
-    // 카드 설명 설정
-    public void SetDesc()
-    {
-        // 카드 설명 있을 때만
-        if (string.IsNullOrEmpty(Desc)) return;
-
-        StringBuilder sb = new StringBuilder(Desc);
-
-        sb.Replace("{D}", GetCardValue().ToString());
-        sb.Replace("{N}", GetCardValue().ToString());
-        sb.Replace("{SEV}", StatusEffectValue.ToString());
-        sb.Replace("{Turn}", Turn.ToString());
-
-        Desc = sb.ToString();
-    }
-
     // 강화, 약화일 때 StatusEffectValue 를 0 으로
-    // 도트일 때 Turn 을 0으로
+    // DoT일 때 Turn 을 0으로
     public void SetStatusValue()
     {
+        // 상태이상 비어있으면 무시
+        if (string.IsNullOrEmpty(StatusEffect)) return;
+
         StatusEffectData statusEffect = DataManager.Instance.GetStatusEffectData(StatusEffect);
+
+        // 혹시나 이름 안맞으면
+        if (statusEffect == null) return;
 
         if (statusEffect.BuffType == BuffType.Buff || statusEffect.BuffType == BuffType.DeBuff)
             StatusEffectValue = 0;
         else
             Turn = 0;
-    }
-
-    // 카드 수치 계산 반환
-    public int GetCardValue()
-    {
-        return BaseValue + ((Level - 1) * ValuePerValue);
     }
 
     public void LoadFromCsv(string[] values)
