@@ -139,9 +139,8 @@ public class PlayerStat
     {
         StatusEffectData data = DataManager.Instance.GetStatusEffectData(effectKey);
 
-        if (data == null)
-        {
-            Debug.LogError($"StatusEffectData null: {effectKey}");
+        if (data == null) // 상태이상 공격이 아니라는 뜻
+        {            
             return;
         }
 
@@ -272,4 +271,6 @@ public class PlayerStat
             }
         }        
     }
+
+    
 }
