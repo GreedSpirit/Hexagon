@@ -30,10 +30,22 @@ public class CSVReader
 
             // 데이터가 비어있으면 건너뛰기
             if (values.Length == 0 || string.IsNullOrWhiteSpace(values[0])) continue;
+            string firstCol = values[0].Trim();
 
-            // 첫 번째 칸(ID)이 '숫자'가 아니면 헤더나 잘못된 줄로 간주하고 무시!
-            if (!int.TryParse(values[0], out int _)) continue;
-
+            // 헤더 단어들만 골라서 건너뛰고, 나머지는 데이터로 읽습니다.
+            if (firstCol.Equals("Id", StringComparison.OrdinalIgnoreCase) ||
+                firstCol.Equals("int", StringComparison.OrdinalIgnoreCase) ||
+                firstCol.Equals("string", StringComparison.OrdinalIgnoreCase) ||
+                firstCol.Equals("float", StringComparison.OrdinalIgnoreCase) ||
+                firstCol.Equals("Enum", StringComparison.OrdinalIgnoreCase) ||
+                firstCol.Equals("bool", StringComparison.OrdinalIgnoreCase) ||
+                firstCol.Equals("Level", StringComparison.OrdinalIgnoreCase) ||
+                firstCol.Equals("Key", StringComparison.OrdinalIgnoreCase) ||
+                firstCol.StartsWith("[") ||
+                firstCol.StartsWith("No."))
+            {
+                continue;
+            }
             try
             {
                 T entry = new T();
