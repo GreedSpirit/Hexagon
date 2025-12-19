@@ -7,10 +7,10 @@ using UnityEngine;
 /// </summary>
 public class PlayerStatInitializer
 {
-    public PlayerStat InitPlayerStat(CharacterData characterData, List<CharacterLevelData> levelDatas, List<CharacterStatData> statDatas)//인자값으로 CharactoerLevel 테이블, Character 테이블, String 테이블을 받게 할 것(파서 제작 이후)        
+    public PlayerStat InitPlayerStat(CharacterData characterData, List<CharacterLevelData> levelDatas, List<CharacterStatData> statDatas, string name)//인자값으로 CharactoerLevel 테이블, Character 테이블, String 테이블을 받게 할 것(파서 제작 이후)        
     {
         PlayerStat stat = new PlayerStat();
-        stat.Name = SetName(characterData);
+        stat.Name = name;
         stat.MoveSpeed = SetMoveSpeed(characterData);
         stat.LevelList = FillLevelList(levelDatas, statDatas);
         stat.SetStats();
@@ -47,8 +47,7 @@ public class PlayerStatInitializer
     private string SetName(CharacterData characterData)
     {
         string name = "???";
-        string key = DataManager.Instance.GetCharacter(0).Name;
-        name = DataManager.Instance.GetString(key)?.Korean;
+        
         return name;
     }
     private float SetMoveSpeed(CharacterData characterData)//인자값 : Character 테이블
