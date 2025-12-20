@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -67,7 +68,7 @@ public class HandManager : MonoBehaviour
     private CardUI _selectedCardUI;
 
 
-    private void Start()
+    private IEnumerator Start()
     {
         // 카드 높이
         float cardHeight = cardPrefab.GetComponent<RectTransform>().rect.height;
@@ -78,7 +79,10 @@ public class HandManager : MonoBehaviour
         // 타겟 플레이어
         SetPlayerTarget();
 
-        // 덱 구성 (테스트에선 순서 꼬일 가능 성 있음)
+        // 테스트할 때는 동시에 Start가 실행되어서 꼬일 가능성 있기 때문에
+        yield return null;
+
+        // 덱 구성
         SetupDeck();
     }
 
