@@ -18,6 +18,7 @@ public class HandManager : MonoBehaviour
     [SerializeField] float _hoverVisualScaleOffset = 1.2f;// 호버 떨림 방지용 비주얼 크기 옵셋
 
     [Header("핸드 설정")]
+    [SerializeField] Transform _handTransform;  // 핸드 위치
     [SerializeField] float _maxAngle = 30f;     // 부채꼴 최대 각도
     [SerializeField] float _maxSpacing = 7f;    // 카드 간 최대 간격
     [SerializeField] float _radius = 2000f;     // 부채꼴 반지름 (클수록 완만)
@@ -171,7 +172,7 @@ public class HandManager : MonoBehaviour
         int level = TestCardManager.Instance.GetCardLevel(cardID);
 
         // 카드 UI 생성
-        GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
+        GameObject newCard = Instantiate(cardPrefab, _handTransform.position, Quaternion.identity, _handTransform);
 
         // 설정
         CardLogic cardLogic = newCard.GetComponent<CardLogic>();
@@ -247,7 +248,7 @@ public class HandManager : MonoBehaviour
         float startAngle = -currentAngle / 2f;
 
         // 중심 포인트 지정 (반지름 만큼 아래로)
-        Vector3 center = transform.position - (Vector3.up * _radius);
+        Vector3 center = _handTransform.position - (Vector3.up * _radius);
 
         // 카드 순회
         for (int i = 0; i < count; i++)
