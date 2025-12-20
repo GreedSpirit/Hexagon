@@ -17,8 +17,8 @@ public class TestGameManager_KMH : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        InitCardActions();      // 카드 동작 초기화
-        InitDeck();             // 덱 초기화
+        //InitCardActions();      // 카드 동작 초기화
+        //InitDeck();             // 덱 초기화
 
     }
     // 동작 구성
@@ -96,16 +96,16 @@ public class TestGameManager_KMH : MonoBehaviour
         switch (grade)
         {
             case CardGrade.Common:
-                numberOfAvailable = DataManager.Instance.GetCommonCardData(level).NumberOfAvailable;
+                numberOfAvailable = DataManager.Instance.GetCommonCardNoAData(level).NumberOfAvailable;
                 break;
             case CardGrade.Rare:
-                numberOfAvailable = DataManager.Instance.GetRareCardData(level).NumberOfAvailable;
+                numberOfAvailable = DataManager.Instance.GetRareCardNoAData(level).NumberOfAvailable;
                 break;
             case CardGrade.Epic:
-                numberOfAvailable = DataManager.Instance.GetEpicCardData(level).NumberOfAvailable;
+                numberOfAvailable = DataManager.Instance.GetEpicCardNoAData(level).NumberOfAvailable;
                 break;
             case CardGrade.Legendary:
-                numberOfAvailable = DataManager.Instance.GetLegendaryCardData(level).NumberOfAvailable;
+                numberOfAvailable = DataManager.Instance.GetLegendaryCardNoAData(level).NumberOfAvailable;
                 break;
             default:
                 numberOfAvailable = 0;
@@ -113,35 +113,5 @@ public class TestGameManager_KMH : MonoBehaviour
         }
 
         return numberOfAvailable;
-    }
-
-
-    // 카드 강화 인벤토리용?
-    public void UpgradePlayerCard(int id)
-    {
-        if (Deck.ContainsKey(id) == false)
-        {
-            Debug.LogError($"덱에 존재하지 않는 카드 입니다");
-            return;
-        }
-
-        if(Deck[id] == 5)
-        {
-            Debug.Log("최대 강화 입니다.");
-            return;
-        }
-
-        Deck[id]++;
-    }
-    public void UpgradeMonsterCard(int id)
-    {
-
-        if (Deck[id] == 999)
-        {
-            Debug.Log("최대 강화 입니다.");
-            return;
-        }
-
-        Deck[id]++;
     }
 }

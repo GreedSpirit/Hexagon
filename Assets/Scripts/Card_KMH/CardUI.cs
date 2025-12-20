@@ -289,7 +289,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         SetDescText();
 
         // 카드 사용 가능 횟수 (덱 구성, 인벤토리에서만 가능하게)
-        int numberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(_cardLogic.Level, _cardData.CardGrade);
+        int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(_cardLogic.Level, _cardData.CardGrade);
         if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
         else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
 

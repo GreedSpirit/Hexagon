@@ -49,7 +49,6 @@ public class CardData : CSVLoad, TableKey
     {
         // 이름
         StringData stringNameData = DataManager.Instance.GetString(Name);
-        
         // 설명
         StringData stringDescData = null;
 

@@ -27,6 +27,10 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, CardNumberOfAvailableData> RareCardNoADict { get; private set; }
     public Dictionary<int, CardNumberOfAvailableData> EpicCardNoADict { get; private set; }
     public Dictionary<int, CardNumberOfAvailableData> LegendaryCardNoADict { get; private set; }
+    public Dictionary<int, UpgradeData> CommonCardUpgradeDict { get; private set; }
+    public Dictionary<int, UpgradeData> RareCardUpgradeDict { get; private set; }
+    public Dictionary<int, UpgradeData> EpicCardUpgradeDict { get; private set; }
+    public Dictionary<int, UpgradeData> LegendaryCardUpgradeDict { get; private set; }
     public Dictionary<int, StatusEffectData> StatusEffectDict { get; private set; }
     // public Dictionary<int, SkillData> SkillDict { get; private set; }
     public Dictionary<int, DungeonData> DungeonDict { get; private set; }
@@ -40,6 +44,10 @@ public class DataManager : MonoBehaviour
     public Dictionary<string, CardNumberOfAvailableData> RareCardNoAKeyDict { get; private set; }
     public Dictionary<string, CardNumberOfAvailableData> EpicCardNoAKeyDict { get; private set; }
     public Dictionary<string, CardNumberOfAvailableData> LegendaryCardNoAKeyDict { get; private set; }
+    public Dictionary<string, UpgradeData> CommonCardUpgradeKeyDict { get; private set; }
+    public Dictionary<string, UpgradeData> RareCardUpgradeKeyDict { get; private set; }
+    public Dictionary<string, UpgradeData> EpicCardUpgradeKeyDict { get; private set; }
+    public Dictionary<string, UpgradeData> LegendaryCardUpgradeKeyDict { get; private set; }
     public Dictionary<string, StatusEffectData> StatusEffectKeyDict { get; private set; }
     public Dictionary<string, MonsterData> MonsterStatKeyDict { get; private set; }
     public Dictionary<string, MonsterSkillSetData> MonsterSkillSetKeyDict { get; private set; }
@@ -88,6 +96,14 @@ public class DataManager : MonoBehaviour
         EpicCardNoAKeyDict = tempEpicCardNoaKeyDict;
         LegendaryCardNoADict = LoadAndCreateKeyDict(CSVReader.Read<CardNumberOfAvailableData>("LegendaryCardNoA"), out Dictionary<string, CardNumberOfAvailableData> tempLegandaryCardNoaKeyDict);
         LegendaryCardNoAKeyDict = tempLegandaryCardNoaKeyDict;
+        CommonCardUpgradeDict = LoadAndCreateKeyDict(CSVReader.Read<UpgradeData>("Common"), out Dictionary<string, UpgradeData> tempCommonKeyDict);
+        CommonCardUpgradeKeyDict = tempCommonKeyDict;
+        RareCardUpgradeDict = LoadAndCreateKeyDict(CSVReader.Read<UpgradeData>("Rare"), out Dictionary<string, UpgradeData> tempRareKeyDict);
+        RareCardUpgradeKeyDict = tempRareKeyDict;
+        EpicCardUpgradeDict = LoadAndCreateKeyDict(CSVReader.Read<UpgradeData>("Epic"), out Dictionary<string, UpgradeData> tempEpicKeyDict);
+        EpicCardUpgradeKeyDict = tempEpicKeyDict;
+        LegendaryCardUpgradeDict = LoadAndCreateKeyDict(CSVReader.Read<UpgradeData>("Legendary"), out Dictionary<string, UpgradeData> tempLegendaryKeyDict);
+        LegendaryCardUpgradeKeyDict = tempLegendaryKeyDict;
 
         // [Status]
         StatusEffectDict = LoadAndCreateKeyDict(CSVReader.Read<StatusEffectData>("StatusEffect"), out Dictionary<string, StatusEffectData> tempStatusKeyDict);
@@ -183,18 +199,29 @@ public class DataManager : MonoBehaviour
     public CharacterStatData GetCharacterStat(int id) => CharacterStatDict.TryGetValue(id, out var data) ? data : null;
     public CharacterStatData GetCharacterStat(string key) => CharacterStatKeyDict.TryGetValue(key, out var data) ? data : null;
 
-    public CardNumberOfAvailableData GetCommonCardData(int id) => CommonCardNoADict.TryGetValue(id, out var data) ? data : null;
-    public CardNumberOfAvailableData GetCommonCardData(string key) => CommonCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
+    public CardNumberOfAvailableData GetCommonCardNoAData(int id) => CommonCardNoADict.TryGetValue(id, out var data) ? data : null;
+    public CardNumberOfAvailableData GetCommonCardNoAData(string key) => CommonCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
 
-    public CardNumberOfAvailableData GetRareCardData(int id) => RareCardNoADict.TryGetValue(id, out var data) ? data : null;
-    public CardNumberOfAvailableData GetRareCardData(string key) => RareCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
+    public CardNumberOfAvailableData GetRareCardNoAData(int id) => RareCardNoADict.TryGetValue(id, out var data) ? data : null;
+    public CardNumberOfAvailableData GetRareCardNoAData(string key) => RareCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
 
-    public CardNumberOfAvailableData GetEpicCardData(int id) => EpicCardNoADict.TryGetValue(id, out var data) ? data : null;
-    public CardNumberOfAvailableData GetEpicCardData(string key) => EpicCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
+    public CardNumberOfAvailableData GetEpicCardNoAData(int id) => EpicCardNoADict.TryGetValue(id, out var data) ? data : null;
+    public CardNumberOfAvailableData GetEpicCardNoAData(string key) => EpicCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
 
-    public CardNumberOfAvailableData GetLegendaryCardData(int id) => LegendaryCardNoADict.TryGetValue(id, out var data) ? data : null;
-    public CardNumberOfAvailableData GetLegendaryCardData(string key) => LegendaryCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
+    public CardNumberOfAvailableData GetLegendaryCardNoAData(int id) => LegendaryCardNoADict.TryGetValue(id, out var data) ? data : null;
+    public CardNumberOfAvailableData GetLegendaryCardNoAData(string key) => LegendaryCardNoAKeyDict.TryGetValue(key, out var data) ? data : null;
 
+    public UpgradeData GetCommonCardUpgradeData(int id) => CommonCardUpgradeDict.TryGetValue(id, out var data) ? data : null;
+    public UpgradeData GetCommonCardUpgradeData(string key) => CommonCardUpgradeKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public UpgradeData GetRareCardUpgradeData(int id) => RareCardUpgradeDict.TryGetValue(id, out var data) ? data : null;
+    public UpgradeData GetRareCardUpgradeData(string key) => RareCardUpgradeKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public UpgradeData GetEpicCardUpgradeData(int id) => EpicCardUpgradeDict.TryGetValue(id, out var data) ? data : null;
+    public UpgradeData GetEpicCardUpgradeData(string key) => EpicCardUpgradeKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public UpgradeData GetLegendaryCardUpgradeData(int id) => LegendaryCardUpgradeDict.TryGetValue(id, out var data) ? data : null;
+    public UpgradeData GetLegendaryCardUpgradeData(string key) => LegendaryCardUpgradeKeyDict.TryGetValue(key, out var data) ? data : null;
 
     public StatusEffectData GetStatusEffectData(int id) => StatusEffectDict.TryGetValue(id, out var data) ? data : null;
     public StatusEffectData GetStatusEffectData(string key) => StatusEffectKeyDict.TryGetValue(key, out var data) ? data : null;

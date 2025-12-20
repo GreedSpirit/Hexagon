@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,8 +6,8 @@ public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
 
-    [SerializeField] Button _upgradeButtonPrefab;// ¾÷±×·¹ÀÌÆ® ¹öÆ° ÇÁ¸®ÆÕ
-    [SerializeField] Transform _upgradeButton;  // ¾÷±×·¹ÀÌµå ¹öÆ° ÆĞ³Î
+    [SerializeField] Button _upgradeButtonPrefab;// ì—…ê·¸ë ˆì´íŠ¸ ë²„íŠ¼ í”„ë¦¬íŒ¹
+    [SerializeField] Transform _upgradeButton;  // ì—…ê·¸ë ˆì´ë“œ ë²„íŠ¼ íŒ¨ë„
 
     private void Awake()
     {
@@ -17,8 +17,8 @@ public class UpgradeManager : MonoBehaviour
 
     private void Start()
     {
-        // °­È­ ½Ãµµ Å×½ºÆ®¿ë ¹öÆ° Ä«µå¸¶´Ù »ı¼º
-        foreach(int cardId in TestGameManager_KMH.Instance.Deck.Keys)
+        // ê°•í™” ì‹œë„ í…ŒìŠ¤íŠ¸ìš© ë²„íŠ¼ ì¹´ë“œë§ˆë‹¤ ìƒì„±
+        foreach(int cardId in CardManager.Instance.CurrentDeck)
         {
             Button button = Instantiate(_upgradeButtonPrefab, _upgradeButton);
             button.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"{cardId} Card Upgrade";
@@ -27,36 +27,9 @@ public class UpgradeManager : MonoBehaviour
     }
 
 
-    // Ä«µå °­È­ ½Ãµµ
+    // ì¹´ë“œ ê°•í™” ì‹œë„
     public void TryUpgradeCard(int cardId, Button button)
     {
-        // DeckÀÌ Áö±İÀº ÀÏ´Ü ÀüÃ¼ Ä«µå ¸®½ºÆ®±ä ÇÑµ¥
-        // ³ªÁß¿¡ GameManager³ª CardManager Á¦´ë·Î ¸¸µé¾î¼­ InventoryManager¶û °°ÀÌ »ç¿ëÇÏ¸é µÉµí?
-        if (TestGameManager_KMH.Instance.Deck.ContainsKey(cardId) == false)
-        {
-            Debug.LogError("°­È­ÇÏ·Á´Â Ä«µå°¡ ÀÎº¥Åä¸®¿¡ ¾ø½À´Ï´Ù.");
-
-            return;
-            //return false;
-        }
-
-        int level = TestGameManager_KMH.Instance.Deck[cardId];
-
-        // ÀçÈ­ Ã¼Å© (Ä«µå ¼ö, ÀçÈ­)
-
-        // ·¹º§ Áõ°¡
-        level++;
-
-        TestGameManager_KMH.Instance.Deck[cardId] = level;
-
-        Debug.Log($"{cardId}¹ø Ä«µå °­È­ ¼º°ø. ÇöÀç ·¹º§: {level}");
-
-        // °­È­ ÃÖ´ë ·¹º§ Ã¼Å© (ÀÓ½Ã ÃÖ´ë ·¹º§ 7)
-        if (level >= 7)
-        {
-            button.interactable = false;
-            Debug.Log("ÃÖ´ë ·¹º§ÀÔ´Ï´Ù.");
-        }
-        //return true;
+        bool isUpgrade = CardManager.Instance.TryUpgradeCard(cardId);
     }
 }
