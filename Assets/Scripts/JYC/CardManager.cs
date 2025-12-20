@@ -33,16 +33,16 @@ public class CardManager : MonoBehaviour
         switch (grade)
         {
             case CardGrade.Common:
-                numberOfAvailable = DataManager.Instance.GetCommonCardData(level).NumberOfAvailable;
+                numberOfAvailable = DataManager.Instance.GetCommonCardNoAData(level).NumberOfAvailable;
                 break;
             case CardGrade.Rare:
-                numberOfAvailable = DataManager.Instance.GetRareCardData(level).NumberOfAvailable;
+                numberOfAvailable = DataManager.Instance.GetRareCardNoAData(level).NumberOfAvailable;
                 break;
             case CardGrade.Epic:
-                numberOfAvailable = DataManager.Instance.GetEpicCardData(level).NumberOfAvailable;
+                numberOfAvailable = DataManager.Instance.GetEpicCardNoAData(level).NumberOfAvailable;
                 break;
             case CardGrade.Legendary:
-                numberOfAvailable = DataManager.Instance.GetLegendaryCardData(level).NumberOfAvailable;
+                numberOfAvailable = DataManager.Instance.GetLegendaryCardNoAData(level).NumberOfAvailable;
                 break;
             default:
                 numberOfAvailable = 0;
