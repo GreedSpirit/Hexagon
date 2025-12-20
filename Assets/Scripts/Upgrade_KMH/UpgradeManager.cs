@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,8 +7,12 @@ public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
 
-    [SerializeField] Button _upgradeButtonPrefab;// 업그레이트 버튼 프리팹
-    [SerializeField] Transform _upgradeButton;  // 업그레이드 버튼 패널
+    [SerializeField] UpgradeCardUI _cardUIPrefab;     // 카드 UI 프리팹
+    [SerializeField] Transform _cardScrollView;       // 카드 목록 스크롤뷰
+
+    private List<UpgradeCardUI> _playerCards = new List<UpgradeCardUI>();
+
+    private UpgradeCardUI _upgradeCardUI;       // 선택 카드
 
     private void Awake()
     {
@@ -15,14 +20,23 @@ public class UpgradeManager : MonoBehaviour
             Instance = this;
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        // 강화 시도 테스트용 버튼 카드마다 생성
-        foreach(int cardId in CardManager.Instance.CurrentDeck)
+        yield return null;
+        // 유저 카드 순회
+        foreach(var card in CardManager.Instance.UserCardList)
         {
-            Button button = Instantiate(_upgradeButtonPrefab, _upgradeButton);
-            button.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"{cardId} Card Upgrade";
-            button.onClick.AddListener(() => TryUpgradeCard(cardId, button));
+            // 카드 UI 하나 생성
+            UpgradeCardUI cardUI = Instantiate(_cardUIPrefab, _cardScrollView);
+
+            // 카드 데이터 가져오기
+            CardData cardData = DataManager.Instance.GetCard(card.CardId);
+
+            // UI 초기화
+            cardUI.Init(cardData, this);
+
+            // 리스트에 추가
+            _playerCards.Add(cardUI);
         }
     }
 

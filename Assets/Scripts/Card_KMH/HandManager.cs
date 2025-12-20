@@ -77,6 +77,9 @@ public class HandManager : MonoBehaviour
 
         // 타겟 플레이어
         SetPlayerTarget();
+
+        // 덱 구성 (테스트에선 순서 꼬일 가능 성 있음)
+        SetupDeck();
     }
 
     private void Update()
@@ -363,9 +366,6 @@ public class HandManager : MonoBehaviour
         }
         else if (phaseType == PhaseType.Start)
         {
-            // 덱 구성
-            SetupDeck();
-
             // 초기 핸드 채우기
             for (int i = 0; i < _startHandCount; i++)
             {

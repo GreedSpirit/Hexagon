@@ -515,7 +515,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1358593928475182324
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1644,6 +1644,7 @@ GameObject:
   - component: {fileID: 2789583101979937251}
   - component: {fileID: 1752840384077412818}
   - component: {fileID: 4273089150413038814}
+  - component: {fileID: 3720948962382598243}
   m_Layer: 5
   m_Name: UpgradeCard
   m_TagString: Untagged
@@ -1729,3 +1730,23 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &3720948962382598243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541036676305895480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e222d515795551a4cb613c07ae7a0e1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeCardUI
+  _selectedEdge: {fileID: 6833318769261529381}
+  _img: {fileID: 7577746676650238191}
+  _nameText: {fileID: 2842443819882306744}
+  _descText: {fileID: 8867563965819207073}
+  _typeText: {fileID: 4802698471854825601}
+  _levelText: {fileID: 3191410491444468440}
+  _numberOfAvailableText: {fileID: 6601636321985449024}
+  _edgeColor: {fileID: 284036935391861195}

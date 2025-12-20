@@ -1,0 +1,128 @@
+﻿using System.Text;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class UpgradeCardUI : MonoBehaviour
+{
+    [SerializeField] GameObject _selectedEdge;      // 선택 테두리
+
+    [Header("카드 UI 요소")]
+    [SerializeField] Image _img;                     // 카드 이미지
+    [SerializeField] TextMeshProUGUI _nameText;      // 이름 텍스트
+    [SerializeField] TextMeshProUGUI _descText;      // 설명 텍스트
+    [SerializeField] TextMeshProUGUI _typeText;      // 타입 텍스트
+    [SerializeField] TextMeshProUGUI _levelText;     // 레벨 텍스트
+    [SerializeField] TextMeshProUGUI _numberOfAvailableText;      // 사용 가능 횟수 텍스트
+    [SerializeField] Image _edgeColor;              // 등급 색
+
+    private UpgradeManager _upgradeManager;
+    private CardData _cardData;          // 카드 데이터
+    
+    
+    // 첫 생성 초기화
+    public void Init(CardData data, UpgradeManager manager)
+    {
+        // 카드 데이터
+        _cardData = data;
+
+        // 매니저
+        _upgradeManager = manager;
+
+        // 비주얼 설정
+        SetVisual();
+    }
+    
+    
+    // 카드 데이터에 맞게 비주얼 갱신
+    private void SetVisual()
+    {
+        // img = (data.CardImg);
+
+        if (_nameText != null) _nameText.text = _cardData.Name;
+        else Debug.LogError("NameText 가 할당되어있지 않습니다.");
+        if (_typeText != null) _typeText.text = _cardData.CardType.ToString();
+        else Debug.LogError("TypeText 가 할당되어있지 않습니다.");
+
+        if (_cardData.IsCard == true && _descText != null) _descText.text = _cardData.Desc;
+        else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
+
+        // 설명 갱신
+        UpdateUpgradeText();
+
+        // 카드 등급 색상
+        SetGradeColor();
+
+        // 선택 테두리
+        _selectedEdge?.SetActive(false);
+
+    }
+
+    // 카드 등급 색상
+    private void SetGradeColor()
+    {
+        Color color = new Color();
+
+        switch (_cardData.CardGrade)
+        {
+            case CardGrade.Common:
+                color = Color.lightGray;
+                break;
+            case CardGrade.Rare:
+                color = Color.cyan;
+                break;
+            case CardGrade.Epic:
+                color = Color.purple;
+                break;
+            case CardGrade.Legendary:
+                color = Color.orange;
+                break;
+        }
+
+        _edgeColor.color = color;
+    }
+
+    // 설명 갱신 (초기, 업그레이드 연출 이후)
+    public void UpdateUpgradeText()
+    {
+        // 카드 레벨 가져오기
+        int level = CardManager.Instance.GetCardLevel(_cardData.Id);
+
+        // 레벨
+        if (_levelText != null) _levelText.text = level.ToString();
+        else Debug.LogError("LevelText 가 할당되어있지 않습니다.");
+
+        // 설명
+        if (_cardData.IsCard == true && _descText != null)
+            _descText.text = GetDesc(level);
+        else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
+
+        // 카드 사용 가능 횟수
+        int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(level, _cardData.CardGrade);
+        if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
+        else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
+    }
+
+    // 설명 가져오기
+    public string GetDesc(int level)
+    {
+        // 카드 설명 있을 때만
+        if (string.IsNullOrEmpty(_cardData.Desc)) return "NULL";
+
+        // 문자열 갱신
+        StringBuilder sb = new StringBuilder(_cardData.Desc);
+
+        sb.Replace("{D}", GetValue(level).ToString());
+        sb.Replace("{N}", GetValue(level).ToString());
+        sb.Replace("{SEV}", _cardData.StatusEffectValue.ToString());
+        sb.Replace("{Turns}", _cardData.Turn.ToString());
+
+        return sb.ToString();
+    }
+
+    // 카드 수치 반환
+    private int GetValue(int level)
+    {
+        return _cardData.BaseValue + (level - 1) * _cardData.ValuePerValue;
+    }
+}
