@@ -24,7 +24,7 @@ public class UpgradeManager : MonoBehaviour
     {
         yield return null;
         // 유저 카드 순회
-        foreach(var card in CardManager.Instance.UserCardList)
+        foreach(var card in TestCardManager.Instance.UserCardList)
         {
             // 카드 UI 하나 생성
             UpgradeCardUI cardUI = Instantiate(_cardUIPrefab, _cardScrollView);

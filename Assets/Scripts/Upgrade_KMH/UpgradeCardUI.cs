@@ -1,7 +1,7 @@
-﻿using System.Text;
-using TMPro;
+﻿using UnityEngine.UI;
 using UnityEngine;
-using UnityEngine.UI;
+using System.Text;
+using TMPro;
 
 public class UpgradeCardUI : MonoBehaviour
 {
@@ -16,8 +16,8 @@ public class UpgradeCardUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _numberOfAvailableText;      // 사용 가능 횟수 텍스트
     [SerializeField] Image _edgeColor;              // 등급 색
 
-    private UpgradeManager _upgradeManager;
-    private CardData _cardData;          // 카드 데이터
+    private UpgradeManager _upgradeManager;  // 강화 매니저
+    private CardData _cardData;              // 카드 데이터
     
     
     // 첫 생성 초기화
@@ -86,7 +86,7 @@ public class UpgradeCardUI : MonoBehaviour
     public void UpdateUpgradeText()
     {
         // 카드 레벨 가져오기
-        int level = CardManager.Instance.GetCardLevel(_cardData.Id);
+        int level = TestCardManager.Instance.GetCardLevel(_cardData.Id);
 
         // 레벨
         if (_levelText != null) _levelText.text = level.ToString();
@@ -98,7 +98,7 @@ public class UpgradeCardUI : MonoBehaviour
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
 
         // 카드 사용 가능 횟수
-        int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(level, _cardData.CardGrade);
+        int numberOfAvailable = TestCardManager.Instance.GetCardNumberOfAvailable(level, _cardData.CardGrade);
         if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
         else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
     }
