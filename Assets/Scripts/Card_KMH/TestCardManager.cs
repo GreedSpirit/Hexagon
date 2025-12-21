@@ -5,6 +5,8 @@ public class TestCardManager : MonoBehaviour
 {
     public static TestCardManager Instance;
 
+    public int Gold { get; private set; }   // 보유 골드
+
     // 플레이어가 소지 중인 카드 정보 (Key: 카드 ID, Value: 보유 개수/레벨 등 정보 객체)
     public List<UserCard> UserCardList { get; private set; } = new List<UserCard>();
 
@@ -158,6 +160,13 @@ public class TestCardManager : MonoBehaviour
         userCard.Level++;
         Debug.Log($"카드 {cardId} 레벨업! Lv.{userCard.Level}");
         return true;
+    }
+    
+    // 특정 카드 가져오기
+    public UserCard GetCard(int cardId)
+    {
+        var userCard = UserCardList.Find(x => x.CardId == cardId);
+        return userCard != null ? userCard : null;
     }
 
     // 특정 카드의 레벨 가져오기

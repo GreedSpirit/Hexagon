@@ -292,7 +292,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         SetGradeColor();
 
         // 선택 테두리
-        _selectedEdge?.SetActive(false);
+        _selectedEdge.SetActive(false);
     }
 
     // 카드 등급 색상
