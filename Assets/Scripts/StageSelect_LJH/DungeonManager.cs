@@ -12,6 +12,8 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private Transform _monsterSpawnPoint;
     [SerializeField] private GameObject _monsterPrefab; // 몬스터 베이스 프리팹
     [SerializeField] private BattleManager _battleManager; // 현재 소환된 몬스터를 할당해주기 위해 참조
+    [SerializeField] private RewardInteraction _rewardInteraction;
+    [SerializeField] private Animator _rewardObjAnimator; // 금서의 애니메이션을 넣을 위치
 
     private MonsterStatus _currentActiveMonster;
     private StageData _tempStageData;
@@ -65,10 +67,8 @@ public class DungeonManager : MonoBehaviour
         if(monster.MonsterData.MonGrade == MonsterGrade.Boss)
         {
             Debug.Log("Boss Clear! Next Logic is RewardRoom");
-            //보스를 처치한 순간 보상을 결정(이걸 DungeonSessionData로 보내서 다른 씬에서 보상 처리를 해도 좋고 보상 Panel이나 UI로 해결해도 될 듯)
-            _determinedRewards = RewardDataManager.Instance.GenerateDungeonRewards(_currentDungeonData);
             //보상 방으로 가는 로직
-            StartCoroutine(TransitionToRewardRoom());
+            StartCoroutine(BossClearSequence());
         }
         else
         {
@@ -92,12 +92,28 @@ public class DungeonManager : MonoBehaviour
         StartStage(_currentStageIndex);
     }
 
-    private IEnumerator TransitionToRewardRoom()
+    private IEnumerator BossClearSequence()
     {
-        yield return new WaitForSeconds(2.0f); //몬스터가 죽고 나서 대기 시간 or 스테이지 클리어 후 보상 방 이동 전 연출 대기
-        Debug.Log("Reward Room Go Go");
-        //보상 씬을 따로 만들어서 해당 던전 데이터를 불러와서 보상을 보여주거나 숨겨놨던 보상 UI를 활성화 해도 될 듯
+        _determinedRewards = RewardDataManager.Instance.GenerateDungeonRewards(_currentDungeonData);
 
+        bool isInteractionDone = false;
+        _rewardInteraction.OnInteractionComplete = () => {isInteractionDone = true;};
+        _rewardInteraction.StartInteraction();
+
+        // 인터랙션 끝날 때까지 대기
+        yield return new WaitUntil(() => isInteractionDone);
+
+        //! 여기서부터 금서 애니메이션 관련
+        if(_rewardObjAnimator != null)
+        {
+            _rewardObjAnimator.SetTrigger("Done");
+
+            yield return null;
+            float animTime = _rewardObjAnimator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(animTime);
+        }
+
+        //! 여기서 보상 결과창 띄우는 로직
     }
 
 
