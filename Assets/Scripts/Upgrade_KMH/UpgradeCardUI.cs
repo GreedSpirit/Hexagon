@@ -19,9 +19,10 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     [SerializeField] TextMeshProUGUI _levelText;     // 레벨 텍스트
     [SerializeField] TextMeshProUGUI _numberOfAvailableText;      // 사용 가능 횟수 텍스트
     [SerializeField] Image _edgeColor;              // 등급 색
+    public UserCard UserCard { get; private set;  } // 보유 카드 데이터
 
+    private CardManager _cardManager;
     private UpgradeManager _upgradeManager;  // 강화 매니저
-    private UserCard _userCard;              // 보유 카드 데이터
     private CardData _cardData;              // 카드 데이터
 
 
@@ -29,15 +30,17 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     {
         if (_isSlot) return;
 
-        _upgradeManager.SelectCard(this, _userCard.CardId);
+        _upgradeManager.SelectCard(this, UserCard.CardId);
     }
 
 
     // 첫 생성 초기화
     public void Init(UserCard userCard, UpgradeManager manager)
     {
+        _cardManager = CardManager.Instance;
+
         // 보유 카드 정보
-        _userCard = userCard;
+        UserCard = userCard;
 
         // ID 카드 데이터 가져오기
         _cardData = userCard?.GetData();
@@ -104,7 +107,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     public void UpdateUpgradeText()
     {
         // 카드 레벨 가져오기
-        int level = TestCardManager.Instance.GetCardLevel(_cardData.Id);
+        int level = _cardManager.GetCardLevel(_cardData.Id);
         
         // 레벨
         if (_levelText != null) _levelText.text = level.ToString();
@@ -116,7 +119,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
 
         // 카드 사용 가능 횟수
-        int numberOfAvailable = TestCardManager.Instance.GetCardNumberOfAvailable(level, _cardData.CardGrade);
+        int numberOfAvailable = _cardManager.GetCardNumberOfAvailable(level, _cardData.CardGrade);
         if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
         else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
     }

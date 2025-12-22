@@ -44,6 +44,8 @@ public class HandManager : MonoBehaviour
     public IBattleUnit TargetPlayer => _targetPlayer;
     public IBattleUnit TargetMonster => _targetMonster;
 
+    // 카드 매니저
+    private CardManager _cardManager;
 
     // 덱의 카드 id 리스트
     private Queue<int> _deck;
@@ -71,6 +73,8 @@ public class HandManager : MonoBehaviour
 
     private IEnumerator Start()
     {
+        _cardManager = CardManager.Instance;
+
         // 카드 높이
         float cardHeight = cardPrefab.GetComponent<RectTransform>().rect.height;
 
@@ -108,16 +112,16 @@ public class HandManager : MonoBehaviour
         // 덱 복사
         List<int> newDeck = new List<int>();
 
-        foreach (int cardId in TestCardManager.Instance.CurrentDeck)
+        foreach (int cardId in _cardManager.CurrentDeck)
         {
             // 소지중인 카드에서 id 카드 레벨 가져오기
-            int cardLevel = TestCardManager.Instance.GetCardLevel(cardId);
+            int cardLevel = _cardManager.GetCardLevel(cardId);
 
             // id 카드 데이터 불러오기
             CardData cardData = DataManager.Instance.GetCard(cardId);
 
             // 카드 사용 가능 횟수
-            int cardNumberOfAvailable = TestCardManager.Instance.GetCardNumberOfAvailable(cardLevel, cardData.CardGrade);
+            int cardNumberOfAvailable = _cardManager.GetCardNumberOfAvailable(cardLevel, cardData.CardGrade);
 
             // 사용 횟수 만큼
             for (int i = 0; i < cardNumberOfAvailable; i++)
@@ -169,7 +173,7 @@ public class HandManager : MonoBehaviour
         CardData cardData = DataManager.Instance.GetCard(cardID);
 
         // ID 카드 레벨 가져오기
-        int level = TestCardManager.Instance.GetCardLevel(cardID);
+        int level = _cardManager.GetCardLevel(cardID);
 
         // 카드 UI 생성
         GameObject newCard = Instantiate(cardPrefab, _handTransform.position, Quaternion.identity, _handTransform);

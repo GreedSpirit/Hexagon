@@ -9,3 +9,12 @@ Id,Key,Name,IsCard,Desc,CardGrade,Target,CardType,BaseValue,ValuePerLevel,Status
 6,KeyCard6,NameCard6,FALSE,DescCard6,Common,Enemy,Attack,6,1,,,,Img_Skill_06
 7,KeyCard7,NameCard7,FALSE,DescCard7,Rare,Enemy,Spell,0,0,KeyStatusPoison,8,0,Img_Skill_07
 8,KeyCard8,NameCard8,FALSE,DescCard8,Common,Enemy,Spell,0,0,KeyStatusBurn,5,0,Img_Skill_08
+9,KeyCard01,NameCard01,TRUE,DescCard01,Common,Enemy,Attack,5,1,,,,Img_Skill_01
+10,KeyCard02,NameCard02,TRUE,DescCard02,Rare,Self,Healing,7,2,,,,Img_Skill_02
+11,KeyCard03,NameCard03,TRUE,DescCard03,Common,Self,Shield,6,1,KeyStatusPride,0,4,Img_Skill_03
+12,KeyCard4,NameCard4,TRUE,DescCard4,Legendary,Self,Spell,0,0,KeyStatusVulnerable,0,4,Img_Skill_04
+13,KeyCard5,NameCard5,TRUE,DescCard5,Epic,Enemy,Spell,0,0,,,,Img_Skill_05
+14,KeyCard6,NameCard6,TRUE,DescCard6,Common,Enemy,Attack,6,1,,,,Img_Skill_06
+15,KeyCard7,NameCard7,TRUE,DescCard7,Rare,Enemy,Spell,0,0,KeyStatusPoison,8,0,Img_Skill_07
+16,KeyCard8,NameCard8,TRUE,DescCard8,Common,Enemy,Spell,0,0,KeyStatusBurn,5,0,Img_Skill_08
+

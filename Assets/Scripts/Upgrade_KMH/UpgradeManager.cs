@@ -18,6 +18,8 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _cardCountText;  // 카드
     [SerializeField] TextMeshProUGUI _goldText;       // 골드
 
+    private CardManager _cardManager;
+
     // 강화 UI 플레이어 보유 카드 리스트
     private List<UpgradeCardUI> _playerCards = new List<UpgradeCardUI>();
     private UpgradeCardUI _selectedCard;       // 선택중인 카드
@@ -30,9 +32,11 @@ public class UpgradeManager : MonoBehaviour
 
     private IEnumerator Start()
     {
+        _cardManager = CardManager.Instance;
+
         yield return null;
         // 유저 보유 카드 순회
-        foreach(UserCard card in TestCardManager.Instance.UserCardList)
+        foreach(UserCard card in _cardManager.UserCardList)
         {
             // 카드 UI 하나 생성
             UpgradeCardUI cardUI = Instantiate(_cardUIPrefab, _cardScrollView);
@@ -57,7 +61,10 @@ public class UpgradeManager : MonoBehaviour
     // 표시 안함 - 골드와 카드 모두 부족
     public void SortList()
     {
-
+        foreach(var card in _playerCards)
+        {
+            //card.UserCard
+        }
     }
 
 
@@ -74,7 +81,7 @@ public class UpgradeManager : MonoBehaviour
         _selectedCard = card;
 
         // UserCard 가져오기
-        UserCard userCard = TestCardManager.Instance.GetCard(cardId);
+        UserCard userCard = _cardManager.GetCard(cardId);
 
         // 카드 선택 실행
         _upgradeSlotCard.Select(userCard);
@@ -85,7 +92,7 @@ public class UpgradeManager : MonoBehaviour
     // 카드 강화 시도
     public void TryUpgradeCard(int cardId, Button button)
     {
-        bool isUpgrade = TestCardManager.Instance.TryUpgradeCard(cardId);
+        bool isUpgrade = _cardManager.TryUpgradeCard(cardId);
     }
 
 
