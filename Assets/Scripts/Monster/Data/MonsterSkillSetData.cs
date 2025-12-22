@@ -47,7 +47,6 @@ public class MonsterSkillSetData : CSVLoad, TableKey
 
         // 3: SkillSlot1
         SkillSlot1 = values[3];
-        Debug.Log(SkillSlot1 + " " + Id);
         if(SkillSlot1 == "")
         {
             Debug.Log("SkillSlot1이 비어있습니다. Id:" + Id);

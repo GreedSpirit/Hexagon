@@ -34,6 +34,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     public List<MonsterStatusEffectInstance> StatusEffects => _statusEffects;
 
     public event System.Action OnEnemyActTurnEnd; // 몬스터 턴 종료 시점에 발행할 이벤트
+    public event System.Action<MonsterStatus> OnMonsterDeath; // 몬스터가 죽은 시점에 스테이지를 넘기거나 보상 방으로 진행할 이벤트
 
     public void ChangePhase(PhaseType newPhase) //OnPhaseChanged 이벤트 구독용 함수
     {
@@ -49,8 +50,15 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
     }
 
-    public void InitMonsterStatus() //몬스터 스탯 초기화 함수
+    public void InitMonsterStatus(int monsterId) //몬스터 스탯 초기화 함수
     {
+        _monsterId = monsterId;
+        _monsterData = DataManager.Instance.GetMonsterStatData(_monsterId);
+        if(_monsterData == null)
+        {
+            Debug.LogError("몬스터 스탯 데이터를 불러오지 못했습니다. Id: 1");
+            return;
+        }
         //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 불러오는 방식으로 변경할 수도 있음
         _monsterGrade = _monsterData.MonGrade;
 
@@ -71,25 +79,18 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
         _monsterSkillSet = DataManager.Instance.GetMonsterSkillSetData(_monsterData.SkillSet);
         _monsterCurHP = _monsterMaxHP;        
+
+        NotifyHpObservers(); //초기 HP 상태 갱신
+        NotifySkillObservers(); //초기 스킬 상태 갱신
     }
 
     private void Start()
     {
-        // ID 방식 Key 방식 구별
-        _monsterData = DataManager.Instance.GetMonsterStatData(_monsterId);
-        //_monsterStatData = DataManager.Instance.GetMonsterStatData("KeyMonsterGhost0001");
-        if(_monsterData == null)
-        {
-            Debug.LogError("몬스터 스탯 데이터를 불러오지 못했습니다. Id: 1");
-            return;
-        }
-        else
-        {
-            Debug.Log("데이터 로드 성공");
-            InitMonsterStatus();
-            NotifyHpObservers(); //초기 HP 상태 갱신
-            NotifySkillObservers(); //초기 스킬 상태 갱신
-        }
+        //InitMonsterStatus(1); // 테스트용 초기화
+
+        //NotifyHpObservers(); //초기 HP 상태 갱신
+        //NotifySkillObservers(); //초기 스킬 상태 갱신
+        
     }
 
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수
@@ -173,7 +174,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         //몬스터 죽음 처리 로직 추가
         Debug.Log("몬스터가 죽었습니다. ID: " + _monsterId);
+        OnMonsterDeath?.Invoke(this); //이 몬스터가 죽었음을 알림
         GetComponent<MonsterDeathEffect>().Die();
+
+
         if(_monsterGrade == MonsterGrade.Boss)
         {
             DropLoot();
@@ -302,6 +306,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 Stack = stack,
                 EffectLogic = tableData.EffectLogic,
                 Value = tableData.ValueFormula,
+                Desc = tableData.Desc,
                 AppliedTime = Time.time // 적용 시점을 위함, 나중에 턴으로 바꿀수도
             };
             

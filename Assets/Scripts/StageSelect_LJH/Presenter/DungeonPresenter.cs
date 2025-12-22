@@ -67,6 +67,7 @@ public class DungeonPresenter : MonoBehaviour
     {
         _townPanel.SetActive(true);
         _dungeonPanel.SetActive(false);
+        DungeonSessionData.SelectedDungeonId = -1;
     }
 
     public void ShowDungeon() // 특정 위치에 다가가거나 버튼을 눌렀을 때 던전 선택 화면으로 전환
@@ -83,7 +84,8 @@ public class DungeonPresenter : MonoBehaviour
         {
             Debug.Log($"던전 입장: {_selectedDungeonData.Name}");
             // 던전 입장 로직 추가
-            SceneManager.LoadScene(1); // 예시: 던전 씬 로드 추후 이름을 이용한 씬 이름으로 이동
+            DungeonSessionData.SelectedDungeonId = _selectedDungeonData.Id;
+            SceneManager.LoadScene("DungeonBattleScene"); // 예시: 던전 씬 로드 추후 이름을 이용한 씬 이름으로 이동
             //SceneManager.LoadScene(_selectedDungeonData.Name);
         }
         else
