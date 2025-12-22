@@ -59,7 +59,7 @@ public class PlayerHpBar : MonoBehaviour
             StopCoroutine(_hitRoutine);
         }
         _hitRoutine = StartCoroutine(HitBarAnimation());
-        Debug.Log($"hpValue = {hpValue}");
+        //Debug.Log($"hpValue = {hpValue}");
         return;
     }
 
