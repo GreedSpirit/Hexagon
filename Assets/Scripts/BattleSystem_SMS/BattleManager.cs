@@ -35,9 +35,7 @@ public class BattleManager : MonoBehaviour
 
 
         //행동 마침 알림 구독        
-        _handManager.OnDrawEnd += EndDrawPhase;
-        _currentMonster.OnEnemyActTurnEnd += EndMonsterActPhase;
-        
+        _handManager.OnDrawEnd += EndDrawPhase;        
     }
 
     private void OnDestroy() //파괴 시 구독관계 해제
@@ -98,6 +96,7 @@ public class BattleManager : MonoBehaviour
     {
         _currentMonster = monster;
         _phaseChanger.OnPhaseChanged += _currentMonster.ChangePhase;
+        _currentMonster.OnEnemyActTurnEnd += EndMonsterActPhase;
     }
 
 
