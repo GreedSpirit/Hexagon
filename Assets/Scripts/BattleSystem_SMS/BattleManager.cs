@@ -1,5 +1,5 @@
-using System;
-using System.Security.Cryptography;
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,14 +11,17 @@ public class BattleManager : MonoBehaviour
 
 
     PhaseChanger _phaseChanger;
-    
-
-    [SerializeField] MonsterStatus _currentMonster;
+    public PhaseType PhaseToReturn {  get; private set; }
     PhaseType _currentPhase;
+    [SerializeField] MonsterStatus _currentMonster; // 추후 스테이지 및 던전 추가되면 받아오기로 함. 지금만 인스펙터 연결.
+    public Queue<IPlayable> Effects {  get; private set; }
+
+
 
     private void Awake()
     {
         _phaseChanger = new PhaseChanger();
+        Effects = new Queue<IPlayable>();
     }
     private void Start()
     {
@@ -28,7 +31,6 @@ public class BattleManager : MonoBehaviour
 
         //페이즈 알림용 구독
         _phaseChanger.OnPhaseChanged += _handManager.OnPhaseChanged;
-        _phaseChanger.OnPhaseChanged += _currentMonster.ChangePhase;        
         _phaseChanger.OnPhaseChanged += GetCurrentPhase;
 
 
@@ -67,7 +69,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            _phaseChanger.ChangePhase(new EnemyActPhase());
+            _phaseChanger.ChangePhase(new EnemyActPhase());            
         }
     }
     public void EndDrawPhase()
@@ -79,7 +81,9 @@ public class BattleManager : MonoBehaviour
     {               
         _battleUIManager.StopTimer();
         Player.Instance.ApplyStatusEffect();
-        _phaseChanger.ChangePhase(new EnemyActPhase());
+        _phaseChanger.ChangePhase(new EnemyActPhase()); //이펙트 생기면 이부분 지우고 아래 두줄 활성화
+        //_phaseChanger.ChangePhase(new EffectPhase(this));
+        //PhaseToReturn = PhaseType.EnemyAct;
     }
 
     public void EndMonsterActPhase()
@@ -87,9 +91,16 @@ public class BattleManager : MonoBehaviour
         _battleUIManager.CountTurn();
         Player.Instance.ResetShield();
         _currentMonster.ApplyStatusEffect();
-        _phaseChanger.ChangePhase(new DrawPhase());
+        _phaseChanger.ChangePhase(new DrawPhase());        
     }
     //-----------------------------------------------------------------
+    public void SetMonster(MonsterStatus monster)
+    {
+        _currentMonster = monster;
+        _phaseChanger.OnPhaseChanged += _currentMonster.ChangePhase;
+    }
+
+
 
     private void GetCurrentPhase(PhaseType phase) //PhaseChanger와 연동해서 현재 페이즈를 받아오는 함수(내부 구독용)
     {
@@ -102,7 +113,40 @@ public class BattleManager : MonoBehaviour
 
     public void OnTurnEndButtonClick()
     {        
-        EndPlayerPhase();
+        if (_currentPhase == PhaseType.PlayerAct)
+        {
+            EndPlayerPhase();
+        }        
     }
+
+    //------------------------------------------------------------------------------
+
+    public void RequestAction(IPlayable action)
+    {
+        Effects.Enqueue(action);
+        
+        if (_currentPhase != PhaseType.Effect)
+        {
+            PhaseToReturn = _currentPhase;
+            _phaseChanger.ChangePhase(new EffectPhase(this));
+        }
+    }
+
+    public void ReturnToPhase(PhaseType type)
+    {
+        switch (type)
+        {
+            case PhaseType.PlayerAct:
+                _phaseChanger.ChangePhase(new PlayerActPhase());
+                break;
+            case PhaseType.EnemyAct:
+                _phaseChanger.ChangePhase(new EnemyActPhase());
+                break;
+            case PhaseType.Draw:
+                _phaseChanger.ChangePhase(new DrawPhase());
+                break;
+        }        
+    }
+    
 
 }
