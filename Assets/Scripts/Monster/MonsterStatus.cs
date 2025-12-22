@@ -526,4 +526,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
     }
 
+    private void OnDestroy() {
+        //혹시 모를 GC를 위해 초기화
+        OnEnemyActTurnEnd = null;
+        OnMonsterDeath = null;
+    }
+
 }

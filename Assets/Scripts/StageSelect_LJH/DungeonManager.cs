@@ -11,6 +11,7 @@ public class DungeonManager : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private Transform _monsterSpawnPoint;
     [SerializeField] private GameObject _monsterPrefab; // 몬스터 베이스 프리팹
+    [SerializeField] private BattleManager _battleManager; // 현재 소환된 몬스터를 할당해주기 위해 참조
 
     private MonsterStatus _currentActiveMonster;
     private StageData _tempStageData;
@@ -51,6 +52,7 @@ public class DungeonManager : MonoBehaviour
         _currentActiveMonster = obj.GetComponent<MonsterStatus>();
 
         _currentActiveMonster.InitMonsterStatus(monsterId);
+        _battleManager.SetMonster(_currentActiveMonster);
         //여기서 해당 몬스터가 죽거나 했을 때 이벤트를 등록시켜주면 될 듯?
         _currentActiveMonster.OnMonsterDeath += HandleMonsterDeath;
     }
@@ -82,7 +84,10 @@ public class DungeonManager : MonoBehaviour
         yield return new WaitForSeconds(2.0f); //몬스터가 죽고 나서 대기 시간이 필요할 것 같아서 넣은 대기 시간
 
         //몬스터 죽었으니까 삭제
-        if(_currentActiveMonster != null) Destroy(_currentActiveMonster.gameObject);
+        if(_currentActiveMonster != null)
+        {
+            Destroy(_currentActiveMonster.gameObject);
+        }
 
         StartStage(_currentStageIndex);
     }
