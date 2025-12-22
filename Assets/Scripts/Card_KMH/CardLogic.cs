@@ -39,7 +39,7 @@ public class CardLogic : MonoBehaviour
         CardActions = new List<ICardAction>();
 
         // 카드 타입에 맞는 동작 가져오기
-        if (TestCardManager.Instance.GetAction(Data.CardType, out ICardAction typeAction))
+        if (CardManager.Instance.GetAction(Data.CardType, out ICardAction typeAction))
         {
             CardActions.Add(typeAction);
         }
@@ -48,7 +48,7 @@ public class CardLogic : MonoBehaviour
         if (string.IsNullOrEmpty(Data.StatusEffect)) return;
 
         //  카드 상태이상에 맞는 동작 가져오기
-        if (TestCardManager.Instance.GetAction(Data.StatusEffect, out ICardAction statusAction))
+        if (CardManager.Instance.GetAction(Data.StatusEffect, out ICardAction statusAction))
         {
             CardActions.Add(statusAction);
         }
