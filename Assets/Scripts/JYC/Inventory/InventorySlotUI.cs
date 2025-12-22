@@ -15,8 +15,10 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     [SerializeField] GameObject equipMark; // 장착 표시 (이미지+텍스트)
 
     private UserCard _userCard;
+    public UserCard UserCard => _userCard;
     private InventoryUI _parentUI;
     private bool _isSelected = false;
+    private static GameObject _dragGhost;
 
     // 데이터 세팅
     public void Init(UserCard userCard, InventoryUI parent)
@@ -83,42 +85,75 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         }
     }
 
-    //
-    // 드래그 관련 (화살표 로직은 DragManager가 처리한다고 가정) 
-    // 관련 기능에 맞춰서 수정 예정
-    // 주석 처리한 나머지 코드도 맞춰서 수정
-    //
-
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // 덱 편성 모드가 아니면 드래그 시작 안 함
+        if (_parentUI.IsDeckBuildingMode == false) return;
+
+        InventoryManager.Instance.IsDropProcessing = false;
+
         if (!_isSelected)
         {
-            _parentUI.OnSlotClicked(this); // 부모에게 선택 요청
+            _parentUI.OnSlotClicked(this); // 드래그 시작하면 선택도 같이 되게
         }
-        var cardData = _userCard.GetData();
-        // [체크] 타겟이 'Self'인 경우 (치유, 방어 등)
-        if (cardData.Target == Target.Self) // Target Enum에 Self가 있다고 가정
-        {
-            Debug.Log("드래그 시작: [Self 타겟] - 화살표 대신 캐릭터 강조 연출 필요");
-            // DragManager.Instance.StartDragSelfTarget(this); // 예시: 자신에게 드롭 유도
-        }
-        else
-        {
-            Debug.Log("드래그 시작: [Enemy 타겟] - 화살표 생성");
-            // DragManager.Instance.StartDragArrow(this, eventData.position); // 예시: 화살표
-        }
+
+        // 드래그용 반투명 아이콘 생성
+        _dragGhost = new GameObject("DragGhost");
+        _dragGhost.transform.SetParent(_parentUI.transform.root); // Canvas 최상단으로 이동
+        _dragGhost.transform.SetAsLastSibling(); // 맨 앞으로 가져오기
+
+        // 이미지 컴포넌트 복사
+        Image ghostImg = _dragGhost.AddComponent<Image>();
+        ghostImg.sprite = cardImage.sprite;
+        ghostImg.color = new Color(1, 1, 1, 0.6f); // 반투명하게 (투명도 60%)
+        ghostImg.raycastTarget = false; // 마우스 클릭 통과하게 설정
+
+        // 크기 맞춤
+        RectTransform rect = _dragGhost.GetComponent<RectTransform>();
+        rect.sizeDelta = GetComponent<RectTransform>().sizeDelta;
+
+        // 초기 위치 설정
+        _dragGhost.transform.position = eventData.position;
+
+        Debug.Log("드래그 시작: 생성됨");
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!_isSelected) return;
-
-        // DragManager.Instance.UpdateDrag(eventData.position);
+        if (_dragGhost != null)
+        {
+            _dragGhost.transform.position = eventData.position;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // DragManager.Instance.EndDrag();
-        Debug.Log("드래그 종료: 덱 슬롯에 닿았는지 확인");
+        if (_dragGhost != null) Destroy(_dragGhost);
+
+        if (InventoryManager.Instance.IsDropProcessing)
+        {
+            // 처리가 끝났으니 플래그 다시 끄고 종료
+            InventoryManager.Instance.IsDropProcessing = false;
+            Debug.Log("OnEndDrag: 덱 슬롯에서 처리됨 -> 무시");
+            return;
+        }
+
+        // 덱 슬롯이 아닌 곳(허공)에 놓았을 때만 장착/해제 시도
+        if (_parentUI.IsDeckBuildingMode)
+        {
+            bool changed = InventoryManager.Instance.ToggleDeckEquip(_userCard.CardId);
+            if (changed)
+            {
+                _parentUI.RefreshInventory();
+            }
+        }
+    }
+    private void OnDisable()
+    {
+        if (_dragGhost != null)
+        {
+            Destroy(_dragGhost);
+            _dragGhost = null;
+        }
     }
 }

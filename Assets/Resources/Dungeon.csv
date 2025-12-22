@@ -1,6 +1,6 @@
-Id,던전 테이블의 기본키,던전 이름,던전 설명,던전 해금 레벨,스테이지(맵) 개수,1슬롯 확률,2슬롯 확률,3슬롯 확률,4슬롯 확률,보상 그룹
-int,string,string,string,int,int,float,float,float,float,int
-Id,DungeonKey,Name,Desc,RequiredLevel,NumberOfStages,Slot1Probability,Slot2Probability,Slot3Probability,Slot4Probability,RewardGroup
-1,KeyDungeon01,NameDungeon001,DescDungeon001,1,3,1,0.7,0.5,,1
-2,KeyDungeon02,NameDungeon002,DescDungeon002,5,4,1,0.7,0.5,,1
-3,KeyDungeon03,NameDungeon003,DescDungeon003,10,5,1,0.8,0.5,0.2,2
+﻿Id,던전 테이블의 기본키,던전 이름,던전 설명,던전 해금 레벨,스테이지(맵) 개수,1슬롯 확률,2슬롯 확률,3슬롯 확률,4슬롯 확률,보상 그룹,덱편성 테이블 키값
+int,string,string,string,int,int,float,float,float,float,int,string
+Id,DungeonKey,Name,Desc,RequiredLevel,NumberOfStages,Slot1Probability,Slot2Probability,Slot3Probability,Slot4Probability,RewardGroup,Deck
+1,KeyDungeon01,NameDungeon001,DescDungeon001,1,3,1,0.7,0.5,,1,DeckKey001
+2,KeyDungeon02,NameDungeon002,DescDungeon002,5,4,1,0.7,0.5,,1,DeckKey002
+3,KeyDungeon03,NameDungeon003,DescDungeon003,10,5,1,0.8,0.5,0.2,2,DeckKey003

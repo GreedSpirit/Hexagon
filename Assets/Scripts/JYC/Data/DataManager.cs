@@ -20,7 +20,6 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, MonsterSkillSetData> MonsterSkillSetDict { get; private set; }
     public Dictionary<int, MonsterStatData> CommonMonsterStatDataDict { get; private set; }
     public Dictionary<int, MonsterStatData> BossMonsterStatDataDict { get; private set; }
-    // [아직 클래스 파일이 없으므로 주석 처리해둠. 클래스 생성 후 주석 해제]
     public Dictionary<int, CharacterLevelData> CharacterLevelDict { get; private set; }
     public Dictionary<int, CharacterStatData> CharacterStatDict { get; private set; }
     public Dictionary<int, CardNumberOfAvailableData> CommonCardNoADict { get; private set; }
@@ -32,11 +31,12 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, UpgradeData> EpicCardUpgradeDict { get; private set; }
     public Dictionary<int, UpgradeData> LegendaryCardUpgradeDict { get; private set; }
     public Dictionary<int, StatusEffectData> StatusEffectDict { get; private set; }
-    // public Dictionary<int, SkillData> SkillDict { get; private set; }
+
     public Dictionary<int, DungeonData> DungeonDict { get; private set; }
     public Dictionary<int, StageData> StageDict { get; private set; }
     public Dictionary<int, StringData> StringDict { get; private set; }
     public Dictionary<int, RewardData> RewardDict { get; private set; }
+    public Dictionary<int, DeckData> DeckDict { get; private set; }
     // (Key: string 기반)
     public Dictionary<string, CharacterData> CharacterKeyDict { get; private set; }
     public Dictionary<string, CardData> CardKeyDict { get; private set; }
@@ -59,6 +59,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<string, StageData> StageKeyDict { get; private set; }
     public Dictionary<string, StringData> StringKeyDict { get; private set; }
     public Dictionary<string, RewardData> RewardKeyDict { get; private set; }
+    public Dictionary<string, DeckData> DeckKeyDict { get; private set; }
 
 
     private void Awake()
@@ -112,7 +113,7 @@ public class DataManager : MonoBehaviour
         // [Monster]
         MonsterStatDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterData>("Monster"), out Dictionary<string, MonsterData> tempMonsterKeyDict);
         MonsterStatKeyDict = tempMonsterKeyDict;
-        MonsterSkillSetDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterSkillSetData>("MonsterSkillSet"), out Dictionary<string, MonsterSkillSetData> tempMonsterSkillSetKeyDict);
+        MonsterSkillSetDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterSkillSetData>("SkillSet"), out Dictionary<string, MonsterSkillSetData> tempMonsterSkillSetKeyDict);
         MonsterSkillSetKeyDict = tempMonsterSkillSetKeyDict;
         CommonMonsterStatDataDict = LoadAndCreateKeyDict(CSVReader.Read<MonsterStatData>("CommonMonsterStat"), out Dictionary<string, MonsterStatData> tempCommonMonsterStatKeyDict);
         CommonMonsterStatDataKeyDict = tempCommonMonsterStatKeyDict;
@@ -126,6 +127,10 @@ public class DataManager : MonoBehaviour
         // [Dungeon]
         DungeonDict = LoadAndCreateKeyDict(CSVReader.Read<DungeonData>("Dungeon"), out Dictionary<string, DungeonData> tempDungeonKeyDict);
         DungeonKeyDict = tempDungeonKeyDict;
+
+        // [Deck]
+        DeckDict = LoadAndCreateKeyDict(CSVReader.Read<DeckData>("Deck"), out Dictionary<string, DeckData> tempDeckKeyDict);
+        DeckKeyDict = tempDeckKeyDict;
 
         // [Stage]
         StageDict = LoadAndCreateKeyDict(CSVReader.Read<StageData>("Stage"), out Dictionary<string, StageData> tempStageKeyDict);
@@ -240,4 +245,6 @@ public class DataManager : MonoBehaviour
     public StringData GetString(string key) => StringKeyDict.TryGetValue(key, out var data) ? data : null;
     public RewardData GetReward(int id) => RewardDict.TryGetValue(id, out var data) ? data : null;
     public RewardData GetReward(string key) => RewardKeyDict.TryGetValue(key, out var data) ? data : null;
+    public DeckData GetDeck(int id) => DeckDict.TryGetValue(id, out var data) ? data : null;
+    public DeckData GetDeck(string key) => DeckKeyDict.TryGetValue(key, out var data) ? data : null;
 }

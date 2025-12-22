@@ -1,10 +1,23 @@
-id,ì¹´ë“œ ë“±ê¸‰,í˜„ìž¬ ê°•í™” ë‹¨ê³„,ê°•í™” í›„ ë‹¨ê³„,í•„ìš” ì¹´ë“œëŸ‰,ì†Œëª¨ ìž¬í™”,í•„ìš” ìž¬í™”ëŸ‰
-int,Enum,int,int,int,string,int
-Id,CardGrade,Level,NextLevel,ReqCardAmount,ReqCurrency,ReqCurrencyAmount
-1,Rare,1,2,1,KeyCurrencyê³¨ë“œ001,0
-2,Rare,2,3,3,KeyCurrencyê³¨ë“œ001,1500
-3,Rare,3,4,6,KeyCurrencyê³¨ë“œ001,2500
-4,Rare,4,5,12,KeyCurrencyê³¨ë“œ001,3800
-5,Rare,5,6,21,KeyCurrencyê³¨ë“œ001,6000
-6,Rare,6,7,40,KeyCurrencyê³¨ë“œ001,8800
-7,Rare,7,,,,
+id,Ä«µå µî±Þ,ÇöÀç °­È­ ´Ü°è,°­È­ ÈÄ ´Ü°è,ÇÊ¿ä Ä«µå·®,¼Ò¸ð ÀçÈ­,ÇÊ¿ä ÀçÈ­·®,,,,,,,,,,,,
+int,Enum,int,int,int,string,int,,,,,,,,,,,,
+Id,CardGrade,Level,NextLevel,ReqCardAmount,ReqCurrency,ReqCurrencyAmount,,,,,,,,,,,,
+1,Common,1,2,1,KeyCurrency°ñµå001,0,,,,,,,,,,,,
+2,Common,2,3,2,KeyCurrency°ñµå001,1000,,,,,,,,,,,,
+3,Common,3,4,4,KeyCurrency°ñµå001,1500,,,,,,,,,,,,
+4,Common,4,5,8,KeyCurrency°ñµå001,2500,,,,,,,,,,,,
+5,Common,5,6,16,KeyCurrency°ñµå001,3800,,,,,,,,,,,,
+6,Common,6,7,32,KeyCurrency°ñµå001,6000,,,,,,,,,,,,
+7,Common,7,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,

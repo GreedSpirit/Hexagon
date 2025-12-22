@@ -18,9 +18,9 @@ public class InventoryTestSetter : MonoBehaviour
         }
 
         Debug.Log("[Test] 테스트 데이터를 생성합니다.");
-        CardManager.Instance.AddCard(1, 5);
-        CardManager.Instance.AddCard(2, 3);
-        CardManager.Instance.AddCard(3, 10);
+        CardManager.Instance.AddCard(1001, 1);
+        CardManager.Instance.AddCard(1002, 1); 
+        CardManager.Instance.AddCard(1003, 1); 
 
         if (CardManager.Instance.CurrentDeck.Count == 0)
         {
