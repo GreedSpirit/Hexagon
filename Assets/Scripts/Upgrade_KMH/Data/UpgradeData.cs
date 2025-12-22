@@ -10,7 +10,7 @@ public class UpgradeData : CSVLoad, TableKey
     public int NextLevel { get; set; }              // 강화 후 단계
     public int ReqCardAmount { get; set; }          // 필요 카드량
     public string ReqCurrency { get; set; }         // 소모 재화
-    public int ReqCurrencyAmount { get; set; }      // 팔요 재화량
+    public int ReqCurrencyAmount { get; set; }      // 필요 재화량
 
 
     public void LoadFromCsv(string[] values)
