@@ -26,7 +26,6 @@ public class CardManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // 씬 이동해도 파괴되지 않음
-            InitStartingDeck();
             LoadGame();
         }
         else
