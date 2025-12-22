@@ -1,10 +1,10 @@
-id,Ä«µå µî±Þ,ÇöÀç °­È­ ´Ü°è,°­È­ ÈÄ ´Ü°è,ÇÊ¿ä Ä«µå·®,¼Ò¸ð ÀçÈ­,ÇÊ¿ä ÀçÈ­·®
+id,ì¹´ë“œ ë“±ê¸‰,í˜„ìž¬ ê°•í™” ë‹¨ê³„,ê°•í™” í›„ ë‹¨ê³„,í•„ìš” ì¹´ë“œëŸ‰,ì†Œëª¨ ìž¬í™”,í•„ìš” ìž¬í™”ëŸ‰
 int,Enum,int,int,int,string,int
 Id,CardGrade,Level,NextLevel,ReqCardAmount,ReqCurrency,ReqCurrencyAmount
-1,Legendary,1,2,3,KeyCurrency°ñµå001,0
-2,Legendary,2,3,9,KeyCurrency°ñµå001,7777
-3,Legendary,3,4,16,KeyCurrency°ñµå001,17777
-4,Legendary,4,5,25,KeyCurrency°ñµå001,27777
-5,Legendary,5,6,36,KeyCurrency°ñµå001,37777
-6,Legendary,6,7,77,KeyCurrency°ñµå001,77777
+1,Legendary,1,2,3,KeyCurrencyê³¨ë“œ001,0
+2,Legendary,2,3,9,KeyCurrencyê³¨ë“œ001,7777
+3,Legendary,3,4,16,KeyCurrencyê³¨ë“œ001,17777
+4,Legendary,4,5,25,KeyCurrencyê³¨ë“œ001,27777
+5,Legendary,5,6,36,KeyCurrencyê³¨ë“œ001,37777
+6,Legendary,6,7,77,KeyCurrencyê³¨ë“œ001,77777
 7,Legendary,7,,,,

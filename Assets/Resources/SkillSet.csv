@@ -1,4 +1,4 @@
-Id,MonsterSkillSet ���̺��� �⺻Ű,���� ��� ,1�� ��ųĭ,1�� ��ųĭ ����ġ ,1�� ��ųĭ ��ų ����,2�� ��ųĭ ,2�� ��ųĭ ����ġ ,2�� ��ųĭ ��ų ����,3�� ��ųĭ,3�� ��ųĭ ����ġ ,3�� ��ųĭ ��ų ����,4�� ��ųĭ ,4�� ��ųĭ ����ġ ,4�� ��ųĭ ��ų ����
+Id,MonsterSkillSet 테이블의 기본키,몬스터 등급 ,1번 스킬칸,1번 스킬칸 가중치 ,1번 스킬칸 스킬 레벨,2번 스킬칸 ,2번 스킬칸 가중치 ,2번 스킬칸 스킬 레벨,3번 스킬칸,3번 스킬칸 가중치 ,3번 스킬칸 스킬 레벨,4번 스킬칸 ,4번 스킬칸 가중치 ,4번 스킬칸 스킬 레벨
 int,string,Enum,string,float,int,string,float,int,string,float,int,string,float,int
 Id,Key,MonGrade,SkillSlot1,Slot1Weight,Slot1Level,SkillSlot2,Slot2Weight,Slot2Level,SkillSlot3,Slot3Weight ,Slot3Level,SkillSlot4,Slot4Weight,Slot4Level
 1,KeySkillSet01,Normal,KeyCard01,5.5,3,KeyCard03,4.5,1,,,,,,

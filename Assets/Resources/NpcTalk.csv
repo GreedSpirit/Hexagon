@@ -1,4 +1,4 @@
-Id,��ȣ�ۿ� UI ��簡 ��µ� ĳ������ Ű�� ����,��ȣ�ۿ� UI���� ��µ� ĳ���� ��� 1,��ȣ�ۿ� UI���� ��µ� ĳ���� ��� 2,��ȣ�ۿ� UI���� ��µ� ĳ���� ��� 3,��ȣ�ۿ� UI���� ��µ� ĳ���� ��� 4
+Id,상호작용 UI 대사가 출력될 캐릭터의 키값 기재,상호작용 UI에서 출력될 캐릭터 대사 1,상호작용 UI에서 출력될 캐릭터 대사 2,상호작용 UI에서 출력될 캐릭터 대사 3,상호작용 UI에서 출력될 캐릭터 대사 4
 int,string,string,string,string,string
 Id,Npc,NpcTalk1,NpcTalk2,NpcTalk3,NpcTalk4
 1,NameNpcLibra,TalkLibra0001,TalkLibra0002,TalkLibra0003,TalkLibra0004

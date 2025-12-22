@@ -1,6 +1,4 @@
-Id,Monster Å×ÀÌºíÀÇ ±âº»Å°,¸ó½ºÅÍÀÇ ÀÌ¸§,¸ó½ºÅÍ ¼³¸í,"¸ó½ºÅÍ µî±Ş
-Normal: ÀÏ¹İ
-Boss: ¿ìµÎ¸Ó¸®",¸ó½ºÅÍÀÇ Ã¼·Â ¹è¼ö,¸ó½ºÅÍÀÇ ¹æ¾î·Â ¹è¼ö,¸ó½ºÅÍ ÀÌµ¿ ¼Óµµ ¼öÄ¡,¸ó½ºÅÍ°¡ »ç¿ëÇÒ SkillSet,¸ó½ºÅÍ ¸ğµ¨¸µ ¸®¼Ò½º¸í
+Id,Monster í…Œì´ë¸”ì˜ ê¸°ë³¸í‚¤,ëª¬ìŠ¤í„°ì˜ ì´ë¦„,ëª¬ìŠ¤í„° ì„¤ëª…,"ëª¬ìŠ¤í„° ë“±ê¸‰Normal: ì¼ë°˜Boss: ìš°ë‘ë¨¸ë¦¬",ëª¬ìŠ¤í„°ì˜ ì²´ë ¥ ë°°ìˆ˜,ëª¬ìŠ¤í„°ì˜ ë°©ì–´ë ¥ ë°°ìˆ˜,ëª¬ìŠ¤í„° ì´ë™ ì†ë„ ìˆ˜ì¹˜,ëª¬ìŠ¤í„°ê°€ ì‚¬ìš©í•  SkillSet,ëª¬ìŠ¤í„° ëª¨ë¸ë§ ë¦¬ì†ŒìŠ¤ëª…
 int,string,string,string,Enum,float,float,float,string,string
 Id,MonsterKey,Name,Desc,MonGrade,HpRate,DefRate,MoveSpeed,SkillSet,Model
 1,KeyMonster01,NameMonster01,DescMonster01,Normal,0.5,1.1,2.9,KeySkillSet01,ModelMoster01
