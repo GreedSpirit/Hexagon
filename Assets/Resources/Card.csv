@@ -1,20 +1,26 @@
-Id,Card ë°ì´í„° í…Œì´ë¸”ì˜ ê¸°ë³¸í‚¤,ì¹´ë“œ(ìŠ¤í‚¬)ì˜ ì´ë¦„,"ì¹´ë“œì™€ ìŠ¤í‚¬ì„ êµ¬ë¶„í•˜ê¸° ìœ„í•œ ì¹¼ëŸ¼ true: ì¹´ë“œ false: ìŠ¤í‚¬",ì¹´ë“œ(ìŠ¤í‚¬)ì˜ ì„¤ëª…,"ì¹´ë“œ(ìŠ¤í‚¬) ë“±ê¸‰ Common (ë³¸ë¬¸) Rare (ëª©ì°¨) Epic (í‘œì§€) Legendary (ê³ ì„œ)","ìŠ¤í‚¬ ì ìš© ëŒ€ìƒ Self (ìì‹ ) Enemy (ìƒëŒ€ë°©)","ì•„ë˜ í•­ëª© ì¤‘ íƒ 1 ê¸°ì¬ Attack (ê³µê²©): Healing (ì¹˜ìœ ) Shield (ë°©ì–´) Spell (ì£¼ë¬¸)",ì¹´ë“œ ê°•í™” 1ë‹¨ê³„ ëŠ¥ë ¥ì¹˜ ìˆ˜ì¹˜,ì¹´ë“œ ê°•í™” ë‹¨ê³„ê°€ ì¦ê°€í•  ë•Œë§ˆë‹¤ ì¦ê°€í•˜ëŠ” ëŠ¥ë ¥ì¹˜ ìˆ˜ì¹˜,StatusEffect ë°ì´í„° í…Œì´ë¸”ì˜ Keyê°’ ì…ë ¥,"ì¹´ë“œ(ìŠ¤í‚¬) ì‚¬ìš© ì‹œ ì ìš©ë˜ì–´ì•¼ í•  ìƒíƒœì´ìƒ(í™”ìƒ, ì¤‘ë…) ìŠ¤íƒ ìˆ˜, ê°•í™” íš¨ê³¼, ì•½í™” íš¨ê³¼ ìˆ˜ì¹˜-","ê°•í™”, ì•½í™” íš¨ê³¼ê°€ ì ìš©ë  í„´ì˜ ìˆ˜",ì¹´ë“œ ì´ë¯¸ì§€ ë¦¬ì†ŒìŠ¤ëª…
+Id,Card µ¥ÀÌÅÍ Å×ÀÌºíÀÇ ±âº»Å°,Ä«µå(½ºÅ³)ÀÇ ÀÌ¸§,"Ä«µå¿Í ½ºÅ³À» ±¸ºĞÇÏ±â À§ÇÑ Ä®·³
+true: Ä«µå
+false: ½ºÅ³",Ä«µå(½ºÅ³)ÀÇ ¼³¸í,"Ä«µå(½ºÅ³) µî±Ş
+
+Common (º»¹®)
+Rare (¸ñÂ÷)
+Epic (Ç¥Áö)
+Legendary (°í¼­)","½ºÅ³ Àû¿ë ´ë»ó
+
+Self (ÀÚ½Å)
+Enemy (»ó´ë¹æ)","¾Æ·¡ Ç×¸ñ Áß ÅÃ 1 ±âÀç
+
+Attack (°ø°İ): 
+Healing (Ä¡À¯)
+Shield (¹æ¾î)
+Spell (ÁÖ¹®)",Ä«µå °­È­ 1´Ü°è ´É·ÂÄ¡ ¼öÄ¡,Ä«µå °­È­ ´Ü°è°¡ Áõ°¡ÇÒ ¶§¸¶´Ù Áõ°¡ÇÏ´Â ´É·ÂÄ¡ ¼öÄ¡,StatusEffect µ¥ÀÌÅÍ Å×ÀÌºíÀÇ Key°ª ÀÔ·Â,"Ä«µå(½ºÅ³) »ç¿ë ½Ã Àû¿ëµÇ¾î¾ß ÇÒ »óÅÂÀÌ»ó(È­»ó, Áßµ¶) ½ºÅÃ ¼ö, °­È­ È¿°ú, ¾àÈ­ È¿°ú ¼öÄ¡-","°­È­, ¾àÈ­ È¿°ú°¡ Àû¿ëµÉ ÅÏÀÇ ¼ö",Ä«µå ÀÌ¹ÌÁö ¸®¼Ò½º¸í
 int,string,string,Bool,string,Enum,Enum,Enum,int,int,string,string,int,string
 Id,Key,Name,IsCard,Desc,CardGrade,Target,CardType,BaseValue,ValuePerLevel,StatusEffect,StatusEffectValue,Turn,CardImg
-1,KeyCard01,NameCard01,FALSE,DescCard01,Common,Enemy,Attack,5,1,,,,Img_Skill_01
-2,KeyCard02,NameCard02,FALSE,DescCard02,Rare,Self,Healing,7,2,,,,Img_Skill_02
-3,KeyCard03,NameCard03,FALSE,DescCard03,Common,Self,Shield,6,1,KeyStatusPride,0,4,Img_Skill_03
-4,KeyCard4,NameCard4,FALSE,DescCard4,Legendary,Self,Spell,0,0,KeyStatusVulnerable,0,4,Img_Skill_04
-5,KeyCard5,NameCard5,FALSE,DescCard5,Epic,Enemy,Spell,0,0,,,,Img_Skill_05
-6,KeyCard6,NameCard6,FALSE,DescCard6,Common,Enemy,Attack,6,1,,,,Img_Skill_06
-7,KeyCard7,NameCard7,FALSE,DescCard7,Rare,Enemy,Spell,0,0,KeyStatusPoison,8,0,Img_Skill_07
-8,KeyCard8,NameCard8,FALSE,DescCard8,Common,Enemy,Spell,0,0,KeyStatusBurn,5,0,Img_Skill_08
-9,KeyCard01,NameCard01,TRUE,DescCard01,Common,Enemy,Attack,5,1,,,,Img_Skill_01
-10,KeyCard02,NameCard02,TRUE,DescCard02,Rare,Self,Healing,7,2,,,,Img_Skill_02
-11,KeyCard03,NameCard03,TRUE,DescCard03,Common,Self,Shield,6,1,KeyStatusPride,0,4,Img_Skill_03
-12,KeyCard4,NameCard4,TRUE,DescCard4,Legendary,Self,Spell,0,0,KeyStatusVulnerable,0,4,Img_Skill_04
-13,KeyCard5,NameCard5,TRUE,DescCard5,Epic,Enemy,Spell,0,0,,,,Img_Skill_05
-14,KeyCard6,NameCard6,TRUE,DescCard6,Common,Enemy,Attack,6,1,,,,Img_Skill_06
-15,KeyCard7,NameCard7,TRUE,DescCard7,Rare,Enemy,Spell,0,0,KeyStatusPoison,8,0,Img_Skill_07
-16,KeyCard8,NameCard8,TRUE,DescCard8,Common,Enemy,Spell,0,0,KeyStatusBurn,5,0,Img_Skill_08
-
+1,KeyCard01,NameCard01,false,DescCard01,Common,Enemy,Attack,5,1,,,,Img_Skill_01
+2,KeyCard02,NameCard02,false,DescCard02,Rare,Self,Healing,7,2,,,,Img_Skill_02
+3,KeyCard03,NameCard03,false,DescCard03,Common,Self,Shield,6,1,KeyStatusPride,0,4,Img_Skill_03
+4,KeyCard4,NameCard4,false,DescCard4,Legendary,Self,Spell,0,0,KeyStatusVulnerable,0,4,Img_Skill_04
+5,KeyCard5,NameCard5,false,DescCard5,Epic,Enemy,Spell,0,0,,,,Img_Skill_05
+6,KeyCard6,NameCard6,false,DescCard6,Common,Enemy,Attack,6,1,,,,Img_Skill_06
+7,KeyCard7,NameCard7,false,DescCard7,Rare,Enemy,Spell,0,0,KeyStatusPoison,8,0,Img_Skill_07
+8,KeyCard8,NameCard8,false,DescCard8,Common,Enemy,Spell,0,0,KeyStatusBurn,5,0,Img_Skill_08

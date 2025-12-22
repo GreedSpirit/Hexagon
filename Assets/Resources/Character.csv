@@ -1,4 +1,8 @@
-Id,CharacterKeyì˜ ê¸°ë³¸í‚¤ ê°’,ìºë¦­í„° ì´ë¦„,ìºë¦­í„° ì´ë™ì†ë„,ìºë¦­í„° ì´ë¯¸ì§€ ë¦¬ì†ŒìŠ¤
-int,string,string,float,string
-Id,Key,Name,MoveSpeed,Img
-1,KeyCharacterErion,NameCharacterErion,5.5,Img_Char_Erion_01
+Id,CharacterKeyÀÇ ±âº»Å° °ª,Ä³¸¯ÅÍ ÀÌ¸§,Ä³¸¯ÅÍ¿¡ ´ëÇÑ ¼³¸í,"PC, NPC Áß ÅÃ 1 ±âÀç				
+¨ç pc: ÇÃ·¹ÀÌ¾î°¡ Á¶Á¾ÇÒ ¼ö ÀÖ´Â Ä³¸¯ÅÍ				
+¨è npc: ÇÃ·¹ÀÌ¾î°¡ Á¶Á¾ÇÒ ¼ö ¾ø´Â Ä³¸¯ÅÍ	",Ä³¸¯ÅÍ ÀÌµ¿¼Óµµ,Ä³¸¯ÅÍ ÀÌ¹ÌÁö ¸®¼Ò½º,Ä³¸¯ÅÍ ¸ğµ¨¸µ ¸®¼Ò½º¸í
+int,string,string,string,Enum,float,string,string
+Id,Key,Name,Desc,Type,MoveSpeed,Img,Model
+1,KeyPcErion,NamePcErion,DescPcErion,pc,5.5,Img_PC_Erion,Model_PC_Erion
+2,KeyNpcLibra,NameNpcLibra,DescNpcLibra,npc,0,Img_Npc_Libra,Model_Npc_Libra
+3,KeyNpcLionel,NameNpcLionel,DescNpcLionel,npc,0,Img_Npc_Lionel,Model_Npc_Lionel

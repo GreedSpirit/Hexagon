@@ -130,6 +130,11 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     {
         return _stat.Level;
     }
+
+    public float GetMoveSpeed()
+    {
+        return _stat.MoveSpeed;
+    }
     //------------------------------------------------------
 
     /// 이하 함수들은 전투 중 외부에서 호출.      
