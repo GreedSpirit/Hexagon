@@ -94,7 +94,15 @@ public class InventoryManager : MonoBehaviour
             default: return 99;
         }
     }
+    public bool IsDeckValid(int requiredCount)
+    {
+        // 예: 현재 덱 개수가 던전 요구 개수와 같은가?
+        if (CurrentDeck.Count != requiredCount) return false;
 
+        // 예: 중복 카드 제한 확인
+
+        return true;
+    }
     public bool IsCardInDeck(int cardId)
     {
         if (CardManager.Instance == null) return false;

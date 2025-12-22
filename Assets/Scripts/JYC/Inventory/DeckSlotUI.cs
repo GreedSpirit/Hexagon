@@ -70,4 +70,17 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         transform.localScale = Vector3.one;
     }
+    public void OnDrop(PointerEventData eventData)
+    {
+        // 드래그한 물체가 인벤토리 슬롯인지 확인
+        GameObject droppedObj = eventData.pointerDrag;
+        if (droppedObj == null) return;
+
+        InventorySlotUI invSlot = droppedObj.GetComponent<InventorySlotUI>();
+        if (invSlot != null)
+        {
+            Debug.Log("인벤토리 카드를 덱 슬롯에 드롭함 -> 교체 시도");
+            // 여기에 '교체' 또는 '장착' 로직 호출 예정
+        }
+    }
 }
