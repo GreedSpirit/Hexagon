@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     public event Action OnDeckChanged; // UI 갱신 알림
-
+    public bool IsDropProcessing { get; set; } = false;
     // 정렬 방식 Enum
     public enum SortType
     {
@@ -112,4 +112,57 @@ public class InventoryManager : MonoBehaviour
     {
         OnDeckChanged?.Invoke();
     }
+    // 덱 카드 교체 (oldCardId를 빼고 newCardId를 넣음)
+    public void ReplaceDeckCardAt(int slotIndex, int newCardId)
+    {
+        if (CardManager.Instance == null) return;
+        List<int> deck = CardManager.Instance.CurrentDeck;
+
+        // 유효성 검사 (범위 확인)
+        if (slotIndex < 0 || slotIndex >= deck.Count) return;
+
+        // 중복 방지 (이미 덱에 있는 카드를 또 넣으려 하면 무시)
+        if (deck.Contains(newCardId))
+        {
+            Debug.Log("이미 덱에 존재하는 카드입니다.");
+            return;
+        }
+
+        // 해당 위치의 값을 정확하게 변경
+        int oldCardId = deck[slotIndex];
+        deck[slotIndex] = newCardId;
+
+        Debug.Log($"덱 교체 완료 [{slotIndex}번 슬롯]: {oldCardId} -> {newCardId}");
+
+        // 저장 및 갱신
+        OnDeckChanged?.Invoke();
+        CardManager.Instance.SaveGame();
+    }
+
+    // 선택된 카드 관리
+
+    private int _selectedInventoryCardId = -1; // 현재 선택된 카드 ID
+
+    // UI가 선택 해제되어야 할 때 알리는 이벤트
+    public event Action OnRequestDeselect;
+
+    // 현재 선택된 카드 ID 가져오기 
+    public int GetSelectedCardId()
+    {
+        return _selectedInventoryCardId;
+    }
+
+    // 선택된 카드 ID 설정하기 
+    public void SetSelectedCardId(int id)
+    {
+        _selectedInventoryCardId = id;
+    }
+
+    // 모든 선택 해제하기
+    public void DeselectAll()
+    {
+        _selectedInventoryCardId = -1;
+        OnRequestDeselect?.Invoke(); 
+    }
+
 }

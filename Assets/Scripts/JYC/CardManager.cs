@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class CardManager : MonoBehaviour
 {
@@ -20,11 +21,16 @@ public class CardManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // 씬 이동해도 파괴되지 않음
+            LoadGame();
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+    private void OnApplicationQuit()
+    {
+        SaveGame();
     }
     public int GetCardNumberOfAvailable(int level, CardGrade grade)
     {
@@ -113,5 +119,65 @@ public class CardManager : MonoBehaviour
     {
         var userCard = UserCardList.Find(x => x.CardId == cardId);
         return userCard != null ? userCard.Level : 1;
+    }
+    public bool IsDeckValid(int requiredCount)
+    {
+        // 카드 개수 체크
+        if (CurrentDeck.Count != requiredCount)
+            return false;
+
+        // (추후 추가) 중복 카드 제한이나 코스트 제한 등이 있다면 여기서 체크
+
+        return true;
+    }
+
+    // 저장 데이터 포맷 클래스
+    [System.Serializable]
+    public class SaveData
+    {
+        public List<UserCard> myCards; // 내 보유 카드
+        public List<int> myDeck;       // 내 덱 구성
+    }
+
+    // 게임 저장하기 (JSON 방식)
+    [ContextMenu("Save Game")] // 유니티 에디터 인스펙터에서 우클릭으로 실행 가능
+    public void SaveGame()
+    {
+        SaveData data = new SaveData();
+        data.myCards = this.UserCardList;
+        data.myDeck = this.CurrentDeck;
+
+        // JSON 변환
+        string json = JsonUtility.ToJson(data, true); // true는 보기 좋게 줄바꿈 함
+
+        // 파일 저장 경로 (PC: AppData, Mobile: 앱 내부 저장소)
+        string path = Path.Combine(Application.persistentDataPath, "savegame.json");
+        File.WriteAllText(path, json);
+
+        Debug.Log($"[Save] 저장 완료: {path}");
+    }
+
+    // 게임 불러오기
+    [ContextMenu("Load Game")]
+    public void LoadGame()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "savegame.json");
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            if (data != null)
+            {
+                this.UserCardList = data.myCards ?? new List<UserCard>();
+                this.CurrentDeck = data.myDeck ?? new List<int>();
+                Debug.Log($"[Load] 불러오기 완료. 카드 {UserCardList.Count}장, 덱 {CurrentDeck.Count}장");
+            }
+        }
+        else
+        {
+            Debug.Log("[Load] 저장된 파일이 없습니다. 새로 시작합니다.");
+        }
     }
 }

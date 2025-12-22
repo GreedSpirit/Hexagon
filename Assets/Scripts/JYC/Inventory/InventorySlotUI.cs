@@ -15,6 +15,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     [SerializeField] GameObject equipMark; // 장착 표시 (이미지+텍스트)
 
     private UserCard _userCard;
+    public UserCard UserCard => _userCard;
     private InventoryUI _parentUI;
     private bool _isSelected = false;
     private static GameObject _dragGhost;
@@ -89,6 +90,8 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         // 덱 편성 모드가 아니면 드래그 시작 안 함
         if (_parentUI.IsDeckBuildingMode == false) return;
 
+        InventoryManager.Instance.IsDropProcessing = false;
+
         if (!_isSelected)
         {
             _parentUI.OnSlotClicked(this); // 드래그 시작하면 선택도 같이 되게
@@ -125,14 +128,17 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // 드래그 끝났을 때 Ghost 삭제
-        if (_dragGhost != null)
+        if (_dragGhost != null) Destroy(_dragGhost);
+
+        if (InventoryManager.Instance.IsDropProcessing)
         {
-            Destroy(_dragGhost);
+            // 처리가 끝났으니 플래그 다시 끄고 종료
+            InventoryManager.Instance.IsDropProcessing = false;
+            Debug.Log("OnEndDrag: 덱 슬롯에서 처리됨 -> 무시");
+            return;
         }
 
-        // 드래그 종료 시 덱 장착/해제 시도 (간이 구현)
-        // 덱 편성 모드라면 드래그를 놓았을 때 장착 시도 (요구사항 충족용)
+        // 덱 슬롯이 아닌 곳(허공)에 놓았을 때만 장착/해제 시도
         if (_parentUI.IsDeckBuildingMode)
         {
             bool changed = InventoryManager.Instance.ToggleDeckEquip(_userCard.CardId);
@@ -141,7 +147,13 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
                 _parentUI.RefreshInventory();
             }
         }
-
-        Debug.Log("드래그 종료: 덱에 장착/해제 시도함");
+    }
+    private void OnDisable()
+    {
+        if (_dragGhost != null)
+        {
+            Destroy(_dragGhost);
+            _dragGhost = null;
+        }
     }
 }

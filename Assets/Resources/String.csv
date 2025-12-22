@@ -1,42 +1,42 @@
-Id,ìŠ¤íŠ¸ë§ í…Œì´ë¸”ì˜ ê¸°ë³¸í‚¤ê°’,í•œêµ­ì–´
+Id,½ºÆ®¸µ Å×ÀÌºíÀÇ ±âº»Å°°ª,ÇÑ±¹¾î
 int,string,string
 Id,Key,Korean
-1,NameCharacterErion,ì—ë¦¬ì˜¨
-2,NameCard01,ê¸ˆì„œ íˆ¬ì²™
-3,NameCard02,ê¸°ë¡ ë˜ê°ê¸°
-4,NameCard03,ê¸€ìì˜ ì¥ë§‰
-5,NameCard4,ì˜¤ë§Œì˜ ì„ í¬
-6,NameCard5,ì·¨ì•½
-7,NameCard6,ê¸ˆì„œ: ì••ì‚´
-8,NameCard7,ë…ì˜ ê½ƒ
-9,NameCard8,ì¿ë”ë¯¸
-10,DescCard01,ë‘êº¼ìš´ ì–‘ì¥ë³¸ ê¸ˆì„œë¥¼ ë˜ì ¸ í”¼í•´ë¥¼ {D} ì¤ë‹ˆë‹¤.
-11,DescCard02,ìƒì²˜ë¥¼ ë˜ê°ì•„ ì²´ë ¥ì„ {N} íšŒë³µí•©ë‹ˆë‹¤.
-12,DescCard03,ê¸ˆì„œ ì† ê¸€ìë“¤ì´ ëŒ€ìƒì„ ê°ì‹¸ ë³´í˜¸ë§‰ì„ {N} ì–»ìŠµë‹ˆë‹¤.
-13,DescCard4,ì˜¤ë§Œì„ {turns} ì–»ìŠµë‹ˆë‹¤.
-14,DescCard5,ì·¨ì•½ì„ {Turns} ë¶€ì—¬í•©ë‹ˆë‹¤.
-15,DescCard6,ê¸ˆì„œë¡œ ê±°ëŒ€í•œ ì˜¥ì¢Œë¥¼ ì†Œí™˜í•´ í”¼í•´ë¥¼ {D} ì¤ë‹ˆë‹¤.
-16,DescCard7,ì§€ë©´ì— ê½ƒì„ ì‹¬ì–´ ë‹¤ê°€ì˜¤ëŠ” ì ì—ê²Œ ì¤‘ë…ì„ {SEV} ë¶€ì—¬í•©ë‹ˆë‹¤.
-17,DescCard8,ë‹¤ íƒ€ë²„ë¦° ê¸ˆì„œì˜ í˜ì´ì§€ë¥¼ ì ì—ê²Œ ë¶€ì°©í•´ í™”ìƒì„ {SEV} ë¶€ì—¬í•©ë‹ˆë‹¤.
-18,NameStatusBurn,í™”ìƒ
-19,NameStatusPoison,ì¤‘ë…
-20,NameStatusVulnerable,ì·¨ì•½
-21,NameStatusPride,ì˜¤ë§Œ
-22,DsecStatusBurn,ìì‹ ì˜ í„´ ì‹œì‘ ì „ {í‘œê¸° ë°©ë²• ë¯¸ì •}ì˜ í”¼í•´ë¥¼ ë°›ê³  í™”ìƒì´ 1 ê°ì†Œí•©ë‹ˆë‹¤.
-23,DescStatusPoison,ìì‹ ì˜ í„´ ì‹œì‘ ì „ {í‘œê¸° ë°©ë²• ë¯¸ì •}ì˜ í”¼í•´ë¥¼ ë°›ê³  ì¤‘ë…ì´ 1 ê°ì†Œí•©ë‹ˆë‹¤.
-24,DescStatusVulnerable,ê³µê²©ìœ¼ë¡œë¶€í„° 50% ë” ë§ì€ í”¼í•´ë¥¼ ë°›ìŠµë‹ˆë‹¤.
-25,DescStatusPride,ê³µê²©ì´ 50% ë” ë§ì€ í”¼í•´ë¥¼ ì¤ë‹ˆë‹¤.
-26,NameMonster01,ìœ ë ¹
-27,NameMonster02,ì°¢ì–´ì§„ ê³ ì„œ
-28,NameMonster03,í•˜ìˆ˜ì¸
-29,NameMonster04,ëª¬ìŠ¤í„° 4
-30,NameMonster05,ë³´ìŠ¤ 1
-31,NameMonster06,ë³´ìŠ¤ 2
-32,NameMonster07,ìƒíƒœ ì´ìƒë§Œ ìˆì–´ìš”
-33,DescMonster01,ëª¬ìŠ¤í„° 1
-34,DescMonster02,ëª¬ìŠ¤í„° 2
-35,DescMonster03,ëª¬ìŠ¤í„° 3
-36,DescMonster04,ëª¬ìŠ¤í„° 4
-37,DescMonster05,ë³´ìŠ¤ 1
-38,DescMonster06,ë³´ìŠ¤ 2
-39,DescMonster07,ìƒíƒœ ì´ìƒë§Œ ìˆì–´ìš”
+1,NameCharacterErion,¿¡¸®¿Â
+2,NameCard01,±İ¼­ ÅõÃ´
+3,NameCard02,±â·Ï µÇ°¨±â
+4,NameCard03,±ÛÀÚÀÇ Àå¸·
+5,NameCard4,¿À¸¸ÀÇ ¼±Æ÷
+6,NameCard5,Ãë¾à
+7,NameCard6,±İ¼­: ¾Ğ»ì
+8,NameCard7,µ¶ÀÇ ²É
+9,NameCard8,Àí´õ¹Ì
+10,DescCard01,µÎ²¨¿î ¾çÀåº» ±İ¼­¸¦ ´øÁ® ÇÇÇØ¸¦ {D} Áİ´Ï´Ù.
+11,DescCard02,»óÃ³¸¦ µÇ°¨¾Æ Ã¼·ÂÀ» {N} È¸º¹ÇÕ´Ï´Ù.
+12,DescCard03,±İ¼­ ¼Ó ±ÛÀÚµéÀÌ ´ë»óÀ» °¨½Î º¸È£¸·À» {N} ¾ò½À´Ï´Ù.
+13,DescCard4,¿À¸¸À» {turns} ¾ò½À´Ï´Ù.
+14,DescCard5,Ãë¾àÀ» {Turns} ºÎ¿©ÇÕ´Ï´Ù.
+15,DescCard6,±İ¼­·Î °Å´ëÇÑ ¿ÁÁÂ¸¦ ¼ÒÈ¯ÇØ ÇÇÇØ¸¦ {D} Áİ´Ï´Ù.
+16,DescCard7,Áö¸é¿¡ ²ÉÀ» ½É¾î ´Ù°¡¿À´Â Àû¿¡°Ô Áßµ¶À» {SEV} ºÎ¿©ÇÕ´Ï´Ù.
+17,DescCard8,´Ù Å¸¹ö¸° ±İ¼­ÀÇ ÆäÀÌÁö¸¦ Àû¿¡°Ô ºÎÂøÇØ È­»óÀ» {SEV} ºÎ¿©ÇÕ´Ï´Ù.
+18,NameStatusBurn,È­»ó
+19,NameStatusPoison,Áßµ¶
+20,NameStatusVulnerable,Ãë¾à
+21,NameStatusPride,¿À¸¸
+22,DsecStatusBurn,ÀÚ½ÅÀÇ ÅÏ ½ÃÀÛ Àü {Ç¥±â ¹æ¹ı ¹ÌÁ¤}ÀÇ ÇÇÇØ¸¦ ¹Ş°í È­»óÀÌ 1 °¨¼ÒÇÕ´Ï´Ù.
+23,DescStatusPoison,ÀÚ½ÅÀÇ ÅÏ ½ÃÀÛ Àü {Ç¥±â ¹æ¹ı ¹ÌÁ¤}ÀÇ ÇÇÇØ¸¦ ¹Ş°í Áßµ¶ÀÌ 1 °¨¼ÒÇÕ´Ï´Ù.
+24,DescStatusVulnerable,°ø°İÀ¸·ÎºÎÅÍ 50% ´õ ¸¹Àº ÇÇÇØ¸¦ ¹Ş½À´Ï´Ù.
+25,DescStatusPride,°ø°İÀÌ 50% ´õ ¸¹Àº ÇÇÇØ¸¦ Áİ´Ï´Ù.
+26,NameMonster01,À¯·É
+27,NameMonster02,Âõ¾îÁø °í¼­
+28,NameMonster03,ÇÏ¼öÀÎ
+29,NameMonster04,¸ó½ºÅÍ 4
+30,NameMonster05,º¸½º 1
+31,NameMonster06,º¸½º 2
+32,NameMonster07,»óÅÂ ÀÌ»ó¸¸ ÀÖ¾î¿ä
+33,DescMonster01,¸ó½ºÅÍ 1
+34,DescMonster02,¸ó½ºÅÍ 2
+35,DescMonster03,¸ó½ºÅÍ 3
+36,DescMonster04,¸ó½ºÅÍ 4
+37,DescMonster05,º¸½º 1
+38,DescMonster06,º¸½º 2
+39,DescMonster07,»óÅÂ ÀÌ»ó¸¸ ÀÖ¾î¿ä
