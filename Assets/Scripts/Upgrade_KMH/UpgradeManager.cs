@@ -3,8 +3,18 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 
+
+// 정렬 우선순위
+public enum UpgradeSortType
+{
+    CanUpgrade,    // 1순위 카드O, 골드O
+    LackGold,      // 2순위 카드O, 골드X
+    LackCard,      // 3순위 카드X, 골드O
+    MaxLevel,      // 최하위 최대 레벨
+    Hide = 99      // 표시 안함 카드 X, 골드 X
+
+}
 public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
@@ -63,12 +73,6 @@ public class UpgradeManager : MonoBehaviour
     }
 
     // 카드 리스트 새로고침 (UI 온, 강화 연출 완료)
-    // 기본 - 우선순위 내 높은 등급 순
-    // 1순위 - 강화에 필요한 모든 재화 충족
-    // 2순위 - 카드 충족, 골드 부족
-    // 3순위 - 골드 충족, 카드 부족
-    // 최하위 - 최대 강화
-    // 표시 안함 - 골드와 카드 모두 부족
     public void RefreshList()
     {
         // 선택 카드 있으면
@@ -83,12 +87,61 @@ public class UpgradeManager : MonoBehaviour
             _upgradeSlotCard.UpdateUpgradeText();
         }
 
-        foreach(var card in _playerCards)
-        {
-            //card.UserCard
-        }
+        // 카드 우선순위 정렬
+        _playerCards.Sort(CompareCards);
+
+        // 정렬 기반 UI 순서 및 활성화
+        ApplySort();
     }
 
+
+    // 카드 우선순위 비교
+    private int CompareCards(UpgradeCardUI cardA, UpgradeCardUI cardB)
+    {
+        // A와 B의 상태
+        UpgradeSortType stateA = GetUpgradeState(cardA.UserCard);
+        UpgradeSortType stateB = GetUpgradeState(cardB.UserCard);
+
+        // 상태 우선순위 비교
+        int compareState = stateA.CompareTo(stateB);
+        if (compareState != 0) return compareState;
+
+        // 상태가 같다면 등급 비교 (높은 등급이 위로)
+        CardGrade gradeA = cardA.UserCard.GetData().CardGrade;
+        CardGrade gradeB = cardB.UserCard.GetData().CardGrade;
+
+        // 내림차순 정렬 을 위해 B와 A를 바꿈
+        int compareGrade = gradeB.CompareTo(gradeA);
+        if (compareGrade != 0) return compareGrade;
+
+        // 등급도 같다면 카드 ID 정렬
+        return cardA.UserCard.CardId.CompareTo(cardB.UserCard.CardId);
+
+        // 혹은 레벨 정렬 추가될 수도
+    }
+
+    // 카드 UI 순서 및 활성화
+    private void ApplySort()
+    {
+        for (int i = 0; i < _playerCards.Count; i++)
+        {
+            UpgradeCardUI card = _playerCards[i];
+            UpgradeSortType state = GetUpgradeState(card.UserCard);
+
+            // 표시 안함 상태면 끄기
+            if (state == UpgradeSortType.Hide)
+            {
+                card.gameObject.SetActive(false);
+            }
+            else
+            {
+                card.gameObject.SetActive(true);
+
+                // 하이어라키 순서 재배치
+                card.transform.SetSiblingIndex(i);
+            }
+        }
+    }
 
     // 카드 선택
     public void SelectCard(UpgradeCardUI card)
@@ -108,6 +161,7 @@ public class UpgradeManager : MonoBehaviour
         // UserCard 가져오기
         UserCard userCard = _selectedCard.UserCard;
 
+        // 재화 UI 갱신
         UpdateCurrencyUI(userCard);
 
         // 카드 선택 실행
@@ -245,16 +299,28 @@ public class UpgradeManager : MonoBehaviour
         bool isCardEnough = userCard.Count - 1 >= reqCard;
         bool isGoldEnough = Gold >= reqGold;
 
+        // 없거나 최대 레벨
+        UpgradeData upgradeData = GetUpgradeData(userCard.CardId, userCard.Level);
+        bool isMaxLevel = upgradeData == null || upgradeData.NextLevel == 0;
+
         // 텍스트 적용
-        _cardCountText.text = $"{userCard.Count - 1} / {reqCard}";
-        _goldText.text = Gold.ToString("N0") + " / " + reqGold.ToString("N0");
+        if(isMaxLevel == true)
+        {
+            _cardCountText.text = " - / -";
+            _goldText.text = "- / -";
+        }
+        else
+        {
+            _cardCountText.text = $"{userCard.Count - 1} / {reqCard}";
+            _goldText.text = Gold.ToString("N0") + " / " + reqGold.ToString("N0");
+        }
 
         // 색상 적용
         _cardCountText.color = isCardEnough ? Color.white : Color.red;
         _goldText.color = isGoldEnough ? Color.white : Color.red;
 
-        // 강화 버튼 상태 변경
-        _upgradeButton.interactable = isCardEnough && isGoldEnough;
+        // 강화 버튼 상태 변경 (카드, 골드, 최대 레벨)
+        _upgradeButton.interactable = isCardEnough && isGoldEnough && isMaxLevel == false;
     }
 
 
@@ -300,7 +366,28 @@ public class UpgradeManager : MonoBehaviour
     }
 
 
-    
+    // 강화 정렬 우선순위 반환
+    private UpgradeSortType GetUpgradeState(UserCard userCard)
+    {
+        // ID 카드 강화 데이터 가져오기
+        UpgradeData upgradeData = GetUpgradeData(userCard.CardId, userCard.Level);
+
+        // 데이터가 없거나 다음 레벨이 없으면 만렙
+        if (upgradeData == null || upgradeData.NextLevel == 0) return UpgradeSortType.MaxLevel;
+
+        // 재화 조건 체크
+        bool isEnoughCard = userCard.Count - 1 >= upgradeData.ReqCardAmount;
+        bool isEnoughGold = Gold >= upgradeData.ReqCurrencyAmount;
+
+        // 우선순위 판별
+        if (isEnoughCard && isEnoughGold) return UpgradeSortType.CanUpgrade;    // 카드O, 골드 O
+        if (isEnoughCard && !isEnoughGold) return UpgradeSortType.LackGold;     // 카드O, 골드 X
+        if (!isEnoughCard && isEnoughGold) return UpgradeSortType.LackCard;     // 카드X, 골드 O
+
+        // 둘 다 부족한 경우
+        return UpgradeSortType.Hide;
+    }
+
     // 테스트용 카드 추가
     public void AddCard(int amount)
     {
