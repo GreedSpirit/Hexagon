@@ -49,10 +49,6 @@ public class CardData : CSVLoad, TableKey
     {
         // 이름
         StringData stringNameData = DataManager.Instance.GetString(Name);
-        
-        // 설명
-        StringData stringDescData = null;
-
 
         if (stringNameData != null) Name = stringNameData.Korean;
         else
@@ -64,8 +60,9 @@ public class CardData : CSVLoad, TableKey
             // Desc 비어있는지 체크
             if(string.IsNullOrEmpty(Desc) == false)
             {
-                // 가져오기 시도
-                stringDescData = DataManager.Instance.GetString(Desc);
+                // 설명 가져오기 시도
+                StringData stringDescData = DataManager.Instance.GetString(Desc);
+
                 // 있으면 한글 설정
                 if (stringDescData != null) Desc = stringDescData.Korean;
                 else Debug.LogError($"Id {Id} 카드의 {Desc} 이 String 테이블에 존재하지 않습니다.");

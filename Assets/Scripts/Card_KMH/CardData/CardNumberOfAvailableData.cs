@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class CardNumberOfAvailableData : CSVLoad, TableKey
 {
+    public int Id => Level;
+    public string Key => Level.ToString();
     public CardGrade CardGrade { get; set; }    // 카드 등급
     public int Level {  get; set; }             // 카드 강화 단계
     public int NumberOfAvailable {  get; set; } // 카드 사용 가능 횟수
-
-    int TableKey.Id => Level;
-    string TableKey.Key => Level.ToString();
 
     public void LoadFromCsv(string[] values)
     {

@@ -288,16 +288,11 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         // 설명 설정
         SetDescText();
 
-        // 카드 사용 가능 횟수 (덱 구성, 인벤토리에서만 가능하게)
-        int numberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(_cardLogic.Level, _cardData.CardGrade);
-        if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
-        else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
-
-        // 선택 테두리
-        _selectedEdge.SetActive(false);
-
         // 카드 등급 색상
         SetGradeColor();
+
+        // 선택 테두리
+        _selectedEdge?.SetActive(false);
     }
 
     // 카드 등급 색상

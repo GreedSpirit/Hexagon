@@ -1,0 +1,10 @@
+id,카드 등급,현재 강화 단계,강화 후 단계,필요 카드량,소모 재화,필요 재화량
+int,Enum,int,int,int,string,int
+Id,CardGrade,Level,NextLevel,ReqCardAmount,ReqCurrency,ReqCurrencyAmount
+1,Common,1,2,1,KeyCurrency골드001,0
+2,Common,2,3,2,KeyCurrency골드001,1000
+3,Common,3,4,4,KeyCurrency골드001,1500
+4,Common,4,5,8,KeyCurrency골드001,2500
+5,Common,5,6,16,KeyCurrency골드001,3800
+6,Common,6,7,32,KeyCurrency골드001,6000
+7,Common,7,,,,

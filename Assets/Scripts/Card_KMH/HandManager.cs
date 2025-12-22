@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -67,7 +68,7 @@ public class HandManager : MonoBehaviour
     private CardUI _selectedCardUI;
 
 
-    private void Start()
+    private IEnumerator Start()
     {
         // 카드 높이
         float cardHeight = cardPrefab.GetComponent<RectTransform>().rect.height;
@@ -77,6 +78,9 @@ public class HandManager : MonoBehaviour
 
         // 타겟 플레이어
         SetPlayerTarget();
+
+        // 테스트할 때는 동시에 Start가 실행되어서 꼬일 가능성 있기 때문에
+        yield return null;
 
         // 덱 구성
         SetupDeck();
@@ -103,22 +107,22 @@ public class HandManager : MonoBehaviour
         // 덱 복사
         List<int> newDeck = new List<int>();
 
-        foreach (var card in TestGameManager_KMH.Instance.Deck)
+        foreach (int cardId in TestCardManager.Instance.CurrentDeck)
         {
-            int cardKey = card.Key;
-            int cardLevel = card.Value;
+            // 소지중인 카드에서 id 카드 레벨 가져오기
+            int cardLevel = TestCardManager.Instance.GetCardLevel(cardId);
 
-            // cardKey 사용해서 테이블 정보 불러오기
-            CardData cardData = DataManager.Instance.GetCard(cardKey);
+            // id 카드 데이터 불러오기
+            CardData cardData = DataManager.Instance.GetCard(cardId);
 
             // 카드 사용 가능 횟수
-            int cardNumberOfAvailable = TestGameManager_KMH.Instance.GetCardNumberOfAvailable(cardLevel, cardData.CardGrade);
+            int cardNumberOfAvailable = TestCardManager.Instance.GetCardNumberOfAvailable(cardLevel, cardData.CardGrade);
 
             // 사용 횟수 만큼
             for (int i = 0; i < cardNumberOfAvailable; i++)
             {
                 // 덱에 id 추가
-                newDeck.Add(cardKey);
+                newDeck.Add(cardId);
             }
         }
 
@@ -160,11 +164,11 @@ public class HandManager : MonoBehaviour
         // 덱큐에서 카드 한장 뽑기
         int cardID = _deck.Dequeue();
 
-        // ID 에 맞는 카드 데이터 가져오기
+        // ID 카드 데이터 가져오기
         CardData cardData = DataManager.Instance.GetCard(cardID);
 
-        // ID 에 맞는 카드 레벨 가져오기
-        int level = TestGameManager_KMH.Instance.Deck[cardID];
+        // ID 카드 레벨 가져오기
+        int level = TestCardManager.Instance.GetCardLevel(cardID);
 
         // 카드 UI 생성
         GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
@@ -342,10 +346,11 @@ public class HandManager : MonoBehaviour
             monsterDef = monster.GetMonsterDefense();
         }
 
-        // 모든 카드 설명 변경
+        // 모든 카드 최종 데미지, 설명 변경
         foreach (var card in _handCards)
         {
-            card.UpdateDealAndDesc(playerBuff, monsterDeBuff, monsterDef);
+            card.UpdateDeal(playerBuff, monsterDeBuff, monsterDef);
+            card.UpdateDesc();
             card.gameObject.GetComponent<CardUI>().SetDescText();
         }
     }

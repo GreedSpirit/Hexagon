@@ -25,21 +25,28 @@ public class DungeonData : CSVLoad, TableKey
 
 
     // CSV 데이터 파싱
- 
+
     public void LoadFromCsv(string[] values)
     {
-        int.TryParse(values[0], out int id); Id = id;
-        DungeonKey = values[1];
-        Name = values[2];
-        Desc = values[3];
-        int.TryParse(values[4], out int lv); RequiredLevel = lv;
-        int.TryParse(values[5], out int num); NumberOfStages = num;
+        // 배열 길이 체크를 모든 항목에 적용
 
-        // 확률 필드 (빈 값일 수 있으니 안전하게 파싱)
-        Slot1Probability = ParseFloatSafe(values[6]);
-        Slot2Probability = ParseFloatSafe(values[7]);
-        Slot3Probability = ParseFloatSafe(values[8]);
-        if (values.Length > 9) Slot4Probability = ParseFloatSafe(values[9]); // 4번 슬롯은 없을 수도 있음
+        if (values.Length > 0)
+        {
+            int.TryParse(values[0], out int id);
+            Id = id;
+        }
+        if (values.Length > 1) DungeonKey = values[1];
+        if (values.Length > 2) Name = values[2];
+        if (values.Length > 3) Desc = values[3];
+
+        if (values.Length > 4) { int.TryParse(values[4], out int lv); RequiredLevel = lv; }
+        if (values.Length > 5) { int.TryParse(values[5], out int num); NumberOfStages = num; }
+
+        // 데이터가 존재할 때만 읽도록 조건문 추가
+        if (values.Length > 6) Slot1Probability = ParseFloatSafe(values[6]);
+        if (values.Length > 7) Slot2Probability = ParseFloatSafe(values[7]);
+        if (values.Length > 8) Slot3Probability = ParseFloatSafe(values[8]);
+        if (values.Length > 9) Slot4Probability = ParseFloatSafe(values[9]);
 
         if (values.Length > 10)
         {
@@ -48,10 +55,10 @@ public class DungeonData : CSVLoad, TableKey
         }
         else
         {
-            RewardGroup = 0; // 데이터가 없으면 0으로 초기화
+            RewardGroup = 0;
         }
     }
-    // 빈 문자열 안전 처리용 헬퍼
+
     private float ParseFloatSafe(string val)
     {
         if (string.IsNullOrEmpty(val)) return 0f;

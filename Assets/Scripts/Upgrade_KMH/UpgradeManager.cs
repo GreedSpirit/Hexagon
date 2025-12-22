@@ -1,4 +1,5 @@
-using TMPro;
+ï»¿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,8 +7,12 @@ public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
 
-    [SerializeField] Button _upgradeButtonPrefab;// ¾÷±×·¹ÀÌÆ® ¹öÆ° ÇÁ¸®ÆÕ
-    [SerializeField] Transform _upgradeButton;  // ¾÷±×·¹ÀÌµå ¹öÆ° ÆĞ³Î
+    [SerializeField] UpgradeCardUI _cardUIPrefab;     // ì¹´ë“œ UI í”„ë¦¬íŒ¹
+    [SerializeField] Transform _cardScrollView;       // ì¹´ë“œ ëª©ë¡ ìŠ¤í¬ë¡¤ë·°
+
+    private List<UpgradeCardUI> _playerCards = new List<UpgradeCardUI>();
+
+    private UpgradeCardUI _upgradeCardUI;       // ì„ íƒ ì¹´ë“œ
 
     private void Awake()
     {
@@ -15,48 +20,30 @@ public class UpgradeManager : MonoBehaviour
             Instance = this;
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        // °­È­ ½Ãµµ Å×½ºÆ®¿ë ¹öÆ° Ä«µå¸¶´Ù »ı¼º
-        foreach(int cardId in TestGameManager_KMH.Instance.Deck.Keys)
+        yield return null;
+        // ìœ ì € ì¹´ë“œ ìˆœíšŒ
+        foreach(var card in TestCardManager.Instance.UserCardList)
         {
-            Button button = Instantiate(_upgradeButtonPrefab, _upgradeButton);
-            button.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"{cardId} Card Upgrade";
-            button.onClick.AddListener(() => TryUpgradeCard(cardId, button));
+            // ì¹´ë“œ UI í•˜ë‚˜ ìƒì„±
+            UpgradeCardUI cardUI = Instantiate(_cardUIPrefab, _cardScrollView);
+
+            // ì¹´ë“œ ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
+            CardData cardData = DataManager.Instance.GetCard(card.CardId);
+
+            // UI ì´ˆê¸°í™”
+            cardUI.Init(cardData, this);
+
+            // ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
+            _playerCards.Add(cardUI);
         }
     }
 
 
-    // Ä«µå °­È­ ½Ãµµ
+    // ì¹´ë“œ ê°•í™” ì‹œë„
     public void TryUpgradeCard(int cardId, Button button)
     {
-        // DeckÀÌ Áö±İÀº ÀÏ´Ü ÀüÃ¼ Ä«µå ¸®½ºÆ®±ä ÇÑµ¥
-        // ³ªÁß¿¡ GameManager³ª CardManager Á¦´ë·Î ¸¸µé¾î¼­ InventoryManager¶û °°ÀÌ »ç¿ëÇÏ¸é µÉµí?
-        if (TestGameManager_KMH.Instance.Deck.ContainsKey(cardId) == false)
-        {
-            Debug.LogError("°­È­ÇÏ·Á´Â Ä«µå°¡ ÀÎº¥Åä¸®¿¡ ¾ø½À´Ï´Ù.");
-
-            return;
-            //return false;
-        }
-
-        int level = TestGameManager_KMH.Instance.Deck[cardId];
-
-        // ÀçÈ­ Ã¼Å© (Ä«µå Àç·á ¼ö)
-
-        // ·¹º§ Áõ°¡
-        level++;
-
-        TestGameManager_KMH.Instance.Deck[cardId] = level;
-
-        Debug.Log($"{cardId}¹ø Ä«µå °­È­ ¼º°ø. ÇöÀç ·¹º§: {level}");
-
-        // °­È­ ÃÖ´ë ·¹º§ Ã¼Å© (ÀÓ½Ã ÃÖ´ë ·¹º§ 5)
-        if (level >= 5)
-        {
-            button.interactable = false;
-            Debug.Log("ÃÖ´ë ·¹º§ÀÔ´Ï´Ù.");
-        }
-        //return true;
+        bool isUpgrade = CardManager.Instance.TryUpgradeCard(cardId);
     }
 }

@@ -1,0 +1,12 @@
+ID,리워드 테이블 기본키,보상 아이템,보상 타입,보상 그룹,최소 개수,최대 개수,등장 확률,퀘스트 ,단위
+int,string,string,string,int,int,int,float,string,int
+Id,Key,RewardItem,RewardType,RewardGroup,MinAmount,MaxAmount,Probability,Quest,Measure
+1,KeyReward00001,KeyGold,Currency,1,300,500,1,,10
+2,KeyReward00002,KeySkillSwipe01,Card,1,1,3,0.333,,1
+3,KeyReward00003,KeySkillHeal01,Card,1,1,5,0.333,,1
+4,KeyReward00004,KeySkillDefence01,Card,1,1,4,0.333,,1
+5,KeyReward00005,KeyQuest1,Currency,1,1,3,1,KeyQuest0001,1
+6,KeyReward00006,KeySkillBossSwipe01,BossCard,1,1,1,0.25,,1
+7,KeyReward00007,KeySkillBossBuff01,BossCard,1,1,1,0.25,,1
+7,KeyReward00007,KeySkillBossBuff02,BossCard,1,1,1,0.25,,1
+7,KeyReward00007,KeySkillBossDebuff01,BossCard,1,1,1,0.25,,1

@@ -13,7 +13,7 @@ public class CardVulnerableAction : ICardAction
         // 스택, 지속시간 둘 다 0 이면 무시
         if (turn == 0 && statusValue == 0) return;
 
-        Debug.Log("취약 사용");
-        //target.적용();
+        Debug.Log($"취약 사용 : {turn} 턴 지속");
+        target.AddStatusEffect(statusEffectKey, turn, statusValue);
     }
 }

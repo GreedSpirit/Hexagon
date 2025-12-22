@@ -26,8 +26,11 @@ public class CardLogic : MonoBehaviour
         // 카드 행동
         SetAction();
 
+        // 최종 피해량 갱신
+        UpdateDeal(0, 0, 0);
+
         // 카드 설명
-        UpdateDealAndDesc(0, 0, 0);
+        UpdateDesc();
     }
 
     // 카드 동작 설정
@@ -36,7 +39,7 @@ public class CardLogic : MonoBehaviour
         CardActions = new List<ICardAction>();
 
         // 카드 타입에 맞는 동작 가져오기
-        if (TestGameManager_KMH.Instance.GetAction(Data.CardType, out ICardAction typeAction))
+        if (TestCardManager.Instance.GetAction(Data.CardType, out ICardAction typeAction))
         {
             CardActions.Add(typeAction);
         }
@@ -45,26 +48,30 @@ public class CardLogic : MonoBehaviour
         if (string.IsNullOrEmpty(Data.StatusEffect)) return;
 
         //  카드 상태이상에 맞는 동작 가져오기
-        if (TestGameManager_KMH.Instance.GetAction(Data.StatusEffect, out ICardAction statusAction))
+        if (TestCardManager.Instance.GetAction(Data.StatusEffect, out ICardAction statusAction))
         {
             CardActions.Add(statusAction);
         }
     }
 
-    // 최종 피해량 설정 후 설명 갱신
-    public void UpdateDealAndDesc(float playerBuff, float monsterDebuff, int monsterDef)
+    // 최종 피해량 설정
+    public void UpdateDeal(float playerBuff, float monsterDebuff, int monsterDef)
+    {
+        // 공격 타입 일 때
+        if (Data.CardType == CardType.Attack)
+        {
+            Deal = (int)(((Data.BaseValue + (Level - 1) * Data.ValuePerValue) * (1 + playerBuff) - monsterDef) * (1 + monsterDebuff));
+        }
+    }
+
+    // 설명 갱신
+    public void UpdateDesc()
     {
         // 카드 설명 있을 때만
         if (string.IsNullOrEmpty(Data.Desc)) return;
 
         // 문자열 갱신
         StringBuilder sb = new StringBuilder(Data.Desc);
-
-        // 공격 타입 일 때
-        if (Data.CardType == CardType.Attack)
-        {
-            Deal = (int)(((Data.BaseValue + (Level - 1) * Data.ValuePerValue) * (1 + playerBuff) - monsterDef) * (1 + monsterDebuff));
-        }
 
         sb.Replace("{D}", Deal.ToString());
         sb.Replace("{N}", GetValue().ToString());

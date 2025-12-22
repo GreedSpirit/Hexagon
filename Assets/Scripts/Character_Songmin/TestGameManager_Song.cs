@@ -17,7 +17,7 @@ public class TestGameManager_Song : MonoBehaviour
 
         CharacterData characterData = DataManager.Instance.GetCharacter(1);
         string key = characterData.Name;
-        //string name =  DataManager.Instance.GetString(key)?.Korean;
+        string name =  DataManager.Instance.GetString(key)?.Korean;
         List<CharacterLevelData> levelDatas = new List<CharacterLevelData>();
         List<CharacterStatData> statDatas = new List<CharacterStatData>();
 
