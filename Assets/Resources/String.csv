@@ -13,7 +13,7 @@ Id,Key,Korean
 10,DescCard01,두꺼운 양장본 금서를 던져 피해를 {D} 줍니다.
 11,DescCard02,상처를 되감아 체력을 {N} 회복합니다.
 12,DescCard03,금서 속 글자들이 대상을 감싸 보호막을 {N} 얻습니다.
-13,DescCard4,오만을 {turns} 얻습니다.
+13,DescCard4,오만을 {Turns} 얻습니다.
 14,DescCard5,취약을 {Turns} 부여합니다.
 15,DescCard6,금서로 거대한 옥좌를 소환해 피해를 {D} 줍니다.
 16,DescCard7,지면에 꽃을 심어 다가오는 적에게 중독을 {SEV} 부여합니다.
