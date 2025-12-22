@@ -86,7 +86,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private void Start()
     {
-        //InitMonsterStatus(1); // 테스트용 초기화
+        InitMonsterStatus(1); // 테스트용 초기화
 
         //NotifyHpObservers(); //초기 HP 상태 갱신
         //NotifySkillObservers(); //초기 스킬 상태 갱신

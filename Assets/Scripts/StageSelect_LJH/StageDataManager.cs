@@ -5,7 +5,7 @@ using UnityEngine;
 public class StageDataManager : MonoBehaviour
 {
     public static StageDataManager Instance;
-    public List<StageData> allStageDataList = new List<StageData>();
+    public List<StageData> AllStageDataList = new List<StageData>();
     void Awake()
     {
         if(Instance == null)
@@ -18,11 +18,11 @@ public class StageDataManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        allStageDataList = CSVReader.Read<StageData>("Stage");
+        AllStageDataList = CSVReader.Read<StageData>("Stage");
     }
 
     public List<StageData> GetStageByDungeonKey(string dungeonKey)
     {
-        return allStageDataList.Where(x => x.Dungeon == dungeonKey).ToList();
+        return AllStageDataList.Where(x => x.Dungeon == dungeonKey).ToList();
     }
 }

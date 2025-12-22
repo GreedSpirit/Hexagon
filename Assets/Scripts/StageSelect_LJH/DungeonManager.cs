@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DungeonManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class DungeonManager : MonoBehaviour
 
     private MonsterStatus _currentActiveMonster;
     private StageData _tempStageData;
+    private List<DeterminedReward> _determinedRewards;
 
     void Start()
     {
@@ -61,6 +63,8 @@ public class DungeonManager : MonoBehaviour
         if(monster.MonsterData.MonGrade == MonsterGrade.Boss)
         {
             Debug.Log("Boss Clear! Next Logic is RewardRoom");
+            //보스를 처치한 순간 보상을 결정(이걸 DungeonSessionData로 보내서 다른 씬에서 보상 처리를 해도 좋고 보상 Panel이나 UI로 해결해도 될 듯)
+            _determinedRewards = RewardDataManager.Instance.GenerateDungeonRewards(_currentDungeonData);
             //보상 방으로 가는 로직
             StartCoroutine(TransitionToRewardRoom());
         }
