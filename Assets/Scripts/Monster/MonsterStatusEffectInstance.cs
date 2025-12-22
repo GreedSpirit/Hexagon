@@ -10,6 +10,7 @@ public class MonsterStatusEffectInstance
     public string Name;
     public BuffType Type;
     public EffectLogic EffectLogic;
+    public string Desc;
     public float Value;
     public int Duration;
     public int Stack;
