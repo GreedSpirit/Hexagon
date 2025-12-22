@@ -30,7 +30,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     {
         if (_isSlot) return;
 
-        _upgradeManager.SelectCard(this, UserCard.CardId);
+        _upgradeManager.SelectCard(this);
     }
 
 
