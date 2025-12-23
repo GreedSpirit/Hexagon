@@ -23,6 +23,11 @@ public class SoundManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // 저장된 볼륨 가져오기, 없으면 유지
+            MasterVolume = PlayerPrefs.GetFloat("MasterVolume", MasterVolume);
+            BGMVolume = PlayerPrefs.GetFloat("BGMVolume", BGMVolume);
+            SFXVolume = PlayerPrefs.GetFloat("SFXVolume", SFXVolume);
         }
         else
         {
@@ -30,21 +35,8 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        // 볼륨 불러오기
-        LoadVolumePrefs();
-    }
-
-
-    // 볼륨 불러오기
-    void LoadVolumePrefs()
-    {
-        // 저장된 볼륨 가져오기, 없으면 유지
-        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", MasterVolume);
-        BGMVolume = PlayerPrefs.GetFloat("BGMVolume", BGMVolume);
-        SFXVolume = PlayerPrefs.GetFloat("SFXVolume", SFXVolume);
-
         // 불러온 값 설정
         SetMasterVolume(MasterVolume);
         SetBGMVolume(BGMVolume);
@@ -81,16 +73,16 @@ public class SoundManager : MonoBehaviour
 
 
     // 배경음 교체 재생
-    public void PlayBGM()
+    public void PlayBGM(AudioClip clip)
     {
-        //_bgmSource.clip = clip;
-        //_bgmSource.Play();
+        _bgmSource.clip = clip;
+        _bgmSource.Play();
     }
 
 
     // 효과음 한 번 재생
-    public void PlaySFX()
+    public void PlaySFX(AudioClip clip)
     {
-       // _sfxSource.PlayOneShot(clip);
+       _sfxSource.PlayOneShot(clip);
     }
 }
