@@ -1,12 +1,25 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
+[RequireComponent (typeof(Rigidbody2D))]
+[RequireComponent (typeof(BoxCollider2D))]
 public class PlayerModelController : MonoBehaviour
 {
-    
+    Rigidbody2D _rigid;
     Vector2 _moveInput;
-    
-    private void Update()
+    List<Npc> _neerNpcs = new List<Npc>();    
+    Npc _neerNpc;
+    bool _canInteract;
+
+
+    private void Awake()
+    {
+        _rigid = GetComponent<Rigidbody2D>();
+        _rigid.gravityScale = 0;
+        _rigid.freezeRotation = true;        
+    }
+
+    private void FixedUpdate()
     {        
         Move();                
     }
@@ -30,12 +43,60 @@ public class PlayerModelController : MonoBehaviour
             {
                 gameObject.transform.localScale = new Vector2(- 1, 1);
             }
-            gameObject.transform.Translate(_moveInput * Time.deltaTime * Player.Instance.GetMoveSpeed());
+            Vector2 movePos = _rigid.position + _moveInput * Player.Instance.GetMoveSpeed() * Time.fixedDeltaTime;
+            _rigid.MovePosition(movePos);
+            //gameObject.transform.Translate(_moveInput * Time.deltaTime * Player.Instance.GetMoveSpeed());
         }            
     }
 
     public void Interact()
     {
-        Debug.Log("상호작용!");
+        if (_canInteract)
+        {
+            Debug.Log($"{_neerNpc.Name}와 상호작용!");
+            Player.Instance.Currentvillage.TalkInteractClick();
+            Player.Instance.GetComponent<PlayerInputHandler>().ChangeInputState(new ScenarioState(Player.Instance, Player.Instance.GetComponent<PlayerInputHandler>()));
+        }        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out Npc npc))
+        {
+            _neerNpcs.Add(npc);
+            _canInteract = true;
+            CheckNpcDistance();
+            Player.Instance.Currentvillage.ShowTalkSlide();
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out Npc npc))
+        {
+            _canInteract = (_neerNpc != null);
+            CheckNpcDistance();
+            Player.Instance.Currentvillage.HideTalkSlide();
+            _neerNpcs.Remove(npc);
+        }
+    }
+
+    private void CheckNpcDistance()
+    {
+        float lastDistance = float.MaxValue;
+        foreach (var npc in _neerNpcs)
+        {
+            if (npc == null)
+            {
+                continue;
+            }
+
+            float distance = Vector2.Distance(transform.position, npc.transform.position);
+            if (distance < lastDistance)
+            {
+                lastDistance = distance;
+                _neerNpc = npc;
+                Player.Instance.Currentvillage.SetNpcToTalk(_neerNpc);
+            }
+        }
     }
 }

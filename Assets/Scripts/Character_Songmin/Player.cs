@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 /// <summary>
@@ -8,10 +9,8 @@ using UnityEngine;
 /// </summary>
 public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 {   
-    PlayerStat _stat;
-    public static Player Instance;
-
-    
+    //스탯 관련 필드
+    PlayerStat _stat;    
     public Action<int, int, int, int> OnHpChanged; //체력 수치 변화할 때마다 호출.    
     public Action<int> OnShieldChanged; //보호막 수치 변화할 때마다 호출.
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
@@ -19,6 +18,15 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     public Action<int> OnDefenseChanged; //방어력 변화할 때마다 호출.
     public Action<Dictionary<StatusEffectData, int>> OnStatusEffectChanged; //상태이상 변화할 때마다 호출
 
+    //마을 관련 필드
+    public Village Currentvillage {  get; private set; }
+
+
+
+
+
+
+    public static Player Instance;
     private void Awake() //임시 유사 싱글톤 처리
     {
         if (Instance == null)
@@ -34,8 +42,7 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 
     private void Start() //파싱 되었는지 테스트용 코드
     {
-        
-        
+        Respawn();        
     }
 
     
@@ -209,5 +216,17 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     {
         AddStatusEffect("KeyStatusBurn", 0, stack);
         Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
+    }
+
+    public void Respawn()
+    {
+        SetVillage();
+        GetHp(_stat.Hp);
+        gameObject.transform.position = Currentvillage.SpawnZone;
+    }
+
+    private void SetVillage()
+    {
+        Currentvillage = FindFirstObjectByType<Village>();
     }
 }
