@@ -40,6 +40,7 @@ public class HandManager : MonoBehaviour
     public float CardHalfHeight => _cardHalfHeight;
     public int HandCount => _handCards.Count;               // 스테이지 종료 시 체크
     public int DeckCount => _deck.Count;                    // 스테이지 종료 시 체크
+    public Transform HandTransform => _handTransform;
     public CardUI SelectedCard => _selectedCardUI;
     public IBattleUnit TargetPlayer => _targetPlayer;
     public IBattleUnit TargetMonster => _targetMonster;
