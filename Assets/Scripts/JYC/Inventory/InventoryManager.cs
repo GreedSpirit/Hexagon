@@ -100,7 +100,10 @@ public class InventoryManager : MonoBehaviour
     {
         OnDeckChanged?.Invoke();
     }
-
+    public void InvokeDeckChanged()
+    {
+        OnDeckChanged?.Invoke();
+    }
     public List<UserCard> GetSortedList(bool isDeckBuildingMode)
     {
         if (CardManager.Instance == null) return new List<UserCard>();

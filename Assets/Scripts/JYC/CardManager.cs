@@ -159,19 +159,22 @@ public class CardManager : MonoBehaviour
             CurrentDeck.Remove(cardId);
             return true;
         }
-        // 없으면 추가 (최대 개수 확인)
-        else
+        // 중복 장착 방지 추가
+        if (CurrentDeck.Contains(cardId))
         {
-            if (CurrentDeck.Count >= MAX_DECK_COUNT) return false;
-
-            // 보유한 카든지 확인
-            var userCard = UserCardList.Find(x => x.CardId == cardId);
-            if (userCard != null)
-            {
-                CurrentDeck.Add(cardId);
-                return true;
-            }
+            Debug.Log("같은 카드는 한 번만 장착할 수 있습니다!");
+            return false;
         }
+        // 최대 개수 확인
+        if (CurrentDeck.Count >= MAX_DECK_COUNT) return false;
+
+        var userCard = UserCardList.Find(x => x.CardId == cardId);
+        if (userCard != null)
+        {
+            CurrentDeck.Add(cardId);
+            return true;
+        }
+
         return false;
     }
 

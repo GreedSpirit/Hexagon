@@ -11,24 +11,43 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private int _cardId;
     private int _slotIndex;
+    private CardGrade _requiredGrade;
     // 드래그 효과를 위한 반투명 이미지 변수
-    private static GameObject _dragGhost;
+    private GameObject _dragGhost;
     private bool _isDropHandled = false;
 
     // 데이터 세팅
-    public void Init(int cardId, int index)
+    public void Init(int cardId, int index, CardGrade requiredGrade)
     {
         _cardId = cardId;
         _slotIndex = index;
-        var cardData = DataManager.Instance.GetCard(cardId);
-
-        if (cardData != null)
+        _requiredGrade = requiredGrade;
+        // 테두리 색상 설정 (빈 슬롯이어도 등급 색은 나와야 함)
+        SetGradeVisual(requiredGrade);
+        // 카드가 장착된 상태인가?
+        if (_cardId != -1)
         {
-            // 나중에 리소스 로드 구현 시 주석 해제
-            // cardImage.sprite = Resources.Load<Sprite>(cardData.CardImg);
+            var cardData = DataManager.Instance.GetCard(_cardId);
 
-            // 등급별 테두리 설정
-            SetGradeVisual(cardData.CardGrade);
+            // 데이터가 있으면 이미지를, 없으면 그냥 흰색 박스라도 띄웁니다.
+            cardImage.gameObject.SetActive(true);
+
+            if (cardData != null)
+            {
+                // cardImage.sprite = Resources.Load<Sprite>(cardData.CardImg); // 나중에 주석 해제
+                cardImage.color = Color.white; // 카드 그림이 있으면 흰색(원본색)
+            }
+            else
+            {
+                // 데이터 테이블에 없는 카드 ID일 경우 (테스트 중 발생 가능)
+                cardImage.color = Color.red; // "에러! 데이터 없음" 표시
+            }
+        }
+        else
+        {
+            // 빈 슬롯임 -> 카드 이미지를 끄거나 투명하게
+            // (배경의 빈 슬롯 모양이 보여야 하므로)
+            cardImage.color = Color.clear;
         }
     }
 
@@ -38,11 +57,19 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
         switch (grade)
         {
-            case CardGrade.Common: borderImage.color = Color.gray; break;
-            case CardGrade.Rare: borderImage.color = Color.cyan; break;
-            case CardGrade.Epic: borderImage.color = Color.magenta; break;
-            case CardGrade.Legendary: borderImage.color = Color.yellow; break;
-            default: borderImage.color = Color.white; break;
+            case CardGrade.Common:
+                borderImage.color = Color.black; // 검정
+                break;
+            case CardGrade.Rare:
+                borderImage.color = Color.blue;  // 파랑
+                break;
+            case CardGrade.Epic:
+            case CardGrade.Legendary:
+                borderImage.color = new Color(0.5f, 0, 0.5f); // 보라 (Purple)
+                break;
+            default:
+                borderImage.color = Color.white;
+                break;
         }
     }
 
@@ -56,11 +83,17 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             return;
         }
 
+        // 카드가 있을 때만 해제/교체 로직을 수행하도록 예외 처리합니다.
+        if (_cardId == -1) return;
+
         int selectedInvenCardId = InventoryManager.Instance.GetSelectedCardId();
 
         if (selectedInvenCardId != -1)
         {
-            InventoryManager.Instance.ReplaceDeckCardAt(this._slotIndex, selectedInvenCardId);
+            // 교체 시도 (인덱스가 유효해야 함)
+            if (_slotIndex != -1)
+                InventoryManager.Instance.ReplaceDeckCardAt(this._slotIndex, selectedInvenCardId);
+
             InventoryManager.Instance.DeselectAll();
         }
         else
@@ -90,18 +123,49 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         InventorySlotUI invSlot = droppedObj.GetComponent<InventorySlotUI>();
         if (invSlot != null)
         {
-            _isDropHandled = true; // 클릭 방지용
+            // 등급 체크
+            CardData dropData = invSlot.UserCard.GetData();
+            bool isMatch = false;
 
+            if (_requiredGrade == CardGrade.Epic)
+                isMatch = (dropData.CardGrade == CardGrade.Epic || dropData.CardGrade == CardGrade.Legendary);
+            else
+                isMatch = (dropData.CardGrade == _requiredGrade);
+
+            if (!isMatch)
+            {
+                Debug.Log($"등급이 맞지 않습니다! (필요: {_requiredGrade})");
+                return;
+            }
+
+            // 드롭 처리 시작
+            _isDropHandled = true;
             InventoryManager.Instance.IsDropProcessing = true;
 
-            // 교체 요청
-            InventoryManager.Instance.ReplaceDeckCardAt(this._slotIndex, invSlot.UserCard.CardId);
+            int newCardId = invSlot.UserCard.CardId;
+
+            // 빈 슬롯인가?
+            if (_cardId != -1)
+            {
+                // 이미 카드가 있으면 -> 교체
+                InventoryManager.Instance.ReplaceDeckCardAt(this._slotIndex, newCardId);
+            }
+            else
+            {
+                // 빈 슬롯이면 -> 장착
+
+                if (!InventoryManager.Instance.IsCardInDeck(newCardId))
+                {
+                    InventoryManager.Instance.ToggleDeckEquip(newCardId);
+                }
+            }
         }
     }
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (_cardId == -1) return;
         // 드래그 시작 시 "유령(Ghost)" 이미지 생성
         _dragGhost = new GameObject("DeckDragGhost");
         _dragGhost.transform.SetParent(transform.root); 
@@ -132,8 +196,12 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnEndDrag(PointerEventData eventData)
     {
         // 드래그 끝: dragGhost 삭제
-        if (_dragGhost != null) Destroy(_dragGhost);
-
+        if (_dragGhost != null)
+        {
+            Destroy(_dragGhost);
+            _dragGhost = null;
+        }
+        if (_cardId == -1) return;
         // 마우스를 놓은 위치 확인
         GameObject hitObject = eventData.pointerEnter;
 
