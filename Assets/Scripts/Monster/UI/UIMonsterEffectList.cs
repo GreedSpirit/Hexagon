@@ -19,9 +19,12 @@ public class UIMonsterEffectList : MonoBehaviour, IMonsterEffectObserver
 
     public void OnMonsterEffectChanged(List<MonsterStatusEffectInstance> effects)
     {
+        if(this == null || gameObject == null) return;
+        if(transform == null) return;
         // 기존 아이콘 싹 지우기 (추후 Object Pooling 바꿀 듯)
         foreach (Transform child in _iconParent)
         {
+            if(child == null || child.gameObject == null) continue;
             Destroy(child.gameObject);
         }
 

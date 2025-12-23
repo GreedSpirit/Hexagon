@@ -18,7 +18,6 @@ public class MonsterStatData : CSVLoad, TableKey
         else
         {
             Level = -1;
-            Debug.Log(levelValue);
             return;
         }
             

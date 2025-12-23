@@ -29,6 +29,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     private string _selectedSkillKey = null; //선택된 스킬 키 임시 변수
     private int _selectedSkillSlot = -1; //선택된 스킬 슬롯 인덱스 임시 변수
     private int _selectedSkillValue = -1;
+    private bool _isDead = false;
+    private MonsterDeathEffect _deathEffect;
 
     private List<MonsterStatusEffectInstance> _statusEffects = new List<MonsterStatusEffectInstance>(); //몬스터에게 적용된 상태 이상 효과 인스턴스 목록
     public List<MonsterStatusEffectInstance> StatusEffects => _statusEffects;
@@ -86,15 +88,13 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private void Start()
     {
-        //InitMonsterStatus(1); // 테스트용 초기화
-
-        //NotifyHpObservers(); //초기 HP 상태 갱신
-        //NotifySkillObservers(); //초기 스킬 상태 갱신
-        
+        _deathEffect = GetComponent<MonsterDeathEffect>();        
     }
 
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수
     {
+        if(_isDead) return;
+
         if(_monsterShield > 0)
         {
             int shieldDamage = Mathf.Min(_monsterShield, damage);
@@ -106,7 +106,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             _monsterCurHP = 0;
         NotifyHpObservers(); //HP 변경 알림
 
-        if (_monsterCurHP == 0)
+        if (_monsterCurHP <= 0)
         {
             Death();
         }
@@ -172,10 +172,12 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private void Death()
     {
+        if(_isDead) return;
+        _isDead = true;
         //몬스터 죽음 처리 로직 추가
         Debug.Log("몬스터가 죽었습니다. ID: " + _monsterId);
         OnMonsterDeath?.Invoke(this); //이 몬스터가 죽었음을 알림
-        GetComponent<MonsterDeathEffect>().Die();
+        _deathEffect.Die();
 
 
         if(_monsterGrade == MonsterGrade.Boss)
@@ -528,8 +530,12 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private void OnDestroy() {
         //혹시 모를 GC를 위해 초기화
+        Debug.Log("monster die ? " + _isDead);
         OnEnemyActTurnEnd = null;
         OnMonsterDeath = null;
+        _hpObservers.Clear();
+        _skillObservers.Clear();
+        _effectObservers.Clear();
     }
 
 }
