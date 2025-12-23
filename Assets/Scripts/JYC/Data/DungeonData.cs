@@ -16,7 +16,8 @@ public class DungeonData : CSVLoad, TableKey
     public float Slot3Probability { get; set; }
     public float Slot4Probability { get; set; }
     public int RewardGroup { get; set; }
-    public string Deck {get; set; }
+    public string Deck { get; set; }
+    public int Exp { get; set; }
 
     // ���� �÷����� ���缭 Key ����
     string TableKey.Key
@@ -57,6 +58,16 @@ public class DungeonData : CSVLoad, TableKey
         else
         {
             RewardGroup = 0;
+        }
+
+        if (values.Length > 11)
+        {
+            Deck = values[11];
+        }
+        if (values.Length > 12)
+        {
+            int.TryParse(values[12], out int e);
+            Exp = e;
         }
     }
 

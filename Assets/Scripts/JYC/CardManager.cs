@@ -19,7 +19,13 @@ public class CardManager : MonoBehaviour
 
     // 최대 덱 용량 (임시)
     public const int MAX_DECK_COUNT = 30;
-
+    public int Gold { get; private set; } = 0;
+    public void AddGold(int amount)
+    {
+        Gold += amount;
+        if (Gold < 0) Gold = 0;
+        // 필요하다면 UI 갱신 이벤트 호출
+    }
     private void Awake()
     {
         if (Instance == null)
@@ -219,6 +225,7 @@ public class CardManager : MonoBehaviour
     [System.Serializable]
     public class SaveData
     {
+        public int myGold;
         public List<UserCard> myCards; // 내 보유 카드
         public List<int> myDeck; // 내 덱 구성
     }
@@ -228,6 +235,7 @@ public class CardManager : MonoBehaviour
     public void SaveGame()
     {
         SaveData data = new SaveData();
+        data.myGold = this.Gold;
         data.myCards = this.UserCardList;
         data.myDeck = this.CurrentDeck;
 
@@ -253,6 +261,7 @@ public class CardManager : MonoBehaviour
 
             if (data != null)
             {
+                this.Gold = data.myGold;
                 this.UserCardList = data.myCards ?? new List<UserCard>();
                 this.CurrentDeck = data.myDeck ?? new List<int>();
                 Debug.Log($"[Load] 불러오기 완료. 카드 {UserCardList.Count}장, 덱 {CurrentDeck.Count}장");
