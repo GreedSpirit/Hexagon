@@ -85,7 +85,7 @@ public class HandManager : MonoBehaviour
         _cardHalfHeight = cardHeight / 2f;
 
         // 덱 UI 초기화
-        _deckUI.Init(this);
+        _deckUI?.Init(this);
 
         // 타겟 플레이어
         SetPlayerTarget();
@@ -209,7 +209,7 @@ public class HandManager : MonoBehaviour
         TargetStatusValueChanged();
 
         // 덱 카운트 갱신
-        _deckUI.UpdateDeckCountText();
+        _deckUI?.UpdateDeckCountText();
 
         // 정렬
         AlignCards();
