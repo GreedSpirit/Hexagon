@@ -70,6 +70,8 @@ public class UpgradeManager : MonoBehaviour
 
         // 강화 슬롯 카드 초기화
         _upgradeSlotCard.Init(null, this);
+
+        RefreshList();
     }
 
     // 카드 리스트 새로고침 (UI 온, 강화 연출 완료)

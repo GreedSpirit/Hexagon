@@ -4,6 +4,9 @@ using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
+    [Header("Detail Panel")]
+    [SerializeField] CardDetailPanel _detailPanel;
+
     [SerializeField] Transform contentParent;       // Scroll View의 Content
     [SerializeField] GameObject slotPrefab;         // InventorySlotUI 프리팹
     [SerializeField] TMP_Dropdown sortDropdown;     // 정렬 드롭다운
@@ -101,6 +104,10 @@ public class InventoryUI : MonoBehaviour
         clickedSlot.SetSelected(true);
         _currentSelectedSlot = clickedSlot;
         InventoryManager.Instance.SetSelectedCardId(clickedSlot.UserCard.CardId);
+        if (_detailPanel != null)
+        {
+            _detailPanel.SetCardInfo(clickedSlot.UserCard);
+        }
     }
 
     // 배경 클릭 시 선택 해제 (UI 배경 버튼 등에 연결)
@@ -108,6 +115,7 @@ public class InventoryUI : MonoBehaviour
     {
         DeselectVisualsOnly();
         InventoryManager.Instance.SetSelectedCardId(-1);
+        if (_detailPanel != null) _detailPanel.Init();
     }
     public void OnClickToggleDeckMode()
     {
