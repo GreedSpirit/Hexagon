@@ -7,10 +7,10 @@ using UnityEngine;
 /// <summary>
 /// 외부와 상호작용할 '플레이어 캐릭터'는 이거 하나. 
 /// </summary>
-public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
-{   
-    //스탯 관련 필드
-    PlayerStat _stat;    
+public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해주기
+{
+    //스탯 관련 필드    
+    PlayerStat _stat;
     public Action<int, int, int, int> OnHpChanged; //체력 수치 변화할 때마다 호출.    
     public Action<int> OnShieldChanged; //보호막 수치 변화할 때마다 호출.
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
@@ -20,7 +20,13 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
 
     //마을 관련 필드
     public Village Currentvillage {  get; private set; }
+    public Npc TalkingNpc { get; private set; }
+    public TalkUI TalkUI { get; private set; }
 
+
+    //Player에 붙은 다른 컴포넌트들
+    private PlayerUIManager _playerUIManager;
+    private PlayerModelController _playerModelController;
 
 
 
@@ -40,8 +46,10 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     }
 
 
-    private void Start() //파싱 되었는지 테스트용 코드
+    private void Start()
     {
+        _playerUIManager = GetComponent<PlayerUIManager>();
+        _playerModelController = GetComponent<PlayerModelController>();
         Respawn();        
     }
 
@@ -228,5 +236,33 @@ public class Player : MonoBehaviour, IBattleUnit //나중에 싱글톤도 해주기
     private void SetVillage()
     {
         Currentvillage = FindFirstObjectByType<Village>();
+    }
+
+    public void SetTalkingNpc(Npc npc)
+    {
+        TalkingNpc = npc;
+    }
+
+    public string GetName()
+    {
+        return _stat.Name;
+    }
+
+    public string GetTalk()
+    {
+        return "Player Talking";
+    }
+
+    public string GetImage()
+    {
+        return "Img";
+    }
+    public void SetTalkUI(TalkUI talkUI)
+    {
+        TalkUI = talkUI;
+    }
+    public void EnterDungeonSelect()
+    {
+        Debug.Log("던전 선택창 띄우기");
     }
 }

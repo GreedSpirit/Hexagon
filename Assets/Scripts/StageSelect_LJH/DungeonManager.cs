@@ -97,10 +97,13 @@ public class DungeonManager : MonoBehaviour
 
     private IEnumerator BossClearSequence()
     {
+        yield return new WaitForSeconds(3.0f); //몬스터가 죽고 나서 대기 시간이 필요할 것 같아서 넣은 대기 시간
+
         // 1. 보스를 잡고 보상을 확정
         _determinedRewards = RewardDataManager.Instance.GenerateDungeonRewards(_currentDungeonData);
 
         // 2. 보상 인터랙션을 진행
+        if(_rewardObjAnimator != null) _rewardObjAnimator.gameObject.SetActive(true);
         bool isInteractionDone = false;
         _rewardInteraction.OnInteractionComplete = () => {isInteractionDone = true;};
         _rewardInteraction.StartInteraction();
@@ -115,7 +118,15 @@ public class DungeonManager : MonoBehaviour
             _rewardObjAnimator.SetTrigger("Done");
 
             yield return null;
-            float animTime = _rewardObjAnimator.GetCurrentAnimatorStateInfo(0).length;
+
+
+            float animTime = _rewardObjAnimator.GetCurrentAnimatorStateInfo(0).length; // base layer에서 현재 실행되고 있는 애니메이션의 시간 반환
+
+            if (_rewardObjAnimator.IsInTransition(0))
+            {
+                animTime = _rewardObjAnimator.GetNextAnimatorStateInfo(0).length;
+            }
+
             yield return new WaitForSeconds(animTime);
         }
 

@@ -32,8 +32,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3626896216008864156}
   - {fileID: 6884030107465428885}
+  - {fileID: 3626896216008864156}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4877402981848475931
@@ -60,6 +60,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fec267d32ea534eafc7e4b72c1730d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
+  _player: {fileID: 0}
+  playerInput: {fileID: 0}
 --- !u!114 &2916844503299840058
 MonoBehaviour:
   m_ObjectHideFlags: 0
