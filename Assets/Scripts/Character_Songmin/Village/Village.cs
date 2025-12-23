@@ -8,7 +8,7 @@ public class Village : MonoBehaviour
     public string Bgm { get; private set; }
 
     [SerializeField] NpcTalkSlideUI _talkSlide;
-    public Npc TalkingNpc { get; private set; }
+    
 
     private void Start()
     {
@@ -25,14 +25,11 @@ public class Village : MonoBehaviour
         //Bgm = villageData.Bgm;
     }
 
-    public void SetNpcToTalk(Npc npc)
-    {
-        TalkingNpc = npc;
-    }
+    
 
-    public void ShowTalkSlide()
+    public void ShowTalkSlide(Npc npc)
     {
-        _talkSlide.SetNpc(TalkingNpc);
+        _talkSlide.SetNpc(npc);
         _talkSlide.Show();
     }
 
@@ -49,13 +46,6 @@ public class Village : MonoBehaviour
             Debug.LogError("TalkUI가 Player에 아직 등록되지 않았습니다.");
             return;
         }
-        player.EnterScenarioMod();
-        player.SetTalkingNpc(TalkingNpc);
-        player.TalkUI.EnterTalk(TalkingNpc);
+        player.TalkWithNpc();
     }
-
-
-
-    
-
 }
