@@ -43,12 +43,18 @@ public class Village : MonoBehaviour
 
     public void TalkInteractClick()
     {
-        Talk();
+        Player player = Player.Instance;
+        if (player.TalkUI == null)
+        {
+            Debug.LogError("TalkUI가 Player에 아직 등록되지 않았습니다.");
+            return;
+        }
+        player.SetTalkingNpc(TalkingNpc);
+        player.TalkUI.EnterTalk(TalkingNpc);
     }
 
-    private void Talk()
-    {
-        TalkingNpc.Interact();
-    }
+
+
+    
 
 }

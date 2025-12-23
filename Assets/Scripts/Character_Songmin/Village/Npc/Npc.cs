@@ -1,10 +1,10 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
-public class Npc : MonoBehaviour
-{
-    public NpcTalkSlideUI NpcTalkSlideUI;
-
+public class Npc : MonoBehaviour, ITalkable
+{    
+    
+    int _currentTalkingIndex = -1; //이거는 제이슨으로 저장시켜야 함
 
     public string Name { get; private set; }
     public string Desc { get; private set; }
@@ -15,9 +15,12 @@ public class Npc : MonoBehaviour
 
     public string[] Talks { get; private set; } = new string[4];
 
+    public bool isMerchant { get;  set; }
+
     private void Start()
     {
-        Init("KeyNpcLibra");
+        Init("KeyNpcLibra");    
+        SetWord();
         //Debug.Log($"{Desc}");
     }
 
@@ -29,7 +32,7 @@ public class Npc : MonoBehaviour
 
         for (int i = 0; i < Talks.Length; i++) //테스트용 대사 넣어두기
         {
-            Talks[i] = $"대사 {i+1}번 출력";
+            Talks[i] = $"{Name}의 대사 {i+1}번 출력";
         }
         
         
@@ -46,9 +49,34 @@ public class Npc : MonoBehaviour
     }
 
 
-    public virtual void Interact()
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public string GetTalk()
+    {
+        return Talks[_currentTalkingIndex];
+    }
+    public string GetImage()
+    {
+        return Img;
+    }
+
+
+
+    private void SetWord()
     {
         int random = Random.Range(0, Talks.Length);
-        Debug.Log($"{Talks[random]}");
+        if (Talks.Length <= 1)
+        {
+            _currentTalkingIndex = 0;
+            return;
+        }
+        while (_currentTalkingIndex == random)
+        {
+            random = Random.Range(0, Talks.Length);
+        }
+        _currentTalkingIndex = random;
     }
 }
