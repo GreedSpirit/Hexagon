@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class Village : MonoBehaviour
@@ -8,7 +9,9 @@ public class Village : MonoBehaviour
     public string Bgm { get; private set; }
 
     [SerializeField] NpcTalkSlideUI _talkSlide;
-    
+    [SerializeField] TextMeshProUGUI _villageNameUI;
+
+    Npc _currentTalkNpc;
 
     private void Start()
     {
@@ -23,18 +26,22 @@ public class Village : MonoBehaviour
         SpawnZone = new Vector2(-7f, 0);
         //Img = villageData.Img;
         //Bgm = villageData.Bgm;
+        _villageNameUI.text = Name;
     }
 
     
 
     public void ShowTalkSlide(Npc npc)
     {
+        _currentTalkNpc = npc;
         _talkSlide.SetNpc(npc);
+        _currentTalkNpc.HighlightName(true);
         _talkSlide.Show();
     }
 
     public void HideTalkSlide()
     {
+        _currentTalkNpc.HighlightName(false);
         _talkSlide.Hide();
     }
 
