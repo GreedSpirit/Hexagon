@@ -36,7 +36,7 @@ public class UIMonsterTooltip : MonoBehaviour
         {
             // 효과 이름
             string colorHex = GetColorByBuffType(effect.Type);
-            sb.Append($"<color={colorHex}><b>[{effect.Name}]</b></color>\n");
+            sb.Append($"<color={colorHex}><b>[{DataManager.Instance.GetString(effect.Name).Korean}]</b></color>\n");
             
             // 효과 설명
             string desc = GenerateDescription(effect);
@@ -71,9 +71,9 @@ public class UIMonsterTooltip : MonoBehaviour
     {
         // 테이블의 Desc를 쓰거나, 로직에 따라 문장 조합
         // 예시: "화상" -> "턴 종료 시 5의 피해를 입습니다."
-        string durationText = effect.Duration > 0 ? $"{effect.Duration}턴" : $"{effect.Stack}스택";
+        string durationText = effect.Duration > 0 ? $"{effect.Duration}Turn" : $"{effect.Stack}Stack";
         
         // 간단한 예시 로직 (실제로는 테이블 Desc 활용)
-        return $"{effect.Name} 효과를 {durationText} 동안 받음.";
+        return $"{effect.Desc} Effect : {durationText}";
     }
 }

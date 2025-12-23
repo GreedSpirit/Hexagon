@@ -1,11 +1,15 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine;
 using System.Text;
 using TMPro;
 
-public class UpgradeCardUI : MonoBehaviour
+public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] GameObject _selectedEdge;      // 선택 테두리
+
+    [Header("강화 슬롯 체크")]
+    [SerializeField] bool _isSlot;
 
     [Header("카드 UI 요소")]
     [SerializeField] Image _img;                     // 카드 이미지
@@ -15,22 +19,39 @@ public class UpgradeCardUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _levelText;     // 레벨 텍스트
     [SerializeField] TextMeshProUGUI _numberOfAvailableText;      // 사용 가능 횟수 텍스트
     [SerializeField] Image _edgeColor;              // 등급 색
+    public UserCard UserCard { get; private set;  } // 보유 카드 데이터
 
+    private CardManager _cardManager;
     private UpgradeManager _upgradeManager;  // 강화 매니저
-    private CardData _cardData;              // 카드 데이터
-    
-    
-    // 첫 생성 초기화
-    public void Init(CardData data, UpgradeManager manager)
+    private CardData _cardData;              // 카드 데이터
+
+
+    public void OnPointerClick(PointerEventData eventData)
     {
-        // 카드 데이터
-        _cardData = data;
+        if (_isSlot) return;
+
+        _upgradeManager.SelectCard(this);
+    }
+
+
+    // 첫 생성 초기화
+    public void Init(UserCard userCard, UpgradeManager manager)
+    {
+        _cardManager = CardManager.Instance;
+
+        // 보유 카드 정보
+        UserCard = userCard;
+
+        // ID 카드 데이터 가져오기
+        _cardData = userCard?.GetData();
 
         // 매니저
         _upgradeManager = manager;
 
         // 비주얼 설정
-        SetVisual();
+        // 강화 슬롯 이면 일단 끔
+        if (_isSlot == true) gameObject.SetActive(false);
+        else SetVisual();
     }
     
     
@@ -54,7 +75,7 @@ public class UpgradeCardUI : MonoBehaviour
         SetGradeColor();
 
         // 선택 테두리
-        _selectedEdge?.SetActive(false);
+        if(!_isSlot)_selectedEdge.SetActive(false);
 
     }
 
@@ -86,8 +107,8 @@ public class UpgradeCardUI : MonoBehaviour
     public void UpdateUpgradeText()
     {
         // 카드 레벨 가져오기
-        int level = TestCardManager.Instance.GetCardLevel(_cardData.Id);
-
+        int level = _cardManager.GetCardLevel(_cardData.Id);
+        
         // 레벨
         if (_levelText != null) _levelText.text = level.ToString();
         else Debug.LogError("LevelText 가 할당되어있지 않습니다.");
@@ -98,7 +119,7 @@ public class UpgradeCardUI : MonoBehaviour
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
 
         // 카드 사용 가능 횟수
-        int numberOfAvailable = TestCardManager.Instance.GetCardNumberOfAvailable(level, _cardData.CardGrade);
+        int numberOfAvailable = _cardManager.GetCardNumberOfAvailable(level, _cardData.CardGrade);
         if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
         else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
     }
@@ -124,5 +145,30 @@ public class UpgradeCardUI : MonoBehaviour
     private int GetValue(int level)
     {
         return _cardData.BaseValue + (level - 1) * _cardData.ValuePerValue;
+    }
+
+    // 선택 - 강화 슬롯
+    public void Select(UserCard userCard)
+    {
+        // 데이터 가져와서
+        _cardData = userCard?.GetData();
+
+        // UI 변경
+        SetVisual();
+    }
+
+    // 선택 - 카드 리스트
+    public void Select()
+    {
+        // 선택 테두리
+        _selectedEdge?.SetActive(true);
+    }
+
+
+    // 선택 해지 - 카드 리스트
+    public void DeSelect()
+    {
+        // 선택 테두리
+        _selectedEdge?.SetActive(false);
     }
 }

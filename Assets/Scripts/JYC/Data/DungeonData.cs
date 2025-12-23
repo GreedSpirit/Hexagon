@@ -3,9 +3,9 @@ using UnityEngine;
 [System.Serializable]
 public class DungeonData : CSVLoad, TableKey
 {
-    // ¿¢¼¿ ÄÃ·³¸í°ú ÀÏÄ¡½ÃÅ² ÇÁ·ÎÆÛÆ¼
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½Å² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
     public int Id { get; set; }
-    public string DungeonKey { get; set; }      // ¿¢¼¿ ÄÃ·³¸í: DungeonKey
+    public string DungeonKey { get; set; }      // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½: DungeonKey
     public string Name { get; set; }
     public string Desc { get; set; }
     public int RequiredLevel { get; set; }
@@ -16,19 +16,21 @@ public class DungeonData : CSVLoad, TableKey
     public float Slot3Probability { get; set; }
     public float Slot4Probability { get; set; }
     public int RewardGroup { get; set; }
+    public string Deck { get; set; }
+    public int Exp { get; set; }
 
-    // ¿¢¼¿ ÄÃ·³¸í¿¡ ¸ÂÃç¼­ Key ¼³Á¤
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ç¼­ Key ï¿½ï¿½ï¿½ï¿½
     string TableKey.Key
     {
         get { return DungeonKey; }
     }
 
 
-    // CSV µ¥ÀÌÅÍ ÆÄ½Ì
+    // CSV ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä½ï¿½
 
     public void LoadFromCsv(string[] values)
     {
-        // ¹è¿­ ±æÀÌ Ã¼Å©¸¦ ¸ðµç Ç×¸ñ¿¡ Àû¿ë
+        // ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         if (values.Length > 0)
         {
@@ -42,7 +44,7 @@ public class DungeonData : CSVLoad, TableKey
         if (values.Length > 4) { int.TryParse(values[4], out int lv); RequiredLevel = lv; }
         if (values.Length > 5) { int.TryParse(values[5], out int num); NumberOfStages = num; }
 
-        // µ¥ÀÌÅÍ°¡ Á¸ÀçÇÒ ¶§¸¸ ÀÐµµ·Ï Á¶°Ç¹® Ãß°¡
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ðµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¹ï¿½ ï¿½ß°ï¿½
         if (values.Length > 6) Slot1Probability = ParseFloatSafe(values[6]);
         if (values.Length > 7) Slot2Probability = ParseFloatSafe(values[7]);
         if (values.Length > 8) Slot3Probability = ParseFloatSafe(values[8]);
@@ -56,6 +58,16 @@ public class DungeonData : CSVLoad, TableKey
         else
         {
             RewardGroup = 0;
+        }
+
+        if (values.Length > 11)
+        {
+            Deck = values[11];
+        }
+        if (values.Length > 12)
+        {
+            int.TryParse(values[12], out int e);
+            Exp = e;
         }
     }
 

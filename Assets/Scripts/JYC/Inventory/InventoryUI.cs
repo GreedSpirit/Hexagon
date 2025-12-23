@@ -4,6 +4,9 @@ using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
+    [Header("Detail Panel")]
+    [SerializeField] CardDetailPanel _detailPanel;
+
     [SerializeField] Transform contentParent;       // Scroll View의 Content
     [SerializeField] GameObject slotPrefab;         // InventorySlotUI 프리팹
     [SerializeField] TMP_Dropdown sortDropdown;     // 정렬 드롭다운
@@ -20,7 +23,10 @@ public class InventoryUI : MonoBehaviour
     {
         // 드롭다운 리스너 연결 (값이 바뀌면 OnSortChanged 실행)
         sortDropdown.onValueChanged.AddListener(OnSortChanged);
-
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.OnRequestDeselect += DeselectVisualsOnly;
+        }
         // 저장된 정렬 방식 불러오기 (정렬 방식 유지)
         // 저장된 값이 없으면 0(기본값: 등급순)을 가져옴
         int savedSortIndex = PlayerPrefs.GetInt(SORT_SAVE_KEY, 0);
@@ -40,7 +46,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (InventoryManager.Instance != null)
         {
-            InventoryManager.Instance.OnDeckChanged -= RefreshInventory;
+            InventoryManager.Instance.OnRequestDeselect -= DeselectVisualsOnly;
         }
     }
     // 인벤토리 갱신 (데이터 로드 -> 정렬 -> 슬롯 생성)
@@ -97,16 +103,19 @@ public class InventoryUI : MonoBehaviour
 
         clickedSlot.SetSelected(true);
         _currentSelectedSlot = clickedSlot;
+        InventoryManager.Instance.SetSelectedCardId(clickedSlot.UserCard.CardId);
+        if (_detailPanel != null)
+        {
+            _detailPanel.SetCardInfo(clickedSlot.UserCard);
+        }
     }
 
     // 배경 클릭 시 선택 해제 (UI 배경 버튼 등에 연결)
     public void DeselectAll()
     {
-        if (_currentSelectedSlot != null)
-        {
-            _currentSelectedSlot.SetSelected(false);
-            _currentSelectedSlot = null;
-        }
+        DeselectVisualsOnly();
+        InventoryManager.Instance.SetSelectedCardId(-1);
+        if (_detailPanel != null) _detailPanel.Init();
     }
     public void OnClickToggleDeckMode()
     {
@@ -120,6 +129,15 @@ public class InventoryUI : MonoBehaviour
         if (modeText != null)
         {
             modeText.text = IsDeckBuildingMode ? "현재: 덱 편집 모드" : "현재: 전체 보기";
+        }
+    }
+    // 매니저의 요청으로 비주얼만 끄는 함수
+    private void DeselectVisualsOnly()
+    {
+        if (_currentSelectedSlot != null)
+        {
+            _currentSelectedSlot.SetSelected(false);
+            _currentSelectedSlot = null;
         }
     }
 

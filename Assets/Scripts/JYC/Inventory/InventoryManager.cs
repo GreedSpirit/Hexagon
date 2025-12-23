@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     public event Action OnDeckChanged; // UI 갱신 알림
-
+    public bool IsDropProcessing { get; set; } = false;
     // 정렬 방식 Enum
     public enum SortType
     {
@@ -51,57 +51,96 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    // 보유 카드 리스트 가져오기 (정렬 적용)
-    public List<UserCard> GetSortedList(bool isDeckBuildingMode)
-    {
-        if (CardManager.Instance == null) return new List<UserCard>();
-
-        // CardManager의 원본 리스트를 가져와서 정렬
-        var filteredList = CardManager.Instance.UserCardList.ToList();
-
-        // 정렬 로직
-        switch (CurrentSortType)
-        {
-            case SortType.GradeAsc: // 등급 오름차순 -> 이름
-                return filteredList.OrderBy(x => x.GetData().CardGrade).ThenBy(x => x.GetData().Name).ToList();
-
-            case SortType.LevelDesc: // 레벨 내림차순 -> 이름
-                return filteredList.OrderByDescending(x => x.Level).ThenBy(x => x.GetData().Name).ToList();
-
-            case SortType.TypeOrder: // 타입 (공격 -> 치유 -> 방어 -> 주문)
-                return filteredList.OrderBy(x => GetTypeOrderWeight(x.GetData().CardType)).ThenBy(x => x.GetData().Name).ToList();
-
-            case SortType.Name: // 이름 가나다
-                return filteredList.OrderBy(x => x.GetData().Name).ToList();
-
-            case SortType.Recent: // 획득 시간 -> 이름
-                return filteredList.OrderByDescending(x => x.AcquiredTime).ToList();
-
-            default:
-                return filteredList;
-        }
-    }
-
-    // 타입 정렬 가중치 함수
-    private int GetTypeOrderWeight(CardType type)
-    {
-        switch (type)
-        {
-            case CardType.Attack: return 1;
-            case CardType.Healing: return 2;
-            case CardType.Shield: return 3;
-            case CardType.Spell: return 4;
-            default: return 99;
-        }
-    }
-
     public bool IsCardInDeck(int cardId)
     {
         if (CardManager.Instance == null) return false;
         return CardManager.Instance.CurrentDeck.Contains(cardId);
     }
+
+    private int _selectedInventoryCardId = -1;
+    public event Action OnRequestDeselect; // 선택 해제 요청
+    public void SetSelectedCardId(int id)
+    {
+        _selectedInventoryCardId = id;
+    }
+
+    public int GetSelectedCardId()
+    {
+        return _selectedInventoryCardId;
+    }
+
+    public void DeselectAll()
+    {
+        _selectedInventoryCardId = -1;
+        OnRequestDeselect?.Invoke();
+    }
+
+    // 덱 카드 교체
+    public void ReplaceDeckCardAt(int slotIndex, int newCardId)
+    {
+        if (CardManager.Instance == null) return;
+        List<int> deck = CardManager.Instance.CurrentDeck;
+
+        if (slotIndex < 0 || slotIndex >= deck.Count) return;
+
+        if (deck.Contains(newCardId))
+        {
+            Debug.Log("이미 덱에 존재하는 카드입니다.");
+            return;
+        }
+
+        deck[slotIndex] = newCardId;
+        Debug.Log($"덱 교체 완료 [{slotIndex}번 슬롯] -> {newCardId}");
+
+        OnDeckChanged?.Invoke();
+        CardManager.Instance.SaveGame(); // 저장
+    }
+
     public void RefreshInventory()
     {
         OnDeckChanged?.Invoke();
+    }
+
+    public List<UserCard> GetSortedList(bool isDeckBuildingMode)
+    {
+        if (CardManager.Instance == null) return new List<UserCard>();
+
+        //  원본 리스트 가져오기
+        var list = new List<UserCard>(CardManager.Instance.UserCardList);
+
+        //  정렬 실행 (데이터가 null일 경우를 대비하여 안전하게 처리)
+        switch (CurrentSortType)
+        {
+            case SortType.GradeAsc:
+                return list.OrderBy(x =>
+                {
+                    var data = x.GetData();
+                    // 데이터가 없으면 가장 낮은 우선순위로 취급
+                    return data != null ? (int)data.CardGrade : 999;
+                }).ToList();
+
+            case SortType.LevelDesc:
+                return list.OrderByDescending(x => x.Level).ToList();
+
+            case SortType.TypeOrder:
+                return list.OrderBy(x =>
+                {
+                    var data = x.GetData();
+                    return data != null ? (int)data.CardType : 999;
+                }).ToList();
+
+            case SortType.Name:
+                return list.OrderBy(x =>
+                {
+                    var data = x.GetData();
+                    return data != null ? data.Name : "";
+                }).ToList();
+
+            case SortType.Recent:
+                return list.OrderByDescending(x => x.AcquiredTime).ToList();
+
+            default:
+                return list;
+        }
     }
 }

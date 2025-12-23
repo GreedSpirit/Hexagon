@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "RewardInteraction",
+    "maps": [
+        {
+            "name": "RewardInteraction",
+            "id": "664b1deb-c078-4c3e-84d1-78ff4f002c3b",
+            "actions": [
+                {
+                    "name": "RewardGage",
+                    "type": "Button",
+                    "id": "55e22a63-e0af-4749-8f95-d5a66d597a7b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "43878d94-280f-412b-b822-0ca7192e78de",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RewardGage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

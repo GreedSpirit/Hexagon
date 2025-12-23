@@ -16,7 +16,12 @@ public class MonsterStatData : CSVLoad, TableKey
         if (int.TryParse(values[0], out int levelValue))
             Level = levelValue;
         else
-            Level = 1;
+        {
+            Level = -1;
+            Debug.Log(levelValue);
+            return;
+        }
+            
 
         // 1: Hp
         if (int.TryParse(values[1], out int hpValue))

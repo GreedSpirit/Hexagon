@@ -18,6 +18,7 @@ public class HandManager : MonoBehaviour
     [SerializeField] float _hoverVisualScaleOffset = 1.2f;// 호버 떨림 방지용 비주얼 크기 옵셋
 
     [Header("핸드 설정")]
+    [SerializeField] Transform _handTransform;  // 핸드 위치
     [SerializeField] float _maxAngle = 30f;     // 부채꼴 최대 각도
     [SerializeField] float _maxSpacing = 7f;    // 카드 간 최대 간격
     [SerializeField] float _radius = 2000f;     // 부채꼴 반지름 (클수록 완만)
@@ -39,10 +40,13 @@ public class HandManager : MonoBehaviour
     public float CardHalfHeight => _cardHalfHeight;
     public int HandCount => _handCards.Count;               // 스테이지 종료 시 체크
     public int DeckCount => _deck.Count;                    // 스테이지 종료 시 체크
+    public Transform HandTransform => _handTransform;
     public CardUI SelectedCard => _selectedCardUI;
     public IBattleUnit TargetPlayer => _targetPlayer;
     public IBattleUnit TargetMonster => _targetMonster;
 
+    // 카드 매니저
+    private CardManager _cardManager;
 
     // 덱의 카드 id 리스트
     private Queue<int> _deck;
@@ -70,6 +74,8 @@ public class HandManager : MonoBehaviour
 
     private IEnumerator Start()
     {
+        _cardManager = CardManager.Instance;
+
         // 카드 높이
         float cardHeight = cardPrefab.GetComponent<RectTransform>().rect.height;
 
@@ -107,16 +113,16 @@ public class HandManager : MonoBehaviour
         // 덱 복사
         List<int> newDeck = new List<int>();
 
-        foreach (int cardId in TestCardManager.Instance.CurrentDeck)
+        foreach (int cardId in _cardManager.CurrentDeck)
         {
             // 소지중인 카드에서 id 카드 레벨 가져오기
-            int cardLevel = TestCardManager.Instance.GetCardLevel(cardId);
+            int cardLevel = _cardManager.GetCardLevel(cardId);
 
             // id 카드 데이터 불러오기
             CardData cardData = DataManager.Instance.GetCard(cardId);
 
             // 카드 사용 가능 횟수
-            int cardNumberOfAvailable = TestCardManager.Instance.GetCardNumberOfAvailable(cardLevel, cardData.CardGrade);
+            int cardNumberOfAvailable = _cardManager.GetCardNumberOfAvailable(cardLevel, cardData.CardGrade);
 
             // 사용 횟수 만큼
             for (int i = 0; i < cardNumberOfAvailable; i++)
@@ -168,10 +174,10 @@ public class HandManager : MonoBehaviour
         CardData cardData = DataManager.Instance.GetCard(cardID);
 
         // ID 카드 레벨 가져오기
-        int level = TestCardManager.Instance.GetCardLevel(cardID);
+        int level = _cardManager.GetCardLevel(cardID);
 
         // 카드 UI 생성
-        GameObject newCard = Instantiate(cardPrefab, transform.position, Quaternion.identity, transform);
+        GameObject newCard = Instantiate(cardPrefab, _handTransform.position, Quaternion.identity, _handTransform);
 
         // 설정
         CardLogic cardLogic = newCard.GetComponent<CardLogic>();
@@ -247,7 +253,7 @@ public class HandManager : MonoBehaviour
         float startAngle = -currentAngle / 2f;
 
         // 중심 포인트 지정 (반지름 만큼 아래로)
-        Vector3 center = transform.position - (Vector3.up * _radius);
+        Vector3 center = _handTransform.position - (Vector3.up * _radius);
 
         // 카드 순회
         for (int i = 0; i < count; i++)
