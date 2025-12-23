@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+using System;
 using UnityEngine.InputSystem;
+using UnityEngine;
+using TMPro;
 
 public class HandManager : MonoBehaviour
 {
@@ -72,7 +71,7 @@ public class HandManager : MonoBehaviour
     private CardUI _selectedCardUI;
 
 
-    private IEnumerator Start()
+    private void Start()
     {
         _cardManager = CardManager.Instance;
 
@@ -84,9 +83,6 @@ public class HandManager : MonoBehaviour
 
         // 타겟 플레이어
         SetPlayerTarget();
-
-        // 테스트할 때는 동시에 Start가 실행되어서 꼬일 가능성 있기 때문에
-        yield return null;
 
         // 덱 구성
         SetupDeck();
@@ -376,10 +372,17 @@ public class HandManager : MonoBehaviour
         }
         else if (phaseType == PhaseType.Start)
         {
-            // 초기 핸드 채우기
-            for (int i = 0; i < _startHandCount; i++)
+            // 부족한 카드 수
+            int drawCount = _startHandCount - HandCount;
+
+            // 부족한 카드 있으면
+            if(drawCount > 0)
             {
-                DrawCard();
+                // 초기 핸드 채우기
+                for (int i = 0; i < drawCount; i++)
+                {
+                    DrawCard();
+                }
             }
         }
         // 플레이어턴 끝나면 선택 카드 해제
