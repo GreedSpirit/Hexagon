@@ -416,6 +416,8 @@ public class UpgradeManager : MonoBehaviour
 
         // 강화 버튼 상태 변경
         _upgradeButton.interactable = isCardEnough && isGoldEnough;
+
+        RefreshList();
     }
 
     // 테스트용 골드 추가
@@ -443,5 +445,7 @@ public class UpgradeManager : MonoBehaviour
 
         // 강화 버튼 상태 변경
         _upgradeButton.interactable = isCardEnough && isGoldEnough;
+
+        RefreshList();
     }
 }

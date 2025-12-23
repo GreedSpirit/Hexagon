@@ -96,6 +96,7 @@ public class PlayerModelController : MonoBehaviour
                 lastDistance = distance;
                 _neerNpc = npc;
                 Player.Instance.Currentvillage.SetNpcToTalk(_neerNpc);
+                Debug.Log($"{_neerNpc.Name}");
             }
         }
     }

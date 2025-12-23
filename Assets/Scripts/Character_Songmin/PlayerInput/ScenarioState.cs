@@ -28,7 +28,7 @@ public class ScenarioState : IInputState
     {
         if (ctx.started)
         {
-            Debug.Log("¥Î»≠√¢ ≥—±Ë");
+            _player.EnterMoveMod();
         }
     }
 
