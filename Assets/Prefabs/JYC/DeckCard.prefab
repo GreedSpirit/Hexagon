@@ -1672,7 +1672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeckSlotUI
   cardImage: {fileID: 7577746676650238191}
-  borderImage: {fileID: 0}
+  borderImage: {fileID: 284036935391861195}
 --- !u!114 &4273089150413038814
 MonoBehaviour:
   m_ObjectHideFlags: 0

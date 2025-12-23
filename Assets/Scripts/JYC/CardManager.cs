@@ -69,16 +69,32 @@ public class CardManager : MonoBehaviour
             cardData.Value.SetString();
             cardData.Value.SetStatusValue();
         }
-
+        // 덱 및 인벤토리 초기화 (중복 방지용)
+        UserCardList.Clear();
+        CurrentDeck.Clear();
         // 덱 구성 없으니 일단 카드 데이터 전부
         foreach (var cardData in DataManager.Instance.CardDict)
         {
-            // null이거나 스킬카드면 스킵
+            // IsCard가 false(스킬)인 것은 건너뜀 (9~16번만 통과)
             if (cardData.Value == null || cardData.Value.IsCard == false) continue;
 
-            AddCard(cardData.Value.Id);
-            CurrentDeck.Add(cardData.Value.Id);
+            // 인벤토리에 넉넉하게 5장씩 (테스트용)
+            AddCard(cardData.Value.Id, 5);
+
+
+
+            // CurrentDeck.Add(cardData.Value.Id);  주석 처리
         }
+        // 자동으로 덱 채우기 (테스트 편의용)
+        // 가지고 있는 카드를 앞에서부터 순서대로 덱에 장착 시도 (최대 30장까지)
+        // Common, Rare, Epic 카드가 덱에 들어가서 입장 조건을 맞춥니다.
+        foreach (var userCard in UserCardList)
+        {
+            ToggleDeckEquip(userCard.CardId);
+        }
+
+        // 저장
+        SaveGame();
     }
 
     // 동작 구성

@@ -5,53 +5,35 @@ public class InventoryTestSetter : MonoBehaviour
 {
     private void Start()
     {
-        // 매니저 존재 여부 확인 (안전장치)
-        if (CardManager.Instance == null || DataManager.Instance == null)
-        {
-            Debug.LogError(" 매니저(CardManager 또는 DataManager)가 씬에 없습니다!");
-            return;
-        }
+        if (CardManager.Instance == null || DataManager.Instance == null) return;
 
-        Debug.Log(" 데이터 테이블의 '모든 카드'를 인벤토리에 추가합니다.");
+        Debug.Log("모든 카드를 인벤토리에 넣고, 가능한 한 덱에 꽉 채웁니다.");
 
-        // 기존 인벤토리 및 덱 초기화 (중복 방지)
-        // UserCardList를 싹 비우고 시작합니다.
         CardManager.Instance.UserCardList.Clear();
         CardManager.Instance.CurrentDeck.Clear();
 
-        // DataManager에 로드된 모든 카드 데이터를 순회하며 추가
-        // 엑셀(CSV)에 있는 모든 카드를 하나씩 가져옵니다.
+        // 모든 카드 4장씩 획득
         foreach (var cardData in DataManager.Instance.CardDict.Values)
         {
-            // IsCard가 false 밖에 없기에 테스트를 위해 일단 다 넣습니다.
-
-            // 모든 카드를 3장씩 지급
-            CardManager.Instance.AddCard(cardData.Id, 3);
+            // (데이터상 IsCard가 다 false라서 조건문 없이 다 넣어야 함)
+            CardManager.Instance.AddCard(cardData.Id, 4);
         }
 
-        // 덱에 일부 카드 자동 장착 테스트
-        // 앞에서부터 5장만 자동으로 덱에 넣어둡니다. (테스트 편의용)
-        int autoEquipCount = 0;
-        foreach (var card in CardManager.Instance.UserCardList)
+        // 덱에 자동 장착
+        foreach (var userCard in CardManager.Instance.UserCardList)
         {
-            if (autoEquipCount >= 5) break; // 5장만 넣고 그만
-
-            // 덱에 장착 시도 (성공하면 true 반환)
-            if (CardManager.Instance.ToggleDeckEquip(card.CardId))
-            {
-                autoEquipCount++;
-            }
+            CardManager.Instance.ToggleDeckEquip(userCard.CardId);
         }
 
-        // 저장 및 UI 즉시 갱신
+        // 저장 및 갱신
         CardManager.Instance.SaveGame();
 
         if (InventoryManager.Instance != null)
         {
-            InventoryManager.Instance.RefreshInventory(); // 인벤토리 UI 갱신
-            InventoryManager.Instance.InvokeDeckChanged(); // 덱 UI 갱신
+            InventoryManager.Instance.RefreshInventory();
+            InventoryManager.Instance.InvokeDeckChanged();
         }
 
-        Debug.Log($" [Test 완료] 총 {CardManager.Instance.UserCardList.Count}종류의 카드가 지급되었습니다.");
+        Debug.Log($" [설정 완료] 덱에 {CardManager.Instance.CurrentDeck.Count}장이 장착되었습니다.");
     }
 }
