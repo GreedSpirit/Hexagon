@@ -8,7 +8,14 @@ public class DeckUI : MonoBehaviour
 {
     [SerializeField] Transform contentParent;   // Scroll View의 Content
     [SerializeField] GameObject deckSlotPrefab; // DeckSlotUI가 붙은 프리팹
-    [SerializeField] TextMeshProUGUI countText; 
+    [SerializeField] TextMeshProUGUI countText;
+
+    private DungeonData _targetDungeon;
+
+    [Header("Dungeon Info UI")]
+    [SerializeField] TextMeshProUGUI _dungeonNameText;
+    [SerializeField] TextMeshProUGUI _dungeonDescText;
+    // [SerializeField] Image _dungeonImage; // 이미지도 있다면
 
     private void Start()
     {
@@ -30,7 +37,43 @@ public class DeckUI : MonoBehaviour
             InventoryManager.Instance.OnDeckChanged -= RefreshDeck;
         }
     }
+    // DungeonPresenter가 호출해줄 함수
+    public void ReadyForBattle(DungeonData dungeon)
+    {
+        _targetDungeon = dungeon;
 
+        // 받아온 던전 정보로 텍스트 갱신
+        if (_dungeonNameText != null) _dungeonNameText.text = dungeon.Name;
+        if (_dungeonDescText != null) _dungeonDescText.text = dungeon.Desc;
+
+        RefreshDeck();
+    }
+    // [전투 시작] 버튼에 연결할 최종 함수
+    public void OnClickStartBattle()
+    {
+        // 덱 유효성 검사
+        // 기획: 던전마다 요구 카드 수가 다를 수 있음 (현재는 임시 5장)
+        // 추후 _targetDungeon.CardLimit 등으로 교체 가능
+        int requiredCount = 5;
+
+        if (!CardManager.Instance.IsDeckValid(requiredCount))
+        {
+            Debug.Log($"덱이 완성되지 않았습니다! ({requiredCount}장 필요)");
+            // 여기에 유저에게 알리는 팝업 메시지
+            return;
+        }
+
+        // 최종 저장 (전투 진입 전 상태 저장)
+        CardManager.Instance.SaveGame();
+
+        // 진짜 씬 이동
+        // _targetDungeon이 null일 경우에 대한 방어 코드 추가
+        string dungeonName = _targetDungeon != null ? _targetDungeon.Name : "Unknown Dungeon";
+        Debug.Log($"던전 '{dungeonName}'으로 출발합니다!");
+
+        // 실제 전투 씬 이름으로 로드 (기획서나 프로젝트 설정에 맞게 변경)
+        SceneManager.LoadScene("DungeonBattleScene");
+    }
     // 덱 리스트 새로고침
     public void RefreshDeck()
     {
@@ -78,32 +121,5 @@ public class DeckUI : MonoBehaviour
             countText.text = $"Deck : {originalDeck.Count} / {maxCount}";
         }
     }
-    // [전투 시작] 버튼에 연결할 함수
-    public void OnClickStartGame()
-    {
-        // [TODO] 기획서 규칙: 던전마다 요구 카드 수가 다름.
-        // 현재 선택된 던전 정보를 가져옵니다.
-        // DungeonPresenter나 Manager 어딘가에 선택된 던전 ID
-        // 예: int currentDungeonId = DungeonManager.Instance.SelectedDungeonId;
-
-        // 그 던전의 데이터에서 '필요 개수'를 꺼내기
-        // DungeonData dungeonData = DataManager.Instance.GetDungeon(currentDungeonId);
-        // int limit = dungeonData.RequiredCardCount; // 데이터에서 가져온 진짜 숫자 (5, 6, 8...)
-
-        // 임시 조치
-        int limit = 5; // 나중에 위 주석 풀어서 limit에 넣으면 됨
-
-        // 유효성 검사
-        if (!CardManager.Instance.IsDeckValid(limit))
-        {
-            Debug.Log($"이 던전은 {limit}종류의 카드가 필요합니다! 출발 불가");
-            return;
-        }
-
-        // 덱 저장 (출발 전 자동 저장)
-        CardManager.Instance.SaveGame();
-
-        // 진짜 전투 씬 로드
-        SceneManager.LoadScene("BattleScene");
-    }
+    
 }
