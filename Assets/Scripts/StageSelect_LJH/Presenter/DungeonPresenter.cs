@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class DungeonPresenter : MonoBehaviour
 {
+    [Header("UI References")]
+    [SerializeField] private DeckUI _deckUI; // Inspector에서 DeckUI 오브젝트 연결
+
     [SerializeField] private GameObject _dungeonPanel;
 
     [SerializeField] private Button _enterButton;
@@ -78,18 +81,22 @@ public class DungeonPresenter : MonoBehaviour
 
     private void OnEnterButtonClicked()
     {
-        if(_selectedDungeonData != null)
+        if (_selectedDungeonData != null)
         {
-            Debug.Log($"던전 입장: {_selectedDungeonData.Name}");
-            // 던전 입장 로직 추가
-            DungeonSessionData.SelectedDungeonId = _selectedDungeonData.Id;
-            SceneManager.LoadScene("DungeonBattleScene"); // 예시: 던전 씬 로드 추후 이름을 이용한 씬 이름으로 이동
-            //SceneManager.LoadScene(_selectedDungeonData.Name);
+            Debug.Log($"덱 편성 화면으로 이동: {_selectedDungeonData.Name}");
+
+            // 던전 선택창을 끄고, 덱 UI를 불러옵니다.
+            _dungeonPanel.SetActive(false); // 필요하다면 끄기
+
+            // 덱 UI 활성화
+            _deckUI.gameObject.SetActive(true);
+
+            // 선택된 던전 정보를 덱 UI에 전달
+            _deckUI.ReadyForBattle(_selectedDungeonData);
         }
         else
         {
             Debug.LogWarning("입장할 던전이 선택되지 않았습니다.");
-            return;
         }
     }
 
