@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DungeonManager : MonoBehaviour
@@ -14,6 +15,8 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private BattleManager _battleManager; // 현재 소환된 몬스터를 할당해주기 위해 참조
     [SerializeField] private RewardInteraction _rewardInteraction;
     [SerializeField] private Animator _rewardObjAnimator; // 금서의 애니메이션을 넣을 위치
+    [SerializeField] private RewardResultUI _rewardResultUI;
+    [SerializeField] private GameObject _rewardCanvas;
 
     private MonsterStatus _currentActiveMonster;
     private StageData _tempStageData;
@@ -81,7 +84,7 @@ public class DungeonManager : MonoBehaviour
 
     private IEnumerator NextStageRoutine()
     {
-        yield return new WaitForSeconds(2.0f); //몬스터가 죽고 나서 대기 시간이 필요할 것 같아서 넣은 대기 시간
+        yield return new WaitForSeconds(3.0f); //몬스터가 죽고 나서 대기 시간이 필요할 것 같아서 넣은 대기 시간
 
         //몬스터 죽었으니까 삭제
         if(_currentActiveMonster != null)
@@ -94,8 +97,10 @@ public class DungeonManager : MonoBehaviour
 
     private IEnumerator BossClearSequence()
     {
+        // 1. 보스를 잡고 보상을 확정
         _determinedRewards = RewardDataManager.Instance.GenerateDungeonRewards(_currentDungeonData);
 
+        // 2. 보상 인터랙션을 진행
         bool isInteractionDone = false;
         _rewardInteraction.OnInteractionComplete = () => {isInteractionDone = true;};
         _rewardInteraction.StartInteraction();
@@ -103,6 +108,7 @@ public class DungeonManager : MonoBehaviour
         // 인터랙션 끝날 때까지 대기
         yield return new WaitUntil(() => isInteractionDone);
 
+        // 3. 금서 애니메이션 진행
         //! 여기서부터 금서 애니메이션 관련
         if(_rewardObjAnimator != null)
         {
@@ -113,7 +119,24 @@ public class DungeonManager : MonoBehaviour
             yield return new WaitForSeconds(animTime);
         }
 
-        //! 여기서 보상 결과창 띄우는 로직
+        // 4. 최종 보상 결과창 띄우기
+        _rewardCanvas.SetActive(true);
+        _rewardResultUI.Init(_determinedRewards, this);
+    }
+
+    public void GetRewards()
+    {
+        foreach (var reward in _determinedRewards)
+        {
+            if(reward.RewardType == "Card" || reward.RewardType == "BossCard")
+            {
+                CardManager.Instance.AddCard(reward.ItemId, reward.Amount);
+            }
+            else if(reward.RewardType == "Currency")
+            {
+                // 추후 골드나 기타 등등의 자원을 넣을 자리
+            }
+        }
     }
 
 

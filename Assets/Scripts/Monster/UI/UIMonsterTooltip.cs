@@ -74,6 +74,6 @@ public class UIMonsterTooltip : MonoBehaviour
         string durationText = effect.Duration > 0 ? $"{effect.Duration}Turn" : $"{effect.Stack}Stack";
         
         // 간단한 예시 로직 (실제로는 테이블 Desc 활용)
-        return $"{effect.Desc} Effect : {durationText}";
+        return $"{DataManager.Instance.GetString(effect.Desc).Korean} Effect : {durationText}";
     }
 }

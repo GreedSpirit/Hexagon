@@ -26,6 +26,14 @@ public class DungeonSlotView : MonoBehaviour
         _dungeonButton.onClick.AddListener(() => OnClickAction?.Invoke(DungeonId));
 
         SetSelected(false);
+
+        //임의로 플레이어 레벨 3으로 설정(현재 플레이어가 던전 선택창에 없기 때문)
+        //int playerLevel = Player.Instance.GetLevel();
+        int playerLevel = 3;
+        if(playerLevel < _requiredLevel)
+        {
+            _dungeonButton.interactable = false;
+        }
     }
 
     public void SetSelected(bool isSelected)
