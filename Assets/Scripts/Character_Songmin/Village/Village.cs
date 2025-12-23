@@ -49,6 +49,7 @@ public class Village : MonoBehaviour
             Debug.LogError("TalkUI가 Player에 아직 등록되지 않았습니다.");
             return;
         }
+        player.EnterScenarioMod();
         player.SetTalkingNpc(TalkingNpc);
         player.TalkUI.EnterTalk(TalkingNpc);
     }

@@ -119,6 +119,71 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &9100754
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5446655732494525964, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8283365116004317920, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_Name
+      value: DungeonSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560122758122538440, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
 --- !u!1 &30427008
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,7 +656,6 @@ Transform:
   - {fileID: 2006968331}
   - {fileID: 1286676422}
   - {fileID: 1242065692}
-  - {fileID: 2008819191}
   m_Father: {fileID: 937628815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &411645689
@@ -1172,6 +1236,7 @@ Transform:
   m_Children:
   - {fileID: 689327701}
   - {fileID: 392528267}
+  - {fileID: 2008819191}
   m_Father: {fileID: 1132206423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000579199
@@ -1974,6 +2039,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1452141214 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4301632483757930528, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+  m_PrefabInstance: {fileID: 9100754}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9220900ad453fbf43a84fa1290439a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DungeonPresenter
 --- !u!1 &1484470750
 GameObject:
   m_ObjectHideFlags: 0
@@ -2775,12 +2851,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008819190}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.81, y: -2.79, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.81, y: -3.37, z: 0}
   m_LocalScale: {x: 7.419736, y: 1.8276, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 392528267}
+  m_Father: {fileID: 937628815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &2008819192
 BoxCollider2D:
@@ -2840,6 +2916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 626247a93d1eb8844a3ceddad2cd8ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonEntrance
+  _presenter: {fileID: 1452141214}
 --- !u!1 &2123088740
 GameObject:
   m_ObjectHideFlags: 0
@@ -3287,7 +3364,19 @@ MonoBehaviour:
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_DeviceRegainedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -3329,13 +3418,13 @@ MonoBehaviour:
     m_ActionName: 'Player/Interact[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2554844802264228523}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 2554844802264228524}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: EnterMoveMod
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3514,6 +3603,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 235823813}
+  - {fileID: 9100754}
   - {fileID: 1132206423}
   - {fileID: 2554844802264228522}
   - {fileID: 1599595878}

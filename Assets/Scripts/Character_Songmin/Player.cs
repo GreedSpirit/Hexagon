@@ -26,6 +26,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
     //Player에 붙은 다른 컴포넌트들
     private PlayerUIManager _playerUIManager;
+    private PlayerInputHandler _playerInputHandler;
     private PlayerModelController _playerModelController;
 
 
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     private void Start()
     {
         _playerUIManager = GetComponent<PlayerUIManager>();
+        _playerInputHandler = GetComponent<PlayerInputHandler>();
         _playerModelController = GetComponent<PlayerModelController>();
         Respawn();        
     }
@@ -261,8 +263,20 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     {
         TalkUI = talkUI;
     }
-    public void EnterDungeonSelect()
+
+
+    //-----------------------------------------
+    //입력 상태 전환 요청 함수들
+    public void EnterBattleMod()
     {
-        Debug.Log("던전 선택창 띄우기");
+        _playerInputHandler.ChangeInputState(new BattleState(this, _playerInputHandler));
+    }
+    public void EnterScenarioMod()
+    {
+        _playerInputHandler.ChangeInputState(new ScenarioState(this, _playerInputHandler));
+    }
+    public void EnterMoveMod()
+    {
+        _playerInputHandler.ChangeInputState(new MoveState(this, _playerInputHandler));
     }
 }

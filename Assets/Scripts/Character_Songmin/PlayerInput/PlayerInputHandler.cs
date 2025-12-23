@@ -24,16 +24,27 @@ public class PlayerInputHandler : MonoBehaviour
         ChangeInputState(new MoveState(_player, this));
     }
 
-    public void ChangeActionMap(string mapName)
-    {
-        playerInput.SwitchCurrentActionMap(mapName);
-    }
+    
 
     public void ChangeInputState(IInputState newInputState)
     {
         _currentInput?.OnExit();
         _currentInput = newInputState;
         _currentInput.OnEnter();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public void ChangeActionMap(string mapName)
+    {
+        playerInput.SwitchCurrentActionMap(mapName);
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
