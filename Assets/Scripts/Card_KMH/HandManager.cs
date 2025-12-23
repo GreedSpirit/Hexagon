@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+using System;
 using UnityEngine.InputSystem;
+using UnityEngine;
+using TMPro;
 
 public class HandManager : MonoBehaviour
 {
@@ -25,6 +24,9 @@ public class HandManager : MonoBehaviour
     [SerializeField] int _startHandCount;       // 시작 시 뽑을 카드 수
     [SerializeField] int _handLimit;            // 핸드 소지 한계
 
+    [Header("덱 UI")]
+    [SerializeField] BattleDeckUI _deckUI;
+
     [Header("소멸 위치 설정")]
     [SerializeField] Transform _disappearPoint;    // 소멸 고정 위치
 
@@ -38,8 +40,8 @@ public class HandManager : MonoBehaviour
     public float UseScreenRatio => _useScreenRatio;
     public float HoverVisualScaleOffset => _hoverVisualScaleOffset;
     public float CardHalfHeight => _cardHalfHeight;
-    public int HandCount => _handCards.Count;               // 스테이지 종료 시 체크
-    public int DeckCount => _deck.Count;                    // 스테이지 종료 시 체크
+    public int CurrentHandCount => _handCards.Count;               // 던전 종료 시 체크
+    public int CurrentDeckCount => _deck.Count;                    // 던전 종료 시 체크
     public Transform HandTransform => _handTransform;
     public CardUI SelectedCard => _selectedCardUI;
     public IBattleUnit TargetPlayer => _targetPlayer;
@@ -72,7 +74,7 @@ public class HandManager : MonoBehaviour
     private CardUI _selectedCardUI;
 
 
-    private IEnumerator Start()
+    private void Start()
     {
         _cardManager = CardManager.Instance;
 
@@ -82,11 +84,11 @@ public class HandManager : MonoBehaviour
         // 높이 절반
         _cardHalfHeight = cardHeight / 2f;
 
+        // 덱 UI 초기화
+        _deckUI?.Init(this);
+
         // 타겟 플레이어
         SetPlayerTarget();
-
-        // 테스트할 때는 동시에 Start가 실행되어서 꼬일 가능성 있기 때문에
-        yield return null;
 
         // 덱 구성
         SetupDeck();
@@ -205,6 +207,9 @@ public class HandManager : MonoBehaviour
 
         // 카드 내용 대상 상태이상 따라 한 번 체크
         TargetStatusValueChanged();
+
+        // 덱 카운트 갱신
+        _deckUI?.UpdateDeckCountText();
 
         // 정렬
         AlignCards();
@@ -376,10 +381,17 @@ public class HandManager : MonoBehaviour
         }
         else if (phaseType == PhaseType.Start)
         {
-            // 초기 핸드 채우기
-            for (int i = 0; i < _startHandCount; i++)
+            // 부족한 카드 수
+            int drawCount = _startHandCount - CurrentHandCount;
+
+            // 부족한 카드 있으면
+            if(drawCount > 0)
             {
-                DrawCard();
+                // 초기 핸드 채우기
+                for (int i = 0; i < drawCount; i++)
+                {
+                    DrawCard();
+                }
             }
         }
         // 플레이어턴 끝나면 선택 카드 해제
