@@ -8,21 +8,18 @@ public class InventoryTestSetter : MonoBehaviour
 
         Debug.Log("<color=yellow>[Test] 강제로 덱 5장을 세팅합니다.</color>");
 
-
-        CardManager.Instance.AddCard(1001, 10);
-        CardManager.Instance.AddCard(1002, 10);
-        CardManager.Instance.AddCard(1003, 10);
+        CardManager.Instance.AddCard(1, 10);
+        CardManager.Instance.AddCard(2, 10);
+        CardManager.Instance.AddCard(3, 10);
 
         // 덱 리스트 초기화 후 강제 주입
-
         CardManager.Instance.CurrentDeck.Clear();
 
-        // 리스트에 직접 Add (ToggleDeckEquip 안 씀 -> 중복 로직 무시)
-        CardManager.Instance.CurrentDeck.Add(1001);
-        CardManager.Instance.CurrentDeck.Add(1002);
-        CardManager.Instance.CurrentDeck.Add(1003);
-        CardManager.Instance.CurrentDeck.Add(1001); // 강제 중복 1
-        CardManager.Instance.CurrentDeck.Add(1002); // 강제 중복 2
+        CardManager.Instance.CurrentDeck.Add(1);
+        CardManager.Instance.CurrentDeck.Add(2);
+        CardManager.Instance.CurrentDeck.Add(3);
+        CardManager.Instance.CurrentDeck.Add(1); // 강제 중복 1
+        CardManager.Instance.CurrentDeck.Add(2); // 강제 중복 2
 
         // 강제 저장 (이 상태를 박제)
         CardManager.Instance.SaveGame();

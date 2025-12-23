@@ -11,6 +11,10 @@ public class DeckUI : MonoBehaviour
     [SerializeField] GameObject deckSlotPrefab; // DeckSlotUI가 붙은 프리팹
     [SerializeField] TextMeshProUGUI countText;
 
+    // 인벤토리를 제어하기 위해 연결할 변수
+    [Header("External Connection")]
+    [SerializeField] InventoryUI _inventoryUI;
+
     private DungeonData _targetDungeon;
 
     [Header("Confirmation Popup")]
@@ -46,7 +50,36 @@ public class DeckUI : MonoBehaviour
     {
         _targetDungeon = dungeon;
 
+        // DeckUI를 켭니다.
+        this.gameObject.SetActive(true);
+        // UI가 다른 창에 가려지지 않도록 맨 앞으로 가져옵니다.
+        this.transform.SetAsLastSibling();
+
+        //  연결된 인벤토리 UI도 강제로 켜고, '덱 편성 모드'로 바꿉니다.
+        if (_inventoryUI != null)
+        {
+            _inventoryUI.gameObject.SetActive(true); // 인벤토리가 꺼져있을 수 있으니 켬
+            _inventoryUI.IsDeckBuildingMode = true;  // 모드 변경 (클릭 시 장착/해제)
+            _inventoryUI.RefreshInventory();         // 화면 갱신 (모드 변경 반영)
+        }
+
         RefreshDeck();
+    }
+    // '뒤로가기'나 '닫기' 버튼에 연결할 함수 (마을로 돌아갈 때)
+    public void CloseDeckUI()
+    {
+        // DeckUI 끄기
+        this.gameObject.SetActive(false);
+
+        // 인벤토리 정리 (끄거나 모드 해제)
+        if (_inventoryUI != null)
+        {
+            _inventoryUI.IsDeckBuildingMode = false; // 일반 모드로 복구
+            _inventoryUI.RefreshInventory();
+
+            // 기획상 마을 화면에서 인벤토리가 꺼져야 한다면 아래 코드 사용
+            _inventoryUI.gameObject.SetActive(false);
+        }
     }
     // [전투 시작] 버튼에 연결할 최종 함수
     public void OnClickStartBattle()
@@ -154,11 +187,23 @@ public class DeckUI : MonoBehaviour
             DeckSlotUI slot = go.GetComponent<DeckSlotUI>();
 
             int equippedCardId = -1;
-
+            // [안전장치] DataManager가 있는지 확인
+            if (DataManager.Instance == null)
+            {
+                Debug.LogError("씬에 'DataManager'가 없습니다! 프리팹을 배치했는지 확인하세요.");
+                return;
+            }
             // 덱 리스트에서 이 등급에 맞는 카드를 찾음
             for (int j = 0; j < currentDeckIds.Count; j++)
             {
+                int checkingId = currentDeckIds[j];
                 var cardData = DataManager.Instance.GetCard(currentDeckIds[j]);
+                // [안전장치] 카드 데이터가 제대로 로드되었는지 확인
+                if (cardData == null)
+                {
+                    Debug.LogWarning($"[데이터 오류] ID가 {checkingId}인 카드 데이터를 찾을 수 없습니다. (CSV 로드 확인 필요)");
+                    continue; // 이 카드는 건너뜀
+                }
                 bool isMatch = false;
 
                 if (targetGrade == CardGrade.Epic)

@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DungeonBattleScene.unity
     guid: 633103dbcba65f548a385aae018065f9
+  - enabled: 1
+    path: Assets/Scenes/Test_JYC.unity
+    guid: 1f88490f03a8c36459ceb0c52ff5cbd2
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
