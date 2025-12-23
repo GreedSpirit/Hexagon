@@ -18,7 +18,6 @@ public class Npc : MonoBehaviour, ITalkable
 
     public string[] Talks { get; private set; } = new string[4];
 
-    
 
     private void Start()
     {
