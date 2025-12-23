@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerUIManager : MonoBehaviour
 {
     [SerializeField] GameObject _playerStatUI;
+    [SerializeField] GameObject _playerTalkUI;
 
     //private void Start()
     //{
@@ -20,7 +21,17 @@ public class PlayerUIManager : MonoBehaviour
             _playerStatUI.SetActive(false);            
         }            
     }
+    public void OnOffPlayerTalkUi(bool readyToShow)
+    {
+        if (readyToShow)
+        {
+            _playerTalkUI.SetActive(true);
+        }
+        else
+        {
+            _playerTalkUI.SetActive(false);
+        }
+    }
 
-    
 
 }
