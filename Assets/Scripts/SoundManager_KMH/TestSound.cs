@@ -7,10 +7,11 @@ public class TestSound : MonoBehaviour
 
     public void PlayBGM()
     {
-        SoundManager.Instance.PlayBGM(bgmClip);
+        SoundManager.Instance.PlayBGM(BGMType.Battle);
     }
     public void PlaySFX()
     {
-        SoundManager.Instance.PlaySFX(sfxClip);
+        // SoundManager.Instance.PlaySFX(sfxClip);
+        SoundManager.Instance.PlaySFX(SFXType.Click);
     }
 }
