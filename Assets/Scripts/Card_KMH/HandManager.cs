@@ -24,6 +24,9 @@ public class HandManager : MonoBehaviour
     [SerializeField] int _startHandCount;       // 시작 시 뽑을 카드 수
     [SerializeField] int _handLimit;            // 핸드 소지 한계
 
+    [Header("덱 UI")]
+    [SerializeField] BattleDeckUI _deckUI;
+
     [Header("소멸 위치 설정")]
     [SerializeField] Transform _disappearPoint;    // 소멸 고정 위치
 
@@ -37,8 +40,8 @@ public class HandManager : MonoBehaviour
     public float UseScreenRatio => _useScreenRatio;
     public float HoverVisualScaleOffset => _hoverVisualScaleOffset;
     public float CardHalfHeight => _cardHalfHeight;
-    public int HandCount => _handCards.Count;               // 스테이지 종료 시 체크
-    public int DeckCount => _deck.Count;                    // 스테이지 종료 시 체크
+    public int CurrentHandCount => _handCards.Count;               // 던전 종료 시 체크
+    public int CurrentDeckCount => _deck.Count;                    // 던전 종료 시 체크
     public Transform HandTransform => _handTransform;
     public CardUI SelectedCard => _selectedCardUI;
     public IBattleUnit TargetPlayer => _targetPlayer;
@@ -80,6 +83,9 @@ public class HandManager : MonoBehaviour
 
         // 높이 절반
         _cardHalfHeight = cardHeight / 2f;
+
+        // 덱 UI 초기화
+        _deckUI.Init(this);
 
         // 타겟 플레이어
         SetPlayerTarget();
@@ -201,6 +207,9 @@ public class HandManager : MonoBehaviour
 
         // 카드 내용 대상 상태이상 따라 한 번 체크
         TargetStatusValueChanged();
+
+        // 덱 카운트 갱신
+        _deckUI.UpdateDeckCountText();
 
         // 정렬
         AlignCards();
@@ -373,7 +382,7 @@ public class HandManager : MonoBehaviour
         else if (phaseType == PhaseType.Start)
         {
             // 부족한 카드 수
-            int drawCount = _startHandCount - HandCount;
+            int drawCount = _startHandCount - CurrentHandCount;
 
             // 부족한 카드 있으면
             if(drawCount > 0)
