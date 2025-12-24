@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine;
+using TMPro;
 
 
 // 정렬 우선순위
@@ -379,6 +378,9 @@ public class UpgradeManager : MonoBehaviour
     // 강화 정렬 우선순위 반환
     private UpgradeSortType GetUpgradeState(UserCard userCard)
     {
+        // 보유 골드 가져오기
+        int currentGold = _player.GetMoney();
+
         // ID 카드 강화 데이터 가져오기
         UpgradeData upgradeData = GetUpgradeData(userCard.CardId, userCard.Level);
 
@@ -387,7 +389,7 @@ public class UpgradeManager : MonoBehaviour
 
         // 재화 조건 체크
         bool isEnoughCard = userCard.Count - 1 >= upgradeData.ReqCardAmount;
-        bool isEnoughGold = Gold >= upgradeData.ReqCurrencyAmount;
+        bool isEnoughGold = currentGold >= upgradeData.ReqCurrencyAmount;
 
         // 우선순위 판별
         if (isEnoughCard && isEnoughGold) return UpgradeSortType.CanUpgrade;    // 카드O, 골드 O
@@ -404,6 +406,9 @@ public class UpgradeManager : MonoBehaviour
         if (_selectedCard == null) return;
 
         UserCard userCard = _selectedCard?.UserCard;
+
+        if(userCard.Count + amount <= 0)
+            amount = -(userCard.Count - 1);
 
         // 카드 추가
         CardManager.Instance.AddCard(userCard.CardId, amount);
@@ -431,6 +436,9 @@ public class UpgradeManager : MonoBehaviour
     // 테스트용 골드 추가
     public void AddGold(int amount)
     {
+        if (_player.GetMoney() + amount <= 0)
+            amount = -(_player.GetMoney());
+
         _player.PlusMoney(amount);
 
         int currentGold = _player.GetMoney();
@@ -448,7 +456,7 @@ public class UpgradeManager : MonoBehaviour
         bool isGoldEnough = currentGold >= reqGold;
 
         // 텍스트 적용
-        _goldText.text = Gold.ToString("N0") + " / " + reqGold.ToString("N0");
+        _goldText.text = currentGold.ToString("N0") + " / " + reqGold.ToString("N0");
 
         // 색상 적용
         _goldText.color = currentGold >= reqGold ? Color.white : Color.red;
@@ -479,7 +487,7 @@ public class UpgradeManager : MonoBehaviour
     }
     public void ResetAllCardsCount()
     {
-        foreach(UserCard card in CardManager.Instance.UserCardList)
+        foreach (UserCard card in CardManager.Instance.UserCardList)
         {
             card.Count = 1;
         }
@@ -497,9 +505,10 @@ public class UpgradeManager : MonoBehaviour
     }
     public void ResetAllCardsLevel()
     {
-        foreach (UserCard card in CardManager.Instance.UserCardList)
+        foreach (UpgradeCardUI card in _playerCards)
         {
-            card.Level = 1;
+            card.UserCard.Level = 1;
+            card.UpdateUpgradeText();
         }
 
         RefreshList();
