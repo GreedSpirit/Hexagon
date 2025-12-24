@@ -36,7 +36,7 @@ public class NpcTalkSlideUI : MonoBehaviour
     public void SetNpc(Npc npc)
     {
         _npc = npc;
-        Name.text = _npc.name;
+        Name.text = _npc.Name;
     }
 
     void StartSlide(Vector2 target)
