@@ -20,6 +20,7 @@ public class TalkUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _characterScript;
     [SerializeField] GameObject _upgradeEnterButton;
     [SerializeField] GameObject _upgradePannel;
+    [SerializeField] GameObject _testButton;
     
 
     private void Awake()
@@ -29,7 +30,8 @@ public class TalkUI : MonoBehaviour
 
     private void Start()
     {
-        Player.Instance.SetTalkUI(this);        
+        Player.Instance.SetTalkUI(this);
+        _testButton.SetActive(false);
     }
 
     public void EnterTalk(ITalkable talable)
@@ -46,6 +48,7 @@ public class TalkUI : MonoBehaviour
     public void EnterUpgrade()
     {
         _talkPannel.SetActive(false);
+        _testButton.SetActive(true);
         _upgradeEnterButton.SetActive(false);
         _upgradePannel.SetActive(true);
     }
@@ -69,6 +72,7 @@ public class TalkUI : MonoBehaviour
         else
         {
             _upgradePannel.SetActive(false);
+            _testButton.SetActive(false);
         }
         
     }
