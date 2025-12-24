@@ -1,6 +1,6 @@
-using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 보상 슬롯 프리팹에 붙여서 카드 이미지 및 획득 수량 텍스트를 갱신해주는 스크립트
