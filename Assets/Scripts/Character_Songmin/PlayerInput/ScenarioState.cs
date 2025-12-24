@@ -28,7 +28,7 @@ public class ScenarioState : IInputState
     {
         if (ctx.started)
         {
-            _player.EnterMoveMod();
+            _player.EndTalk();
         }
     }
 

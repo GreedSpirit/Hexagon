@@ -28,7 +28,7 @@ public class MoveState : IInputState
     {
         if (ctx.started)
         {
-            _controller.Interact();
+            Player.Instance.TalkWithNpc();
         }
     }
 
