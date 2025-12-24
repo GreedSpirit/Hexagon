@@ -76,7 +76,7 @@ public class CardLogic : MonoBehaviour
         sb.Replace("{D}", Deal.ToString());
         sb.Replace("{N}", GetValue().ToString());
         sb.Replace("{SEV}", Data.StatusEffectValue.ToString());
-        sb.Replace("{Turns}", Data.Turn.ToString());
+        sb.Replace("{turns}", Data.Turn.ToString());
 
         Desc = sb.ToString();
     }

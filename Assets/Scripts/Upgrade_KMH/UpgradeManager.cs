@@ -37,6 +37,7 @@ public class UpgradeManager : MonoBehaviour
     public int Gold { get; private set; }
 
     private CardManager _cardManager;
+    private Player _player;
 
     // 강화 UI 플레이어 보유 카드 리스트
     private List<UpgradeCardUI> _playerCards = new List<UpgradeCardUI>();
@@ -53,6 +54,7 @@ public class UpgradeManager : MonoBehaviour
     private IEnumerator Start()
     {
         _cardManager = CardManager.Instance;
+        _player = Player.Instance;
 
         yield return null;
         // 유저 보유 카드 순회
@@ -177,6 +179,8 @@ public class UpgradeManager : MonoBehaviour
     {
         if (_selectedCard == null) return;
 
+        int currentMoney = _player.GetMoney();
+
         UserCard userCard = _selectedCard.UserCard;
 
         // 필요 재화량
@@ -185,14 +189,14 @@ public class UpgradeManager : MonoBehaviour
 
         // 재화 체크
         bool isCardEnough = userCard.Count - 1 >= reqCard;
-        bool isGoldEnough = Gold >= reqGold;
+        bool isGoldEnough = currentMoney >= reqGold;
 
         // 애초에 버튼 비활성화겠지만 혹시 몰라서 방어
         if (isCardEnough == false || isGoldEnough == false) return;
 
         // 재화 소모
         userCard.Count -= reqCard;
-        Gold -= reqGold;
+        _player.MinusMoney(reqGold);
 
         // 카드 레벨 증가
         userCard.Level++;
@@ -293,13 +297,16 @@ public class UpgradeManager : MonoBehaviour
     // 재화 UI 갱신
     private void UpdateCurrencyUI(UserCard userCard)
     {
+        // 현재 골드
+        int currentGold = _player.GetMoney();
+
         // 필요 재화량
         int reqCard = GetReqCardAmount(userCard.CardId, userCard.Level);
         int reqGold = GetReqGoldAmount(userCard.CardId, userCard.Level);
 
         // 재화 상태 체크
         bool isCardEnough = userCard.Count - 1 >= reqCard;
-        bool isGoldEnough = Gold >= reqGold;
+        bool isGoldEnough = currentGold >= reqGold;
 
         // 없거나 최대 레벨
         UpgradeData upgradeData = GetUpgradeData(userCard.CardId, userCard.Level);
@@ -314,7 +321,7 @@ public class UpgradeManager : MonoBehaviour
         else
         {
             _cardCountText.text = $"{userCard.Count - 1} / {reqCard}";
-            _goldText.text = Gold.ToString("N0") + " / " + reqGold.ToString("N0");
+            _goldText.text = currentGold.ToString("N0") + " / " + reqGold.ToString("N0");
         }
 
         // 색상 적용
@@ -371,6 +378,9 @@ public class UpgradeManager : MonoBehaviour
     // 강화 정렬 우선순위 반환
     private UpgradeSortType GetUpgradeState(UserCard userCard)
     {
+        // 보유 골드 가져오기
+        int currentGold = _player.GetMoney();
+
         // ID 카드 강화 데이터 가져오기
         UpgradeData upgradeData = GetUpgradeData(userCard.CardId, userCard.Level);
 
@@ -379,7 +389,7 @@ public class UpgradeManager : MonoBehaviour
 
         // 재화 조건 체크
         bool isEnoughCard = userCard.Count - 1 >= upgradeData.ReqCardAmount;
-        bool isEnoughGold = Gold >= upgradeData.ReqCurrencyAmount;
+        bool isEnoughGold = currentGold >= upgradeData.ReqCurrencyAmount;
 
         // 우선순위 판별
         if (isEnoughCard && isEnoughGold) return UpgradeSortType.CanUpgrade;    // 카드O, 골드 O
@@ -397,6 +407,9 @@ public class UpgradeManager : MonoBehaviour
 
         UserCard userCard = _selectedCard?.UserCard;
 
+        if(userCard.Count + amount <= 0)
+            amount = -(userCard.Count - 1);
+
         // 카드 추가
         CardManager.Instance.AddCard(userCard.CardId, amount);
 
@@ -406,7 +419,7 @@ public class UpgradeManager : MonoBehaviour
 
         // 재화 체크
         bool isCardEnough = userCard.Count - 1 >= reqCard;
-        bool isGoldEnough = Gold >= reqGold;
+        bool isGoldEnough = _player.GetMoney() >= reqGold;
 
         // 텍스트 적용
         _cardCountText.text = $"{userCard.Count - 1} / {reqCard}";
@@ -423,7 +436,12 @@ public class UpgradeManager : MonoBehaviour
     // 테스트용 골드 추가
     public void AddGold(int amount)
     {
-        Gold += amount;
+        if (_player.GetMoney() + amount <= 0)
+            amount = -(_player.GetMoney());
+
+        _player.PlusMoney(amount);
+
+        int currentGold = _player.GetMoney();
 
         if (_selectedCard == null) return;
 
@@ -435,16 +453,63 @@ public class UpgradeManager : MonoBehaviour
 
         // 재화 체크
         bool isCardEnough = userCard.Count >= reqCard;
-        bool isGoldEnough = Gold >= reqGold;
+        bool isGoldEnough = currentGold >= reqGold;
 
         // 텍스트 적용
-        _goldText.text = Gold.ToString("N0") + " / " + reqGold.ToString("N0");
+        _goldText.text = currentGold.ToString("N0") + " / " + reqGold.ToString("N0");
 
         // 색상 적용
-        _goldText.color = Gold >= reqGold ? Color.white : Color.red;
+        _goldText.color = currentGold >= reqGold ? Color.white : Color.red;
 
         // 강화 버튼 상태 변경
         _upgradeButton.interactable = isCardEnough && isGoldEnough;
+
+        RefreshList();
+    }
+
+
+    // 리얼 리셋
+    public void ResetGold()
+    {
+        int currentGold = _player.GetMoney();
+        _player.MinusMoney(currentGold);
+
+        RefreshList();
+    }
+    public void ResetCardCount()
+    {
+        if (_selectedCard == null) return;
+
+        UserCard userCard = _selectedCard.UserCard;
+        userCard.Count = 1;
+
+        RefreshList();
+    }
+    public void ResetAllCardsCount()
+    {
+        foreach (UserCard card in CardManager.Instance.UserCardList)
+        {
+            card.Count = 1;
+        }
+
+        RefreshList();
+    }
+    public void ResetCardLevel()
+    {
+        if (_selectedCard == null) return;
+
+        UserCard userCard = _selectedCard.UserCard;
+        userCard.Level = 1;
+
+        RefreshList();
+    }
+    public void ResetAllCardsLevel()
+    {
+        foreach (UpgradeCardUI card in _playerCards)
+        {
+            card.UserCard.Level = 1;
+            card.UpdateUpgradeText();
+        }
 
         RefreshList();
     }
