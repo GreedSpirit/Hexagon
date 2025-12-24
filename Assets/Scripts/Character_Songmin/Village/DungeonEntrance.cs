@@ -9,6 +9,7 @@ public class DungeonEntrance : MonoBehaviour
         if (collision.TryGetComponent(out Player player))
         {
             _presenter.ShowDungeon();
+            player.EnterBattleMod();
         }
     }    
 }

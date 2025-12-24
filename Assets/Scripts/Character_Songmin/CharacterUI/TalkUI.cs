@@ -2,21 +2,25 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class TalkUI : MonoBehaviour
 {
     //페이드 아웃용 검은 패널
     [SerializeField] GameObject _fadePannel;
     CanvasGroup _canvasGroup;
+    Coroutine _fadeRoutine;    
     float fadeDuration = 0.3f;
-    Coroutine _fadeRoutine;
+    ITalkable _currentTalking;
 
     //
     [SerializeField] GameObject _talkPannel;
     [SerializeField] Text _img;
     [SerializeField] TextMeshProUGUI _characterName;
     [SerializeField] TextMeshProUGUI _characterScript;
-    [SerializeField] GameObject _reinforceButton;
+    [SerializeField] GameObject _upgradeEnterButton;
+    [SerializeField] GameObject _upgradePannel;
+    [SerializeField] GameObject _testButton;
     
 
     private void Awake()
@@ -26,16 +30,29 @@ public class TalkUI : MonoBehaviour
 
     private void Start()
     {
-        Player.Instance.SetTalkUI(this);        
+        Player.Instance.SetTalkUI(this);
+        _testButton.SetActive(false);
     }
 
     public void EnterTalk(ITalkable talable)
     {
         SetTalkable(talable);
+        _currentTalking = talable;
         if (_fadeRoutine != null)
+        {
             StopCoroutine(_fadeRoutine);
+        }            
         _fadeRoutine = StartCoroutine(FadeInAndOut(true));
     }
+
+    public void EnterUpgrade()
+    {
+        _talkPannel.SetActive(false);
+        _testButton.SetActive(true);
+        _upgradeEnterButton.SetActive(false);
+        _upgradePannel.SetActive(true);
+    }
+
 
     public void UpdateTalk(ITalkable talable)
     {
@@ -45,8 +62,19 @@ public class TalkUI : MonoBehaviour
     public void EndTalk()
     {        
         if (_fadeRoutine != null)
+        {
             StopCoroutine(_fadeRoutine);
-        _fadeRoutine = StartCoroutine(FadeInAndOut(false));
+        }
+        if (_talkPannel.activeSelf == true)
+        {
+            _fadeRoutine = StartCoroutine(FadeInAndOut(false));
+        }
+        else
+        {
+            _upgradePannel.SetActive(false);
+            _testButton.SetActive(false);
+        }
+        
     }
 
 
@@ -71,6 +99,10 @@ public class TalkUI : MonoBehaviour
     {
         yield return FadeRoutine(true);
         _talkPannel.SetActive(isEnter);
+        if (_currentTalking is Npc)
+        {
+            _upgradeEnterButton.SetActive(isEnter);
+        }
         yield return FadeRoutine(false);
     }
 

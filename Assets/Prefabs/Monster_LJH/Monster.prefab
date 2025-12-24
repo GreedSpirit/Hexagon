@@ -668,6 +668,8 @@ GameObject:
   - component: {fileID: 5262980168448069836}
   - component: {fileID: 3831209829223011880}
   - component: {fileID: 3740721133348638191}
+  - component: {fileID: 8889294350680849176}
+  - component: {fileID: 5170492101755297092}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -770,6 +772,7 @@ MonoBehaviour:
   _monsterShield: 0
   _monsterSkillSet:
     skillLevels: 
+  _visual: {fileID: 5170492101755297092}
 --- !u!70 &6529171942363824244
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -850,6 +853,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MonsterDeathEffect
   fadeDuration: 1.5
   sinkDistance: 0.5
+--- !u!95 &8889294350680849176
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058029459828295100}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5170492101755297092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058029459828295100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7382105fd37f2bb4193e292e4c9850a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterVisual
 --- !u!1 &6514550268546475294
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     [SerializeField] private MonsterSkillSetData _monsterSkillSet;
     [SerializeField] private MonsterStatData _monsterStatData;
     [SerializeField] private CardData _currentSkillData; //현재 사용될 예정인 스킬 카드 데이터
+    [SerializeField] private MonsterVisual _visual; //인스펙터에서 연결
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
     private List<IMonsterSkillObserver> _skillObservers = new List<IMonsterSkillObserver>();
@@ -62,6 +63,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             return;
         }
         //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 불러오는 방식으로 변경할 수도 있음
+        if(_visual != null)
+        {
+            _visual.SetVisual(_monsterData.Model);
+        }
         _monsterGrade = _monsterData.MonGrade;
 
         if(_monsterGrade == MonsterGrade.Normal)
@@ -108,7 +113,12 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
         if (_monsterCurHP <= 0)
         {
+            _visual.PlayDie();
             Death();
+        }
+        else
+        {
+            _visual.PlayHit();
         }
     }
 
@@ -238,6 +248,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private void UseSkill() //턴마다 스킬을 사용하는 함수
     {
+        if(_isDead) return;
+        
         //_selectedSkillKey를 이용해서 스킬을 가져오고 _selectedSkillSlot 인덱스를 이용해서 스킬 레벨도 가져오기
         if(_selectedSkillKey != null)
         {
@@ -246,7 +258,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             
             if(_currentSkillData.CardType == CardType.Attack)
             {
-                
+                _visual.PlayAttack();
+
                 Player.Instance.TakeDamage(_selectedSkillValue); //추후 인자값으로 공격 강화 상태를 받을수도있음
                 Debug.Log("플레이어에게 " + _selectedSkillValue + "의 데미지를 입혔습니다.");
             }
@@ -259,6 +272,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             {
                 GetShield(_selectedSkillValue);
                 Debug.Log("몬스터가 " + _selectedSkillValue + "의 방어막을 얻었습니다.");
+            }
+            else
+            {
+                _visual.PlaySkill();
             }
 
             if(_currentSkillData.Target == Target.Self)
