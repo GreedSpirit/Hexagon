@@ -106,11 +106,15 @@ public class CardManager : MonoBehaviour
         _cardTypeActions.Add(CardType.Shield, new CardShieldAction());
         _cardTypeActions.Add(CardType.Spell, new CardSpellAction());
 
-        // 카드 상태이상 임시
+        // 카드 상태이상
         _cardStatusActions.Add("KeyStatusPoison", new CardPoisonAction());
         _cardStatusActions.Add("KeyStatusBurn", new CardBurnAction());
         _cardStatusActions.Add("KeyStatusPride", new CardPrideAction());
         _cardStatusActions.Add("KeyStatusVulnerable", new CardVulnerableAction());
+
+        _cardStatusActions.Add("KeyStatusStigma", new CardVulnerableAction());
+        _cardStatusActions.Add("KeyStatusKnowledge", new CardVulnerableAction());
+        _cardStatusActions.Add("KeyStatusDespair", new CardVulnerableAction());
     }
     public bool IsDeckValid(int requiredCount)
     {
@@ -192,18 +196,6 @@ public class CardManager : MonoBehaviour
         }
 
         return false;
-    }
-
-    // 카드 레벨업 (UpgradeManager에서 호출)
-    public bool TryUpgradeCard(int cardId)
-    {
-        var userCard = UserCardList.Find(x => x.CardId == cardId);
-        if (userCard == null) return false;
-
-        // 레벨업 로직
-        userCard.Level++;
-        Debug.Log($"카드 {cardId} 레벨업! Lv.{userCard.Level}");
-        return true;
     }
 
     // 특정 카드 가져오기
