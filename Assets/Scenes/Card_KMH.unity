@@ -2674,6 +2674,16 @@ MonoBehaviour:
   _mixer: {fileID: 24100000, guid: fa28a402eb121844bbb534598059f95a, type: 2}
   _bgmSource: {fileID: 447058884}
   _sfxSource: {fileID: 447058883}
+  _fadeTime: 1
+  _bgmList:
+  - name: 
+    type: 2
+    clips:
+    - {fileID: 8300000, guid: 09a7b1f9028b3414089b93f386c48760, type: 3}
+  _sfxList:
+  - name: B
+    type: 0
+    clip: {fileID: 8300000, guid: 334db04d0b5f0f547a96e053628b5dff, type: 3}
 --- !u!4 &447058886
 Transform:
   m_ObjectHideFlags: 0

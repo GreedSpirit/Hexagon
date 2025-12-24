@@ -136,7 +136,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
         sb.Replace("{D}", GetValue(level).ToString());
         sb.Replace("{N}", GetValue(level).ToString());
         sb.Replace("{SEV}", _cardData.StatusEffectValue.ToString());
-        sb.Replace("{Turns}", _cardData.Turn.ToString());
+        sb.Replace("{turns}", _cardData.Turn.ToString());
 
         return sb.ToString();
     }
