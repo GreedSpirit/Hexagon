@@ -8,8 +8,8 @@ public class PlayerModelController : MonoBehaviour
     Rigidbody2D _rigid;
     Vector2 _moveInput;
     List<Npc> _neerNpcs = new List<Npc>();    
-    Npc _neerNpc;
-    bool _canInteract;
+    
+    
 
 
     private void Awake()
@@ -49,31 +49,23 @@ public class PlayerModelController : MonoBehaviour
         }            
     }
 
-    public void Interact()
-    {
-        if (_canInteract)
-        {
-            Debug.Log($"{_neerNpc.Name}와 상호작용!");
-            Player.Instance.Currentvillage.TalkInteractClick();
-            Player.Instance.GetComponent<PlayerInputHandler>().ChangeInputState(new ScenarioState(Player.Instance, Player.Instance.GetComponent<PlayerInputHandler>()));
-        }        
-    }
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Npc npc))
         {
             _neerNpcs.Add(npc);
-            _canInteract = true;
+            Player.Instance.CanInteract = true;
             CheckNpcDistance();
-            Player.Instance.Currentvillage.ShowTalkSlide();
+            Player.Instance.Currentvillage.ShowTalkSlide(_neerNpcs[0]);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Npc npc))
         {
-            _canInteract = (_neerNpc != null);
+            Player.Instance.CanInteract = (_neerNpcs != null);
             CheckNpcDistance();
             Player.Instance.Currentvillage.HideTalkSlide();
             _neerNpcs.Remove(npc);
@@ -93,10 +85,9 @@ public class PlayerModelController : MonoBehaviour
             float distance = Vector2.Distance(transform.position, npc.transform.position);
             if (distance < lastDistance)
             {
-                lastDistance = distance;
-                _neerNpc = npc;
-                Player.Instance.Currentvillage.SetNpcToTalk(_neerNpc);
-                Debug.Log($"{_neerNpc.Name}");
+                lastDistance = distance;                
+                Player.Instance.SetTalkingNpc(npc);
+                Debug.Log($"{npc.Name}");
             }
         }
     }

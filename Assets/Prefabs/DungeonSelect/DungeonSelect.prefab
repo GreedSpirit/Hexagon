@@ -1228,7 +1228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9220900ad453fbf43a84fa1290439a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonPresenter
-  _townPanel: {fileID: 0}
   _dungeonPanel: {fileID: 8560122758122538440}
   _enterButton: {fileID: 6619677782218738424}
   _returnButton: {fileID: 4478117505749953046}
@@ -1254,7 +1253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9092421700930452010
 RectTransform:
   m_ObjectHideFlags: 0

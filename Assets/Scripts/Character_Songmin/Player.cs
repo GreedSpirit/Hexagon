@@ -1,16 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using UnityEngine;
 
 /// <summary>
 /// 외부와 상호작용할 '플레이어 캐릭터'는 이거 하나. 
 /// </summary>
-public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해주기
+public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤도 해주기
 {
     //스탯 관련 필드    
     PlayerStat _stat;
+    public Action<int> OnMoneyChanged; //돈 수치 변화할 때마다 호출.
     public Action<int, int, int, int> OnHpChanged; //체력 수치 변화할 때마다 호출.    
     public Action<int> OnShieldChanged; //보호막 수치 변화할 때마다 호출.
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
@@ -19,9 +21,10 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public Action<Dictionary<StatusEffectData, int>> OnStatusEffectChanged; //상태이상 변화할 때마다 호출
 
     //마을 관련 필드
-    public Village Currentvillage {  get; private set; }
+    public Village Currentvillage { get; private set; }
     public Npc TalkingNpc { get; private set; }
     public TalkUI TalkUI { get; private set; }
+    public bool CanInteract { get; set; }
 
 
     //Player에 붙은 다른 컴포넌트들
@@ -30,32 +33,15 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     private PlayerModelController _playerModelController;
 
 
-
-
-
-    public static Player Instance;
-    private void Awake() //임시 유사 싱글톤 처리
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-
     private void Start()
     {
         _playerUIManager = GetComponent<PlayerUIManager>();
         _playerInputHandler = GetComponent<PlayerInputHandler>();
         _playerModelController = GetComponent<PlayerModelController>();
-        Respawn();        
+        Respawn();
     }
 
-    
+
 
     ///게임 매니저에서 호출할 함수
     //연결된 UI 초기값도 여기서 할당
@@ -77,41 +63,39 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         Debug.Log($"이동속도 : {_stat.MoveSpeed}");
     }
 
-    
-    /// UI 활성화 시 호출할 함수
+
+
+    //------------------------------------------------------
+
+    #region UI 구독 직후 활성화용 푸쉬 함수
+
     public void PushHp()
     {
         if (_stat != null)
         {
-            OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);            
-        }        
+            OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        }
     }
     public void PushExp()
     {
         if (_stat != null)
         {
             OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
-        }        
+        }
     }
     public void PushDefense()
     {
         if (_stat != null)
         {
             OnDefenseChanged?.Invoke(_stat.Defense);
-        }            
+        }
     }
     public void PushShield()
     {
         if (_stat != null)
         {
             OnShieldChanged?.Invoke(_stat.Shield);
-        }            
-    }
-
-    public int PushTotalConditionDamage()
-    {
-        int total = _stat.Poison + _stat.Burn;
-        return total;
+        }
     }
 
     public void PushLevel()
@@ -130,10 +114,19 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         }
     }
 
+    public void PushMoney()
+    {
+        if (_stat != null)
+        {
+            OnMoneyChanged?.Invoke(_stat.Money);
+        }
+    }
 
+    #endregion
 
     //------------------------------------------------------
 
+    #region 외부에서 스탯 접근용 함수
     public int GetCurrentHp()
     {
         return _stat.CurrentHp;
@@ -152,8 +145,31 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     {
         return _stat.MoveSpeed;
     }
+    public string GetName()
+    {
+        return _stat.Name;
+    }
+
+    public string GetTalk()
+    {
+        return "Player Talking";
+    }
+
+    public string GetImage()
+    {
+        return "Img";
+    }
+
+    public int GetMoney()
+    {
+        return _stat.Money;
+    }
+
+    #endregion
+
     //------------------------------------------------------
 
+    #region 전투용 스탯 관리 함수
     /// 이하 함수들은 전투 중 외부에서 호출.      
     public void TakeDamage(int damage) //공격 데미지를 입을 때마다 호출.
     {
@@ -162,9 +178,6 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
-
-      
-        
 
     public void GetHp(int hp) //체력을 회복할 때마다 호출
     {
@@ -204,7 +217,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     {
         _stat.AddStatusEffect(effectKey, duration, stack);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);        
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
 
     public void ApplyStatusEffect()
@@ -214,7 +227,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
-    }  
+    }
 
     public void AddPoison(int stack)
     {
@@ -228,6 +241,9 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         Debug.Log($"현재 독 : {_stat.Poison}, 화상 : {_stat.Burn}");
     }
 
+    #endregion
+
+    //------------------------------------------------------
     public void Respawn()
     {
         SetVillage();
@@ -245,27 +261,48 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         TalkingNpc = npc;
     }
 
-    public string GetName()
-    {
-        return _stat.Name;
-    }
 
-    public string GetTalk()
-    {
-        return "Player Talking";
-    }
-
-    public string GetImage()
-    {
-        return "Img";
-    }
     public void SetTalkUI(TalkUI talkUI)
     {
         TalkUI = talkUI;
     }
 
+    public void TalkMyself()
+    {
+        EnterScenarioMod();
+        TalkUI.EnterTalk(this);
+    }
 
-    //-----------------------------------------
+    public void TalkWithNpc()
+    {
+        if (CanInteract)
+        {
+            EnterScenarioMod();
+            Debug.Log($"{TalkingNpc.Name}와 상호작용!");
+            TalkUI.EnterTalk(TalkingNpc);
+
+        }
+    }
+
+    public void EndTalk()
+    {
+        TalkUI?.EndTalk();
+        EnterMoveMod();
+    }
+
+    public void PlusMoney(int cost)
+    {
+        _stat.PlusMoney(cost);
+        OnMoneyChanged?.Invoke(_stat.Money);
+    }
+
+    public void MinusMoney(int cost)
+    {
+        _stat.MinusMoney(cost);
+        OnMoneyChanged?.Invoke(_stat.Money);
+    }
+
+    //----------------------------------------------------------
     //입력 상태 전환 요청 함수들
     public void EnterBattleMod()
     {
@@ -278,5 +315,53 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public void EnterMoveMod()
     {
         _playerInputHandler.ChangeInputState(new MoveState(this, _playerInputHandler));
+    }
+    //----------------------------------------------------------
+
+    private class PlayerSaveData
+    {
+        public int Level;
+    }
+    public void SaveGame()
+    {
+        PlayerSaveData data = new PlayerSaveData();
+        data.Level = _stat.Level;
+
+        // JSON 변환
+        string json = JsonUtility.ToJson(data, true); // true는 보기 좋게 줄바꿈 함
+        // 파일 저장 경로 
+        string path = Path.Combine(Application.persistentDataPath, "playersave.json");
+        File.WriteAllText(path, json);
+
+        Debug.Log($"[Save] 저장 완료: {path}");
+    }
+
+    // 게임 불러오기
+    public void LoadGame()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "playersave.json");
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
+
+            if (data != null)
+            {
+                _stat.Level = data.Level;
+
+                Debug.Log($"[Load] 불러오기 완료. 플레이어 레벨 : {_stat.Level}");
+            }
+        }
+        else
+        {
+            _stat.Level = 1;
+            Debug.Log($"[Load] 저장된 파일이 없습니다. 플레이어 레벨 : {_stat.Level}");
+        }
+    }
+
+    public void ResetModel()
+    {
+        gameObject.transform.localScale = new Vector2(1, 1);
     }
 }

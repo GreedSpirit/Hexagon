@@ -37,6 +37,10 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, StringData> StringDict { get; private set; }
     public Dictionary<int, RewardData> RewardDict { get; private set; }
     public Dictionary<int, DeckData> DeckDict { get; private set; }
+    public Dictionary<int, NpcData> NpcDict { get; private set; }
+    public Dictionary<int, NpcTalkData> NpcTalkDict { get; private set; }
+    public Dictionary<int, VillageData> VillageDict { get; private set; }
+
     // (Key: string 기반)
     public Dictionary<string, CharacterData> CharacterKeyDict { get; private set; }
     public Dictionary<string, CardData> CardKeyDict { get; private set; }
@@ -60,6 +64,9 @@ public class DataManager : MonoBehaviour
     public Dictionary<string, StringData> StringKeyDict { get; private set; }
     public Dictionary<string, RewardData> RewardKeyDict { get; private set; }
     public Dictionary<string, DeckData> DeckKeyDict { get; private set; }
+    public Dictionary<string, NpcData> NpcKeyDict { get; private set; }
+    public Dictionary<string, NpcTalkData> NpcTalkKeyDict { get; private set; }
+    public Dictionary<string, VillageData> VillageKeyDict { get; private set; }
 
 
     private void Awake()
@@ -143,6 +150,18 @@ public class DataManager : MonoBehaviour
         // [Reward]
         RewardDict = LoadAndCreateKeyDict(CSVReader.Read<RewardData>("Reward"), out Dictionary<string, RewardData> tempRewardKeyDict);
         RewardKeyDict = tempRewardKeyDict;
+
+        // [Npc]
+        NpcDict = LoadAndCreateKeyDict(CSVReader.Read<NpcData>("Npc"), out Dictionary<string, NpcData> tempNpcKeyDict);
+        NpcKeyDict = tempNpcKeyDict;
+
+        NpcTalkDict = LoadAndCreateKeyDict(CSVReader.Read<NpcTalkData>("NpcTalk"), out Dictionary<string, NpcTalkData> tempNpcTalkKeyDict);
+        NpcTalkKeyDict = tempNpcTalkKeyDict;
+
+        // [Village]
+        VillageDict = LoadAndCreateKeyDict(CSVReader.Read<VillageData>("Village"), out Dictionary<string, VillageData> tempVillageKeyDict);
+        VillageKeyDict = tempVillageKeyDict;
+
 
         // 테스트 로그
         Debug.Log($"데이터 로드 완료. Character 개수: {CharacterDict.Count}");
@@ -247,4 +266,14 @@ public class DataManager : MonoBehaviour
     public RewardData GetReward(string key) => RewardKeyDict.TryGetValue(key, out var data) ? data : null;
     public DeckData GetDeck(int id) => DeckDict.TryGetValue(id, out var data) ? data : null;
     public DeckData GetDeck(string key) => DeckKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public NpcData GetNpc(int id) => NpcDict.TryGetValue(id, out var data) ? data : null;
+    public NpcData GetNpc(string key) => NpcKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public NpcTalkData GetNpcTalk(int id) => NpcTalkDict.TryGetValue(id, out var data) ? data : null;
+    public NpcTalkData GetNpcTalk(string key) => NpcTalkKeyDict.TryGetValue(key, out var data) ? data : null;
+
+    public VillageData GetVillage(int id) => VillageDict.TryGetValue(id, out var data) ? data : null;
+    public VillageData GetVillage(string key) => VillageKeyDict.TryGetValue(key, out var data) ? data : null;
+
 }
