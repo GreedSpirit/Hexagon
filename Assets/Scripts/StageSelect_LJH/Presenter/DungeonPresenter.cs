@@ -85,6 +85,8 @@ public class DungeonPresenter : MonoBehaviour
         {
             Debug.Log($"덱 편성 화면으로 이동: {_selectedDungeonData.Name}");
 
+            DungeonSessionData.SelectedDungeonId = _selectedDungeonData.Id;
+
             // 던전 선택창을 끄고, 덱 UI를 불러옵니다.
             _dungeonPanel.SetActive(false); // 필요하다면 끄기
 

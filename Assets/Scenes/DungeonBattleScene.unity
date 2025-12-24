@@ -1890,6 +1890,7 @@ MonoBehaviour:
   _radius: 2000
   _startHandCount: 4
   _handLimit: 7
+  _deckUI: {fileID: 0}
   _disappearPoint: {fileID: 1663417053}
   _deckCount: {fileID: 20491330}
 --- !u!224 &875355024
@@ -2394,7 +2395,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3160574478017220415, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3203639806478128662, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
       propertyPath: m_Pivot.x
