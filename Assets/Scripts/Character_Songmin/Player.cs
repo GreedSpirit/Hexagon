@@ -359,4 +359,9 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤�
             Debug.Log($"[Load] 저장된 파일이 없습니다. 플레이어 레벨 : {_stat.Level}");
         }
     }
+
+    public void ResetModel()
+    {
+        gameObject.transform.localScale = new Vector2(1, 1);
+    }
 }
