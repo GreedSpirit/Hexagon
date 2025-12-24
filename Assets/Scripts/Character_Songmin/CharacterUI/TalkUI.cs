@@ -18,7 +18,8 @@ public class TalkUI : MonoBehaviour
     [SerializeField] Text _img;
     [SerializeField] TextMeshProUGUI _characterName;
     [SerializeField] TextMeshProUGUI _characterScript;
-    [SerializeField] GameObject _upgradeButton;
+    [SerializeField] GameObject _upgradeEnterButton;
+    [SerializeField] GameObject _upgradePannel;
     
 
     private void Awake()
@@ -42,6 +43,14 @@ public class TalkUI : MonoBehaviour
         _fadeRoutine = StartCoroutine(FadeInAndOut(true));
     }
 
+    public void EnterUpgrade()
+    {
+        _talkPannel.SetActive(false);
+        _upgradeEnterButton.SetActive(false);
+        _upgradePannel.SetActive(true);
+    }
+
+
     public void UpdateTalk(ITalkable talable)
     {
         SetTalkable(talable);
@@ -52,8 +61,16 @@ public class TalkUI : MonoBehaviour
         if (_fadeRoutine != null)
         {
             StopCoroutine(_fadeRoutine);
-        }        
-        _fadeRoutine = StartCoroutine(FadeInAndOut(false));
+        }
+        if (_talkPannel.activeSelf == true)
+        {
+            _fadeRoutine = StartCoroutine(FadeInAndOut(false));
+        }
+        else
+        {
+            _upgradePannel.SetActive(false);
+        }
+        
     }
 
 
@@ -80,7 +97,7 @@ public class TalkUI : MonoBehaviour
         _talkPannel.SetActive(isEnter);
         if (_currentTalking is Npc)
         {
-            _upgradeButton.SetActive(isEnter);
+            _upgradeEnterButton.SetActive(isEnter);
         }
         yield return FadeRoutine(false);
     }
