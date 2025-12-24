@@ -75,17 +75,26 @@ public class CardLogic : MonoBehaviour
 
         sb.Replace("{D}", Deal.ToString());
         sb.Replace("{N}", GetValue().ToString());
-        sb.Replace("{SEV}", Data.StatusEffectValue.ToString());
-        sb.Replace("{turns}", Data.Turn.ToString());
+        sb.Replace("{SEV}", GetStatusEffectValue().ToString());
+        sb.Replace("{turns}", GetTurn().ToString());
 
         Desc = sb.ToString();
     }
 
-    // 카드 수치 반환
+    // 카드 수치 반환 (설명 갱신, 카드 사용 시)
     private int GetValue()
     {
         if (Data.CardType == CardType.Attack) return Deal;
         return Data.BaseValue + (Level - 1) * Data.ValuePerValue;
+    }
+
+    private int GetStatusEffectValue()
+    {
+        return Data.StatusEffectValue + (Level - 1) * Data.ValuePerValue;
+    }
+    private int GetTurn()
+    {
+        return Data.Turn + (Level - 1) * Data.ValuePerValue;
     }
 
     // 카드 사용 시도
