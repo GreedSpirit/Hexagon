@@ -3,7 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventorySlotUI : MonoBehaviour,
+    IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler,
+    IPointerEnterHandler, IPointerExitHandler
 {
     [Header("UI Components")]
     [SerializeField] Image cardImage;       // 카드 일러스트
@@ -137,23 +139,32 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
             Debug.Log("OnEndDrag: 덱 슬롯에서 처리됨 -> 무시");
             return;
         }
-
-        // 덱 슬롯이 아닌 곳(허공)에 놓았을 때만 장착/해제 시도
-        if (_parentUI.IsDeckBuildingMode)
-        {
-            bool changed = InventoryManager.Instance.ToggleDeckEquip(_userCard.CardId);
-            if (changed)
-            {
-                _parentUI.RefreshInventory();
-            }
-        }
     }
     private void OnDisable()
     {
-        if (_dragGhost != null)
+        transform.localScale = Vector3.one; // 크기 초기화
+
+        if (_dragGhost != null) // 고스트 청소
         {
             Destroy(_dragGhost);
             _dragGhost = null;
         }
+    }
+    // 마우스 오버 시 확대
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_userCard == null) return;
+        if (eventData.dragging) return;
+        if (_isSelected) return; // 이미 선택(클릭)된 상태라면 크기 유지
+
+        transform.localScale = Vector3.one * 1.2f;
+    }
+
+    // 마우스 나갈 때 복구
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (_isSelected) return; // 선택된 상태면 줄어들지 않음
+
+        transform.localScale = Vector3.one;
     }
 }

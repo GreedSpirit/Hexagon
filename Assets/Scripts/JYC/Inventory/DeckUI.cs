@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,11 @@ public class DeckUI : MonoBehaviour
     [SerializeField] GameObject _enterPopupPanel; // 팝업 패널 전체
     [SerializeField] TextMeshProUGUI _popupText;  // 팝업 내용 텍스트
 
+    [Header("Dungeon Info UI")]
+    [SerializeField] TextMeshProUGUI stageInfoText; // "총 N 스테이지" 표시용
+    [SerializeField] Button dungeonInfoButton;      // "던전 정보" 팝업 여는 버튼
+    // 현재 선택된 던전 데이터
+    private DungeonData _currentDungeon;
     private void Start()
     {
         

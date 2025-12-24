@@ -72,6 +72,22 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 break;
         }
     }
+    private void HighlightSlot(bool isOn)
+    {
+        if (borderImage == null) return;
+
+        if (isOn)
+        {
+            // 활성화: 파란색으로 빛나게
+            borderImage.color = Color.cyan;
+            // 만약 나중에 "빛나는 이미지" 에셋을 받는다면, 여기서 그 이미지를 SetActive(true)
+        }
+        else
+        {
+            // 비활성화: 원래 등급 색상으로 복구
+            SetGradeVisual(_requiredGrade);
+        }
+    }
 
     // 클릭 시: 교체 혹은 제거
     public void OnPointerClick(PointerEventData eventData)
@@ -105,13 +121,44 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     // 마우스 올리면 확대
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.localScale = Vector3.one * 1.5f;
+        // 드래그 중이 아닐 때 -> 그냥 확대 (기존 기능)
+        if (!eventData.dragging)
+        {
+            transform.localScale = Vector3.one * 1.5f;
+            return;
+        }
+
+        // 드래그 중일 때 -> 유효한 카드면 파란색 테두리
+        GameObject draggedObj = eventData.pointerDrag;
+        if (draggedObj != null)
+        {
+            InventorySlotUI invSlot = draggedObj.GetComponent<InventorySlotUI>();
+            if (invSlot != null)
+            {
+                // 등급 조건 체크
+                CardData dropData = invSlot.UserCard.GetData();
+                bool isMatch = false;
+                if (_requiredGrade == CardGrade.Epic)
+                    isMatch = (dropData.CardGrade == CardGrade.Epic || dropData.CardGrade == CardGrade.Legendary);
+                else
+                    isMatch = (dropData.CardGrade == _requiredGrade);
+
+                // 조건이 맞으면 파란색 불 켜기
+                if (isMatch)
+                {
+                    HighlightSlot(true);
+                }
+            }
+        }
     }
 
     // 마우스 나가면 원래 크기로
     public void OnPointerExit(PointerEventData eventData)
     {
         transform.localScale = Vector3.one;
+
+        // 하이라이트 끄기 (원래 색 복구)
+        HighlightSlot(false);
     }
 
     // 인벤토리에서 카드를 드래그해서 이 슬롯 위에 놓았을 때 (교체)
@@ -144,21 +191,8 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
             int newCardId = invSlot.UserCard.CardId;
 
-            // 빈 슬롯인가?
-            if (_cardId != -1)
-            {
-                // 이미 카드가 있으면 -> 교체
-                InventoryManager.Instance.ReplaceDeckCardAt(this._slotIndex, newCardId);
-            }
-            else
-            {
-                // 빈 슬롯이면 -> 장착
-
-                if (!InventoryManager.Instance.IsCardInDeck(newCardId))
-                {
-                    InventoryManager.Instance.ToggleDeckEquip(newCardId);
-                }
-            }
+            //  빈 슬롯이든 아니든, 무조건 ReplaceDeckCardAt 호출
+            InventoryManager.Instance.ReplaceDeckCardAt(this._slotIndex, newCardId);
         }
     }
 
