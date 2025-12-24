@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 {
     //½ºÅÈ °ü·Ã ÇÊµå    
     PlayerStat _stat;
+    public Action<int> OnMoneyChanged; //µ· ¼öÄ¡ º¯È­ÇÒ ¶§¸¶´Ù È£Ãâ.
     public Action<int, int, int, int> OnHpChanged; //Ã¼·Â ¼öÄ¡ º¯È­ÇÒ ¶§¸¶´Ù È£Ãâ.    
     public Action<int> OnShieldChanged; //º¸È£¸· ¼öÄ¡ º¯È­ÇÒ ¶§¸¶´Ù È£Ãâ.
     public Action<int, int> OnExpChanged; //°æÇèÄ¡ È¹µæÇÒ ¶§¸¶´Ù È£Ãâ.
@@ -19,10 +21,10 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     public Action<Dictionary<StatusEffectData, int>> OnStatusEffectChanged; //»óÅÂÀÌ»ó º¯È­ÇÒ ¶§¸¶´Ù È£Ãâ
 
     //¸¶À» °ü·Ã ÇÊµå
-    public Village Currentvillage {  get; private set; }
+    public Village Currentvillage { get; private set; }
     public Npc TalkingNpc { get; private set; }
     public TalkUI TalkUI { get; private set; }
-    public bool CanInteract { get;  set; }
+    public bool CanInteract { get; set; }
 
 
     //Player¿¡ ºÙÀº ´Ù¸¥ ÄÄÆ÷³ÍÆ®µé
@@ -32,14 +34,14 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 
 
     private void Start()
-    {        
+    {
         _playerUIManager = GetComponent<PlayerUIManager>();
         _playerInputHandler = GetComponent<PlayerInputHandler>();
         _playerModelController = GetComponent<PlayerModelController>();
-        Respawn();        
+        Respawn();
     }
 
-    
+
 
     ///°ÔÀÓ ¸Å´ÏÀú¿¡¼­ È£ÃâÇÒ ÇÔ¼ö
     //¿¬°áµÈ UI ÃÊ±â°ªµµ ¿©±â¼­ ÇÒ´ç
@@ -62,7 +64,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     }
 
 
-    
+
     //------------------------------------------------------
 
     #region UI ±¸µ¶ Á÷ÈÄ È°¼ºÈ­¿ë Çª½¬ ÇÔ¼ö
@@ -71,30 +73,30 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         if (_stat != null)
         {
-            OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);            
-        }        
+            OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        }
     }
     public void PushExp()
     {
         if (_stat != null)
         {
             OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
-        }        
+        }
     }
     public void PushDefense()
     {
         if (_stat != null)
         {
             OnDefenseChanged?.Invoke(_stat.Defense);
-        }            
+        }
     }
     public void PushShield()
     {
         if (_stat != null)
         {
             OnShieldChanged?.Invoke(_stat.Shield);
-        }            
-    }    
+        }
+    }
 
     public void PushLevel()
     {
@@ -112,7 +114,15 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         }
     }
 
-#endregion
+    public void PushMoney()
+    {
+        if (_stat != null)
+        {
+            OnMoneyChanged?.Invoke(_stat.Money);
+        }
+    }
+
+    #endregion
 
     //------------------------------------------------------
 
@@ -150,6 +160,11 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         return "Img";
     }
 
+    public int GetMoney()
+    {
+        return _stat.Money;
+    }
+
     #endregion
 
     //------------------------------------------------------
@@ -162,7 +177,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         OnShieldChanged?.Invoke(_stat.Shield);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
-    }        
+    }
 
     public void GetHp(int hp) //Ã¼·ÂÀ» È¸º¹ÇÒ ¶§¸¶´Ù È£Ãâ
     {
@@ -202,7 +217,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         _stat.AddStatusEffect(effectKey, duration, stack);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
-        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);        
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
 
     public void ApplyStatusEffect()
@@ -212,7 +227,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         Debug.Log($"ÇöÀç µ¶ : {_stat.Poison}, È­»ó : {_stat.Burn}");
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
-    }  
+    }
 
     public void AddPoison(int stack)
     {
@@ -246,7 +261,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         TalkingNpc = npc;
     }
 
-    
+
     public void SetTalkUI(TalkUI talkUI)
     {
         TalkUI = talkUI;
@@ -254,28 +269,38 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 
     public void TalkMyself()
     {
-        EnterScenarioMod();        
-        TalkUI.EnterTalk(this);        
+        EnterScenarioMod();
+        TalkUI.EnterTalk(this);
     }
 
     public void TalkWithNpc()
-    {        
+    {
         if (CanInteract)
         {
             EnterScenarioMod();
             Debug.Log($"{TalkingNpc.Name}¿Í »óÈ£ÀÛ¿ë!");
             TalkUI.EnterTalk(TalkingNpc);
-            
+
         }
     }
 
     public void EndTalk()
     {
-        TalkUI?.EndTalk();        
+        TalkUI?.EndTalk();
         EnterMoveMod();
     }
 
+    public void PlusMoney(int cost)
+    {
+        _stat.PlusMoney(cost);
+        OnMoneyChanged?.Invoke(_stat.Money);
+    }
 
+    public void MinusMoney(int cost)
+    {
+        _stat.MinusMoney(cost);
+        OnMoneyChanged?.Invoke(_stat.Money);
+    }
 
     //----------------------------------------------------------
     //ÀÔ·Â »óÅÂ ÀüÈ¯ ¿äÃ» ÇÔ¼öµé
@@ -291,5 +316,47 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         _playerInputHandler.ChangeInputState(new MoveState(this, _playerInputHandler));
     }
+    //----------------------------------------------------------
 
+    private class PlayerSaveData
+    {
+        public int Level;
+    }
+    public void SaveGame()
+    {
+        PlayerSaveData data = new PlayerSaveData();
+        data.Level = _stat.Level;
+
+        // JSON º¯È¯
+        string json = JsonUtility.ToJson(data, true); // true´Â º¸±â ÁÁ°Ô ÁÙ¹Ù²Þ ÇÔ
+        // ÆÄÀÏ ÀúÀå °æ·Î 
+        string path = Path.Combine(Application.persistentDataPath, "playersave.json");
+        File.WriteAllText(path, json);
+
+        Debug.Log($"[Save] ÀúÀå ¿Ï·á: {path}");
+    }
+
+    // °ÔÀÓ ºÒ·¯¿À±â
+    public void LoadGame()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "playersave.json");
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
+
+            if (data != null)
+            {
+                _stat.Level = data.Level;
+
+                Debug.Log($"[Load] ºÒ·¯¿À±â ¿Ï·á. ÇÃ·¹ÀÌ¾î ·¹º§ : {_stat.Level}");
+            }
+        }
+        else
+        {
+            _stat.Level = 1;
+            Debug.Log($"[Load] ÀúÀåµÈ ÆÄÀÏÀÌ ¾ø½À´Ï´Ù. ÇÃ·¹ÀÌ¾î ·¹º§ : {_stat.Level}");
+        }
+    }
 }

@@ -16,7 +16,8 @@ public class PlayerStat
     public int NeedExp { get; private set; } //레벨업까지 필요한 경험치
 
     //전투 중 갱신할 값.
-    public int Level { get; private set; } = 1;
+    public int Level { get; set; }
+    public int Money { get; set; }
     public int Shield { get; private set; } //보호막
     public int CurrentExp { get; private set; } //현재 보유 중인 경험치
     public int CurrentHp { get; private set; } //현재 체력
@@ -51,6 +52,29 @@ public class PlayerStat
         SetStats();
         GetHp(Hp);
     }
+
+    public void PlusMoney(int cost)
+    {
+        if (Money + cost > 999999999)
+        {
+            Debug.Log($"돈 보유량 최대치 초과");
+            Money = 999999999;
+            return;
+        }
+        Money += cost;
+        Debug.Log($"돈 {cost} 만큼 추가, 현재 보유 : {Money}");
+    }
+    public void MinusMoney(int cost)
+    {
+        if (Money - cost < 0)
+        {
+            Debug.Log($"사용하려는 돈({cost})이 현재 보유량({Money}) 보다 많음");
+            return;
+        }        
+        Money -= cost;
+        Debug.Log($"돈 {cost} 만큼 사용, 현재 보유 : {Money}");
+    }
+
     public void GetDamage(int damage) //데미지를 입을 때마다 호출.
     {
         int reinforcedDamage = Mathf.FloorToInt(damage * (1 + DeBuff));
