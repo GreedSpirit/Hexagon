@@ -37,8 +37,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         _playerUIManager = GetComponent<PlayerUIManager>();
         _playerInputHandler = GetComponent<PlayerInputHandler>();
-        _playerModelController = GetComponent<PlayerModelController>();
-        Respawn();
+        _playerModelController = GetComponent<PlayerModelController>();        
     }
 
 
@@ -140,6 +139,12 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         return _stat.Level;
     }
+    
+    public float GetBuff()
+    {
+        return _stat.Buff;
+    }
+
 
     public float GetMoveSpeed()
     {
@@ -182,6 +187,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     public void GetHp(int hp) //Ã¼·ÂÀ» È¸º¹ÇÒ ¶§¸¶´Ù È£Ãâ
     {
         _stat.GetHp(hp);
+        ResetCondition();
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
@@ -199,7 +205,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 
     public void ResetCondition()
     {
-        _stat.ResetStatusEffect();
+        _stat.ResetStatusEffect();        
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
@@ -244,16 +250,16 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     #endregion
 
     //------------------------------------------------------
-    public void Respawn()
+    public void Respawn(Village village)
     {
-        SetVillage();
+        SetVillage(village);
         GetHp(_stat.Hp);
         gameObject.transform.position = Currentvillage.SpawnZone;
     }
 
-    private void SetVillage()
+    public void SetVillage(Village village)
     {
-        Currentvillage = FindFirstObjectByType<Village>();
+        Currentvillage = village;
     }
 
     public void SetTalkingNpc(Npc npc)
