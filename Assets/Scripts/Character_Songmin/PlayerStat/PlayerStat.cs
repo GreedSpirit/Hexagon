@@ -16,7 +16,7 @@ public class PlayerStat
     public int NeedExp { get; private set; } //레벨업까지 필요한 경험치
 
     //전투 중 갱신할 값.
-    public int Level { get; set; }
+    public int Level { get; set; } = 1;
     public int Money { get; set; }
     public int Shield { get; private set; } //보호막
     public int CurrentExp { get; private set; } //현재 보유 중인 경험치
