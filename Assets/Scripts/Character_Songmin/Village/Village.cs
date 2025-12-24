@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class Village : MonoBehaviour
@@ -8,7 +9,9 @@ public class Village : MonoBehaviour
     public string Bgm { get; private set; }
 
     [SerializeField] NpcTalkSlideUI _talkSlide;
-    public Npc TalkingNpc { get; private set; }
+    [SerializeField] TextMeshProUGUI _villageNameUI;
+
+    Npc _currentTalkNpc;
 
     private void Start()
     {
@@ -23,21 +26,22 @@ public class Village : MonoBehaviour
         SpawnZone = new Vector2(-7f, 0);
         //Img = villageData.Img;
         //Bgm = villageData.Bgm;
+        _villageNameUI.text = Name;
     }
 
-    public void SetNpcToTalk(Npc npc)
-    {
-        TalkingNpc = npc;
-    }
+    
 
-    public void ShowTalkSlide()
+    public void ShowTalkSlide(Npc npc)
     {
-        _talkSlide.SetNpc(TalkingNpc);
+        _currentTalkNpc = npc;
+        _talkSlide.SetNpc(npc);
+        _currentTalkNpc.HighlightName(true);
         _talkSlide.Show();
     }
 
     public void HideTalkSlide()
     {
+        _currentTalkNpc.HighlightName(false);
         _talkSlide.Hide();
     }
 
@@ -49,13 +53,6 @@ public class Village : MonoBehaviour
             Debug.LogError("TalkUI가 Player에 아직 등록되지 않았습니다.");
             return;
         }
-        player.EnterScenarioMod();
-        player.SetTalkingNpc(TalkingNpc);
-        player.TalkUI.EnterTalk(TalkingNpc);
+        player.TalkWithNpc();
     }
-
-
-
-    
-
 }
