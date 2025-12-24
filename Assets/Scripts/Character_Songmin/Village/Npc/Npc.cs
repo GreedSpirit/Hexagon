@@ -9,7 +9,7 @@ public class Npc : MonoBehaviour, ITalkable
     public GameObject NpcCanvas { get; set; }
     public GameObject NameText {  get; set; }
     public GameObject NameHighlight { get; set; }
-    public Vector2 UIPos { get; set; } = new Vector2(0, 150);
+    public Vector2 UIPos { get; set; } = new Vector2(0, 2);
 
     int _currentTalkingIndex = -1; //이거는 제이슨으로 저장시켜야 함
 

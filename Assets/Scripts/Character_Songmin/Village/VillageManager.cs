@@ -118,10 +118,9 @@ public class VillageManager : MonoBehaviour
             GameObject npcObject = Instantiate(_npcPrefab);            
             Npc npc = npcObject.GetComponent<Npc>();                        
             npc.NpcCanvas = Instantiate(_npcCanvasPrefab, npcObject.transform, false);
+            npc.NpcCanvas.transform.localPosition = npc.UIPos;
             npc.NameText = Instantiate(_nameTextPrefab, npc.NpcCanvas.transform, false);            
-            npc.NameText.transform.localPosition = npc.UIPos;
             npc.NameHighlight = Instantiate(_nameHighlightPrefab, npc.NpcCanvas.transform, false);
-            npc.NameHighlight.transform.localPosition = npc.UIPos;
             npc.Init(npcData.Npc);
         }    
     }
