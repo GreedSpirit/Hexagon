@@ -12,6 +12,8 @@ public class DeckUI : MonoBehaviour
     [SerializeField] GameObject deckSlotPrefab; // DeckSlotUI가 붙은 프리팹
     [SerializeField] TextMeshProUGUI countText;
 
+    [Header("Background Object")]
+    [SerializeField] GameObject uiBackground;
     // 인벤토리를 제어하기 위해 연결할 변수
     [Header("External Connection")]
     [SerializeField] InventoryUI _inventoryUI;
@@ -29,18 +31,19 @@ public class DeckUI : MonoBehaviour
     private DungeonData _currentDungeon;
     private void Start()
     {
-        
+
         // 매니저의 이벤트 구독
         if (InventoryManager.Instance != null)
         {
             InventoryManager.Instance.OnDeckChanged += RefreshDeck;
 
-            // 시작하자마자 한 번 갱신
-            RefreshDeck();
-
+            // 데이터가 있다면 갱신 (내부 데이터 로딩용)
+            if (_targetDungeon != null) RefreshDeck();
         }
-        // 시작할 때 팝업은 꺼두기
+
+        // 시작할 때 팝업 꺼두기
         if (_enterPopupPanel != null) _enterPopupPanel.SetActive(false);
+
     }
 
     private void OnDestroy()
@@ -58,6 +61,8 @@ public class DeckUI : MonoBehaviour
 
         // DeckUI를 켭니다.
         this.gameObject.SetActive(true);
+        // 백그라운드도 같이 켜기
+        if (uiBackground != null) uiBackground.SetActive(true);
         // UI가 다른 창에 가려지지 않도록 맨 앞으로 가져옵니다.
         this.transform.SetAsLastSibling();
 
@@ -76,7 +81,7 @@ public class DeckUI : MonoBehaviour
     {
         // DeckUI 끄기
         this.gameObject.SetActive(false);
-
+        if (uiBackground != null) uiBackground.SetActive(false);
         // 인벤토리 정리 (끄거나 모드 해제)
         if (_inventoryUI != null)
         {
