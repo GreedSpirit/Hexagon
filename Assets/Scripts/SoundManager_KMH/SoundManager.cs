@@ -1,11 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
+using UnityEngine;
 
 public enum BGMType     // 배경음 타입
 {
     None,       // 없음
+    Title,      // 타이틀
     Village,    // 마을
     Battle,     // 전투
     Boss,       // 보스전
@@ -103,6 +105,15 @@ public class SoundManager : MonoBehaviour
         SetMasterVolume(MasterVolume);
         SetBGMVolume(BGMVolume);
         SetSFXVolume(SFXVolume);
+
+        // 씬 로드 델리게이트 구독
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        // 파괴될일 없을 것 같지만 그래도 구독 해지
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
 
@@ -133,6 +144,30 @@ public class SoundManager : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", value);
     }
 
+    // 씬 로드시 실행
+    // 씬 이름에 맞는 타입의 배경음 재생
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        BGMType targetBGM;
+
+        switch (scene.name)
+        {
+            case "TitleScene":
+                targetBGM = BGMType.Title;
+                break;
+            case "VillageScene":
+                targetBGM = BGMType.Village;
+                break;
+            case "DungeonBattleScene":
+                targetBGM = BGMType.Battle;
+                break;
+            default:
+                targetBGM = BGMType.None; 
+                break;
+        }
+
+        PlayBGM(targetBGM);
+    }
 
     // 배경음 재생 (BGMType)
     public void PlayBGM(BGMType type)
