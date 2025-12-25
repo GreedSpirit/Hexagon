@@ -92,7 +92,7 @@ public class Npc : MonoBehaviour, ITalkable
 
     private void SetNameText()
     {
-        NameText.GetComponent<TextMeshProUGUI>().text = Name;
+        NameText.GetComponent<TextMeshProUGUI>().text = $"{Name}";
     }
 
     public void HighlightName(bool readyToShow)
