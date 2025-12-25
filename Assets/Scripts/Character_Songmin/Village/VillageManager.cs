@@ -7,6 +7,7 @@ public class VillageManager : MonoBehaviour
     
     [SerializeField] NpcTalkSlideUI _talkSlide;
     [SerializeField] TextMeshProUGUI _villageNameUI;
+    [SerializeField] GameObject _villageNameUIObject;
 
     Npc _currentTalkNpc;
 
@@ -29,7 +30,7 @@ public class VillageManager : MonoBehaviour
         MakeAllVillageDatas();
         MakeAllVillages();
         ChangeVillage("실렌시아");
-        Player.Instance.Respawn(_currentVillage);
+        Player.Instance.Respawn();
     }
 
 
@@ -43,8 +44,7 @@ public class VillageManager : MonoBehaviour
 
 
     public void ShowTalkSlide(Npc npc)
-    {
-        
+    {        
         _currentTalkNpc = npc;
         _talkSlide.SetNpc(npc);
         _currentTalkNpc.HighlightName(true);
@@ -65,11 +65,18 @@ public class VillageManager : MonoBehaviour
             Debug.LogError("TalkUI가 Player에 아직 등록되지 않았습니다.");
             return;
         }
+        HideTalkSlide();
         player.TalkWithNpc();
     }
 
-
-
+    public void OnOffTalkSlide(bool Onoff)
+    {
+        _talkSlide.gameObject.SetActive(Onoff);
+    }
+    public void OnOffVillageName(bool Onoff)
+    {
+        _villageNameUIObject.SetActive(Onoff);
+    }
 
 
 

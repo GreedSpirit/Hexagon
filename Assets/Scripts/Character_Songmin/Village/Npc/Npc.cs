@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class Npc : MonoBehaviour, ITalkable
@@ -24,6 +25,7 @@ public class Npc : MonoBehaviour, ITalkable
 
     public string[] Talks { get; private set; } = new string[4];
 
+    public bool IsTalking { get; private set; }
 
     public void Init(string key)
     {
@@ -96,5 +98,24 @@ public class Npc : MonoBehaviour, ITalkable
     public void HighlightName(bool readyToShow)
     {
         NameHighlight.SetActive(readyToShow);
+    }
+
+    private void OnOffCanvas(bool readyToShow)
+    {
+        if (readyToShow)
+        {
+            NpcCanvas.SetActive(true);
+        }
+        else
+        {
+            NpcCanvas.SetActive(false);
+        }
+
+    }
+
+    public void SwitchIsTalking(bool talking)
+    {
+        IsTalking = talking;
+        OnOffCanvas(!talking);
     }
 }
