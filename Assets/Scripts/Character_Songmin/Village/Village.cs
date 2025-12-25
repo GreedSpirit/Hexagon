@@ -21,7 +21,7 @@ public class Village
 
     private void Init()
     {        
-        Name = DataManager.Instance.GetString(VillageData.Name).Korean;
+        Name = DataManager.Instance.GetString(VillageData.Name).Korean.Trim('"');
         SpawnZone = new Vector2(VillageData.CharSpawnAreaX, VillageData.CharSpawnAreaY);        
         Img = VillageData.Img;
         Bgm = VillageData.Bgm;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ public class TestGameManager_Song : MonoBehaviour
 
         CharacterData characterData = DataManager.Instance.GetCharacter(1);
         string key = characterData.Name;
-        string name =  DataManager.Instance.GetString(key)?.Korean;
+        string name =  DataManager.Instance.GetString(key)?.Korean.Trim('"');        
         List<CharacterLevelData> levelDatas = new List<CharacterLevelData>();
         List<CharacterStatData> statDatas = new List<CharacterStatData>();
 

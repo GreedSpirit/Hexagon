@@ -31,7 +31,7 @@ public class Npc : MonoBehaviour, ITalkable
     {
         CharacterData characterData = DataManager.Instance.GetCharacter(key);
         NpcData npcData = DataManager.Instance.GetNpc(characterData.Key);
-        Name = DataManager.Instance.GetString(characterData.Name)?.Korean;
+        Name = DataManager.Instance.GetString(characterData.Name)?.Korean.Trim('"');        
         Desc = DataManager.Instance.GetString(characterData.Desc)?.Korean;
         SpawnPos = new Vector2(npcData.NpcAreaX, npcData.NpcAreaY);
         gameObject.transform.position = SpawnPos;
@@ -92,7 +92,7 @@ public class Npc : MonoBehaviour, ITalkable
 
     private void SetNameText()
     {
-        NameText.GetComponent<TextMeshProUGUI>().text = $"{Name}";
+        NameText.GetComponent<TextMeshProUGUI>().text = Name;
     }
 
     public void HighlightName(bool readyToShow)
