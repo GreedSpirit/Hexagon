@@ -1,14 +1,14 @@
-Id,Card 데이터 테이블의 기본키,카드(스킬)의 이름,"카드와 스킬을 구분하기 위한 칼럼 true: 카드 false: 스킬",카드(스킬)의 설명,"카드(스킬) 등급 Common (본문) Rare (목차) Epic (표지) Legendary (고서)","스킬 적용 대상  Self (자신) Enemy (상대방)","아래 항목 중 택 1 기재 Attack (공격): Healing (치유) Shield (방어) Spell (주문)",카드 강화 1단계 능력치 수치,카드 강화 단계가 증가할 때마다 증가하는 능력치 수치,StatusEffect 데이터 테이블의 Key값 입력,"카드(스킬) 사용 시 적용되어야 할 상태이상(화상, 중독) 스택 수, 강화 효과, 약화 효과 수치-","강화, 약화 효과가 적용될 턴의 수",카드 이미지 리소스명
+Id,Card 데이터 테이블의 기본키,카드(스킬)의 이름,"카드와 스킬을 구분하기 위한 칼럼 true: 카드 false: 스킬",카드(스킬)의 설명,"카드(스킬) 등급 Common (본문) Rare (목차) Epic (표지) Legendary (고서)","스킬 적용 대상 Self (자신) Enemy (상대방)","아래 항목 중 택 1 기재 Attack (공격): Healing (치유) Shield (방어) Spell (주문)",카드 강화 1단계 능력치 수치,카드 강화 단계가 증가할 때마다 증가하는 능력치 수치,StatusEffect 데이터 테이블의 Key값 입력,"카드(스킬) 사용 시 적용되어야 할 상태이상(화상, 중독) 스택 수, 강화 효과, 약화 효과 수치-","강화, 약화 효과가 적용될 턴의 수",카드 이미지 리소스명
 int,string,string,Bool,string,Enum,Enum,Enum,int,int,string,string,int,string
 Id,Key,Name,IsCard,Desc,CardGrade,Target,CardType,BaseValue,ValuePerLevel,StatusEffect,StatusEffectValue,Turn,CardImg
 1,KeyCardFireball,NameCardFireball,false,DescCardFireball,Common,Enemy,Attack,3,1,,0,0,
-2,KeyCardThreat,NameCardThreat,false,DescCardThreat,Rare,Enemy,Attack,0,2,KeyStatusStigma,0,3,
+2,KeyCardThreat,NameCardThreat,false,DescCardThreat,Rare,Enemy,Spell,0,0,KeyStatusStigma,0,3,
 3,KeyCardSwipe,NameCardSwipe,false,DescCardSwipe,Common,Enemy,Attack,4,1,,0,0,
-4,KeyCardLazer,NameCardLazer,false,DescCardLazer,Rare,Enemy,Attack,0,2,KeyStatusBurn,3,0,
-5,KeyCardPsychoKinesis,NameCardPsychoKinesis,false,DescCardPsychoKinesis,Common,Enemy,Attack,5,1,,0,0,
-6,KeyCardPride,NameCardPride,false,DescCardPride,Epic,Self,Spell,5,4,KeyStatusPride,0,3,
-7,KeyCardExplode,NameCardExplode,false,DescCardExplode,Legendary,Enemy,Attack,7,7,,0,0,
-8,KeyCardFireless,NameCardFireless,false,DescCardFireless,Rare,Enemy,Attack,4,2,KeyStatusBurn,3,0,
+4,KeyCardLazer,NameCardLazer,false,DescCardLazer,Rare,Enemy,Spell,0,0,KeyStatusBurn,3,0,
+5,KeyCardPsychoKinesis,NameCardPsychoKinesis,false,DescCardPsychoKinesis,Common,Enemy,Attack,5,1,,0,0,Img_BossCard_PsychoKinesis
+6,KeyCardPride,NameCardPride,false,DescCardPride,Legendary,Self,Spell,0,0,KeyStatusPride,0,2,Img_BossCard_Pride
+7,KeyCardLeap,NameCardLeap,false,DescCardLeap,Rare,Enemy,Healing,10,2,,0,0,Img_BossCard_Leap
+8,KeyCardFireless,NameCardFireless,false,DescCardFireless,Epic,Enemy,Attack,4,1,KeyStatusBurn,3,0,Img_BossCard_Fireless
 9,KeyCardBanBookThrowing,NameCardBanBookThrowing,true,DescCardBanBookThrowing,Common,Enemy,Attack,5,1,,,,Img_Card_BanBookThrowing
 10,KeyCardOldBookBreakDown,NameCardOldBookBreakDown,true,DescCardOldBookBreakDown,Common,Enemy,Attack,6,1,,,,Img_Card_OldBookBreakDown
 11,KeyCardWeightOfKnowledge,NameCardWeightOfKnowledge,true,DescCardWeightOfKnowledge,Rare,Enemy,Attack,9,1,,,,Img_Card_WeightOfKnowledge

@@ -114,6 +114,9 @@ public class RewardResultUI : MonoBehaviour
         GameSaveManager.Instance.SaveGame();
         Debug.Log("보상 획득 및 저장 완료");
 
+        Player.Instance.EnterMoveMod();
+        Player.Instance.Respawn();
+
         SceneManager.LoadScene(0);
     }
 }

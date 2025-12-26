@@ -57,6 +57,8 @@ public class DungeonManager : MonoBehaviour
         _tempStageData = StageDataManager.Instance.GetStageByDungeonKey(_currentDungeonData.DungeonKey)[_currentStageIndex];
         int targetMonsterId = DataManager.Instance.GetMonsterStatData(_tempStageData.SpawnMonster).Id;
         SpawnMonster(targetMonsterId);
+        
+        _battleManager.StartBattle();
     }
 
     private void SpawnMonster(int monsterId)
