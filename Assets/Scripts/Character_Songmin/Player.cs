@@ -25,7 +25,8 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     public Npc TalkingNpc { get; private set; }
     public TalkUI TalkUI { get; private set; }
     public bool CanInteract { get; set; }
-
+    public bool IsTalking { get; set; }
+        
 
     //Player¿¡ ºÙÀº ´Ù¸¥ ÄÄÆ÷³ÍÆ®µé
     private PlayerUIManager _playerUIManager;
@@ -33,12 +34,12 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     private PlayerModelController _playerModelController;
 
 
-    private void Start()
+    private void Awake()
     {
+        base.Awake();
         _playerUIManager = GetComponent<PlayerUIManager>();
         _playerInputHandler = GetComponent<PlayerInputHandler>();
-        _playerModelController = GetComponent<PlayerModelController>();
-        Respawn();
+        _playerModelController = GetComponent<PlayerModelController>();        
     }
 
 
@@ -50,6 +51,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         _stat = stat;
         GetHp(_stat.Hp);
         PushHp();
+        PushMoney();
         PushExp();
         PushLevel();
         PushDefense();
@@ -61,6 +63,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         Debug.Log($"ÇöÀç Ã¼·Â : {_stat.CurrentHp}");
         Debug.Log($"¹æ¾î·Â : {_stat.Defense}");
         Debug.Log($"ÀÌµ¿¼Óµµ : {_stat.MoveSpeed}");
+        Debug.Log($"º¸À¯ ÀçÈ­ : {_stat.Money}");
     }
 
 
@@ -140,6 +143,12 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         return _stat.Level;
     }
+    
+    public float GetBuff()
+    {
+        return _stat.Buff;
+    }
+
 
     public float GetMoveSpeed()
     {
@@ -182,6 +191,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     public void GetHp(int hp) //Ã¼·ÂÀ» È¸º¹ÇÒ ¶§¸¶´Ù È£Ãâ
     {
         _stat.GetHp(hp);
+        ResetCondition();
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
@@ -199,7 +209,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 
     public void ResetCondition()
     {
-        _stat.ResetStatusEffect();
+        _stat.ResetStatusEffect();        
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
@@ -245,15 +255,15 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 
     //------------------------------------------------------
     public void Respawn()
-    {
-        SetVillage();
+    {        
         GetHp(_stat.Hp);
+        SetStatUIView(true);
         gameObject.transform.position = Currentvillage.SpawnZone;
     }
 
-    private void SetVillage()
+    public void SetVillage(Village village)
     {
-        Currentvillage = FindFirstObjectByType<Village>();
+        Currentvillage = village;
     }
 
     public void SetTalkingNpc(Npc npc)
@@ -279,17 +289,24 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         {
             EnterScenarioMod();
             Debug.Log($"{TalkingNpc.Name}¿Í »óÈ£ÀÛ¿ë!");
+            if (TalkUI == null)
+            {
+                Debug.LogWarning("TalkUI Null");
+            }
+            if (TalkingNpc == null)
+            {
+                Debug.LogWarning("TalkingNpc Null");
+            }            
             TalkUI.EnterTalk(TalkingNpc);
-
         }
     }
 
     public void EndTalk()
     {
-        TalkUI?.EndTalk();
+        TalkUI?.EndTalk();        
         EnterMoveMod();
     }
-
+    
     public void PlusMoney(int cost)
     {
         _stat.PlusMoney(cost);
@@ -301,6 +318,27 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         _stat.MinusMoney(cost);
         OnMoneyChanged?.Invoke(_stat.Money);
     }
+    //----------------------------------------------------------
+    // UI ¿Â¿ÀÇÁ °ü·Ã ÇÔ¼öµé
+    
+    public void SwitchIsTalking(bool talking)
+    {
+        IsTalking = talking;
+        Currentvillage?.VillageManager?.OnOffTalkSlide(!talking);
+        Currentvillage?.VillageManager?.OnOffVillageName(!talking);
+        SetStatUIView(!talking);
+        SetInventoryUIView(!talking);
+    }
+
+    private void SetStatUIView(bool readyToShow)
+    {
+        _playerUIManager.OnOffPlayerStatUi(readyToShow);
+    }
+    private void SetInventoryUIView(bool readyToShow)
+    {
+        _playerUIManager.OnOffPlayerInventoryUi(readyToShow);
+    }
+
 
     //----------------------------------------------------------
     //ÀÔ·Â »óÅÂ ÀüÈ¯ ¿äÃ» ÇÔ¼öµé

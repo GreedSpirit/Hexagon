@@ -1,11 +1,16 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class Npc : MonoBehaviour, ITalkable
 {
-    [SerializeField] TextMeshProUGUI _nameText;
-    [SerializeField] GameObject _nameHighlight;
+    NpcData NpcData { get; set; }
+
+    public GameObject NpcCanvas { get; set; }
+    public GameObject NameText {  get; set; }
+    public GameObject NameHighlight { get; set; }
+    public Vector2 UIPos { get; set; } = new Vector2(0, 2);
 
     int _currentTalkingIndex = -1; //이거는 제이슨으로 저장시켜야 함
 
@@ -13,25 +18,23 @@ public class Npc : MonoBehaviour, ITalkable
     public string Desc { get; private set; }
     public CharacterType Type { get; private set; } = CharacterType.npc;
 
+    public Vector2 SpawnPos { get; private set; }
+
     public string Img { get; private set; }
     public string Model { get; private set; }
 
     public string[] Talks { get; private set; } = new string[4];
 
-
-    private void Start()
-    {
-        Init("KeyNpcLibra");    
-        SetWord();
-        Debug.Log($"{Name}");
-    }
+    public bool IsTalking { get; private set; }
 
     public void Init(string key)
     {
         CharacterData characterData = DataManager.Instance.GetCharacter(key);
-        Name = DataManager.Instance.GetString(characterData.Name)?.Korean;
+        NpcData npcData = DataManager.Instance.GetNpc(characterData.Key);
+        Name = DataManager.Instance.GetString(characterData.Name)?.Korean.Trim('"');        
         Desc = DataManager.Instance.GetString(characterData.Desc)?.Korean;
-
+        SpawnPos = new Vector2(npcData.NpcAreaX, npcData.NpcAreaY);
+        gameObject.transform.position = SpawnPos;
         //Name = key; //임시 이름 설정
         //for (int i = 0; i < Talks.Length; i++) //테스트용 대사 넣어두기
         //{
@@ -51,6 +54,8 @@ public class Npc : MonoBehaviour, ITalkable
         //이미지랑 모델도 나중에 받아오기
 
         SetNameText();
+        SetWord();
+        Debug.Log($"{Name} 생성 완료");
     }
 
 
@@ -87,11 +92,30 @@ public class Npc : MonoBehaviour, ITalkable
 
     private void SetNameText()
     {
-        _nameText.text = Name;
+        NameText.GetComponent<TextMeshProUGUI>().text = Name;
     }
 
     public void HighlightName(bool readyToShow)
     {
-        _nameHighlight.SetActive(readyToShow);
+        NameHighlight.SetActive(readyToShow);
+    }
+
+    private void OnOffCanvas(bool readyToShow)
+    {
+        if (readyToShow)
+        {
+            NpcCanvas.SetActive(true);
+        }
+        else
+        {
+            NpcCanvas.SetActive(false);
+        }
+
+    }
+
+    public void SwitchIsTalking(bool talking)
+    {
+        IsTalking = talking;
+        OnOffCanvas(!talking);
     }
 }
