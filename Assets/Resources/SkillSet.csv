@@ -3,4 +3,4 @@ int,string,Enum,string,float,int,string,float,int,string,float,int,string,float,
 Id,Key,MonGrade,SkillSlot1,Slot1Weight,Slot1Level,SkillSlot2,Slot2Weight,Slot2Level,SkillSlot3,Slot3Weight ,Slot3Level,SkillSlot4,Slot4Weight,Slot4Level
 1,KeySkillSet01,Normal,KeyCardFireball,7,1,KeyCardThreat,3,1,,,,,,
 2,KeySkillSet02,Normal,KeyCardSwipe,5,1,KeyCardLazer,5,1,,,,,,
-3,KeySkillSet05,Boss,KeyCardPsychoKinesis,3,1,KeyCardPride,2,1,KeyCardLeap,2,1,KeyCardFireless,3,1
+3,KeySkillSet03,Boss,KeyCardPsychoKinesis,3,1,KeyCardPride,2,1,KeyCardLeap,2,1,KeyCardFireless,3,1
