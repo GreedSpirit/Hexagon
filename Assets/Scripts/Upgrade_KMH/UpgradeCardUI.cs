@@ -120,8 +120,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
         else Debug.LogError("LevelText 가 할당되어있지 않습니다.");
 
         // 설명
-        if (_cardData.IsCard == true && _descText != null)
-            _descText.text = GetDesc(level);
+        if (_descText != null) _descText.text = GetDesc(level);
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
 
         // 카드 사용 가능 횟수
