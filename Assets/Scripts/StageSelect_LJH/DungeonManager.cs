@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -13,10 +14,17 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private Transform _monsterSpawnPoint;
     [SerializeField] private GameObject _monsterPrefab; // 몬스터 베이스 프리팹
     [SerializeField] private BattleManager _battleManager; // 현재 소환된 몬스터를 할당해주기 위해 참조
+
+
+    [Header("Reward Settings")]
     [SerializeField] private RewardInteraction _rewardInteraction;
     [SerializeField] private Animator _rewardObjAnimator; // 금서의 애니메이션을 넣을 위치
     [SerializeField] private RewardResultUI _rewardResultUI;
     [SerializeField] private GameObject _rewardCanvas;
+
+    [Header("Stage UI")]
+    [SerializeField] private Sprite[] _stageIndexSprites;
+    [SerializeField] private Image _stageIndexUI;
 
     private MonsterStatus _currentActiveMonster;
     private StageData _tempStageData;
@@ -45,6 +53,7 @@ public class DungeonManager : MonoBehaviour
             Debug.Log("All Stage Clear");
             return;
         }
+        _stageIndexUI.sprite = _stageIndexSprites[index];
         _tempStageData = StageDataManager.Instance.GetStageByDungeonKey(_currentDungeonData.DungeonKey)[_currentStageIndex];
         int targetMonsterId = DataManager.Instance.GetMonsterStatData(_tempStageData.SpawnMonster).Id;
         SpawnMonster(targetMonsterId);

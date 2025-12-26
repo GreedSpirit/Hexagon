@@ -32,7 +32,7 @@ public class UIMonsterEffectList : MonoBehaviour, IMonsterEffectObserver
         foreach (var effect in effects)
         {
             GameObject iconObj = Instantiate(_iconPrefab, _iconParent);
-            UIMonsterEffectIcon iconScript = iconObj.GetComponent<UIMonsterEffectIcon>();
+            MoneterEffectHoverSensor iconScript = iconObj.GetComponent<MoneterEffectHoverSensor>();
             
             iconScript.Init(effect, _monsterStatus);
         }

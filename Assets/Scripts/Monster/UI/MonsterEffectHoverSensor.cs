@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems; // 마우스 이벤트 필수
 
-public class UIMonsterEffectIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MoneterEffectHoverSensor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _iconImage;
     [SerializeField] private TextMeshProUGUI _valueText;
