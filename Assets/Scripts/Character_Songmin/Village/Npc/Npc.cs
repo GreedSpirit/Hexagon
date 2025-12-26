@@ -51,6 +51,7 @@ public class Npc : MonoBehaviour, ITalkable
         Talks[1] = DataManager.Instance.GetString(talkData.NpcTalk2)?.Korean;
         Talks[2] = DataManager.Instance.GetString(talkData.NpcTalk3)?.Korean;
         Talks[3] = DataManager.Instance.GetString(talkData.NpcTalk4)?.Korean;
+        Img = characterData.Img;
 
         //이미지랑 모델도 나중에 받아오기
 
