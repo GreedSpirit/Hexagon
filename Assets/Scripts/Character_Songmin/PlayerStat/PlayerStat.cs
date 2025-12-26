@@ -155,7 +155,7 @@ public class PlayerStat
         if (CurrentHp <= 0)
         {
             CurrentHp = 0;
-            //죽는 매서드 호출
+            Player.Instance.Respawn();
             Debug.Log("플레이어 사망!");
         }
     }

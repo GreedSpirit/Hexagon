@@ -67,6 +67,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤�
         Debug.Log($"방어력 : {_stat.Defense}");
         Debug.Log($"이동속도 : {_stat.MoveSpeed}");
         Debug.Log($"보유 재화 : {_stat.Money}");
+        Respawn();
     }
 
     // [추가] GameSaveManager와 데이터 연동
@@ -302,7 +303,14 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤�
     {        
         GetHp(_stat.Hp);
         SetStatUIView(true);
-        gameObject.transform.position = Currentvillage.SpawnZone;
+        if (Currentvillage != null)
+        {
+            gameObject.transform.position = Currentvillage.SpawnZone;
+        }
+        else
+        {
+            gameObject.transform.position = new Vector2(-1.5f, 2);
+        }
     }
 
     public void SetVillage(Village village)
