@@ -25,7 +25,7 @@ Id,Key,Korean
 22,DescCardFireless,"상대에게 {D}의 데미지를 줍니다. 대상은 ""화상""을 {SEV} 부여합니다."
 23,NameStatusBurn,화상
 24,NameStatusPride,오만
-25,DsecStatusBurn,자신의 턴 시작 전 {표기 방법 미정}의 피해를 받고 화상이 1 감소합니다.
+25,DescStatusBurn,자신의 턴 시작 전 {표기 방법 미정}의 피해를 받고 화상이 1 감소합니다.
 26,DescStatusPride,현재 체력이 상대 체력보다 많으면 사용되며 주는 데미지가 2 증가한다.
 27,NameDungeonPride,우월의 심연
 28,DescDungeonPride,오만의 정령으로 인해 어지럽혀진 숲

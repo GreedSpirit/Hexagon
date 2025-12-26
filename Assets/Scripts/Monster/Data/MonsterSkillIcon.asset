@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3474d7b370fa92946be93626fba2b5ca, type: 3}
+  m_Name: MonsterSkillIcon
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteDatabase
+  allSprites:
+  - {fileID: -5198035918798720203, guid: 1d97bb8db1b457649b7894ce0f6cb9f1, type: 3}
+  - {fileID: 1616052335, guid: 42eca34bb05eb054a97d4bf4eebcbed1, type: 3}
+  - {fileID: -1584107397, guid: 42eca34bb05eb054a97d4bf4eebcbed1, type: 3}
+  - {fileID: -873994125, guid: 42eca34bb05eb054a97d4bf4eebcbed1, type: 3}

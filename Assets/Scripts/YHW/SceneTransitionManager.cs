@@ -36,6 +36,7 @@ public class SceneTransitionManager : MonoBehaviour
     /// </summary>
     public void LoadSceneWithFade(string sceneName)
     {
+        Player.Instance.Respawn();
         StartCoroutine(FadeOutAndLoad(sceneName));
     }
 

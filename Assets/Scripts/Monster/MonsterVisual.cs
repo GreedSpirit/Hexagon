@@ -41,6 +41,7 @@ public class MonsterVisual : MonoBehaviour
     public void PlayHit() => _animator.SetTrigger("Hit");
     public void PlayDie() => _animator.SetTrigger("Die");
     public void PlaySkill() => _animator.SetTrigger("Skill");
+    public void PlayBig() => _animator.SetTrigger("Big");
 
     // 애니메이션 이벤트 함수
     public void OnAnimatorEventFireBall()

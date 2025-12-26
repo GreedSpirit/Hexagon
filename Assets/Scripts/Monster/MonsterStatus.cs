@@ -240,7 +240,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 _selectedSkillKey = skillSlot.Item1;
                 _currentSkillData = DataManager.Instance.GetCard(_selectedSkillKey); //선택된 스킬 카드 데이터 저장
                 _selectedSkillValue = _currentSkillData.BaseValue + (_monsterSkillSet.skillLevels[_selectedSkillSlot] - 1) * _currentSkillData.ValuePerValue;
-                _selectedSkillValue = Mathf.FloorToInt(_selectedSkillValue * GetStatModMultiplier());
+                if(_currentSkillData.CardType == CardType.Attack)
+                {
+                    _selectedSkillValue = Mathf.FloorToInt(_selectedSkillValue * GetStatModMultiplier());
+                }
                 //이곳에서 스킬 타입에 따른 아이콘과 수치 UI 갱신 로직 추가
                 NotifySkillObservers(); //?선택된 스킬을 알림으로써 UI 갱신
                 break;
@@ -260,6 +263,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             
             if(_currentSkillData.CardType == CardType.Attack)
             {
+                if(_currentSkillData.Key == "KeyCardFireless") _visual.PlayFireBall();
                 _visual.PlayAttack();
 
                 Player.Instance.TakeDamage(_selectedSkillValue); //추후 인자값으로 공격 강화 상태를 받을수도있음
@@ -267,6 +271,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             }
             else if(_currentSkillData.CardType == CardType.Healing)
             {
+                _visual.PlaySkill();
                 GetHp(_selectedSkillValue);
                 Debug.Log("몬스터가 " + _selectedSkillValue + "의 체력을 회복했습니다.");
             }
@@ -277,7 +282,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             }
             else
             {
-                _visual.PlaySkill();
+                _visual.PlayBig();
             }
 
             if(_currentSkillData.Target == Target.Self)

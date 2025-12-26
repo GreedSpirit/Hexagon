@@ -29,6 +29,7 @@ public class MonsterFireBall : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(_isExploded) return;
+
         if (collision.CompareTag("Player"))
         {
             Explode();
