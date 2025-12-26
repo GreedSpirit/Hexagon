@@ -160,12 +160,9 @@ public class CardData : CSVLoad, TableKey
         else
             Turn = 0;
 
-        // 카드만 설명, 이미지
-        if (IsCard == true)
-        {
-            Desc = values[4];
-            CardImg = values[13];
-        }
+
+        Desc = values[4];
+        CardImg = values[13];
 
         // 공격 카드인데 타겟이 Self라면 Enemy로
         if (CardType == CardType.Attack && Target == Target.Self)
