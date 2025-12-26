@@ -62,7 +62,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     // 카드 데이터에 맞게 비주얼 갱신
     private void SetVisual()
     {
-        if (_img != null) _img.sprite = DataManager.Instance.GetCardSprite(_cardData.CardImg + "_0");
+        if (_img != null) _img.sprite = DataManager.Instance.GetCardSprite(_cardData.CardImg);
         else Debug.LogError("Img 가 할당되어있지 않습니다.");
         if (_nameText != null) _nameText.text = _cardData.Name;
         else Debug.LogError("NameText 가 할당되어있지 않습니다.");
