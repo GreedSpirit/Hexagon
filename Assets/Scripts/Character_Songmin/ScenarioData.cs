@@ -10,12 +10,12 @@ public enum Sin_Type
     Pride, Envy, Greed, Wrath, Sloth, Gluttony, Lust, None
 }
 
-public enum Trigger
+public enum Trigger_Type
 {
     gamestart, dungeonEnter, stageenter, prebattle, preseal, clear, None
 }
 
-public enum Event
+public enum Event_Type
 {
     img_show, img_hide, shake, img_change, None
 }
@@ -30,9 +30,9 @@ public class ScenarioData : CSVLoad, TableKey
     public string Id { get; set; }
     public Scenario_Type Scenario_Type { get; set; }
     public Sin_Type Sin_Type { get; set; }
-    public Trigger Trigger { get; set; }
+    public Trigger_Type Trigger_Type { get; set; }
     public int Play_Order { get; set; }
-    public Event Event { get; set; }
+    public Event_Type Event_Type { get; set; }
     public string Image_ID { get; set; }
     public Image_Effect Image_Effect { get; set; }
     public string Npc { get; set; } //캐릭터 이름
@@ -76,13 +76,13 @@ public class ScenarioData : CSVLoad, TableKey
         }
 
         // 3 : Trigger
-        if (Enum.TryParse(values[3], out Trigger type3))
+        if (Enum.TryParse(values[3], out Trigger_Type type3))
         {
-            Trigger = type3;
+            Trigger_Type = type3;
         }
         else
         {
-            Trigger = Trigger.None;
+            Trigger_Type = Trigger_Type.None;
         }
 
         // 4 : Play_Order
@@ -96,13 +96,13 @@ public class ScenarioData : CSVLoad, TableKey
         }
 
         // 5 : Event
-        if (Enum.TryParse(values[5], out Event type4))
+        if (Enum.TryParse(values[5], out Event_Type type4))
         {
-            Event = type4;
+            Event_Type = type4;
         }
         else
         {
-            Event = Event.None;
+            Event_Type = Event_Type.None;
         }
 
         // 6 : Image_ID
