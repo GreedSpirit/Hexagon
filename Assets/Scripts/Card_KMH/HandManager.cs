@@ -201,7 +201,8 @@ public class HandManager : MonoBehaviour
         }
 
         // 드로우 클립 재생
-        SoundManager.Instance.PlaySFX(drawClip);
+        if(drawClip != null)
+            SoundManager.Instance.PlaySFX(drawClip);
 
         // 리스트 추가
         _handCards.Add(cardLogic);
