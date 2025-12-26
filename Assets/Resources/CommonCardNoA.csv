@@ -3,8 +3,8 @@ Enum,int,int
 CardGrade,Level,NumberOfAvailable
 Common,1,5
 Common,2,5
-Common,3,6
-Common,4,6
-Common,5,7
-Common,6,7
+Common,3,5
+Common,4,5
+Common,5,6
+Common,6,6
 Common,7,7

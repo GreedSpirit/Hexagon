@@ -735,7 +735,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 6760022845899104387}
   m_OnClick:
     m_PersistentCalls:
@@ -907,7 +907,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4629177210619873203}
   m_OnClick:
     m_PersistentCalls:
@@ -1228,13 +1228,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9220900ad453fbf43a84fa1290439a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonPresenter
+  _deckUI: {fileID: 0}
   _dungeonPanel: {fileID: 8560122758122538440}
   _enterButton: {fileID: 6619677782218738424}
   _returnButton: {fileID: 4478117505749953046}
   _dungeonSlotViews:
   - {fileID: 1193595559037764015}
-  - {fileID: 2192875702534303336}
-  - {fileID: 8623240272253844542}
 --- !u!1 &8560122758122538440
 GameObject:
   m_ObjectHideFlags: 0
