@@ -50,15 +50,16 @@ public class SoundManager : MonoBehaviour
 
     [Header("BGM 설정")]
     [SerializeField] float _fadeTime = 1.0f;
+    [SerializeField] float _volume = 0.5f;
     [SerializeField] List<BGMData> _bgmList;
 
     [Header("공용 SFX 설정")]
     [SerializeField] List<SFXData> _sfxList;
 
     // 현재 볼륨
-    public float MasterVolume { get; private set; } = 0.5f;
-    public float BGMVolume { get; private set; } = 0.5f;
-    public float SFXVolume { get; private set; } = 0.5f;
+    public float MasterVolume { get; private set; } = 0.3f;
+    public float BGMVolume { get; private set; } = 0.3f;
+    public float SFXVolume { get; private set; } = 0.3f;
 
     // 클립 간단하게 가져올 수 있도록 딕셔너리 생성
     private Dictionary<BGMType, AudioClip> _bgmTable = new Dictionary<BGMType, AudioClip>();
@@ -111,6 +112,9 @@ public class SoundManager : MonoBehaviour
 
         // 씬 로드 델리게이트 구독
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // 맨첨에 일단 실행
+        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
     private void OnDestroy()
@@ -179,6 +183,7 @@ public class SoundManager : MonoBehaviour
             case "TitleScene":
                 targetBGM = BGMType.Title;
                 break;
+            case "TestBuildScene_LJH":
             case "VillageScene":
                 targetBGM = BGMType.Village;
                 break;
@@ -251,14 +256,14 @@ public class SoundManager : MonoBehaviour
         _bgmSource.Play();
 
         // 페이드인
-        while (_bgmSource.volume < 1f)
+        while (_bgmSource.volume < _volume)
         {
             _bgmSource.volume += Time.deltaTime / _fadeTime;
             yield return null;
         }
 
         // 끝나면 확실히 1로
-        _bgmSource.volume = 1f;
+        _bgmSource.volume = _volume;
     }
 
     // 배경음 끄기 (페이드 아웃)

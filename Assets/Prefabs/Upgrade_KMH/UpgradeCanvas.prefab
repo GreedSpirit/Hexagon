@@ -1836,11 +1836,11 @@ MonoBehaviour:
   _cardCountText: {fileID: 5655152180943849075}
   _goldText: {fileID: 8593173666551530835}
   _upgradeButton: {fileID: 7405916567474942804}
-  _upgradeEdgeCanvasGroup: {fileID: 0}
+  _upgradeEdgeCanvasGroup: {fileID: 4155169853128140110}
   _targetScroll: {fileID: 2407973501920339571}
   waitTime: 3
-  enhanceClip: {fileID: 0}
-  enhanceSuccessClip: {fileID: 0}
+  enhanceClip: {fileID: 8300000, guid: 4c079ced8c3457146b59d5dcd8091347, type: 3}
+  enhanceSuccessClip: {fileID: 8300000, guid: acdbd6da4b436a74d8eca3c8295fdbc5, type: 3}
 --- !u!1 &1726533105203292038
 GameObject:
   m_ObjectHideFlags: 0
