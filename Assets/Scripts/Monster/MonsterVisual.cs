@@ -21,7 +21,7 @@ public class MonsterVisual : MonoBehaviour
     public void SetVisual(string resourceName)
     {
         var controller = Resources.Load<RuntimeAnimatorController>($"Monsters/{resourceName}");
-        if(resourceName != "ModelMoster01")
+        if(resourceName != "Demon")
         {
             Flip(true);
         }

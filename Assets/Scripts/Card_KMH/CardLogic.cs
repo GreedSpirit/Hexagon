@@ -113,6 +113,9 @@ public class CardLogic : MonoBehaviour
                 int turnValue = GetTurn();
                 // 사용 (상태이상 키, 상태이상 부여 수치, 턴 수치, 적용 대상)
                 action.Use(Data.StatusEffect, statusEffectValue, turnValue, target);
+
+                // 효과 체크
+                _handManager.TargetStatusValueChanged();
             }
             else
             {

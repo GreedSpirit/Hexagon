@@ -83,7 +83,8 @@ public class TalkUI : MonoBehaviour
         {
             _upgradePannel.SetActive(false);
             _testButton.SetActive(false);
-        }        
+        }
+        Player.Instance.SwitchIsTalking(false);
     }
 
     public void EnterScenario(List<ScenarioData> datas)

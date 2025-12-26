@@ -104,6 +104,8 @@ public class DeckUI : MonoBehaviour
     {
         GameSaveManager.Instance.LoadGame();
         // DeckUI 끄기
+        Player.Instance.Currentvillage.VillageManager.OnOffVillageName(true);
+        Player.Instance.EnterMoveMod();
         this.gameObject.SetActive(false);
         if (uiBackground != null) uiBackground.SetActive(false);
         // 인벤토리 정리 (끄거나 모드 해제)
@@ -150,6 +152,8 @@ public class DeckUI : MonoBehaviour
         // 진짜 씬 이동
         string dungeonName = _targetDungeon != null ? _targetDungeon.Name : "Unknown Dungeon";
         Debug.Log($"던전 '{dungeonName}'으로 출발합니다!");
+
+        Player.Instance.EnterBattle();
 
         // 실제 전투 씬 이름으로 로드
         SceneManager.LoadScene("DungeonBattleScene");

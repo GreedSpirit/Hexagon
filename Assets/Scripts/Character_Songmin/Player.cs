@@ -67,6 +67,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         Debug.Log($"¹æ¾î·Â : {_stat.Defense}");
         Debug.Log($"ÀÌµ¿¼Óµµ : {_stat.MoveSpeed}");
         Debug.Log($"º¸À¯ ÀçÈ­ : {_stat.Money}");
+        Respawn();
     }
 
     // [Ãß°¡] GameSaveManager¿Í µ¥ÀÌÅÍ ¿¬µ¿
@@ -302,7 +303,14 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {        
         GetHp(_stat.Hp);
         SetStatUIView(true);
-        gameObject.transform.position = Currentvillage.SpawnZone;
+        if (Currentvillage != null)
+        {
+            gameObject.transform.position = Currentvillage.SpawnZone;
+        }
+        else
+        {
+            gameObject.transform.position = new Vector2(-1.5f, 2);
+        }
     }
 
     public void SetVillage(Village village)
@@ -444,8 +452,33 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         }
     }
 
-    public void ResetModel()
-    {
-        gameObject.transform.localScale = new Vector2(1, 1);
+    public void EnterDungeonSelect()
+    {        
+        _playerUIManager.OnOffPlayerInventoryUi(false);
+        _playerUIManager.OnOffPlayerStatUi(false);
+        EnterBattleMod();
     }
+
+    public void BackToVillage()
+    {        
+        _playerUIManager.OnOffPlayerInventoryUi(true);
+        _playerUIManager.OnOffPlayerStatUi(true);
+        EnterMoveMod();
+    }
+
+    public void EnterBattle()
+    {
+        gameObject.transform.position = new Vector2(-3f, -1.5f);
+        gameObject.transform.localScale = new Vector2(1, 1);
+        _playerUIManager.OnOffPlayerInventoryUi(true);
+        _playerUIManager.OnOffPlayerStatUi(true);
+    }
+
+    public void EnterReward()
+    {
+        _playerUIManager.OnOffPlayerInventoryUi(false);
+        _playerUIManager.OnOffPlayerStatUi(false);
+    }
+
+    
 }

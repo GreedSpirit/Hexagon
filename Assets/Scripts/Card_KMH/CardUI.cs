@@ -325,7 +325,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     // 설명 설정
     public void SetDescText()
     {
-        if (_cardData.IsCard == true && _descText != null)
+        if (_descText != null)
             _descText.text = _cardLogic.Desc;
         
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
@@ -345,6 +345,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
                     break;
                 case CardType.Shield:
                     type = "방어";
+                    break;
+                case CardType.Healing:
+                    type = "치유";
                     break;
                 case CardType.Spell:
                     type = "주문";
