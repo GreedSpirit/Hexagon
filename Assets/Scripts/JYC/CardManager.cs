@@ -72,19 +72,27 @@ public class CardManager : MonoBehaviour
         // 덱 및 인벤토리 초기화 (중복 방지용)
         UserCardList.Clear();
         CurrentDeck.Clear();
+
+
+        AddStartingCard("KeyCardBanBookThrowing");
+        AddStartingCard("KeyCardOldBookBreakDown");
+        AddStartingCard("KeyCardWeightOfKnowledge");
+        AddStartingCard("KeyCardRewindHistory");
+        AddStartingCard("KeyCardOldBookShield");
+        AddStartingCard("KeyCardAccumulatedKnowledge");
+
+
         // 덱 구성 없으니 일단 카드 데이터 전부
-        foreach (var cardData in DataManager.Instance.CardDict)
-        {
-            // IsCard가 false(스킬)인 것은 건너뜀 (9~16번만 통과)
-            if (cardData.Value == null || cardData.Value.IsCard == false) continue;
-
-            // 인벤토리에 넉넉하게 5장씩 (테스트용)
-            AddCard(cardData.Value.Id, 5);
-
-
-
-            // CurrentDeck.Add(cardData.Value.Id);  주석 처리
-        }
+        //foreach (var cardData in DataManager.Instance.CardDict)
+        //{
+        //    // IsCard가 false(스킬)인 것은 건너뜀 (9~16번만 통과)
+        //    if (cardData.Value == null || cardData.Value.IsCard == false) continue;
+        //
+        //    // 인벤토리에 넉넉하게 5장씩 (테스트용)
+        //    AddCard(cardData.Value.Id, 5);
+        //
+        //    // CurrentDeck.Add(cardData.Value.Id);  주석 처리
+        //}
         // 자동으로 덱 채우기 (테스트 편의용)
         // 가지고 있는 카드를 앞에서부터 순서대로 덱에 장착 시도 (최대 30장까지)
         // Common, Rare, Epic 카드가 덱에 들어가서 입장 조건을 맞춥니다.
@@ -116,6 +124,33 @@ public class CardManager : MonoBehaviour
         _cardStatusActions.Add("KeyStatusKnowledge", new CardVulnerableAction());
         _cardStatusActions.Add("KeyStatusDespair", new CardVulnerableAction());
     }
+
+    // 첫 시작 카드 추가 (Key)
+    private void AddStartingCard(string cardKey)
+    {
+        // Key로 카드데이터
+        CardData cardData = DataManager.Instance.GetCard(cardKey);
+
+        if(cardData == null)
+        {
+            Debug.Log($"키 {cardKey} 의 CardData가 존재하지 않습니다.");
+            return;
+        }
+
+        // id
+        int cardId = cardData.Id;
+
+        // 플레이어 소지 카드 목록에 추가
+        UserCardList.Add(new UserCard()
+        {
+            CardId = cardId,
+            Level = 1,
+            Count = 1,
+            AcquiredTime = System.DateTime.Now
+        });
+    }
+
+
     public bool IsDeckValid(int requiredCount)
     {
         // 지금은 단순히 개수만 체크하지만, 나중에 코스트 제한 등을 추가할 수 있음
@@ -167,6 +202,9 @@ public class CardManager : MonoBehaviour
                 Count = Mathf.Min(amount, 99),
                 AcquiredTime = System.DateTime.Now
             });
+
+            // 미보유 카드 획득 시 플레이어 경험치 획득
+            GetExp(cardId);
         }
     }
 
@@ -230,6 +268,33 @@ public class CardManager : MonoBehaviour
 
         Debug.LogWarning($"{statusEffect}에 해당하는 행동이 없습니다.");
         return false;
+    }
+
+    // 미보유 카드 첫 획득 시 플레이어 경험치 획득
+    private void GetExp(int cardId)
+    {
+        int exp;
+
+        CardGrade grade = DataManager.Instance.GetCard(cardId).CardGrade;
+
+        switch (grade)
+        {
+            case CardGrade.Common:
+            case CardGrade.Rare:
+                exp = 20;
+                break;
+            case CardGrade.Epic:
+                exp = 25;
+                break;
+            case CardGrade.Legendary:
+                exp = 40;
+                break;
+            default:
+                exp = 0;
+                break;
+        }
+
+        Player.Instance.GetExp(exp);
     }
 
     // 저장 데이터 포맷 클래스
