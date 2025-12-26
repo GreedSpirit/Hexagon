@@ -17,7 +17,7 @@ public class ScenarioPlayer : MonoBehaviour
             ScenarioData data = DataManager.Instance.GetScenario($"scn_Intro_" + i.ToString("D3"));
             if (data == null)
             {
-                return;
+                break;
             }
             _gamestart.Add(data);
         }
@@ -26,7 +26,7 @@ public class ScenarioPlayer : MonoBehaviour
             ScenarioData data = DataManager.Instance.GetScenario($"scn_dun_envy_" + i.ToString("D3"));
             if (data == null)
             {
-                return;
+                break;
             }
             _dungeonenter.Add(data);
         }
@@ -35,7 +35,7 @@ public class ScenarioPlayer : MonoBehaviour
             ScenarioData data = DataManager.Instance.GetScenario($"scn_dun_envy_st1_" + i.ToString("D3"));
             if (data == null)
             {
-                return;
+                break;
             }
             _stageenter.Add(data);
         }
@@ -44,7 +44,7 @@ public class ScenarioPlayer : MonoBehaviour
             ScenarioData data = DataManager.Instance.GetScenario($"scn_boss_pride_" + i.ToString("D3"));
             if (data == null)
             {
-                return;
+                break;
             }
             _prebattle.Add(data);
         }
@@ -53,7 +53,7 @@ public class ScenarioPlayer : MonoBehaviour
             ScenarioData data = DataManager.Instance.GetScenario($"scn_boss_seal_" + i.ToString("D3"));
             if (data == null)
             {
-                return;
+                break;
             }
             _preseal.Add(data);
         }
@@ -62,7 +62,7 @@ public class ScenarioPlayer : MonoBehaviour
             ScenarioData data = DataManager.Instance.GetScenario($"scn_pride_clear_" + i.ToString("D3"));
             if (data == null)
             {
-                return;
+                break;
             }
             _clear.Add(data);
         }
