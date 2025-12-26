@@ -6,6 +6,7 @@ public class VillageData : CSVLoad, TableKey
 {
     public int Id { get; set; }
     public string Key { get; set; }
+    public string Name { get; set; }
     public float CharSpawnAreaX { get; set; }
     public float CharSpawnAreaY { get; set; }
     public float DungeonEntranceArea { get; set; }
@@ -36,8 +37,11 @@ public class VillageData : CSVLoad, TableKey
         // 1 :  Key
         Key = values[1];
 
-        // 2 :  CharSpawnAreaX
-        if (float.TryParse(values[2], out vFloat))
+        // 2 :  Name
+        Name = values[2];
+
+        // 3 :  CharSpawnAreaX
+        if (float.TryParse(values[3], out vFloat))
         {
             CharSpawnAreaX = vFloat;
         }
@@ -46,8 +50,8 @@ public class VillageData : CSVLoad, TableKey
             CharSpawnAreaX = 0;
         }
 
-        // 3 :  CharSpawnAreaY
-        if (float.TryParse(values[3], out vFloat))
+        // 4 :  CharSpawnAreaY
+        if (float.TryParse(values[4], out vFloat))
         {
             CharSpawnAreaY = vFloat;
         }
@@ -56,8 +60,8 @@ public class VillageData : CSVLoad, TableKey
             CharSpawnAreaY = 0;
         }
 
-        // 4 :  CharSpawnAreaX
-        if (float.TryParse(values[4], out vFloat))
+        // 5 :  CharSpawnAreaX
+        if (float.TryParse(values[5], out vFloat))
         {
             DungeonEntranceArea = vFloat;
         }
@@ -66,8 +70,8 @@ public class VillageData : CSVLoad, TableKey
             DungeonEntranceArea = 0;
         }
 
-        // 5 :  DungeonEntranceEndArea
-        if (float.TryParse(values[5], out vFloat))
+        // 6 :  DungeonEntranceEndArea
+        if (float.TryParse(values[6], out vFloat))
         {
             DungeonEntranceEndArea = vFloat;
         }
@@ -76,10 +80,10 @@ public class VillageData : CSVLoad, TableKey
             DungeonEntranceEndArea = 0;
         }
 
-        // 6 :  Img
-        Img = values[6];
+        // 7 :  Img
+        Img = values[7];
 
-        // 7 :  Bgm
-        Bgm = values[7];
+        // 8 :  Bgm
+        Bgm = values[8];
     }
 }

@@ -34,14 +34,14 @@ public class TalkUI : MonoBehaviour
         _testButton.SetActive(false);
     }
 
-    public void EnterTalk(ITalkable talable)
+    public void EnterTalk(ITalkable talkable)
     {
-        SetTalkable(talable);
-        _currentTalking = talable;
+        SetTalkable(talkable);
+        _currentTalking = talkable;        
         if (_fadeRoutine != null)
         {
             StopCoroutine(_fadeRoutine);
-        }            
+        }        
         _fadeRoutine = StartCoroutine(FadeInAndOut(true));
     }
 
@@ -99,8 +99,10 @@ public class TalkUI : MonoBehaviour
     {
         yield return FadeRoutine(true);
         _talkPannel.SetActive(isEnter);
+        Player.Instance.SwitchIsTalking(isEnter);
         if (_currentTalking is Npc)
         {
+            _currentTalking.SwitchIsTalking(isEnter);
             _upgradeEnterButton.SetActive(isEnter);
         }
         yield return FadeRoutine(false);

@@ -135,8 +135,8 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
 
         sb.Replace("{D}", GetValue(level).ToString());
         sb.Replace("{N}", GetValue(level).ToString());
-        sb.Replace("{SEV}", _cardData.StatusEffectValue.ToString());
-        sb.Replace("{turns}", _cardData.Turn.ToString());
+        sb.Replace("{SEV}", GetStatusEffectValue(level).ToString());
+        sb.Replace("{turns}", GetTurn(level).ToString());
 
         return sb.ToString();
     }
@@ -145,6 +145,14 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     private int GetValue(int level)
     {
         return _cardData.BaseValue + (level - 1) * _cardData.ValuePerValue;
+    }
+    private int GetStatusEffectValue(int level)
+    {
+        return _cardData.StatusEffectValue + (level - 1) * _cardData.ValuePerValue;
+    }
+    private int GetTurn(int level)
+    {
+        return _cardData.Turn + (level - 1) * _cardData.ValuePerValue;
     }
 
     // 선택 - 강화 슬롯
