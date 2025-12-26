@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 934c54ebc952e06408d0e55092e24946, type: 3}
   m_Name: PoisonAction
   m_EditorClassIdentifier: Assembly-CSharp::CardPoisonAction
-  _useClip: {fileID: 0}
+  _useClip: {fileID: 8300000, guid: bb010fc63e8cc4441a035bde702d9c1e, type: 3}

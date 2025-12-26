@@ -691,7 +691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5245282, g: 0.49384826, b: 0.49384826, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1266,7 +1266,7 @@ GameObject:
   - component: {fileID: 6737015283717204880}
   - component: {fileID: 689027412308660929}
   m_Layer: 5
-  m_Name: UpgradeLevelPanel
+  m_Name: GradeColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1312,7 +1312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.335849, g: 0.335849, b: 0.335849, a: 1}
+  m_Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1515,7 +1515,12 @@ MonoBehaviour:
   _typeText: {fileID: 4802698471854825601}
   _levelText: {fileID: 3191410491444468440}
   _numberOfAvailableText: {fileID: 6601636321985449024}
-  _edgeColor: {fileID: 284036935391861195}
+  _gradeColorImg: {fileID: 689027412308660929}
+  _gradeColors:
+  - {r: 0.7921569, g: 0.81960785, b: 0.87058824, a: 1}
+  - {r: 0.1254902, g: 0.3372549, b: 0.6666667, a: 1}
+  - {r: 0.2784314, g: 0.09803922, b: 0.37254903, a: 1}
+  - {r: 0.93333334, g: 0.56078434, b: 0.007843138, a: 1}
 --- !u!225 &8066233879730504724
 CanvasGroup:
   m_ObjectHideFlags: 0

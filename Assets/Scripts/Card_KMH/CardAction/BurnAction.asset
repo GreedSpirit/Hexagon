@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2a82b08b85f3a4ea970bc1a1b15972, type: 3}
   m_Name: BurnAction
   m_EditorClassIdentifier: Assembly-CSharp::CardBurnAction
-  _useClip: {fileID: 0}
+  _useClip: {fileID: 8300000, guid: 109b94b7db1d7364e83a65f328c72efb, type: 3}

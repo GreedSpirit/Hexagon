@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e9a9e32a8f6b54eb58be0671810568, type: 3}
   m_Name: StigmaAction
   m_EditorClassIdentifier: Assembly-CSharp::CardStigmaAction
-  _useClip: {fileID: 0}
+  _useClip: {fileID: 8300000, guid: d34d2e811697d334cbf59ebd90feadb0, type: 3}

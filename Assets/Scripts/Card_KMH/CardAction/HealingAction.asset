@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ac137fab66b9cb4bab94b7974ee71a1, type: 3}
   m_Name: HealingAction
   m_EditorClassIdentifier: Assembly-CSharp::CardHealingAction
-  _useClip: {fileID: 0}
+  _useClip: {fileID: 8300000, guid: 6aceadde40bde5b47be39eacaaba0462, type: 3}

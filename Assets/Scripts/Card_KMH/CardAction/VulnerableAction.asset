@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d37686748e7a340bf723128b7ca7db, type: 3}
   m_Name: VulnerableAction
   m_EditorClassIdentifier: Assembly-CSharp::CardVulnerableAction
-  _useClip: {fileID: 0}
+  _useClip: {fileID: 8300000, guid: d34d2e811697d334cbf59ebd90feadb0, type: 3}
