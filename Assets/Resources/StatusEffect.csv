@@ -1,19 +1,5 @@
 Id,StatusEffect 테이블의 기본키,"강화, 약화, 상태이상 효과의 이름","강화, 약화, 상태이상 효과의 설명","강화, 약화, 상태이상 효과를 분류하는 컬럼
-아래 중 택 1 기재
-
-Buff: 대상을 강화시키는 효과
-DeBuff: 대상을 약화시키는 효과
-Dot: 본인(캐릭터, 몬스터)의 턴이 종료되었을 때 피해를 입히는 방식","강화, 약화, 상태이상 효과가 실제로 적용되는 형태를 정의한 컬럼
-
-아래 중 택 1 기재
-
-StatMod: 능력치 변경 (Stat Modifier)
-Accuracy: 공격 타입 카드의 명중률에 관여함
-DmgTaken: 받는 피해량에 영향을 미침
-TurnEndDmg: 턴이 종료되었을 때 피해를 입힘","강화, 약화, 상태이상 효과의 고정 계수 혹은 배율","턴 종료 시 감소하는 형태
-
-Turn: 지속 시간 1 감소
-Stack: 스택 1 감소",캐릭터에게 적용되는 최대 수치,몬스터에게 적용되는 최대 수치,"강화, 약화, 상태이상 효과의 아이콘 이미지"
+아래 중 택 1 기재 Buff: 대상을 강화시키는 효과 DeBuff: 대상을 약화시키는 효과 Dot: 본인(캐릭터, 몬스터)의 턴이 종료되었을 때 피해를 입히는 방식","강화, 약화, 상태이상 효과가 실제로 적용되는 형태를 정의한 컬럼 아래 중 택 1 기재 StatMod: 능력치 변경 (Stat Modifier) Accuracy: 공격 타입 카드의 명중률에 관여함 DmgTaken: 받는 피해량에 영향을 미침 TurnEndDmg: 턴이 종료되었을 때 피해를 입힘","강화, 약화, 상태이상 효과의 고정 계수 혹은 배율","턴 종료 시 감소하는 형태 Turn: 지속 시간 1 감소 Stack: 스택 1 감소",캐릭터에게 적용되는 최대 수치,몬스터에게 적용되는 최대 수치,"강화, 약화, 상태이상 효과의 아이콘 이미지"
 int,string,string,string,Enum,Enum,float,enum,int,int,string
 Id,Key,Name,Desc,BuffType,EffectLogic,ValueFormula,DecreaseType,MaxChar,MaxMon,Img
 1,KeyStatusBurn,NameStatusBurn,DescStatusBurn,DoT,TurnEndDmg,1.0,Stack,99,99,Img_StatusBurn
