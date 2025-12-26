@@ -46,12 +46,16 @@ public class TalkUI : MonoBehaviour
     public void EnterTalk(ITalkable talkable) 
     {
         SetTalkable(talkable);
+
         _currentTalking = talkable; 
         _rightImg.gameObject.SetActive(false);
+        
+        
+        
         if (_fadeRoutine != null)
         {
             StopCoroutine(_fadeRoutine);
-        }        
+        }
         _fadeRoutine = StartCoroutine(FadeInAndOut(true));
     }
 
@@ -81,10 +85,10 @@ public class TalkUI : MonoBehaviour
         }
         else
         {
+            Player.Instance.SwitchIsTalking(false);
             _upgradePannel.SetActive(false);
             _testButton.SetActive(false);
-        }
-        Player.Instance.SwitchIsTalking(false);
+        }        
     }
 
     public void EnterScenario(List<ScenarioData> datas)
@@ -101,7 +105,12 @@ public class TalkUI : MonoBehaviour
 
     public void UpdateScenario()
     {
+        if (_currentIndex >= _currentScenario.Count)
+        {
+            //시나리오 종료 처리
+        }
         ScenarioData data = _currentScenario[_currentIndex];
+        
         //_backgroundPannel.sprite = 스프라이트 설정해주기
         //만약에 까만 화면이면 페이드 아웃 해주기
         if (_leftImg.sprite == null && data.Character_Image == "Img_PC_Erion")
@@ -161,13 +170,18 @@ public class TalkUI : MonoBehaviour
     IEnumerator FadeInAndOut(bool isEnter)
     {
         yield return FadeRoutine(true);
+
+
         _talkPannel.SetActive(isEnter);
         Player.Instance.SwitchIsTalking(isEnter);
+        
         if (_currentTalking is Npc)
         {
             _currentTalking.SwitchIsTalking(isEnter);
             _upgradeEnterButton.SetActive(isEnter);
         }
+
+
         yield return FadeRoutine(false);
     }
 
