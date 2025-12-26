@@ -151,6 +151,8 @@ public class DeckUI : MonoBehaviour
         string dungeonName = _targetDungeon != null ? _targetDungeon.Name : "Unknown Dungeon";
         Debug.Log($"던전 '{dungeonName}'으로 출발합니다!");
 
+        Player.Instance.EnterBattle();
+
         // 실제 전투 씬 이름으로 로드
         SceneManager.LoadScene("DungeonBattleScene");
     }
