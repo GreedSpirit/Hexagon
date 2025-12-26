@@ -119,7 +119,7 @@ public class CardLogic : MonoBehaviour
                 // 카드 수치 가져오기
                 int cardValue = GetValue();
                 // 사용 (상태이상 키, 카드 계산 수치, 적용 대상)
-                action.Use(Data.StatusEffect, cardValue, target);
+                action.Use(cardValue, target);
 
             }
         }

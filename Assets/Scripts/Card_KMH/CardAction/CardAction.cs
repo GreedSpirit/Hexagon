@@ -6,7 +6,7 @@ public class CardAction : ScriptableObject, ICardAction
     [SerializeField] AudioClip _useClip;
 
     // 카드 사용
-    public virtual void Use(string statusEffectKey, int value, IBattleUnit target)
+    public virtual void Use(int value, IBattleUnit target)
     {
         if (target == null)
         {

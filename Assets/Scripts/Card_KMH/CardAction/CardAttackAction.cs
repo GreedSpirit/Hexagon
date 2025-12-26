@@ -4,9 +4,9 @@ using UnityEngine;
 public class CardAttackAction : CardAction
 {
     // 카드 사용
-    public override void Use(string statusEffectKey, int value, IBattleUnit target)
+    public override void Use(int value, IBattleUnit target)
     {
-        base.Use(statusEffectKey, value, target);
+        base.Use(value, target);
         Debug.Log($"공격 카드 사용 : {value} 피해.");
         target.TakeDamage(value);
     }
