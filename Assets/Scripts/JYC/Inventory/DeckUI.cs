@@ -102,6 +102,7 @@ public class DeckUI : MonoBehaviour
     // '뒤로가기'나 '닫기' 버튼에 연결할 함수 (마을로 돌아갈 때)
     public void CloseDeckUI()
     {
+        GameSaveManager.Instance.LoadGame();
         // DeckUI 끄기
         this.gameObject.SetActive(false);
         if (uiBackground != null) uiBackground.SetActive(false);
@@ -144,7 +145,7 @@ public class DeckUI : MonoBehaviour
     public void OnClickPopupYes()
     {
         // 최종 저장 (전투 진입 전 상태 저장)
-        CardManager.Instance.SaveGame();
+        GameSaveManager.Instance.SaveGame();
 
         // 진짜 씬 이동
         string dungeonName = _targetDungeon != null ? _targetDungeon.Name : "Unknown Dungeon";

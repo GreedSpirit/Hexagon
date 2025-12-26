@@ -52,7 +52,7 @@ public class RewardUI : MonoBehaviour
         }
 
         // È¹µæ ÈÄ Áï½Ã ÀúÀå
-        CardManager.Instance.SaveGame();
+        GameSaveManager.Instance.SaveGame();
 
         _rewardPanel.SetActive(false);
 

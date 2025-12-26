@@ -86,7 +86,7 @@ public class InventoryManager : MonoBehaviour
                 CardManager.Instance.CurrentDeck.Add(cardId);
             }
         }
-        CardManager.Instance.SaveGame();
+        GameSaveManager.Instance.SaveGame();
     }
 
     // 등급별 슬롯 범위를 동적으로 계산
