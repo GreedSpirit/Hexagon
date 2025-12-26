@@ -58,6 +58,13 @@ public class DeckUI : MonoBehaviour
     {
         _targetDungeon = dungeon;
 
+        // 인벤토리 매니저에게 이번 던전의 덱 구성 정보(슬롯 개수 등)를 전달해서 세팅하게 함
+        DeckData requiredDeck = DataManager.Instance.GetDeck(_targetDungeon.Deck);
+        if (requiredDeck != null && InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.ConfigureDeckSlots(requiredDeck);
+        }
+
         // 던전 정보 UI 갱신 (총 스테이지 수 표시)
         if (stageInfoText != null && _targetDungeon != null)
         {
