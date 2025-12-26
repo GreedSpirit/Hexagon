@@ -2565,18 +2565,15 @@ MonoBehaviour:
   - Name: Knowledge
     statusKey: KeyStatusKnowledge
     actionSO: {fileID: 11400000, guid: adc07c0378fc9dd45bdd3fba5dd11d99, type: 2}
-  - Name: Knowledge
-    statusKey: KeyStatusKnowledge
-    actionSO: {fileID: 11400000, guid: adc07c0378fc9dd45bdd3fba5dd11d99, type: 2}
   - Name: Despair
     statusKey: KeyStatusDespair
     actionSO: {fileID: 11400000, guid: 12ac7189389bcba479446e66feefa5b4, type: 2}
   - Name: Vulnerable
     statusKey: KeyStatusVulnerable
     actionSO: {fileID: 11400000, guid: bf121c51edda99d4d83c34c5bef0c664, type: 2}
-  - Name: Vulnerable
+  - Name: Stigma
     statusKey: KeyStatusVulnerable
-    actionSO: {fileID: 11400000, guid: bf121c51edda99d4d83c34c5bef0c664, type: 2}
+    actionSO: {fileID: 11400000, guid: 10e3c2a40a07c9340bd4acb8c7862942, type: 2}
 --- !u!4 &1879764562
 Transform:
   m_ObjectHideFlags: 0
