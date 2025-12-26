@@ -1,0 +1,7 @@
+ID,기본 키,이름,이미지,설명
+int,string,string,string,string
+Id,Key,Name,Img,Desc
+1,KeyImage01,NameImage01,Img_Intro_cut_01,DescImage01
+2,KeyImage02,NameImage02,Img_Intro_cut_02,DescImage02
+3,KeyImage03,NameImage03,Img_preseal_cut_01,DescImage03
+4,KeyImage04,NameImage04,Img_preseal_cut_02,DescImage04

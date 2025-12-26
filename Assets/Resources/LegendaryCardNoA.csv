@@ -2,9 +2,9 @@
 Enum,int,int
 CardGrade,Level,NumberOfAvailable
 Legendary,1,1
-Legendary,2,1
-Legendary,3,1
-Legendary,4,1
-Legendary,5,1
-Legendary,6,1
-Legendary,7,2
+Legendary,2,2
+Legendary,3,3
+Legendary,4,4
+Legendary,5,5
+Legendary,6,6
+Legendary,7,7

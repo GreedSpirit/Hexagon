@@ -1,10 +1,4 @@
-ID,"재화 타입
-1: 화폐
-2: 퀘스트 카드",최대 보유,기본 키,이름,이미지,설명
-int,int,int,string,string,string,string
-Id,Type,Max,Key,Name,Img,Desc
-1,1,999999,KeyCurrency골드001,NameCurrency001,ImgCurrency001,DescCurrency001
-2,2,99,KeyCurrency퀘스트002,NameCurrency002,ImgCurrency002,DescCurrency002
-3,2,99,KeyCurrency퀘스트003,NameCurrency003,ImgCurrency003,DescCurrency003
-4,2,99,KeyCurrency퀘스트004,NameCurrency004,ImgCurrency004,DescCurrency004
-5,2,99,KeyCurrency퀘스트005,NameCurrency005,ImgCurrency005,DescCurrency005
+ID,최대 보유,기본 키,이름,이미지,설명
+int,int,string,string,string,string
+Id,Max,Key,Name,Img,Desc
+1,999999,KeyCurrencyGold001,NameCurrency001,ImgCurrency001,DescCurrency001

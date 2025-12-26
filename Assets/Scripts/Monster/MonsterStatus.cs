@@ -113,7 +113,6 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
         if (_monsterCurHP <= 0)
         {
-            _visual.PlayDie();
             Death();
         }
         else
@@ -183,7 +182,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     private void Death()
     {
         if(_isDead) return;
+        _visual.PlayDie();
+
         _isDead = true;
+        
         //몬스터 죽음 처리 로직 추가
         Debug.Log("몬스터가 죽었습니다. ID: " + _monsterId);
         OnMonsterDeath?.Invoke(this); //이 몬스터가 죽었음을 알림

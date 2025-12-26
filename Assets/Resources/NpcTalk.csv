@@ -1,5 +1,5 @@
 Id,상호작용 UI 대사가 출력될 캐릭터의 키값 기재,상호작용 UI에서 출력될 캐릭터 대사 1,상호작용 UI에서 출력될 캐릭터 대사 2,상호작용 UI에서 출력될 캐릭터 대사 3,상호작용 UI에서 출력될 캐릭터 대사 4
 int,string,string,string,string,string
 Id,Npc,NpcTalk1,NpcTalk2,NpcTalk3,NpcTalk4
-1,NameNpcLibra,TalkLibra0001,TalkLibra0002,TalkLibra0003,TalkLibra0004
-2,NameNpcLionel,TalkLionel0001,TalkLionel0002,TalkLionel0003,TalkLionel0004
+1,KeyNpcLibra,TalkNpcLibra1,TalkNpcLibra2,TalkNpcLibra3,TalkNpcLibra4
+2,KeyNpcLionel,TalkNpcLionel1,TalkNpcLionel2,TalkNpcLionel3,TalkNpcLionel4
