@@ -93,7 +93,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     private void Start()
     {
-        _deathEffect = GetComponent<MonsterDeathEffect>();        
+        _deathEffect = GetComponent<MonsterDeathEffect>();  
     }
 
     public void TakeDamage(int damage) // 데미지를 입을 때 호출할 함수

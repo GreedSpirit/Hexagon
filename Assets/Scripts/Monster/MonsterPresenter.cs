@@ -33,6 +33,11 @@ public class MonsterPresenter : MonoBehaviour
 
     private void HandleHoverEnter()
     {
+        if (string.IsNullOrEmpty(_monsterStatus.MonsterData.Name))
+    {
+        Debug.LogError($"ID: {_monsterStatus.MonsterData.Id}, Name: {_monsterStatus.MonsterData.Name} 몬스터의 NameKey가 비어있습니다!");
+        return;
+    }
         _monsterNameView.SetName(DataManager.Instance.GetString(_monsterStatus.MonsterData.Name).Korean);        
         _hoverCount++;
         bool shouldShow = _hoverCount > 0;
