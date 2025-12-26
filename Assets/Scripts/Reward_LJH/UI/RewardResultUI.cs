@@ -18,6 +18,7 @@ public class RewardResultUI : MonoBehaviour
     [Header("Right Section (Currency)")]
     [SerializeField] private Transform _currencyParent;    // Vertical Layout Group 위치
     [SerializeField] private GameObject _currencyTextPrefab; // 텍스트만 있는 프리팹
+    [SerializeField] private GameObject _currencyIsOverText;
 
     [Header("Buttons")]
     [SerializeField] private Button _returnButton;
@@ -92,10 +93,16 @@ public class RewardResultUI : MonoBehaviour
         textComp.text = $"{displayName} : {reward.Amount}";
     }
 
+    public void OnMoneyOverText()
+    {
+        _currencyIsOverText.SetActive(true);
+    }
+
     private void ClearUI()
     {
         foreach (Transform child in _generalCardParent) Destroy(child.gameObject);
         foreach (Transform child in _currencyParent) Destroy(child.gameObject);
+        _currencyIsOverText.SetActive(false);
     }
 
     private void OnReturnButtonClicked()
