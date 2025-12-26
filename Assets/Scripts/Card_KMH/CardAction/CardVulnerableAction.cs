@@ -1,14 +1,11 @@
 using UnityEngine;
 
-public class CardVulnerableAction : ICardAction
+[CreateAssetMenu(fileName = "newVulnerableAction", menuName = "Card Actions/Vulnerable Action")]
+public class CardVulnerableAction : CardAction
 {
-    public void Use(string statusEffectKey, int value, int statusValue, int turn, IBattleUnit target)
+    public override void Use(string statusEffectKey, int statusValue, int turn, IBattleUnit target)
     {
-        if (target == null)
-        {
-            Debug.LogError("Target 이 Null 입니다.");
-            return;
-        }
+        base.Use(statusEffectKey, statusValue, turn, target);
 
         // 스택, 지속시간 둘 다 0 이면 무시
         if (turn == 0 && statusValue == 0) return;

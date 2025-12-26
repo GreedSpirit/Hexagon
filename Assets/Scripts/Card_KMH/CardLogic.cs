@@ -100,17 +100,28 @@ public class CardLogic : MonoBehaviour
     // 카드 사용 시도
     public void TryUse()
     {
-        // 카드 수치 가져오기
-        int cardValue = GetValue();
-
         // 모든 행동 실행
         foreach (ICardAction action in CardActions)
         {
             // 타겟 설정
             IBattleUnit target = Data.Target == Target.Self ? _handManager.TargetPlayer : _handManager.TargetMonster;
+            
+            if(Data.CardType == CardType.Spell)
+            {
+                // 카드 수치 가져오기
+                int statusEffectValue = GetStatusEffectValue();
+                int turnValue = GetTurn();
+                // 사용 (상태이상 키, 상태이상 부여 수치, 턴 수치, 적용 대상)
+                action.Use(Data.StatusEffect, statusEffectValue, turnValue, target);
+            }
+            else
+            {
+                // 카드 수치 가져오기
+                int cardValue = GetValue();
+                // 사용 (상태이상 키, 카드 계산 수치, 적용 대상)
+                action.Use(Data.StatusEffect, cardValue, target);
 
-            // 사용 (상태이상 키, 카드 계산 수치, 상태이상 부여 수치, 턴 수치, 적용 대상)
-            action.Use(Data.StatusEffect, cardValue, Data.StatusEffectValue, Data.Turn, target);
+            }
         }
 
         // 핸드 제거
