@@ -99,6 +99,8 @@ public class UpgradeManager : MonoBehaviour
 
     private void Update()
     {
+        if (_scrollBarCanvasGroup == null) return;
+
         // 이미 투명하면 무시
         if (_scrollBarCanvasGroup.alpha <= 0f) return;
 
