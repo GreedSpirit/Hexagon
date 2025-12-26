@@ -154,8 +154,7 @@ public class PlayerStat
     {
         if (CurrentHp <= 0)
         {
-            CurrentHp = 0;
-            Player.Instance.Respawn();
+            CurrentHp = 0;            
             Debug.Log("플레이어 사망!");
         }
     }
