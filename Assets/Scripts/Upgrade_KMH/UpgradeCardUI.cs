@@ -62,14 +62,15 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
 
         if (_nameText != null) _nameText.text = _cardData.Name;
         else Debug.LogError("NameText 가 할당되어있지 않습니다.");
-        if (_typeText != null) _typeText.text = _cardData.CardType.ToString();
-        else Debug.LogError("TypeText 가 할당되어있지 않습니다.");
 
         if (_cardData.IsCard == true && _descText != null) _descText.text = _cardData.Desc;
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
 
         // 설명 갱신
         UpdateUpgradeText();
+
+        // 타입
+        SetTypeText();
 
         // 카드 등급 색상
         SetGradeColor();
@@ -122,6 +123,32 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
         int numberOfAvailable = _cardManager.GetCardNumberOfAvailable(level, _cardData.CardGrade);
         if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
         else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
+    }
+    // 타입 설정
+    private void SetTypeText()
+    {
+        if (_typeText != null)
+        {
+            string type;
+
+            switch (_cardData.CardType)
+            {
+                case CardType.Attack:
+                    type = "공격";
+                    break;
+                case CardType.Shield:
+                    type = "방어";
+                    break;
+                case CardType.Spell:
+                    type = "주문";
+                    break;
+                default:
+                    type = "NULL";
+                    break;
+            }
+            _typeText.text = type;
+        }
+        else Debug.LogError("TypeText 가 할당되어있지 않습니다.");
     }
 
     // 설명 가져오기

@@ -1,15 +1,12 @@
 using UnityEngine;
 
-public class CardAttackAction : ICardAction
+[CreateAssetMenu(fileName = "newAttackAction", menuName = "Card Actions/Attack Action")]
+public class CardAttackAction : CardAction
 {
     // 카드 사용
-    public void Use(string statusEffectKey, int value, int statusValue, int turn, IBattleUnit target)
+    public override void Use(int value, IBattleUnit target)
     {
-        if (target == null)
-        {
-            Debug.LogError("Target 이 Null 입니다.");
-            return;
-        }
+        base.Use(value, target);
         Debug.Log($"공격 카드 사용 : {value} 피해.");
         target.TakeDamage(value);
     }

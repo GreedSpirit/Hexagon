@@ -40,6 +40,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<int, NpcData> NpcDict { get; private set; }
     public Dictionary<int, NpcTalkData> NpcTalkDict { get; private set; }
     public Dictionary<int, VillageData> VillageDict { get; private set; }
+    public Dictionary<int, ScenarioData> ScenarioDict { get; private set; }
 
     // (Key: string 기반)
     public Dictionary<string, CharacterData> CharacterKeyDict { get; private set; }
@@ -67,6 +68,7 @@ public class DataManager : MonoBehaviour
     public Dictionary<string, NpcData> NpcKeyDict { get; private set; }
     public Dictionary<string, NpcTalkData> NpcTalkKeyDict { get; private set; }
     public Dictionary<string, VillageData> VillageKeyDict { get; private set; }
+    public Dictionary<string, ScenarioData> ScenarioKeyDict { get; private set; }
 
 
     private void Awake()
@@ -162,9 +164,11 @@ public class DataManager : MonoBehaviour
         VillageDict = LoadAndCreateKeyDict(CSVReader.Read<VillageData>("Village"), out Dictionary<string, VillageData> tempVillageKeyDict);
         VillageKeyDict = tempVillageKeyDict;
 
-
+        // [Scenario]
+        ScenarioDict = LoadAndCreateKeyDict(CSVReader.Read<ScenarioData>("Scenario"), out Dictionary<string, ScenarioData> tempScenarioKeyDict);
+        ScenarioKeyDict = tempScenarioKeyDict;
         // 테스트 로그
-        Debug.Log($"데이터 로드 완료. Character 개수: {CharacterDict.Count}");
+        //Debug.Log($"데이터 로드 완료. Character 개수: {CharacterDict.Count}");
     }
     private Dictionary<int, T> LoadAndCreateKeyDict<T>(List<T> list, out Dictionary<string, T> keyDict) where T : CSVLoad, TableKey
     {
@@ -276,4 +280,6 @@ public class DataManager : MonoBehaviour
     public VillageData GetVillage(int id) => VillageDict.TryGetValue(id, out var data) ? data : null;
     public VillageData GetVillage(string key) => VillageKeyDict.TryGetValue(key, out var data) ? data : null;
 
+    public ScenarioData GetScenario(int id) => ScenarioDict.TryGetValue(id, out var data) ? data : null;
+    public ScenarioData GetScenario(string key) => ScenarioKeyDict.TryGetValue(key, out var data) ? data : null;
 }

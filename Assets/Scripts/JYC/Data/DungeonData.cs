@@ -8,6 +8,8 @@ public class DungeonData : CSVLoad, TableKey
     public string DungeonKey { get; set; }      // ���� �÷���: DungeonKey
     public string Name { get; set; }
     public string Desc { get; set; }
+
+    public string Img { get; set; } // 이미지 필드 (CSV 4번)
     public int RequiredLevel { get; set; }
     public int NumberOfStages { get; set; }
 
@@ -30,43 +32,38 @@ public class DungeonData : CSVLoad, TableKey
 
     public void LoadFromCsv(string[] values)
     {
-        // �迭 ���� üũ�� ��� �׸� ����
-
         if (values.Length > 0)
         {
             int.TryParse(values[0], out int id);
             Id = id;
         }
+
         if (values.Length > 1) DungeonKey = values[1];
         if (values.Length > 2) Name = values[2];
         if (values.Length > 3) Desc = values[3];
-
-        if (values.Length > 4) { int.TryParse(values[4], out int lv); RequiredLevel = lv; }
-        if (values.Length > 5) { int.TryParse(values[5], out int num); NumberOfStages = num; }
-
-        // �����Ͱ� ������ ���� �е��� ���ǹ� �߰�
-        if (values.Length > 6) Slot1Probability = ParseFloatSafe(values[6]);
-        if (values.Length > 7) Slot2Probability = ParseFloatSafe(values[7]);
-        if (values.Length > 8) Slot3Probability = ParseFloatSafe(values[8]);
-        if (values.Length > 9) Slot4Probability = ParseFloatSafe(values[9]);
-
-        if (values.Length > 10)
+        if (values.Length > 4) Img = values[4];
+        if (values.Length > 5) { int.TryParse(values[5], out int lv); RequiredLevel = lv; }
+        if (values.Length > 6) { int.TryParse(values[6], out int num); NumberOfStages = num; }
+        if (values.Length > 7) Slot1Probability = ParseFloatSafe(values[7]);
+        if (values.Length > 8) Slot2Probability = ParseFloatSafe(values[8]);
+        if (values.Length > 9) Slot3Probability = ParseFloatSafe(values[9]);
+        if (values.Length > 10) Slot4Probability = ParseFloatSafe(values[10]);
+        if (values.Length > 11)
         {
-            int.TryParse(values[10], out int rg);
+            int.TryParse(values[11], out int rg);
             RewardGroup = rg;
         }
         else
         {
             RewardGroup = 0;
         }
-
-        if (values.Length > 11)
-        {
-            Deck = values[11];
-        }
         if (values.Length > 12)
         {
-            int.TryParse(values[12], out int e);
+            Deck = values[12];
+        }
+        if (values.Length > 13)
+        {
+            int.TryParse(values[13], out int e);
             Exp = e;
         }
     }

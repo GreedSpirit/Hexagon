@@ -38,6 +38,10 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] Scrollbar _targetScroll;         // 스크롤바
     [SerializeField] float waitTime = 3.0f;           // 대기 시간
 
+    [Header("오디오 클립")]
+    [SerializeField] AudioClip enhanceClip;           // 강화 시도
+    [SerializeField] AudioClip enhanceSuccessClip;    // 강화 성공
+
     // 임시 골드 재화
     public int Gold { get; private set; }
 
@@ -235,6 +239,9 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
 
+        // 강화 사운드
+        SoundManager.Instance.PlaySFX(enhanceClip);
+
         // 필요 재화량
         int reqCard = GetReqCardAmount(userCard.CardId, userCard.Level);
         int reqGold = GetReqGoldAmount(userCard.CardId, userCard.Level);
@@ -301,7 +308,10 @@ public class UpgradeManager : MonoBehaviour
         Color finalColor = _upgradeCover.color;
         finalColor.a = 1f;
         _upgradeCover.color = finalColor;
-        
+
+        // 강화 성공 사운드
+        SoundManager.Instance.PlaySFX(enhanceSuccessClip);
+
         // UI 리셋
         ResetUI();
 
