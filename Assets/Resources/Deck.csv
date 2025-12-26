@@ -1,4 +1,4 @@
 ID,덱편성 테이블 기본 키,일반 등급 개수,희귀 등급 개수,영웅 등급 개수
 int,string,int,int,int
 id,DeckKey,NormalCount,RareCount,EpicCount
-1,DeckKeyPride,4,3,1
+1,DeckKeyPride,4,1,1
