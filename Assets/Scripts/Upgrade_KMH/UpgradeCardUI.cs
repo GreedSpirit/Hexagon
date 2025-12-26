@@ -18,7 +18,11 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     [SerializeField] TextMeshProUGUI _typeText;      // 타입 텍스트
     [SerializeField] TextMeshProUGUI _levelText;     // 레벨 텍스트
     [SerializeField] TextMeshProUGUI _numberOfAvailableText;      // 사용 가능 횟수 텍스트
-    [SerializeField] Image _edgeColor;              // 등급 색
+
+    [Header("등급 색상")]
+    [SerializeField] Image _gradeColorImg;           // 등급 색 이미지
+    [SerializeField] Color[] _gradeColors;           // 등급 색
+
     public UserCard UserCard { get; private set;  } // 보유 카드 데이터
 
     private CardManager _cardManager;
@@ -88,21 +92,22 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
         switch (_cardData.CardGrade)
         {
             case CardGrade.Common:
-                color = Color.lightGray;
+                color = _gradeColors[0];
                 break;
             case CardGrade.Rare:
-                color = Color.cyan;
+                color = _gradeColors[1];
                 break;
             case CardGrade.Epic:
-                color = Color.purple;
+                color = _gradeColors[2];
                 break;
             case CardGrade.Legendary:
-                color = Color.orange;
+                color = _gradeColors[3];
                 break;
         }
 
-        _edgeColor.color = color;
+        _gradeColorImg.color = color;
     }
+
 
     // 설명 갱신 (초기, 업그레이드 연출 이후)
     public void UpdateUpgradeText()

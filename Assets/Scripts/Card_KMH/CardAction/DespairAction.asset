@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c10c62dcec50dd46b2a1442aa4acfce, type: 3}
   m_Name: DespairAction
   m_EditorClassIdentifier: Assembly-CSharp::CardDespairAction
-  _useClip: {fileID: 0}
+  _useClip: {fileID: 8300000, guid: d34d2e811697d334cbf59ebd90feadb0, type: 3}

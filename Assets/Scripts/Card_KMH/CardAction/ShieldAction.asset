@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04d7e50232a006746837235f80e014f1, type: 3}
   m_Name: ShieldAction
   m_EditorClassIdentifier: Assembly-CSharp::CardShieldAction
-  _useClip: {fileID: 0}
+  _useClip: {fileID: 8300000, guid: f6731355aad15b744b4189a16107b678, type: 3}

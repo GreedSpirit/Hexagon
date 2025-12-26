@@ -290,6 +290,11 @@ public class SoundManager : MonoBehaviour
     // 일반 재생 (플레이어, 몬스터가 본인 파일 들고 와서 재생)
     public void PlaySFX(AudioClip clip)
     {
+        if(clip == null)
+        {
+            Debug.LogError("AudioClip이 할당되어있지 않습니다.");
+            return;
+        }
         _sfxSource.PlayOneShot(clip);
     }
 }

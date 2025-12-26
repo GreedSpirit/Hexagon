@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006c709f25f506046ab3a2363cd055e0, type: 3}
   m_Name: PrideAction
   m_EditorClassIdentifier: Assembly-CSharp::CardPrideAction
-  _useClip: {fileID: 0}
+  _useClip: {fileID: 8300000, guid: 23eadc67bc180274b9db10d36cb846be, type: 3}

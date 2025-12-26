@@ -21,18 +21,18 @@ public class UpgradeManager : MonoBehaviour
     public static UpgradeManager Instance;
 
     [Header("강화 카드 UI 프리팹")]
-    [SerializeField] UpgradeCardUI _cardUIPrefab;     // 카드 UI 프리팹
-    [Header("카드 리스트 스크롤 뷰")]
-    [SerializeField] Transform _cardScrollView;       // 카드 목록 스크롤뷰
+    [SerializeField] UpgradeCardUI _cardUIPrefab;
+    [Header("카드 리스트 스크롤뷰")]
+    [SerializeField] Transform _cardScrollView;
     [Header("강화 슬롯 카드")]
-    [SerializeField] UpgradeCardUI _upgradeSlotCard;  // 강화 슬롯 카드
+    [SerializeField] UpgradeCardUI _upgradeSlotCard;
     [Header("재화 텍스트")]
     [SerializeField] TextMeshProUGUI _cardCountText;  // 카드
     [SerializeField] TextMeshProUGUI _goldText;       // 골드
     [Header("강화 버튼")]
-    [SerializeField] Button _upgradeButton;           // 강화 버튼
-    [Header("강화 연출 테스트")]
-    [SerializeField] Image _upgradeCover;             // 연출 이미지
+    [SerializeField] Button _upgradeButton;
+    [Header("강화 연출용 테두리")]
+    [SerializeField] CanvasGroup _upgradeEdgeCanvasGroup;
 
     [Header("스크롤바")]
     [SerializeField] Scrollbar _targetScroll;         // 스크롤바
@@ -284,30 +284,21 @@ public class UpgradeManager : MonoBehaviour
         float timer = 0f;
 
         // 시작 전 일단 투명하게
-        Color tempColor = _upgradeCover.color;
-        tempColor.a = 0f;
-        _upgradeCover.color = tempColor;
+        _upgradeEdgeCanvasGroup.alpha = 0f;
 
         // 연출시간동안
         while (timer < fadeTime)
         {
             timer += Time.deltaTime;
 
-            // 현재 색상 임시로 담음
-            Color currentColor = _upgradeCover.color;
-
-            currentColor.a = Mathf.Lerp(0f, 1f, timer / fadeTime);
-
-            // 변경된 색 다시 이미지에 적용
-            _upgradeCover.color = currentColor;
+            // 테두리 캔버스 그룹 알파값 0 -> 1
+            _upgradeEdgeCanvasGroup.alpha = Mathf.Lerp(0f, 1f, timer / fadeTime);
 
             yield return null;
         }
 
         // 마무리 불투명
-        Color finalColor = _upgradeCover.color;
-        finalColor.a = 1f;
-        _upgradeCover.color = finalColor;
+        _upgradeEdgeCanvasGroup.alpha = 1f;
 
         // 강화 성공 사운드
         SoundManager.Instance.PlaySFX(enhanceSuccessClip);
@@ -327,9 +318,7 @@ public class UpgradeManager : MonoBehaviour
     private void ResetUI()
     {
         // 투명하게
-        Color tempColor = _upgradeCover.color;
-        tempColor.a = 0f;
-        _upgradeCover.color = tempColor;
+        _upgradeEdgeCanvasGroup.alpha = 0f;
 
         // 버튼 비활성화
         _upgradeButton.interactable = false;
