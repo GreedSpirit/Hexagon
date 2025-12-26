@@ -2,16 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum SpriteType
+{
+    Character,
+    Card,
+    Monster,
+    Status,
+    Inventory,
+
+}
+
 public interface TableKey
 {
     int Id { get; }
     string Key { get; }
 }
 
+
+
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
 
+    [Header("Sprite Databases")]
+    public SpriteDatabase characterDB;
+    public SpriteDatabase cardDB;
+    public SpriteDatabase monsterDB;
+    public SpriteDatabase statusDB;
+    public SpriteDatabase inventoryDB;
+
+    // 내부 관리용 딕셔너리
+    private Dictionary<SpriteType, SpriteDatabase> _dbMap = new Dictionary<SpriteType, SpriteDatabase>();
 
     // (ID: int 기반)
     public Dictionary<int, CharacterData> CharacterDict { get; private set; }
@@ -77,6 +99,7 @@ public class DataManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            InitSpriteDB();
             LoadAllData();
         }
         else
@@ -84,6 +107,32 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void InitSpriteDB()
+    {
+        if (characterDB != null) _dbMap.Add(SpriteType.Character, characterDB);
+        if (cardDB != null) _dbMap.Add(SpriteType.Card, cardDB);
+        if (monsterDB != null) _dbMap.Add(SpriteType.Monster, monsterDB);
+        if (statusDB != null) _dbMap.Add(SpriteType.Status, statusDB);
+        if (inventoryDB != null) _dbMap.Add(SpriteType.Inventory, inventoryDB);
+    }
+
+    public Sprite GetSprite(SpriteType type, string key)
+    {
+        if (_dbMap.TryGetValue(type, out SpriteDatabase db))
+        {
+            return db.GetSprite(key);
+        }
+        Debug.LogWarning($"[DataManager] '{type}' 타입의 DB가 연결되지 않았습니다! (Key: {key})");
+        return null;
+    }
+
+    public Sprite GetCharacterSprite(string key) => GetSprite(SpriteType.Character, key);
+    public Sprite GetCardSprite(string key) => GetSprite(SpriteType.Card, key);
+    public Sprite GetMonsterSprite(string key) => GetSprite(SpriteType.Monster, key);
+    public Sprite GetStatusSprite(string key) => GetSprite(SpriteType.Status, key);
+    public Sprite GetInventorySprite(string key) => GetSprite(SpriteType.Inventory, key);
+
 
     private void LoadAllData()
     {
