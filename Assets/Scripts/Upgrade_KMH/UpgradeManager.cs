@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.UI;
+using UnityEngine;
+using TMPro;
 
 
 // 정렬 우선순위
@@ -22,8 +21,8 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("강화 카드 UI 프리팹")]
     [SerializeField] UpgradeCardUI _cardUIPrefab;
-    [Header("카드 리스트 스크롤뷰")]
-    [SerializeField] Transform _cardScrollView;
+    [Header("카드 리스트 콘텐츠")]
+    [SerializeField] Transform _cardContents;
     [Header("강화 슬롯 카드")]
     [SerializeField] UpgradeCardUI _upgradeSlotCard;
     [Header("재화 텍스트")]
@@ -73,16 +72,18 @@ public class UpgradeManager : MonoBehaviour
         _scrollBarCanvasGroup.alpha = 0f;
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return null;
+
         _cardManager = CardManager.Instance;
         _player = Player.Instance;
 
         // 유저 보유 카드 순회
-        foreach(UserCard card in _cardManager.UserCardList)
+        foreach (UserCard card in _cardManager.UserCardList)
         {
             // 카드 UI 하나 생성
-            UpgradeCardUI cardUI = Instantiate(_cardUIPrefab, _cardScrollView);
+            UpgradeCardUI cardUI = Instantiate(_cardUIPrefab, _cardContents);
 
             // UI 초기화
             cardUI.Init(card, this);

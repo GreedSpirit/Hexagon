@@ -136,7 +136,6 @@ public class CardManager : MonoBehaviour
         {
             if (map.actionSO != null && !_cardTypeActions.ContainsKey(map.type))
             {
-                Debug.Log("카드 액션 추가");
                 _cardTypeActions.Add(map.type, map.actionSO);
             }
         }
@@ -146,7 +145,6 @@ public class CardManager : MonoBehaviour
         {
             if (map.actionSO != null && !_cardStatusActions.ContainsKey(map.statusKey))
             {
-                Debug.Log("카드 상태이상 추가");
                 _cardStatusActions.Add(map.statusKey, map.actionSO);
             }
         }
