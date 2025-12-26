@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.VirtualTexturing;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -30,7 +31,7 @@ public class Npc : MonoBehaviour, ITalkable
     public void Init(string key)
     {
         CharacterData characterData = DataManager.Instance.GetCharacter(key);
-        NpcData npcData = DataManager.Instance.GetNpc(characterData.Key);
+        NpcData npcData = DataManager.Instance.GetNpc(key);
         Name = DataManager.Instance.GetString(characterData.Name)?.Korean.Trim('"');        
         Desc = DataManager.Instance.GetString(characterData.Desc)?.Korean;
         SpawnPos = new Vector2(npcData.NpcAreaX, npcData.NpcAreaY);
@@ -45,7 +46,7 @@ public class Npc : MonoBehaviour, ITalkable
 
 
         //NpcTalkData 클래스 및 DataManager 기능 추가하면 아래쪽 주석 해제하기
-        NpcTalkData talkData = DataManager.Instance.GetNpcTalk(characterData.Name);
+        NpcTalkData talkData = DataManager.Instance.GetNpcTalk(key);
         Talks[0] = DataManager.Instance.GetString(talkData.NpcTalk1)?.Korean;
         Talks[1] = DataManager.Instance.GetString(talkData.NpcTalk2)?.Korean;
         Talks[2] = DataManager.Instance.GetString(talkData.NpcTalk3)?.Korean;
