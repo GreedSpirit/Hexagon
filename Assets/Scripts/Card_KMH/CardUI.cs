@@ -27,7 +27,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     [SerializeField] TextMeshProUGUI _typeText;      // 타입 텍스트
     [SerializeField] TextMeshProUGUI _levelText;     // 레벨 텍스트
     [SerializeField] TextMeshProUGUI _numberOfAvailableText;      // 사용 가능 횟수 텍스트
-    [SerializeField] Image _edgeColor;              // 등급 색
+    [SerializeField] Image _edgeColor;               // 등급 색
 
 
     // HandManager에서 우클릭, 휠클릭 등으로 선택 취소 시 사용
@@ -277,8 +277,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         // img = (data.CardImg);
         if (_nameText != null) _nameText.text = _cardData.Name;
         else Debug.LogError("NameText 가 할당되어있지 않습니다.");
-        if (_typeText != null) _typeText.text = _cardData.CardType.ToString();
-        else Debug.LogError("TypeText 가 할당되어있지 않습니다.");
         if (_levelText != null) _levelText.text = _cardLogic.Level.ToString();
         else Debug.LogError("LevelText 가 할당되어있지 않습니다.");
 
@@ -287,6 +285,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
         // 설명 설정
         SetDescText();
+
+        // 타입 설정
+        SetTypeText();
 
         // 카드 등급 색상
         SetGradeColor();
@@ -326,6 +327,33 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             _descText.text = _cardLogic.Desc;
         
         else if (_descText == null) Debug.LogError("DescText 가 할당되어있지 않습니다.");
+    }
+
+    // 타입 설정
+    private void SetTypeText()
+    {
+        if (_typeText != null)
+        {
+            string type;
+
+            switch (_cardData.CardType)
+            {
+                case CardType.Attack:
+                    type = "공격";
+                    break;
+                case CardType.Shield:
+                    type = "방어";
+                    break;
+                case CardType.Spell:
+                    type = "주문";
+                    break;
+                default:
+                    type = "NULL";
+                    break;
+            }
+            _typeText.text = type;
+        }
+        else Debug.LogError("TypeText 가 할당되어있지 않습니다.");
     }
 
     // 기본 상태 위치로 이동

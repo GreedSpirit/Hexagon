@@ -600,7 +600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &92197693
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1352,7 +1352,8 @@ MonoBehaviour:
   _handLimit: 7
   _deckUI: {fileID: 8376053265880005923}
   _disappearPoint: {fileID: 569327728}
-  _deckCount: {fileID: 1787032058}
+  drawClip: {fileID: 0}
+  overDrawClip: {fileID: 0}
 --- !u!4 &304984495
 Transform:
   m_ObjectHideFlags: 0
@@ -2152,9 +2153,9 @@ RectTransform:
   m_Father: {fileID: 283015489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: -17}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &380530703
 MonoBehaviour:
@@ -2651,20 +2652,16 @@ MonoBehaviour:
   _bgmList:
   - name: Title
     type: 1
-    clips:
-    - {fileID: 8300000, guid: e9e2d25a90ea27347a94af2d970dc133, type: 3}
+    clip: {fileID: 0}
   - name: Village
     type: 2
-    clips:
-    - {fileID: 8300000, guid: 30b19db35d9dee94c9fe8169e64562c9, type: 3}
+    clip: {fileID: 0}
   - name: Battle
     type: 3
-    clips:
-    - {fileID: 8300000, guid: ec74bc277ef58884a99f82534744ec9d, type: 3}
+    clip: {fileID: 0}
   - name: Boss
     type: 4
-    clips:
-    - {fileID: 8300000, guid: 44c4e649fb3c3db4688c9f2552c25f79, type: 3}
+    clip: {fileID: 0}
   _sfxList:
   - name: B
     type: 0
@@ -3241,7 +3238,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 7.5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &613489838
 MonoBehaviour:
@@ -4855,9 +4852,9 @@ RectTransform:
   m_Father: {fileID: 283015489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 20, y: -17}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1003292293
 MonoBehaviour:
@@ -5344,7 +5341,7 @@ RectTransform:
   m_Father: {fileID: 1003870037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: -60}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5573,9 +5570,9 @@ RectTransform:
   m_Father: {fileID: 283015489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: -17, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1166319394
 MonoBehaviour:
@@ -6038,7 +6035,7 @@ RectTransform:
   m_Father: {fileID: 1350475021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8680,6 +8677,8 @@ MonoBehaviour:
   _upgradeCover: {fileID: 415978154}
   _targetScroll: {fileID: 1003292293}
   waitTime: 3
+  enhanceClip: {fileID: 0}
+  enhanceSuccessClip: {fileID: 0}
 --- !u!4 &1827558245
 Transform:
   m_ObjectHideFlags: 0
@@ -8971,6 +8970,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71474720e818bec439410ea9f467dfe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardManager
+  _typeActionList: []
+  _statusActionList: []
 --- !u!4 &1879764562
 Transform:
   m_ObjectHideFlags: 0
