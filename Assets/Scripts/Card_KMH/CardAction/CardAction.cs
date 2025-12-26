@@ -14,8 +14,7 @@ public class CardAction : ScriptableObject, ICardAction
             return;
         }
 
-        if (_useClip != null)
-            SoundManager.Instance.PlaySFX(_useClip);
+        SoundManager.Instance.PlaySFX(_useClip);
     }
 
     // 주문 카드 사용
@@ -27,7 +26,6 @@ public class CardAction : ScriptableObject, ICardAction
             return;
         }
 
-        if (_useClip != null)
-            SoundManager.Instance.PlaySFX(_useClip);
+        SoundManager.Instance.PlaySFX(_useClip);
     }
 }
