@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections;
-using UnityEngine.UI;
-using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
 
 
 // 정렬 우선순위
@@ -33,6 +34,10 @@ public class UpgradeManager : MonoBehaviour
     [Header("강화 연출 테스트")]
     [SerializeField] Image _upgradeCover;             // 연출 이미지
 
+    [Header("스크롤바")]
+    [SerializeField] Scrollbar _targetScroll;         // 스크롤바
+    [SerializeField] float waitTime = 3.0f;           // 대기 시간
+
     // 임시 골드 재화
     public int Gold { get; private set; }
 
@@ -45,18 +50,30 @@ public class UpgradeManager : MonoBehaviour
 
     private Coroutine upgradeCoroutine;        // 강화 코루틴
 
+    private CanvasGroup _scrollBarCanvasGroup;   // 스크롤바 캔버스 그룹
+    private float _lastScrollTime;               // 마지막으로 스크롤한 시간
+
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
+
+        _scrollBarCanvasGroup = _targetScroll.GetComponent<CanvasGroup>();
+
+        // OnScroll 함수 연결
+        _targetScroll.onValueChanged.AddListener(OnScroll);
+    }
+    private void OnEnable()
+    {
+        // 켜면 안보임
+        _scrollBarCanvasGroup.alpha = 0f;
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
         _cardManager = CardManager.Instance;
         _player = Player.Instance;
 
-        yield return null;
         // 유저 보유 카드 순회
         foreach(UserCard card in _cardManager.UserCardList)
         {
@@ -74,6 +91,34 @@ public class UpgradeManager : MonoBehaviour
         _upgradeSlotCard.Init(null, this);
 
         RefreshList();
+    }
+
+    private void Update()
+    {
+        // 이미 투명하면 무시
+        if (_scrollBarCanvasGroup.alpha <= 0f) return;
+
+        // 마지막 스크롤 시간에서 3초가 지났는지 체크
+        if (Time.time > _lastScrollTime + waitTime)
+        {
+            // 3초 지나면 투명
+            _scrollBarCanvasGroup.alpha = 0f;
+        }
+    }
+    private void OnDestroy()
+    {
+        // 혹시 모르니 연결 해제
+        _targetScroll?.onValueChanged.RemoveListener(OnScroll);
+    }
+
+    // 스크롤 변화 감지
+    private void OnScroll(float value)
+    {
+        // 보이게
+        _scrollBarCanvasGroup.alpha = 1f;
+
+        // 마지막 스크롤 시간 갱신
+        _lastScrollTime = Time.time;
     }
 
     // 카드 리스트 새로고침 (UI 온, 강화 연출 완료)
@@ -179,9 +224,16 @@ public class UpgradeManager : MonoBehaviour
     {
         if (_selectedCard == null) return;
 
+        // 보유 골드
         int currentMoney = _player.GetMoney();
 
-        UserCard userCard = _selectedCard.UserCard;
+        // 대상 카드
+        UserCard userCard = _selectedCard?.UserCard;
+        if (userCard == null)
+        { 
+            Debug.Log("선택된 카드가 없습니다."); 
+            return;
+        }
 
         // 필요 재화량
         int reqCard = GetReqCardAmount(userCard.CardId, userCard.Level);
@@ -201,6 +253,12 @@ public class UpgradeManager : MonoBehaviour
         // 카드 레벨 증가
         userCard.Level++;
 
+        // 경험치 획득
+        GetExp(userCard.CardId);
+
+        // 강화 성공 시 저장
+        CardManager.Instance.SaveGame();
+
         // 연출 중이라면 멈춤 (방어)
         if (upgradeCoroutine != null)
             StopCoroutine(upgradeCoroutine);
@@ -214,7 +272,8 @@ public class UpgradeManager : MonoBehaviour
         // 연출 끝날 때 까지 버튼 잠금
         _upgradeButton.interactable = false;
 
-        float fadeTime = 1f; // 연출 시간
+        // 연출 시간
+        float fadeTime = 1f;
         float timer = 0f;
 
         // 시작 전 일단 투명하게
@@ -222,6 +281,7 @@ public class UpgradeManager : MonoBehaviour
         tempColor.a = 0f;
         _upgradeCover.color = tempColor;
 
+        // 연출시간동안
         while (timer < fadeTime)
         {
             timer += Time.deltaTime;
@@ -400,6 +460,37 @@ public class UpgradeManager : MonoBehaviour
         return UpgradeSortType.Hide;
     }
 
+    // 강화 완료 시 플레이어 경험치 획득
+    private void GetExp(int cardId)
+    {
+        int exp;
+
+        CardGrade grade = DataManager.Instance.GetCard(cardId).CardGrade;
+
+        switch (grade)
+        {
+            case CardGrade.Common:
+            case CardGrade.Rare:
+                exp = 5;
+                break;
+            case CardGrade.Epic:
+                exp = 5;
+                break;
+            case CardGrade.Legendary:
+                exp = 10;
+                break;
+            default:
+                exp = 15;
+                break;
+        }
+
+        Player.Instance.GetExp(exp);
+    }
+
+
+
+    // ----------------테스트용----------------------
+
     // 테스트용 카드 추가
     public void AddCard(int amount)
     {
@@ -432,7 +523,6 @@ public class UpgradeManager : MonoBehaviour
 
         RefreshList();
     }
-
     // 테스트용 골드 추가
     public void AddGold(int amount)
     {
@@ -466,8 +556,6 @@ public class UpgradeManager : MonoBehaviour
 
         RefreshList();
     }
-
-
     // 리얼 리셋
     public void ResetGold()
     {
