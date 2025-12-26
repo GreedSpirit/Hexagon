@@ -346,6 +346,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
                 case CardType.Shield:
                     type = "방어";
                     break;
+                case CardType.Healing:
+                    type = "치유";
+                    break;
                 case CardType.Spell:
                     type = "주문";
                     break;
