@@ -307,7 +307,8 @@ public class UpgradeManager : MonoBehaviour
 
         // 코루틴 비우기
         upgradeCoroutine = null;
-
+        // [추가] 강화 결과 반영 후 즉시 저장
+        GameSaveManager.Instance.SaveGame();
         // 강화 리스트 새로고침
         RefreshList();
     }
