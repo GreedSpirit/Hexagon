@@ -1,4 +1,4 @@
 public enum PhaseType
 {
-   Start ,Draw, PlayerAct, EnemyAct, Effect, End
+   Start ,Draw, PlayerAct, EnemyAct, Effect, End, Scenario
 }

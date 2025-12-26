@@ -12,7 +12,7 @@ public enum Sin_Type
 
 public enum Trigger_Type
 {
-    gamestart, dungeonEnter, stageenter, prebattle, preseal, clear, None
+    gamestart, dungeonenter, stageenter, prebattle, preseal, clear, None
 }
 
 public enum Event_Type
