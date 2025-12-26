@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eba8148c5518e9c49bc285b608947290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardSlotUI
+  _cardImg: {fileID: 0}
   _amountText: {fileID: 4105606859964297772}
 --- !u!1 &2640465515912472674
 GameObject:
@@ -193,8 +194,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: x 3
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 72095f4f442e1e84282dc95fd82d339a, type: 2}
+  m_sharedMaterial: {fileID: -2091249604926714947, guid: 72095f4f442e1e84282dc95fd82d339a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

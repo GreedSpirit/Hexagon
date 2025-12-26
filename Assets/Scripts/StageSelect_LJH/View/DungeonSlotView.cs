@@ -19,7 +19,7 @@ public class DungeonSlotView : MonoBehaviour
 
     public void Initialize(DungeonData data, UnityAction<int> onClick)
     {
-        _dungeonNameText.text = data.Name;
+        _dungeonNameText.text = DataManager.Instance.GetString(data.Name).Korean.Trim();
         _requiredLevel = data.RequiredLevel;
         OnClickAction = onClick;
 
