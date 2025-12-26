@@ -26,7 +26,7 @@ public class InventoryTestSetter : MonoBehaviour
         }
 
         // 저장 및 갱신
-        CardManager.Instance.SaveGame();
+        GameSaveManager.Instance.SaveGame();
 
         if (InventoryManager.Instance != null)
         {

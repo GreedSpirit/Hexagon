@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using UnityEngine;
 
@@ -26,7 +27,9 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     public TalkUI TalkUI { get; private set; }
     public bool CanInteract { get; set; }
     public bool IsTalking { get; set; }
-        
+
+    // [Ãß°¡] ÁøÇàµµ ÀúÀå¿ë º¯¼ö
+    public bool IsFirstDungeonCleared { get; set; } = false;
 
     //Player¿¡ ºÙÀº ´Ù¸¥ ÄÄÆ÷³ÍÆ®µé
     private PlayerUIManager _playerUIManager;
@@ -34,7 +37,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     private PlayerModelController _playerModelController;
 
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         _playerUIManager = GetComponent<PlayerUIManager>();
@@ -66,7 +69,41 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         Debug.Log($"º¸À¯ ÀçÈ­ : {_stat.Money}");
     }
 
+    // [Ãß°¡] GameSaveManager¿Í µ¥ÀÌÅÍ ¿¬µ¿
 
+    public void LoadFromSaveData(GlobalSaveData data)
+    {
+        if (_stat == null) return;
+
+        _stat.Level = data.Level;
+        _stat.Money = data.Money;
+        IsFirstDungeonCleared = data.IsFirstDungeonCleared;
+
+        PropertyInfo expProp = typeof(PlayerStat).GetProperty("CurrentExp");
+        if (expProp != null)
+        {
+            expProp.SetValue(_stat, data.CurrentExp);
+        }
+
+        if (data.PlayerPosition != Vector3.zero)
+        {
+            transform.position = data.PlayerPosition;
+        }
+
+        PushAllUI();
+    }
+
+    // UI ÀüÃ¼ °»½Å ÇïÆÛ
+    private void PushAllUI()
+    {
+        PushHp();
+        PushMoney();
+        PushExp();
+        PushLevel();
+        PushDefense();
+        PushShield();
+        PushStatusEffects();
+    }
 
     //------------------------------------------------------
 
@@ -130,6 +167,19 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     //------------------------------------------------------
 
     #region ¿ÜºÎ¿¡¼­ ½ºÅÈ Á¢±Ù¿ë ÇÔ¼ö
+
+    public int GetLevel() => _stat != null ? _stat.Level : 1;
+    public int GetMoney() => _stat != null ? _stat.Money : 0;
+    public int GetCurrentExp() => _stat != null ? _stat.CurrentExp : 0;
+
+    //public int GetLevel()
+    //{
+    //    return _stat.Level;
+    //}
+    //public int GetMoney()
+    //{
+    //    return _stat.Money;
+    //}
     public int GetCurrentHp()
     {
         return _stat.CurrentHp;
@@ -139,10 +189,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         return _stat.Hp;
     }
 
-    public int GetLevel()
-    {
-        return _stat.Level;
-    }
+    
     
     public float GetBuff()
     {
@@ -169,10 +216,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         return "Img";
     }
 
-    public int GetMoney()
-    {
-        return _stat.Money;
-    }
+    
 
     #endregion
 
@@ -305,6 +349,8 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         TalkUI?.EndTalk();        
         EnterMoveMod();
+        // [Ãß°¡] ´ëÈ­ Á¾·á ÈÄ ÀúÀå (ÁøÇàµµ/Äù½ºÆ®/½ºÅ©¸³Æ® ÀúÀå¿ë)
+        GameSaveManager.Instance.SaveGame();
     }
     
     public void PlusMoney(int cost)

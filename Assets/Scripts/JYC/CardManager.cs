@@ -32,7 +32,6 @@ public class CardManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // 씬 이동해도 파괴되지 않음
-            LoadGame();
         }
         else
         {
@@ -56,9 +55,24 @@ public class CardManager : MonoBehaviour
             }
         }
     }
-    private void OnApplicationQuit()
+    // 통합 저장 매니저가 데이터를 넣어주는 통로
+    public void LoadFromSaveData(List<UserCard> loadedCards, List<int> loadedDeck)
     {
-        SaveGame();
+        this.UserCardList = loadedCards ?? new List<UserCard>();
+        this.CurrentDeck = loadedDeck ?? new List<int>();
+
+        // 불러온 뒤 데이터 세팅이 필요하다면 여기서 수행
+        foreach (var userCard in UserCardList)
+        {
+            var data = userCard.GetData();
+            if (data != null)
+            {
+                data.SetString();
+                data.SetStatusValue();
+            }
+        }
+
+        Debug.Log($"[CardManager] 데이터 로드됨: 카드 {UserCardList.Count}장, 덱 {CurrentDeck.Count}장");
     }
     // 덱 구성 (테스트용 임시)
     public void InitStartingDeck()
@@ -102,7 +116,7 @@ public class CardManager : MonoBehaviour
         }
 
         // 저장
-        SaveGame();
+        GameSaveManager.Instance.SaveGame();
     }
 
     // 동작 구성
@@ -295,57 +309,5 @@ public class CardManager : MonoBehaviour
         }
 
         Player.Instance.GetExp(exp);
-    }
-
-    // 저장 데이터 포맷 클래스
-    [System.Serializable]
-    public class SaveData
-    {
-        public int myGold;
-        public List<UserCard> myCards; // 내 보유 카드
-        public List<int> myDeck; // 내 덱 구성
-    }
-
-    //  게임 저장하기 (JSON 방식)
-    [ContextMenu("Save Game")] // 유니티 에디터 인스펙터에서 우클릭으로 실행 가능
-    public void SaveGame()
-    {
-        SaveData data = new SaveData();
-        data.myGold = this.Gold;
-        data.myCards = this.UserCardList;
-        data.myDeck = this.CurrentDeck;
-
-        // JSON 변환
-        string json = JsonUtility.ToJson(data, true); // true는 보기 좋게 줄바꿈 함
-        // 파일 저장 경로 
-        string path = Path.Combine(Application.persistentDataPath, "savegame.json");
-        File.WriteAllText(path, json);
-
-        Debug.Log($"[Save] 저장 완료: {path}");
-    }
-
-    // 게임 불러오기
-    [ContextMenu("Load Game")]
-    public void LoadGame()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "savegame.json");
-
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
-
-            if (data != null)
-            {
-                this.Gold = data.myGold;
-                this.UserCardList = data.myCards ?? new List<UserCard>();
-                this.CurrentDeck = data.myDeck ?? new List<int>();
-                Debug.Log($"[Load] 불러오기 완료. 카드 {UserCardList.Count}장, 덱 {CurrentDeck.Count}장");
-            }
-        }
-        else
-        {
-            Debug.Log("[Load] 저장된 파일이 없습니다. 새로 시작합니다.");
-        }
     }
 }

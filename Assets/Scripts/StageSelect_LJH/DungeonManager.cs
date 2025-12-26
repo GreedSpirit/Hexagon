@@ -70,6 +70,13 @@ public class DungeonManager : MonoBehaviour
         if(monster.MonsterData.MonGrade == MonsterGrade.Boss)
         {
             Debug.Log("Boss Clear! Next Logic is RewardRoom");
+
+            // [추가] 1회차 클리어 플래그 ON
+            if (Player.Instance != null)
+            {
+                Player.Instance.IsFirstDungeonCleared = true;
+            }
+
             //보상 방으로 가는 로직
             StartCoroutine(BossClearSequence());
         }

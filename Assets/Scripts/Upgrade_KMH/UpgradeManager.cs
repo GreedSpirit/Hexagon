@@ -257,7 +257,7 @@ public class UpgradeManager : MonoBehaviour
         GetExp(userCard.CardId);
 
         // 강화 성공 시 저장
-        CardManager.Instance.SaveGame();
+        GameSaveManager.Instance.SaveGame();
 
         // 연출 중이라면 멈춤 (방어)
         if (upgradeCoroutine != null)
@@ -307,7 +307,8 @@ public class UpgradeManager : MonoBehaviour
 
         // 코루틴 비우기
         upgradeCoroutine = null;
-
+        // [추가] 강화 결과 반영 후 즉시 저장
+        GameSaveManager.Instance.SaveGame();
         // 강화 리스트 새로고침
         RefreshList();
     }

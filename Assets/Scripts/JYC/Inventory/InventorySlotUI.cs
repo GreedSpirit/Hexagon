@@ -31,7 +31,10 @@ public class InventorySlotUI : MonoBehaviour,
 
         // UI 갱신
         // cardImage.sprite = Resources.Load<Sprite>(data.Img); // 이미지 로드 예시 // 이후 에셋 받고 수정
-        countText.text = $"x{userCard.Count}";
+        if (countText != null)
+        {
+            countText.text = $"x {userCard.Count}";
+        }
         selectEffect.gameObject.SetActive(false); // 처음엔 꺼둠
 
         // 등급별 테두리 색상 변경 로직 추가 예정 // 에셋 자체로 테두리가 다를지 아니면 코드로 테두리만 색상 변경할지 아직 몰라서 보류함

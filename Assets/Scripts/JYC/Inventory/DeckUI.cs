@@ -27,8 +27,7 @@ public class DeckUI : MonoBehaviour
     [Header("Dungeon Info UI")]
     [SerializeField] TextMeshProUGUI stageInfoText; // "총 N 스테이지" 표시용
     [SerializeField] Button dungeonInfoButton;      // "던전 정보" 팝업 여는 버튼
-    // 현재 선택된 던전 데이터
-    private DungeonData _currentDungeon;
+
     private void Start()
     {
 
@@ -59,6 +58,25 @@ public class DeckUI : MonoBehaviour
     {
         _targetDungeon = dungeon;
 
+        // 인벤토리 매니저에게 이번 던전의 덱 구성 정보(슬롯 개수 등)를 전달해서 세팅하게 함
+        DeckData requiredDeck = DataManager.Instance.GetDeck(_targetDungeon.Deck);
+        if (requiredDeck != null && InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.ConfigureDeckSlots(requiredDeck);
+        }
+
+        // 던전 정보 UI 갱신 (총 스테이지 수 표시)
+        if (stageInfoText != null && _targetDungeon != null)
+        {
+            stageInfoText.text = $"총 {_targetDungeon.NumberOfStages} 스테이지";
+        }
+
+        // 던전 정보 버튼 연결
+        if (dungeonInfoButton != null)
+        {
+            dungeonInfoButton.onClick.RemoveAllListeners();
+            dungeonInfoButton.onClick.AddListener(OnClickDungeonInfo);
+        }
         // DeckUI를 켭니다.
         this.gameObject.SetActive(true);
         // 백그라운드도 같이 켜기
@@ -76,9 +94,15 @@ public class DeckUI : MonoBehaviour
 
         RefreshDeck();
     }
+    private void OnClickDungeonInfo()
+    {
+        Debug.Log(" 던전 정보 팝업 오픈 (추후 구현 예정)");
+        // TODO: 기획서 8.1 팝업과 연결
+    }
     // '뒤로가기'나 '닫기' 버튼에 연결할 함수 (마을로 돌아갈 때)
     public void CloseDeckUI()
     {
+        GameSaveManager.Instance.LoadGame();
         // DeckUI 끄기
         this.gameObject.SetActive(false);
         if (uiBackground != null) uiBackground.SetActive(false);
@@ -121,7 +145,7 @@ public class DeckUI : MonoBehaviour
     public void OnClickPopupYes()
     {
         // 최종 저장 (전투 진입 전 상태 저장)
-        CardManager.Instance.SaveGame();
+        GameSaveManager.Instance.SaveGame();
 
         // 진짜 씬 이동
         string dungeonName = _targetDungeon != null ? _targetDungeon.Name : "Unknown Dungeon";
@@ -172,21 +196,39 @@ public class DeckUI : MonoBehaviour
         DeckData requiredDeck = DataManager.Instance.GetDeck(_targetDungeon.Deck);
         if (requiredDeck == null) return;
 
-        List<int> currentDeckIds = new List<int>(InventoryManager.Instance.CurrentDeck);
-
-        // 전체 슬롯의 순서를 세기 위한 변수 (0, 1, 2, 3...)
         int globalSlotIndex = 0;
 
-        // 등급별 슬롯 생성 (ref로 globalSlotIndex를 넘겨서 계속 증가시킴)
-        CreateSlotsForGrade(CardGrade.Common, requiredDeck.NormalCount, ref currentDeckIds, ref globalSlotIndex);
-        CreateSlotsForGrade(CardGrade.Rare, requiredDeck.RareCount, ref currentDeckIds, ref globalSlotIndex);
-        CreateSlotsForGrade(CardGrade.Epic, requiredDeck.EpicCount, ref currentDeckIds, ref globalSlotIndex);
+        // globalSlotIndex 넘겨서 1:1 매칭
+        CreateSlotsForGrade(CardGrade.Common, requiredDeck.NormalCount, ref globalSlotIndex);
+        CreateSlotsForGrade(CardGrade.Rare, requiredDeck.RareCount, ref globalSlotIndex);
+        CreateSlotsForGrade(CardGrade.Epic, requiredDeck.EpicCount, ref globalSlotIndex);
 
         if (countText != null)
         {
             int totalRequired = requiredDeck.NormalCount + requiredDeck.RareCount + requiredDeck.EpicCount;
-            int currentCount = InventoryManager.Instance.CurrentDeck.Count;
+            int currentCount = InventoryManager.Instance.CurrentDeck.Count(id => id != -1);
             countText.text = $"Deck : {currentCount} / {totalRequired}";
+        }
+    }
+    // 슬롯 생성 (인덱스 접근)
+    private void CreateSlotsForGrade(CardGrade targetGrade, int count, ref int globalIndex)
+    {
+        var currentDeck = InventoryManager.Instance.CurrentDeck;
+
+        for (int i = 0; i < count; i++)
+        {
+            GameObject go = Instantiate(deckSlotPrefab, contentParent);
+            DeckSlotUI slot = go.GetComponent<DeckSlotUI>();
+
+            int cardId = -1;
+            // 현재 칸(globalIndex)에 있는 카드 ID를 직접 가져옴
+            if (globalIndex < currentDeck.Count)
+            {
+                cardId = currentDeck[globalIndex];
+            }
+
+            slot.Init(cardId, globalIndex, targetGrade);
+            globalIndex++;
         }
     }
     // 등급별 슬롯 생성 헬퍼 함수
