@@ -63,12 +63,17 @@ public class DungeonManager : MonoBehaviour
 
     private void SpawnMonster(int monsterId)
     {
-        //몬스터 생성(현재 monsterStatus에서 정보를 갱신하고 초기화 해주니까 괜찮을 것 같은데 테스트 필요)
         GameObject obj = Instantiate(_monsterPrefab, _monsterSpawnPoint.position, Quaternion.identity);
         _currentActiveMonster = obj.GetComponent<MonsterStatus>();
 
         _currentActiveMonster.InitMonsterStatus(monsterId);
         _battleManager.SetMonster(_currentActiveMonster);
+
+        if(_currentActiveMonster.MonsterData.MonGrade == MonsterGrade.Boss)
+        {
+            SoundManager.Instance.PlayBGM(BGMType.Boss);
+        }
+
         //여기서 해당 몬스터가 죽거나 했을 때 이벤트를 등록시켜주면 될 듯?
         _currentActiveMonster.OnMonsterDeath += HandleMonsterDeath;
     }

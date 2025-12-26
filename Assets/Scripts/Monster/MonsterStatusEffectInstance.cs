@@ -15,6 +15,7 @@ public class MonsterStatusEffectInstance
     public int Duration;
     public int Stack;
     public float AppliedTime; // 적용 시점
+    public string Img;
 
     public int GetSortOrder(MonsterStatusEffectInstance other)
     {

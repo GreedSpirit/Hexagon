@@ -15,11 +15,18 @@ public class MoneterEffectHoverSensor : MonoBehaviour, IPointerEnterHandler, IPo
     {
         _ownerStatus = owner;
 
-        // _iconImage.sprite = DataManager.Instance.GetStatusIcon(data.Img); 
-        
-        // 임시: 타입에 따라 색상만 변경 (이미지 리소스 적용 시 삭제)
-        _iconImage.color = data.Type == BuffType.Buff ? Color.cyan : (data.Type == BuffType.DeBuff ? Color.magenta : Color.yellow);
+        Sprite loadedSprite = DataManager.Instance.GetStatusSprite(data.Img);
 
+        if(loadedSprite != null)
+        {
+            _iconImage.sprite = loadedSprite;
+            _iconImage.color = Color.white;
+        }
+        else
+        {
+            _iconImage.sprite = null;
+            _iconImage.color = Color.magenta;
+        }
         // 수치 표시 (지속시간 or 스택)
         int displayValue = Mathf.Max(data.Duration, data.Stack);
         _valueText.text = displayValue.ToString();

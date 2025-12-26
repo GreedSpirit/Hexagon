@@ -772,6 +772,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843752216f6379943b40ace78d121aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DataManager
+  characterDB: {fileID: 0}
+  cardDB: {fileID: 0}
+  monsterDB: {fileID: 0}
+  statusDB: {fileID: 11400000, guid: a89ab20a73e172f488237377bd3eb84e, type: 2}
+  inventoryDB: {fileID: 0}
 --- !u!4 &211103310
 Transform:
   m_ObjectHideFlags: 0
