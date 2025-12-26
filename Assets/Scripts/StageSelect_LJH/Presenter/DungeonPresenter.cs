@@ -69,6 +69,7 @@ public class DungeonPresenter : MonoBehaviour
     {
         _dungeonPanel.SetActive(false);
         DungeonSessionData.SelectedDungeonId = -1;
+        Player.Instance.BackToVillage();
     }
 
     public void ShowDungeon() // 특정 위치에 다가가거나 버튼을 눌렀을 때 던전 선택 화면으로 전환
@@ -77,6 +78,7 @@ public class DungeonPresenter : MonoBehaviour
         _dungeonPanel.SetActive(true);
 
         OnDungeonSlotClicked(-1); // 초기화: 선택된 던전 없음
+        Player.Instance.EnterDungeonSelect();
     }
 
     private void OnEnterButtonClicked()

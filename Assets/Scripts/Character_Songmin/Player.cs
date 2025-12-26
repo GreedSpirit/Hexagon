@@ -444,8 +444,33 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         }
     }
 
-    public void ResetModel()
+    public void EnterDungeonSelect()
     {
+        gameObject.transform.position = new Vector2(1.5f, 1f);
         gameObject.transform.localScale = new Vector2(1, 1);
+        _playerUIManager.OnOffPlayerInventoryUi(false);
+        _playerUIManager.OnOffPlayerStatUi(false);
+        EnterBattleMod();
     }
+
+    public void BackToVillage()
+    {        
+        _playerUIManager.OnOffPlayerInventoryUi(true);
+        _playerUIManager.OnOffPlayerStatUi(true);
+        EnterMoveMod();
+    }
+
+    public void EnterBattle()
+    {
+        _playerUIManager.OnOffPlayerInventoryUi(true);
+        _playerUIManager.OnOffPlayerStatUi(true);
+    }
+
+    public void EnterReward()
+    {
+        _playerUIManager.OnOffPlayerInventoryUi(false);
+        _playerUIManager.OnOffPlayerStatUi(false);
+    }
+
+    
 }
