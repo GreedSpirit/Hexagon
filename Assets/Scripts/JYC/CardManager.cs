@@ -2,9 +2,29 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+[System.Serializable]
+public struct CardTypeAction
+{
+    public string Name;             // 인스펙터 편의용
+    public CardType type;           // 카드 타입
+    public CardAction actionSO;     // 행동 SO
+}
+
+[System.Serializable]
+public struct CardStatusAction
+{
+    public string Name;             // 인스펙터 편의용
+    public string statusKey;        // 상태이상 키
+    public CardAction actionSO;     // 행동 SO
+}
+
 public class CardManager : MonoBehaviour
 {
     public static CardManager Instance;
+
+    [Header("카드 행동 리스트")]
+    [SerializeField] private List<CardTypeAction> _typeActionList;
+    [SerializeField] private List<CardStatusAction> _statusActionList;
 
     // 플레이어가 소지 중인 카드 정보 (Key: 카드 ID, Value: 보유 개수/레벨 등 정보 객체)
     public List<UserCard> UserCardList { get; private set; } = new List<UserCard>();
@@ -82,17 +102,6 @@ public class CardManager : MonoBehaviour
         AddStartingCard("KeyCardAccumulatedKnowledge");
 
 
-        // 덱 구성 없으니 일단 카드 데이터 전부
-        //foreach (var cardData in DataManager.Instance.CardDict)
-        //{
-        //    // IsCard가 false(스킬)인 것은 건너뜀 (9~16번만 통과)
-        //    if (cardData.Value == null || cardData.Value.IsCard == false) continue;
-        //
-        //    // 인벤토리에 넉넉하게 5장씩 (테스트용)
-        //    AddCard(cardData.Value.Id, 5);
-        //
-        //    // CurrentDeck.Add(cardData.Value.Id);  주석 처리
-        //}
         // 자동으로 덱 채우기 (테스트 편의용)
         // 가지고 있는 카드를 앞에서부터 순서대로 덱에 장착 시도 (최대 30장까지)
         // Common, Rare, Epic 카드가 덱에 들어가서 입장 조건을 맞춥니다.
@@ -108,21 +117,23 @@ public class CardManager : MonoBehaviour
     // 동작 구성
     private void InitCardActions()
     {
-        // 카드 타입
-        _cardTypeActions.Add(CardType.Attack, new CardAttackAction());
-        _cardTypeActions.Add(CardType.Healing, new CardHealingAction());
-        _cardTypeActions.Add(CardType.Shield, new CardShieldAction());
-        _cardTypeActions.Add(CardType.Spell, new CardSpellAction());
+        // 카드 타입 액션 등록
+        foreach (var map in _typeActionList)
+        {
+            if (map.actionSO != null && !_cardTypeActions.ContainsKey(map.type))
+            {
+                _cardTypeActions.Add(map.type, map.actionSO);
+            }
+        }
 
-        // 카드 상태이상
-        _cardStatusActions.Add("KeyStatusPoison", new CardPoisonAction());
-        _cardStatusActions.Add("KeyStatusBurn", new CardBurnAction());
-        _cardStatusActions.Add("KeyStatusPride", new CardPrideAction());
-        _cardStatusActions.Add("KeyStatusVulnerable", new CardVulnerableAction());
-
-        _cardStatusActions.Add("KeyStatusStigma", new CardVulnerableAction());
-        _cardStatusActions.Add("KeyStatusKnowledge", new CardVulnerableAction());
-        _cardStatusActions.Add("KeyStatusDespair", new CardVulnerableAction());
+        // 상태이상 액션 등록
+        foreach (var map in _statusActionList)
+        {
+            if (map.actionSO != null && !_cardStatusActions.ContainsKey(map.statusKey))
+            {
+                _cardStatusActions.Add(map.statusKey, map.actionSO);
+            }
+        }
     }
 
     // 첫 시작 카드 추가 (Key)
