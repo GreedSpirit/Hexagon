@@ -104,6 +104,8 @@ public class DeckUI : MonoBehaviour
     {
         GameSaveManager.Instance.LoadGame();
         // DeckUI 끄기
+        Player.Instance.Currentvillage.VillageManager.OnOffVillageName(true);
+        Player.Instance.EnterMoveMod();
         this.gameObject.SetActive(false);
         if (uiBackground != null) uiBackground.SetActive(false);
         // 인벤토리 정리 (끄거나 모드 해제)
