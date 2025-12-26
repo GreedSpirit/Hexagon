@@ -1,10 +1,6 @@
 Id,MonsterSkillSet 테이블의 기본키,몬스터 등급 ,1번 스킬칸,1번 스킬칸 가중치 ,1번 스킬칸 스킬 레벨,2번 스킬칸 ,2번 스킬칸 가중치 ,2번 스킬칸 스킬 레벨,3번 스킬칸,3번 스킬칸 가중치 ,3번 스킬칸 스킬 레벨,4번 스킬칸 ,4번 스킬칸 가중치 ,4번 스킬칸 스킬 레벨
 int,string,Enum,string,float,int,string,float,int,string,float,int,string,float,int
 Id,Key,MonGrade,SkillSlot1,Slot1Weight,Slot1Level,SkillSlot2,Slot2Weight,Slot2Level,SkillSlot3,Slot3Weight ,Slot3Level,SkillSlot4,Slot4Weight,Slot4Level
-1,KeySkillSet01,Normal,KeyCard01,5.5,3,KeyCard03,4.5,1,,,,,,
-2,KeySkillSet02,Normal,KeyCard6,5,1,KeyCard7,10.1,3,KeyCard02,4.5,1,,,
-3,KeySkillSet03,Normal,KeyCard01,6.4,2,KeyCard8,5.4,7,KeyCard5,4.7,2,,,
-4,KeySkillSet04,Normal,KeyCard03,3.4,2,KeyCard5,10.5,4.7,KeyCard4,5.9,4,,,
-5,KeySkillSet05,Boss,KeyCard5,6.4,3,KeyCard7,4.5,5,KeyCard8,5.9,6,KeyCard03,7,8.5
-6,KeySkillSet06,Boss,KeyCard4,5.5,1,KeyCard01,10.1,6,KeyCard7,4.8,3,KeyCard6,7.8,5
-7,KeySkillSet07,Boss,KeyCard4,5,5,KeyCard5,5,5,KeyCard7,5,5,KeyCard8,5,5
+1,KeySkillSet01,Normal,KeyCard01,7,1,KeyCard02,3,1,,,,,,
+2,KeySkillSet02,Normal,KeyCard03,5,1,KeyCard04,5,1,,,,,,
+3,KeySkillSet05,Boss,KeyCard05,3,1,KeyCard06,2,1,KeyCard07,2,1,KeyCard08,3,1

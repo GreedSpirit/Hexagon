@@ -112,7 +112,6 @@ public class DungeonManager : MonoBehaviour
         yield return new WaitUntil(() => isInteractionDone);
 
         // 3. 금서 애니메이션 진행
-        //! 여기서부터 금서 애니메이션 관련
         if(_rewardObjAnimator != null)
         {
             _rewardObjAnimator.SetTrigger("Done");
@@ -145,7 +144,12 @@ public class DungeonManager : MonoBehaviour
             }
             else if(reward.RewardType == "Currency")
             {
-                // 추후 골드나 기타 등등의 자원을 넣을 자리
+                Player.Instance.GetExp(_currentDungeonData.Exp);
+                if(Player.Instance.GetMoney() + reward.Amount > 999999)
+                {
+                    _rewardResultUI.OnMoneyOverText();
+                }
+                Player.Instance.PlusMoney(reward.Amount);
             }
         }
     }
