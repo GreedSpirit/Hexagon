@@ -58,7 +58,7 @@ public class PlayerModelController : MonoBehaviour
             _neerNpcs.Add(npc);
             Player.Instance.CanInteract = true;
             CheckNpcDistance();
-            Player.Instance.Currentvillage.ShowTalkSlide(_neerNpcs[0]);
+            Player.Instance.Currentvillage.VillageManager.ShowTalkSlide(_neerNpcs[0]);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -67,7 +67,7 @@ public class PlayerModelController : MonoBehaviour
         {
             Player.Instance.CanInteract = (_neerNpcs != null);
             CheckNpcDistance();
-            Player.Instance.Currentvillage.HideTalkSlide();
+            Player.Instance.Currentvillage.VillageManager.HideTalkSlide();
             _neerNpcs.Remove(npc);
         }
     }
@@ -87,7 +87,7 @@ public class PlayerModelController : MonoBehaviour
             {
                 lastDistance = distance;                
                 Player.Instance.SetTalkingNpc(npc);
-                Debug.Log($"{npc.Name}");
+                Debug.Log(npc.Name);
             }
         }
     }

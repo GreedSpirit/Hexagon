@@ -4,6 +4,7 @@ public class PlayerUIManager : MonoBehaviour
 {
     [SerializeField] GameObject _playerStatUI;
     [SerializeField] GameObject _playerTalkUI;
+    [SerializeField] GameObject _playerInventoryUI;
 
     //private void Start()
     //{
@@ -32,6 +33,16 @@ public class PlayerUIManager : MonoBehaviour
             _playerTalkUI.SetActive(false);
         }
     }
-
+    public void OnOffPlayerInventoryUi(bool readyToShow)
+    {
+        if (readyToShow)
+        {
+            _playerInventoryUI.SetActive(true);
+        }
+        else
+        {
+            _playerInventoryUI.SetActive(false);
+        }
+    }
 
 }
