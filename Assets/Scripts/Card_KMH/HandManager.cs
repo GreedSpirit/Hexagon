@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine;
-using TMPro;
 
 public class HandManager : MonoBehaviour
 {
@@ -30,8 +29,9 @@ public class HandManager : MonoBehaviour
     [Header("소멸 위치 설정")]
     [SerializeField] Transform _disappearPoint;    // 소멸 고정 위치
 
-    [Space]
-    [SerializeField] TextMeshProUGUI _deckCount;
+    [Header("오디오 클립")]
+    [SerializeField] AudioClip drawClip;           // 드로우
+    [SerializeField] AudioClip overDrawClip;       // 오버드로우
 
 
     public float MoveSpeed => _moveSpeed;
@@ -137,8 +137,6 @@ public class HandManager : MonoBehaviour
         // 덱 카드 수 설정
         _deckCardCount = newDeck.Count;
 
-        _deckCount.text = $"Deck : {_deckCardCount} / {_deckCardCount}";
-
         // 덱 섞기
         ShuffleDeck(newDeck);
 
@@ -189,18 +187,21 @@ public class HandManager : MonoBehaviour
         cardLogic.Init(cardData, this, level);
         cardUI.Init(cardData, this);
 
-        // 덱 카드 수 갱신
-        _deckCount.text = $"Deck : {_deck.Count} / {_deckCardCount}";
-
         // 오버 드로우 체크
         if (_handCards.Count >= _handLimit)
         {
             // 오버드로우 발생
             cardUI.OnDisappear(_disappearPoint);
 
+            // 오버드로우 클립 재생
+            SoundManager.Instance.PlaySFX(overDrawClip);
+
             // 핸드에 추가 안하고 바로 끝
             return;
         }
+
+        // 드로우 클립 재생
+        SoundManager.Instance.PlaySFX(drawClip);
 
         // 리스트 추가
         _handCards.Add(cardLogic);

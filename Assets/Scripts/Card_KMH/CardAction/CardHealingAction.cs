@@ -1,15 +1,12 @@
 using UnityEngine;
 
-public class CardHealingAction : ICardAction
+[CreateAssetMenu(fileName = "newHealingAction", menuName = "Card Actions/Healing Action")]
+public class CardHealingAction : CardAction
 {
     // 카드 사용
-    public void Use(string statusEffectKey, int value, int statusValue, int turn, IBattleUnit target)
+    public override void Use(string statusEffectKey, int value, IBattleUnit target)
     {
-        if (target == null)
-        {
-            Debug.LogError("Target 이 Null 입니다.");
-            return;
-        }
+        base.Use(statusEffectKey, value, target);
         Debug.Log($"치유 카드 사용 : {value} 회복.");
         target.GetHp(value);
     }

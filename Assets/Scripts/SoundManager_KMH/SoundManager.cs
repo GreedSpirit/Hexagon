@@ -27,7 +27,7 @@ public class BGMData
 {
     public string name;         // 구분용 이름
     public BGMType type;        // 타입
-    public AudioClip[] clips;   // 클립 리스트
+    public AudioClip clip;      // 클립
 }
 
 [System.Serializable]
@@ -61,11 +61,14 @@ public class SoundManager : MonoBehaviour
     public float SFXVolume { get; private set; } = 0.5f;
 
     // 클립 간단하게 가져올 수 있도록 딕셔너리 생성
-    private Dictionary<BGMType, AudioClip[]> _bgmTable = new Dictionary<BGMType, AudioClip[]>();
+    private Dictionary<BGMType, AudioClip> _bgmTable = new Dictionary<BGMType, AudioClip>();
     private Dictionary<SFXType, AudioClip> _sfxTable = new Dictionary<SFXType, AudioClip>();
 
     // 배경음 코루틴
     private Coroutine _bgmCoroutine;
+
+    // 현재 씬 이름
+    private string _currentSceneName;
 
 
     private void Awake()
@@ -92,7 +95,7 @@ public class SoundManager : MonoBehaviour
         foreach (var bgmData in _bgmList)
         {
             if (!_bgmTable.ContainsKey(bgmData.type))
-                _bgmTable.Add(bgmData.type, bgmData.clips);
+                _bgmTable.Add(bgmData.type, bgmData.clip);
         }
 
         foreach (var sfxData in _sfxList)
@@ -148,9 +151,30 @@ public class SoundManager : MonoBehaviour
     // 씬 이름에 맞는 타입의 배경음 재생
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // 씬 이름 저장
+        _currentSceneName = scene.name;
+
+        // 씬 BGM 재생
+        PlaySceneBGM();
+    }
+
+    // 현재 씬의 기본 BGM으로 되돌리기
+    // 보스전 끝났거나, 특수 상황 끝났을 떄
+    public void PlaySceneBGM()
+    {
+        // 씬이름에 따라 BGM 타입 가져오기
+        BGMType defaultType = GetSceneBGMType(_currentSceneName);
+
+        // 재생
+        PlayBGM(defaultType);
+    }
+
+    // 씬에 따라 BGM 타입 반환
+    private BGMType GetSceneBGMType(string sceneName)
+    {
         BGMType targetBGM;
 
-        switch (scene.name)
+        switch (sceneName)
         {
             case "TitleScene":
                 targetBGM = BGMType.Title;
@@ -162,13 +186,12 @@ public class SoundManager : MonoBehaviour
                 targetBGM = BGMType.Battle;
                 break;
             default:
-                targetBGM = BGMType.None; 
+                targetBGM = BGMType.None;
                 break;
         }
 
-        PlayBGM(targetBGM);
+        return targetBGM;
     }
-
     // 배경음 재생 (BGMType)
     public void PlayBGM(BGMType type)
     {
@@ -186,12 +209,11 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        // 해당 타입의 클립 배열 가져오고, 클립 1개 이상이면
-        if (_bgmTable.TryGetValue(type, out AudioClip[] clips) && clips.Length > 0)
+        // 해당 타입의 클립 배열 가져오기
+        if (_bgmTable.TryGetValue(type, out AudioClip clip))
         {
-            // 랜덤으로 하나 뽑기
-            int randomIndex = Random.Range(0, clips.Length);
-            AudioClip nextClip = clips[randomIndex];
+            // 다음 클립
+            AudioClip nextClip = clip;
 
             // 이미 재생 중인 배경음이면 무시
             if (_bgmSource.isPlaying && _bgmSource.clip == nextClip)
@@ -251,6 +273,9 @@ public class SoundManager : MonoBehaviour
         _bgmSource.Stop();
         _bgmSource.clip = null;
     }
+
+
+
 
 
     // 공용 효과음 재생 (SFXType)
