@@ -15,6 +15,29 @@ public class InventoryManager : MonoBehaviour
     public enum SortType { GradeAsc, LevelDesc, TypeOrder, Name, Recent }
     public SortType CurrentSortType = SortType.GradeAsc;
 
+    [Header("UI Resources (등급별 배경 이미지)")]
+    public Sprite bgCommon;     // Common 뒷면
+    public Sprite bgRare;       // Rare 뒷면
+    public Sprite bgEpic;       // Epic 뒷면
+    public Sprite bgLegendary;  // Legendary 뒷면
+
+    [Header("UI Resources (테두리 이미지)")]
+    public Sprite borderCommon;
+    public Sprite borderRare;
+    public Sprite borderEpic;
+    public Sprite borderLegendary;
+
+    public Sprite GetGradeBackground(CardGrade grade)
+    {
+        switch (grade)
+        {
+            case CardGrade.Common: return bgCommon;
+            case CardGrade.Rare: return bgRare;
+            case CardGrade.Epic: return bgEpic;
+            case CardGrade.Legendary: return bgLegendary;
+            default: return bgCommon;
+        }
+    }
     // 가상 슬롯 (동적으로 크기가 변함)
     private int[] _virtualDeckSlots;
 
@@ -216,6 +239,17 @@ public class InventoryManager : MonoBehaviour
         RefreshInventory();
         InvokeDeckChanged();
         DeselectAll();
+    }
+    public Sprite GetGradeBorderSprite(CardGrade grade)
+    {
+        switch (grade)
+        {
+            case CardGrade.Common: return borderCommon;
+            case CardGrade.Rare: return borderRare;
+            case CardGrade.Epic: return borderEpic;
+            case CardGrade.Legendary: return borderLegendary;
+            default: return borderCommon;
+        }
     }
 
     // DeckUI가 가져갈 때 사용 (-1 포함된 리스트 반환)

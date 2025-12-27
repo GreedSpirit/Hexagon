@@ -9,9 +9,13 @@ public class InventorySlotUI : MonoBehaviour,
 {
     [Header("UI Components")]
     [SerializeField] Image cardImage;       // 카드 일러스트
+    [SerializeField] Image backgroundImage;
     [SerializeField] Image borderImage;     // 등급 테두리
     [SerializeField] GameObject selectEffect;    // 선택 시 노란색 빛 (On/Off)
     [SerializeField] TextMeshProUGUI countText; // xN 표시
+    [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
+    [SerializeField] TextMeshProUGUI levelText; // 카드 레벨
+    [SerializeField] TextMeshProUGUI typeText;  // 카드 타입
 
     [Header("Equip Mark")]
     [SerializeField] GameObject equipMark; // 장착 표시 (이미지+텍스트)
@@ -30,14 +34,50 @@ public class InventorySlotUI : MonoBehaviour,
         var data = userCard.GetData();
 
         // UI 갱신
-        // cardImage.sprite = Resources.Load<Sprite>(data.Img); // 이미지 로드 예시 // 이후 에셋 받고 수정
+        if (data != null)
+        {
+            // 일러스트
+            if (cardImage != null)
+                cardImage.sprite = DataManager.Instance.GetCardSprite(data.CardImg);
+
+            // 등급별 배경 설정
+            if (backgroundImage != null)
+            {
+                backgroundImage.sprite = InventoryManager.Instance.GetGradeBackground(data.CardGrade);
+            }
+
+            // 텍스트 정보 갱신 (이름)
+            if (nameText != null)
+            {
+                nameText.text = data.Name;
+            }
+
+            // 텍스트 정보 갱신 (레벨)
+            if (levelText != null)
+            {
+                levelText.text = userCard.Level.ToString();
+            }
+
+            // 텍스트 정보 갱신 (타입 - 한글 변환)
+            if (typeText != null)
+            {
+                string typeString = "";
+                switch (data.CardType)
+                {
+                    case CardType.Attack: typeString = "공격"; break;
+                    case CardType.Shield: typeString = "방어"; break;
+                    case CardType.Healing: typeString = "치유"; break;
+                    case CardType.Spell: typeString = "주문"; break;
+                    default: typeString = ""; break;
+                }
+                typeText.text = typeString;
+            }
+        }
         if (countText != null)
         {
             countText.text = $"x {userCard.Count}";
         }
         selectEffect.gameObject.SetActive(false); // 처음엔 꺼둠
-
-        // 등급별 테두리 색상 변경 로직 추가 예정 // 에셋 자체로 테두리가 다를지 아니면 코드로 테두리만 색상 변경할지 아직 몰라서 보류함
 
         // 장착 여부 확인
         bool isEquipped = InventoryManager.Instance.IsCardInDeck(userCard.CardId);
