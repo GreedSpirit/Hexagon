@@ -103,12 +103,12 @@ public class RewardResultUI : MonoBehaviour
         _currencyIsOverText.SetActive(false);
     }
 
-    private void OnReturnButtonClicked()
+    public void OnReturnButtonClicked()
     {
         Player.Instance.EnterMoveMod();
         Player.Instance.Respawn();
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
         //SceneTransitionManager.Instance.LoadSceneWithFade(씬 이름)
     }
 

@@ -108,6 +108,7 @@ public class RewardInteraction : MonoBehaviour
         StopAllCoroutines();
         _mashAction.action.Disable();
         _interactionPanel.SetActive(false);
+        Player.Instance.EnterReward();
         SoundManager.Instance.PlaySFX(_sealComplete);
         OnInteractionComplete?.Invoke();
     }
