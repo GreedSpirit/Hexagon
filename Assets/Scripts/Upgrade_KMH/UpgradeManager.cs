@@ -33,10 +33,6 @@ public class UpgradeManager : MonoBehaviour
     [Header("강화 연출용 테두리")]
     [SerializeField] CanvasGroup _upgradeEdgeCanvasGroup;
 
-    [Header("스크롤바")]
-    [SerializeField] Scrollbar _targetScroll;         // 스크롤바
-    [SerializeField] float waitTime = 3.0f;           // 대기 시간
-
     [Header("오디오 클립")]
     [SerializeField] AudioClip enhanceClip;           // 강화 시도
     [SerializeField] AudioClip enhanceSuccessClip;    // 강화 성공
@@ -60,11 +56,6 @@ public class UpgradeManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
-
-        _scrollBarCanvasGroup = _targetScroll.GetComponent<CanvasGroup>();
-
-        // OnScroll 함수 연결
-        _targetScroll.onValueChanged.AddListener(OnScroll);
     }
 
     private IEnumerator Start()
@@ -95,36 +86,6 @@ public class UpgradeManager : MonoBehaviour
         _upgradeEdgeCanvasGroup.alpha = 0f;
 
         RefreshList();
-    }
-
-    private void Update()
-    {
-        if (_scrollBarCanvasGroup == null) return;
-
-        // 이미 투명하면 무시
-        if (_scrollBarCanvasGroup.alpha <= 0f) return;
-
-        // 마지막 스크롤 시간에서 3초가 지났는지 체크
-        if (Time.time > _lastScrollTime + waitTime)
-        {
-            // 3초 지나면 투명
-            _scrollBarCanvasGroup.alpha = 0f;
-        }
-    }
-    private void OnDestroy()
-    {
-        // 혹시 모르니 연결 해제
-        _targetScroll?.onValueChanged.RemoveListener(OnScroll);
-    }
-
-    // 스크롤 변화 감지
-    private void OnScroll(float value)
-    {
-        // 보이게
-        _scrollBarCanvasGroup.alpha = 1f;
-
-        // 마지막 스크롤 시간 갱신
-        _lastScrollTime = Time.time;
     }
 
     // 카드 리스트 새로고침 (UI 온, 강화 연출 완료)
