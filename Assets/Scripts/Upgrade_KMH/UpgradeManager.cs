@@ -70,6 +70,7 @@ public class UpgradeManager : MonoBehaviour
     {
         // 켜면 안보임
         _scrollBarCanvasGroup.alpha = 0f;
+        _upgradeEdgeCanvasGroup.alpha = 0f;
     }
 
     private IEnumerator Start()
