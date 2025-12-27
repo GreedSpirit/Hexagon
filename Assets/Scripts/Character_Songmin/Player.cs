@@ -237,8 +237,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤�
 
     public void GetHp(int hp) //체력을 회복할 때마다 호출
     {
-        _stat.GetHp(hp);
-        ResetCondition();
+        _stat.GetHp(hp);        
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
