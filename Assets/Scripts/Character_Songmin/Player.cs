@@ -358,8 +358,8 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤�
     }
 
     public void EndTalk()
-    {
-        TalkUI?.EndTalk();        
+    {           
+        TalkUI?.EndTalk();
         EnterMoveMod();
         // [추가] 대화 종료 후 저장 (진행도/퀘스트/스크립트 저장용)
         GameSaveManager.Instance.SaveGame();        
@@ -394,6 +394,14 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤�
     public void SwitchIsTalking(bool talking)
     {
         IsTalking = talking;
+        if (!talking)
+        {
+            EnterMoveMod();
+            // [추가] 대화 종료 후 저장 (진행도/퀘스트/스크립트 저장용)
+            GameSaveManager.Instance.SaveGame();
+            TalkUI = null;
+        }
+
         Currentvillage?.VillageManager?.OnOffTalkSlide(!talking);
         Currentvillage?.VillageManager?.OnOffVillageName(!talking);
         SetStatUIView(!talking);
