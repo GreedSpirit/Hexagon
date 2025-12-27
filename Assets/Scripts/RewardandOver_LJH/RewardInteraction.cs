@@ -17,6 +17,8 @@ public class RewardInteraction : MonoBehaviour
     [SerializeField] private float _increaseAmount = 0.05f;
     [SerializeField] private float _decreaseSpeed = 0.2f;
     [SerializeField] private float _timeoutDuration = 5f; // 5초 타임아웃
+    [SerializeField] private AudioClip _seal;
+    [SerializeField] private AudioClip _sealComplete;
 
     private float _currentValue = 0f;
     private Coroutine _decayCoroutine;
@@ -51,6 +53,7 @@ public class RewardInteraction : MonoBehaviour
     private void OnSpacePressed(InputAction.CallbackContext context)
     {
         _currentValue = Mathf.Min(_currentValue + _increaseAmount, 1f);
+        SoundManager.Instance.PlaySFX(_seal);
         UpdateUI();
 
         // 입력이 들어올 때마다 타임아웃 타이머 리셋
@@ -105,6 +108,7 @@ public class RewardInteraction : MonoBehaviour
         StopAllCoroutines();
         _mashAction.action.Disable();
         _interactionPanel.SetActive(false);
+        SoundManager.Instance.PlaySFX(_sealComplete);
         OnInteractionComplete?.Invoke();
     }
 }
