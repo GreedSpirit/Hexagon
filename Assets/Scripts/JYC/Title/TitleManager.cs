@@ -16,10 +16,10 @@ public class TitleManager : MonoBehaviour
     public void OnClickStart()
     {
         // 효과음 재생
-        SoundManager.Instance?.PlaySFX(SFXType.Click);
+        //SoundManager.Instance?.PlaySFX(SFXType.Click);
 
         // 게임 씬으로 이동
-        SceneTransitionManager.Instance?.LoadSceneWithFade("VillageScene_SMS");
+        SceneTransitionManager.Instance?.LoadSceneWithFade("TestBuildScene_LJH");
     }
 
     // Exit 버튼 연결용

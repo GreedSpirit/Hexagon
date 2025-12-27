@@ -35,10 +35,7 @@ public class SceneTransitionManager : MonoBehaviour
     /// 페이드 씬 전환
     /// </summary>
     public void LoadSceneWithFade(string sceneName)
-    {
-        Player.Instance.EnterMoveMod();
-        Player.Instance.Respawn();
-        
+    {        
         StartCoroutine(FadeOutAndLoad(sceneName));
     }
 
