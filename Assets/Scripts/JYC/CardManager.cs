@@ -68,8 +68,11 @@ public class CardManager : MonoBehaviour
         }
         else
         {
+            if (CurrentDeck == null) CurrentDeck = new List<int>();
+
             foreach (var cardData in DataManager.Instance.CardDict)
             {
+
                 cardData.Value.SetString();
                 cardData.Value.SetStatusValue();
             }
@@ -115,14 +118,6 @@ public class CardManager : MonoBehaviour
         AddStartingCard("KeyCardOldBookShield");
         AddStartingCard("KeyCardAccumulatedKnowledge");
 
-
-        // 자동으로 덱 채우기 (테스트 편의용)
-        // 가지고 있는 카드를 앞에서부터 순서대로 덱에 장착 시도 (최대 30장까지)
-        // Common, Rare, Epic 카드가 덱에 들어가서 입장 조건을 맞춥니다.
-        foreach (var userCard in UserCardList)
-        {
-            ToggleDeckEquip(userCard.CardId);
-        }
 
         // 저장
         GameSaveManager.Instance.SaveGame();
@@ -178,8 +173,13 @@ public class CardManager : MonoBehaviour
 
     public bool IsDeckValid(int requiredCount)
     {
-        // 지금은 단순히 개수만 체크하지만, 나중에 코스트 제한 등을 추가할 수 있음
-        if (CurrentDeck.Count != requiredCount)
+        int realCardCount = 0;
+        foreach (int id in CurrentDeck)
+        {
+            if (id != -1) realCardCount++;
+        }
+
+        if (realCardCount != requiredCount)
             return false;
 
         return true;
@@ -231,34 +231,6 @@ public class CardManager : MonoBehaviour
             // 미보유 카드 획득 시 플레이어 경험치 획득
             GetExp(cardId);
         }
-    }
-
-    // 덱 장착/해제 (InventoryManager에서 호출)
-    public bool ToggleDeckEquip(int cardId)
-    {
-        // 이미 있으면 제거
-        if (CurrentDeck.Contains(cardId))
-        {
-            CurrentDeck.Remove(cardId);
-            return true;
-        }
-        // 중복 장착 방지 추가
-        if (CurrentDeck.Contains(cardId))
-        {
-            Debug.Log("같은 카드는 한 번만 장착할 수 있습니다!");
-            return false;
-        }
-        // 최대 개수 확인
-        if (CurrentDeck.Count >= MAX_DECK_COUNT) return false;
-
-        var userCard = UserCardList.Find(x => x.CardId == cardId);
-        if (userCard != null)
-        {
-            CurrentDeck.Add(cardId);
-            return true;
-        }
-
-        return false;
     }
 
     // 특정 카드 가져오기

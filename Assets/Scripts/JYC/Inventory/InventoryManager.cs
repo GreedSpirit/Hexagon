@@ -104,10 +104,9 @@ public class InventoryManager : MonoBehaviour
 
         foreach (int cardId in _virtualDeckSlots)
         {
-            if (cardId != -1)
-            {
-                CardManager.Instance.CurrentDeck.Add(cardId);
-            }
+
+            CardManager.Instance.CurrentDeck.Add(cardId);
+
         }
         GameSaveManager.Instance.SaveGame();
     }

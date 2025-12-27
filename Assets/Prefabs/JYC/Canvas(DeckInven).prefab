@@ -1358,6 +1358,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3142012139012220027, guid: d33289d3aec7e5146be3c7d960836227, type: 3}
+      propertyPath: slotPrefab
+      value: 
+      objectReference: {fileID: 8541036676305895480, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
+    - target: {fileID: 3142012139012220027, guid: d33289d3aec7e5146be3c7d960836227, type: 3}
       propertyPath: deckUIGroup
       value: 
       objectReference: {fileID: 7651662726828821955}
