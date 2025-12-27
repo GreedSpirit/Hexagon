@@ -78,9 +78,10 @@ crashlytics-build.properties
 ~$*
 
 # Ignore custom ignored assets
-/Assets/_IgnoredAssets/*
-!/Assets/_IgnoredAssets/
-!/Assets/_IgnoredAssets/*.meta
+/Assets/_IgnoredAssets/**
+!/Assets/_IgnoredAssets/**/
+!/Assets/_IgnoredAssets/**/*.meta
+
 /Assets/Fonts/*
 !/Assets/Fonts/*.meta
 
