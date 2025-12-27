@@ -26,7 +26,13 @@ public class CSVReader
             // 빈 줄이나 주석(#) 처리
             if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
 
-            string[] values = line.Split(',');
+            //string[] values = line.Split(','); 아래 방식으로 변경.
+            string[] values = ParseCsvLine(line).ToArray();
+            for (int v = 0; v < values.Length; v++)
+            {
+                values[v] = NormalizeCsvString(values[v]);
+            }
+
 
             // 데이터가 비어있으면 건너뛰기
             if (values.Length == 0 || string.IsNullOrWhiteSpace(values[0])) continue;
@@ -60,5 +66,61 @@ public class CSVReader
         }
 
         return list;
+    }
+    private static List<string> ParseCsvLine(string line)
+    {
+        List<string> result = new List<string>();
+        bool inQuotes = false;
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        for (int i = 0; i < line.Length; i++)
+        {
+            char c = line[i];
+
+            // 큰따옴표 처리
+            if (c == '"')
+            {
+                // "" → 실제 "
+                if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                {
+                    sb.Append('"');
+                    i++; // 다음 따옴표 스킵
+                }
+                else
+                {
+                    inQuotes = !inQuotes;
+                }
+            }
+            // 쉼표 처리
+            else if (c == ',' && !inQuotes)
+            {
+                result.Add(sb.ToString());
+                sb.Clear();
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+
+        // 마지막 컬럼
+        result.Add(sb.ToString());
+
+        return result;
+    }
+    private static string NormalizeCsvString(string s)
+    {
+        if (string.IsNullOrEmpty(s)) return s;
+
+        s = s.Trim();
+
+        // 바깥 따옴표 1겹만 제거
+        if (s.Length >= 2 && s[0] == '"' && s[s.Length - 1] == '"')
+        {
+            s = s.Substring(1, s.Length - 2);
+        }
+
+        // 내부 따옴표는 그대로 둔다
+        return s;
     }
 }

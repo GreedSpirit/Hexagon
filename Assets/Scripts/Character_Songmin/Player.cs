@@ -35,6 +35,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     private PlayerUIManager _playerUIManager;
     private PlayerInputHandler _playerInputHandler;
     private PlayerModelController _playerModelController;
+    private ScenarioPlayer _scenarioPlayer;
 
 
     protected override void Awake()
@@ -42,7 +43,8 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         base.Awake();
         _playerUIManager = GetComponent<PlayerUIManager>();
         _playerInputHandler = GetComponent<PlayerInputHandler>();
-        _playerModelController = GetComponent<PlayerModelController>();        
+        _playerModelController = GetComponent<PlayerModelController>();
+        _scenarioPlayer = GetComponent<ScenarioPlayer>();
     }
 
 
@@ -331,7 +333,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 
     public void TalkMyself()
     {
-        EnterScenarioMod();
+        EnterTalkMod();
         TalkUI.EnterTalk(this);
     }
 
@@ -339,7 +341,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         if (CanInteract)
         {
-            EnterScenarioMod();
+            EnterTalkMod();
             Debug.Log($"{TalkingNpc.Name}¿Í »óÈ£ÀÛ¿ë!");
             if (TalkUI == null)
             {
@@ -372,6 +374,17 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         _stat.MinusMoney(cost);
         OnMoneyChanged?.Invoke(_stat.Money);
     }
+    public void OnTestPlayIntroClick()
+    {
+        EnterScenarioMod();        
+        _scenarioPlayer.EnterScenario(Trigger_Type.gamestart);
+    }
+
+    public void UpdateScenario()
+    {
+        TalkUI.UpdateScenario();
+    }
+
     //----------------------------------------------------------
     // UI ¿Â¿ÀÇÁ °ü·Ã ÇÔ¼öµé
     
@@ -404,6 +417,11 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         _playerInputHandler.ChangeInputState(new ScenarioState(this, _playerInputHandler));
     }
+    public void EnterTalkMod()
+    {
+        _playerInputHandler.ChangeInputState(new TalkState(this, _playerInputHandler));
+    }
+
     public void EnterMoveMod()
     {
         _playerInputHandler.ChangeInputState(new MoveState(this, _playerInputHandler));
@@ -413,11 +431,15 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     private class PlayerSaveData
     {
         public int Level;
+        public int Money;
+        public int Exp;
     }
     public void SaveGame()
     {
         PlayerSaveData data = new PlayerSaveData();
         data.Level = _stat.Level;
+        data.Money = _stat.Money;
+        data.Exp = _stat.CurrentExp;
 
         // JSON º¯È¯
         string json = JsonUtility.ToJson(data, true); // true´Â º¸±â ÁÁ°Ô ÁÙ¹Ù²Þ ÇÔ
@@ -441,14 +463,18 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
             if (data != null)
             {
                 _stat.Level = data.Level;
+                _stat.Money = data.Money;
+                _stat.CurrentExp = data.Exp;
 
                 Debug.Log($"[Load] ºÒ·¯¿À±â ¿Ï·á. ÇÃ·¹ÀÌ¾î ·¹º§ : {_stat.Level}");
+                Debug.Log($"[Load] ºÒ·¯¿À±â ¿Ï·á. ÇÃ·¹ÀÌ¾î °ñµå : {_stat.Money}");
             }
         }
         else
         {
             _stat.Level = 1;
             Debug.Log($"[Load] ÀúÀåµÈ ÆÄÀÏÀÌ ¾ø½À´Ï´Ù. ÇÃ·¹ÀÌ¾î ·¹º§ : {_stat.Level}");
+            Debug.Log($"[Load] ÀúÀåµÈ ÆÄÀÏÀÌ ¾ø½À´Ï´Ù. ÇÃ·¹ÀÌ¾î °ñµå : {_stat.Money}");
         }
     }
 

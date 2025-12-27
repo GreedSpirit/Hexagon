@@ -10,7 +10,8 @@ public class TalkUI : MonoBehaviour
     //페이드 아웃용 검은 패널
     [SerializeField] GameObject _fadePannel;
     CanvasGroup _canvasGroup;
-    Coroutine _fadeRoutine;    
+    Coroutine _fadeRoutine;  
+    Coroutine _effectRoutine;  
     float fadeDuration = 0.3f;
     ITalkable _currentTalking;
     List<ScenarioData> _currentScenario;
@@ -20,6 +21,9 @@ public class TalkUI : MonoBehaviour
     [SerializeField] Image _backgroundPannel;
     [SerializeField] Image _leftImg;
     [SerializeField] Image _rightImg;
+    [SerializeField] Image _cutImg;
+
+
     [SerializeField] TextMeshProUGUI _characterName;
     [SerializeField] TextMeshProUGUI _characterScript;
     [SerializeField] GameObject _upgradeEnterButton;
@@ -41,8 +45,10 @@ public class TalkUI : MonoBehaviour
         _testButton.SetActive(false);
     }
 
-    //마을에서 대화용
-    //------------------------------------------------------
+
+    //------------------------------------------------------------------
+
+    #region 마을에서 대화용
     public void EnterTalk(ITalkable talkable) 
     {
         SetTalkable(talkable);
@@ -56,7 +62,7 @@ public class TalkUI : MonoBehaviour
         {
             StopCoroutine(_fadeRoutine);
         }
-        _fadeRoutine = StartCoroutine(FadeInAndOut(true));
+        _fadeRoutine = StartCoroutine(TalkFadeInAndOut(true));
     }
 
     public void EnterUpgrade()
@@ -81,7 +87,7 @@ public class TalkUI : MonoBehaviour
         }
         if (_talkPannel.activeSelf == true)
         {
-            _fadeRoutine = StartCoroutine(FadeInAndOut(false));
+            _fadeRoutine = StartCoroutine(TalkFadeInAndOut(false));
         }
         else
         {
@@ -91,57 +97,56 @@ public class TalkUI : MonoBehaviour
         }        
     }
 
+    #endregion
+
+    //------------------------------------------------------------------
+
     public void EnterScenario(List<ScenarioData> datas)
-    {
+    {        
+        _currentScenario = datas;
+        _currentIndex = 0;
+
+
         if (_fadeRoutine != null)
         {
             StopCoroutine(_fadeRoutine);
         }
-        _currentScenario = datas;
-        _currentIndex = 0;
-        //_fadeRoutine = //여기서 해야할 일 : 까만 화면 만들기
+        _fadeRoutine = StartCoroutine(ScenarioFadeInAndOut(true));
+        Debug.Log(datas.Count);
         UpdateScenario();
     }
 
     public void UpdateScenario()
     {
         if (_currentIndex >= _currentScenario.Count)
-        {
+        {               
+            EndScenario();
+            return;
             //시나리오 종료 처리
         }
         ScenarioData data = _currentScenario[_currentIndex];
+
+        SetScenarioBackground(data);
+        SetScenarioPortrait(data);
+
+      
         
-        //_backgroundPannel.sprite = 스프라이트 설정해주기
-        //만약에 까만 화면이면 페이드 아웃 해주기
-        if (_leftImg.sprite == null && data.Character_Image == "Img_PC_Erion")
-        {
-            //_leftImg.sprite = ImageManager.Instance.GetSprite(data.Character_Image);
-            if (_rightImg.gameObject.activeSelf)
-            {
-                _rightImg.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f;
-            }
-            _leftImg.gameObject.SetActive(true);
-            _leftImg.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
-            _characterName.text = data.Npc;            
-        }
-        else if (_rightImg.sprite == null)
-        {
-            //_rightImg.sprite = ImageManager.Instance.GetSprite(data.Character_Image);
-            if (_leftImg.gameObject.activeSelf)
-            {
-                _leftImg.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f;
-            }
-            _rightImg.gameObject.SetActive(true);
-            _rightImg.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
-            _characterName.text = data.Npc;            
-        }
-        else if (data.Character_Image == null)
-        {
-            _characterName.text = "";
-        }
         _characterScript.text = data.Dialogue;
         _currentIndex++;
         //연출도 추가해주기
+    }
+
+    public void EndScenario()
+    {
+        _currentIndex = 0;
+        _currentScenario = null;
+
+        if (_fadeRoutine != null)
+        {
+            StopCoroutine(_fadeRoutine);
+        }
+        _fadeRoutine = StartCoroutine(ScenarioFadeInAndOut(false));
+        Player.Instance.EnterMoveMod();
     }
 
 
@@ -149,8 +154,77 @@ public class TalkUI : MonoBehaviour
 
 
     //-------------------------------------
-    private void SetScenario()
+
+    private void SetCutImage(ScenarioData data) //마저 작업해야 함.
     {
+        if (_cutImg.sprite != null && data.Image_ID != null) //d
+        {
+            _cutImg = null;
+        }
+        else
+        {
+            //_cutImg = DataManager.Instance.GetSprite(, data.Image_ID);
+        }
+
+    }
+
+
+
+
+    private void SetScenarioPortrait(ScenarioData data)
+    {
+        if (string.IsNullOrWhiteSpace(data.Npc))
+        {
+            _characterName.text = "";
+            _characterScript.text = data.Dialogue;
+            return;
+        }
+        if (data.Npc == "에리온") //화자가 에리온이라면
+        {
+            if (_leftImg.sprite == null) // 에리온의 최초 대사라면
+            {
+                _leftImg.gameObject.SetActive(true); //왼쪽 초상화 오브젝트 활성화
+                _leftImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Character_Image); //왼쪽 초상화에 에리온 이미지 할당
+            }            
+            _leftImg.gameObject.GetComponent<CanvasGroup>().alpha = 1f; //왼쪽 초상화 알파값 1로 딤드 해제
+            
+
+            if (_rightImg.gameObject.activeSelf) // 오른쪽 이미지가 켜져 있다면
+            {
+                _rightImg.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f; //알파값 조정으로 딤드 처리
+            }
+            _characterName.text = data.Npc; //이름 텍스트 설정
+        }
+        else //화자가 에리온이 아니라면(Npc라면)
+        {
+            if (_rightImg.sprite == null)  //Npc의 최초 대사라면
+            {
+                _rightImg.gameObject.SetActive(true); //우측 초상화 오브젝트 활성화
+                _rightImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Character_Image); //우측 초상화에 Npc 할당
+            }
+            _rightImg.gameObject.GetComponent<CanvasGroup>().alpha = 1f; //딤드 처리 복구
+
+            if (_leftImg.gameObject.activeSelf) //좌측 이미지가 켜져 있다면
+            {
+                _leftImg.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f; //딤드 처리
+            }            
+            
+            _characterName.text = data.Npc; //이름 텍스트 설정
+        }
+        
+    }
+
+    private void SetScenarioBackground(ScenarioData data)
+    {
+        _backgroundPannel.GetComponent<CanvasGroup>().alpha = 1f;
+        if (data.Background != null && data.Background != "")
+        {
+            //_backgroundPannel.GetComponent<Image>().sprite = DataManager.Instance.GetSprite( ,data.Background);
+        }
+        else
+        {
+            _backgroundPannel.GetComponent<Image>().sprite = null;
+        }
 
     }
 
@@ -162,19 +236,18 @@ public class TalkUI : MonoBehaviour
         //_leftImg.GetComponent<Text>().text = talkable.GetImage();
     }
 
-    
-    
 
 
-
-    IEnumerator FadeInAndOut(bool isEnter)
+    IEnumerator ScenarioFadeInAndOut(bool isEnter) //true는 시나리오 진입, false는 시나리오 종료.
     {
         yield return FadeRoutine(true);
-
-
-        _talkPannel.SetActive(isEnter);
-        Player.Instance.SwitchIsTalking(isEnter);
         
+        _talkPannel.SetActive(isEnter);
+        _leftImg.gameObject.SetActive(false);
+        _rightImg.gameObject.SetActive(false);
+        _backgroundPannel.GetComponent<CanvasGroup>().alpha = 1f;
+        Player.Instance.SwitchIsTalking(isEnter);
+
         if (_currentTalking is Npc)
         {
             _currentTalking.SwitchIsTalking(isEnter);
@@ -185,7 +258,28 @@ public class TalkUI : MonoBehaviour
         yield return FadeRoutine(false);
     }
 
-    IEnumerator FadeRoutine(bool isFadeIn)
+
+    IEnumerator TalkFadeInAndOut(bool isEnter) //true는 대화 진입, false는 대화 종료.
+    {
+        yield return FadeRoutine(true);
+
+
+        _talkPannel.SetActive(isEnter);
+        Player.Instance.SwitchIsTalking(isEnter);
+        
+        if (_currentTalking.GetName() == "리오넬")
+        {
+            _currentTalking.SwitchIsTalking(isEnter);
+            _upgradeEnterButton.SetActive(isEnter);
+        }
+
+
+        yield return FadeRoutine(false);
+    }
+
+    
+
+    IEnumerator FadeRoutine(bool isFadeIn) //true일 때 까매지고 false일 때 투명해짐(대화창을 가림)
     {
         float start = _canvasGroup.alpha;
         float end = isFadeIn ? 1f : 0f;

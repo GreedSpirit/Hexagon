@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MoveState : IInputState
+public class TalkState : IInputState
 {
     Player _player;
     PlayerModelController _controller;
     PlayerInputHandler _handler;
-    
-    public MoveState(Player player, PlayerInputHandler handler)
+
+    public TalkState(Player player, PlayerInputHandler handler)
     {
         _player = player;
         _handler = handler;
@@ -16,7 +16,7 @@ public class MoveState : IInputState
 
     public void OnEnter()
     {
-        _handler.ChangeActionMap("Village");
+        _handler.ChangeActionMap("Talk");
     }
 
     public void OnExit()
@@ -28,18 +28,12 @@ public class MoveState : IInputState
     {
         if (ctx.performed)
         {
-            Player.Instance.TalkWithNpc();
+            _player.EndTalk();
         }
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
-    {        
-        if (ctx.canceled)
-        {
-            _controller.SetMoveInput(Vector2.zero);
-            return;
-        }
-        Vector2 moveDirection = ctx.ReadValue<Vector2>();
-        _controller.SetMoveInput(moveDirection);
+    {
+        return;
     }
 }

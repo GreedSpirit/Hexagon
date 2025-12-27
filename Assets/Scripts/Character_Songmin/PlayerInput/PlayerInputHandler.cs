@@ -54,16 +54,9 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (ctx.performed)
         {
             _currentInput?.OnInteract(ctx);
         }        
-    }
-    public void OnSkip(InputAction.CallbackContext ctx)
-    {
-        if (ctx.started)
-        {
-            _currentInput?.OnInteract(ctx);
-        }
-    }
+    }    
 }
