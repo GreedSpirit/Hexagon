@@ -26,9 +26,9 @@ public class ScenarioState : IInputState
 
     public void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (ctx.performed)
         {
-            _player.EndTalk();
+            _player.UpdateScenario();
         }
     }
 

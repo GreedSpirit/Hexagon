@@ -10,6 +10,11 @@ public class ScenarioPlayer : MonoBehaviour
     List<ScenarioData> _preseal = new List<ScenarioData>();
     List<ScenarioData> _clear = new List<ScenarioData>();
 
+    private void Start()
+    {
+        FillScenarioDatas();
+    }
+
     public void FillScenarioDatas()
     {
         for (int i = 1; i < int.MaxValue; i++)
@@ -95,4 +100,5 @@ public class ScenarioPlayer : MonoBehaviour
                 break;
         }
     }
+    
 }

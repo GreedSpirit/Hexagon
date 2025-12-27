@@ -21,7 +21,7 @@
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -95,7 +95,7 @@
             ]
         },
         {
-            "name": "Scenario",
+            "name": "Talk",
             "id": "9de0e1ef-5766-4e42-946c-89b88d60e98c",
             "actions": [
                 {
@@ -117,6 +117,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Scenario",
+            "id": "cd9d6efe-9a41-43f8-87f7-ca0d21e322d1",
+            "actions": [
+                {
+                    "name": "Next",
+                    "type": "Button",
+                    "id": "f3dd80af-2a77-48e7-985d-709ff4f33b0f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0b27fdce-28a2-4dea-b04c-357ca32d39d1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
