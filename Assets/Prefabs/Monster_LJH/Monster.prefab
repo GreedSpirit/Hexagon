@@ -806,6 +806,29 @@ MonoBehaviour:
   _monsterSkillSet:
     skillLevels: 
   _visual: {fileID: 5170492101755297092}
+  _soundList:
+  - type: 5
+    clip: {fileID: 8300000, guid: 5810b616ca76ec0438f780f96198a1d8, type: 3}
+  - type: 1
+    clip: {fileID: 8300000, guid: cb3b9aea2cdf2fa49af36034d3d3c630, type: 3}
+  - type: 2
+    clip: {fileID: 8300000, guid: 109b94b7db1d7364e83a65f328c72efb, type: 3}
+  - type: 3
+    clip: {fileID: 8300000, guid: bb010fc63e8cc4441a035bde702d9c1e, type: 3}
+  - type: 4
+    clip: {fileID: 8300000, guid: f6731355aad15b744b4189a16107b678, type: 3}
+  - type: 6
+    clip: {fileID: 8300000, guid: 0cda23a95730e334ca308265ff002e9b, type: 3}
+  - type: 7
+    clip: {fileID: 8300000, guid: 095c073d429e4d84e897506a98afea50, type: 3}
+  - type: 8
+    clip: {fileID: 8300000, guid: 851d76eec4066ed409038b04883ea6ff, type: 3}
+  - type: 9
+    clip: {fileID: 8300000, guid: fde30f81de6ee1141b60024419834ce8, type: 3}
+  - type: 10
+    clip: {fileID: 8300000, guid: 0ea29b247aa161445882935098a2032a, type: 3}
+  - type: 11
+    clip: {fileID: 8300000, guid: 3c61b8b0fb899244cb39b3c774102a8b, type: 3}
 --- !u!70 &6529171942363824244
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

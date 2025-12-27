@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// 소환된 몬스터의 상태(체력, 방어력 등)를 관리하는 클래스
@@ -23,6 +22,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     [SerializeField] private MonsterStatData _monsterStatData;
     [SerializeField] private CardData _currentSkillData; //현재 사용될 예정인 스킬 카드 데이터
     [SerializeField] private MonsterVisual _visual; //인스펙터에서 연결
+
+    [Header("Sound Settings")]
+    [SerializeField] private List<MonsterSoundStruct> _soundList;
+    private Dictionary<MonsterSoundType, AudioClip> _soundTable = new Dictionary<MonsterSoundType, AudioClip>();
 
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
     private List<IMonsterSkillObserver> _skillObservers = new List<IMonsterSkillObserver>();
@@ -89,6 +92,18 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
         NotifyHpObservers(); //초기 HP 상태 갱신
         NotifySkillObservers(); //초기 스킬 상태 갱신
+
+        //사운드 작업(리스트를 빠른 검색을 위해서 딕셔너리로 전환)
+        _soundTable.Clear();
+        foreach(var soundData in _soundList)
+        {
+            if (!_soundTable.ContainsKey(soundData.type))
+            {
+                _soundTable.Add(soundData.type, soundData.clip);
+            }
+        }
+
+        //등장 사운드 있을 시 여기
     }
 
     private void Start()
@@ -105,8 +120,13 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             int shieldDamage = Mathf.Min(_monsterShield, damage);
             _monsterShield -= shieldDamage;
             damage -= shieldDamage;
+            PlayMonsterSound(MonsterSoundType.Hit_Shield);
         }
         _monsterCurHP -= damage;
+        if(damage > 0)
+        {
+            PlayMonsterSound(MonsterSoundType.Hit_Body);
+        }
         if (_monsterCurHP < 0)
             _monsterCurHP = 0;
         NotifyHpObservers(); //HP 변경 알림
@@ -183,6 +203,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         if(_isDead) return;
         _visual.PlayDie();
+        PlayMonsterSound(MonsterSoundType.Die);
 
         _isDead = true;
         
@@ -263,7 +284,20 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             
             if(_currentSkillData.CardType == CardType.Attack)
             {
-                if(_currentSkillData.Key == "KeyCardFireless") _visual.PlayFireBall();
+                if(_currentSkillData.Key == "KeyCardFireless")
+                {
+                    _visual.PlayFireBall();
+                    PlayMonsterSound(MonsterSoundType.Atk_Explosion);
+                }
+                else if(_currentSkillData.Key == "KeyCardFireball")
+                {
+                    PlayMonsterSound(MonsterSoundType.Atk_Fire);
+                }
+                else
+                {
+                    PlayMonsterSound(MonsterSoundType.Atk_Swing);
+                }
+                    
                 _visual.PlayAttack();
 
                 Player.Instance.TakeDamage(_selectedSkillValue); //추후 인자값으로 공격 강화 상태를 받을수도있음
@@ -282,6 +316,14 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             }
             else
             {
+                if(_currentSkillData.Key == "KeyCardLazer")
+                {
+                    PlayMonsterSound(MonsterSoundType.Atk_Laser);
+                }
+                if(_currentSkillData.Key == "KeyCardPride")
+                {
+                    PlayMonsterSound(MonsterSoundType.Atk_Pride);
+                }
                 _visual.PlayBig();
             }
 
@@ -388,6 +430,14 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         int totalDotDmg = GetDotDamageByType("KeyStatusPoison") + GetDotDamageByType("KeyStatusBurn");
         TakeTrueDamage(totalDotDmg);
+        if (GetDotDamageByType("KeyStatusPoison") > 0)
+        {
+            PlayMonsterSound(MonsterSoundType.Hit_Poison);
+        }
+        if(GetDotDamageByType("KeyStatusBurn") > 0)
+        {
+            PlayMonsterSound(MonsterSoundType.Hit_Burn);
+        }
         yield return new WaitForSeconds(0.5f);
     }
 
@@ -455,6 +505,14 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     }
     #endif
 
+
+    private void PlayMonsterSound(MonsterSoundType type)
+    {
+        if(_soundTable.TryGetValue(type, out AudioClip clip))
+        {
+            SoundManager.Instance.PlaySFX(clip);
+        }
+    }
 
 
 
