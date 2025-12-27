@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3474d7b370fa92946be93626fba2b5ca, type: 3}
+  m_Name: InventorySpriteDB
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteDatabase
+  allSprites:
+  - {fileID: 3012904961331022986, guid: 62b8e3c8b98fa6344bf09ffb7900fd2a, type: 3}
+  - {fileID: -4806561848908984972, guid: be8d83426af4d824e99b89b293434494, type: 3}
+  - {fileID: 1604110032351129661, guid: 05c397933c1c5a448b51a8107cf3a9b5, type: 3}
+  - {fileID: 21300000, guid: 2ef8ac471c4409042a0a4a116a46ff16, type: 3}
+  - {fileID: 8683578593008029969, guid: 70fc9675aaf3350479a08076fac1d943, type: 3}
+  - {fileID: -5724117552564479620, guid: 20520cb3bdd698540b2130f7e2369d86, type: 3}
+  - {fileID: 447256396793220725, guid: 0e45a650f9ea8b0429ef78e7cdbffbdf, type: 3}
+  - {fileID: -7402860696145980078, guid: 448f351daaf6db04aa0249916134a82b, type: 3}
+  - {fileID: -2859279159972725734, guid: 0902fd796f0943b418b48bef12bc6e1c, type: 3}
+  - {fileID: 1709075544958532249, guid: 8a0576aaaae5d244f85d9b8b74d7a2ee, type: 3}

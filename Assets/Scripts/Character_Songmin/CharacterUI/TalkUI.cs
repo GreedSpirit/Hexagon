@@ -70,7 +70,7 @@ public class TalkUI : MonoBehaviour
         _talkPannel.SetActive(false);
         _testButton.SetActive(true);
         _upgradeEnterButton.SetActive(false);
-        _upgradePannel.SetActive(true);
+        Player.Instance.Currentvillage.VillageManager.SetUpgradeButton(true);
     }
 
 
@@ -92,7 +92,7 @@ public class TalkUI : MonoBehaviour
         else
         {
             Player.Instance.SwitchIsTalking(false);
-            _upgradePannel.SetActive(false);
+            Player.Instance.Currentvillage.VillageManager.SetUpgradeButton(false);
             _testButton.SetActive(false);
         }        
     }

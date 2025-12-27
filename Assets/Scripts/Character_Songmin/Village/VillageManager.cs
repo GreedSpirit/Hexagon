@@ -8,6 +8,7 @@ public class VillageManager : MonoBehaviour
     [SerializeField] NpcTalkSlideUI _talkSlide;
     [SerializeField] TextMeshProUGUI _villageNameUI;
     [SerializeField] GameObject _villageNameUIObject;
+    [SerializeField] GameObject _upgradePanel;
 
     Npc _currentTalkNpc;
 
@@ -130,5 +131,10 @@ public class VillageManager : MonoBehaviour
             npc.NameHighlight = Instantiate(_nameHighlightPrefab, npc.NpcCanvas.transform, false);
             npc.Init(npcData.Npc);
         }    
+    }
+
+    public void SetUpgradeButton(bool on)
+    {
+        _upgradePanel.SetActive(on);
     }
 }

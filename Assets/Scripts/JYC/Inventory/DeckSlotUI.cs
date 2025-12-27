@@ -7,6 +7,7 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 {
     [Header("UI Components")]
     [SerializeField] Image cardImage;       // 카드 그림
+    [SerializeField] Image backgroundImage; // 등급별 배경
     [SerializeField] Image borderImage;     // 등급 테두리 (필요시)
 
     private int _cardId;
@@ -34,13 +35,14 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
             if (cardData != null)
             {
-                // cardImage.sprite = Resources.Load<Sprite>(cardData.CardImg); // 나중에 주석 해제
-                cardImage.color = Color.white; // 카드 그림이 있으면 흰색(원본색)
-            }
-            else
-            {
-                // 데이터 테이블에 없는 카드 ID일 경우 (테스트 중 발생 가능)
-                cardImage.color = Color.red; // "에러! 데이터 없음" 표시
+                // A. 일러스트 설정
+                cardImage.sprite = DataManager.Instance.GetCardSprite(cardData.CardImg);
+
+                // B. 등급별 배경(뒷면) 갈아끼우기
+                if (backgroundImage != null)
+                {
+                    backgroundImage.sprite = InventoryManager.Instance.GetGradeBackground(cardData.CardGrade);
+                }
             }
         }
         else
@@ -48,6 +50,7 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             // 빈 슬롯임 -> 카드 이미지를 끄거나 투명하게
             // (배경의 빈 슬롯 모양이 보여야 하므로)
             cardImage.color = Color.clear;
+            backgroundImage.sprite = InventoryManager.Instance.bgCommon; // 일단 기본값
         }
     }
 
@@ -55,21 +58,14 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         if (borderImage == null) return;
 
-        switch (grade)
+        borderImage.color = Color.white;
+
+        Sprite borderSprite = InventoryManager.Instance.GetGradeBorderSprite(grade);
+
+        if (borderSprite != null)
         {
-            case CardGrade.Common:
-                borderImage.color = Color.black; // 검정
-                break;
-            case CardGrade.Rare:
-                borderImage.color = Color.blue;  // 파랑
-                break;
-            case CardGrade.Epic:
-            case CardGrade.Legendary:
-                borderImage.color = new Color(0.5f, 0, 0.5f); // 보라 (Purple)
-                break;
-            default:
-                borderImage.color = Color.white;
-                break;
+            borderImage.sprite = borderSprite;
+            borderImage.gameObject.SetActive(true);
         }
     }
     private void HighlightSlot(bool isOn)

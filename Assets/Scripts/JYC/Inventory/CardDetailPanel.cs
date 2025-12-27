@@ -42,8 +42,11 @@ public class CardDetailPanel : MonoBehaviour
         // 지금은 간단하게 data.Desc로 넣지만, 실제로는 수치 파싱 필요
         _descText.text = ParseDescription(data, userCard.Level);
 
-        // 이미지 (리소스 로드 구현 시 주석 해제)
-        // _cardImage.sprite = Resources.Load<Sprite>(data.CardImg);
+        // 이미지
+        if (_cardImage != null)
+        {
+            _cardImage.sprite = DataManager.Instance.GetCardSprite(data.CardImg);
+        }
     }
 
     // 설명에 {D}, {N} 같은 태그 값을 실제 수치로 변환
