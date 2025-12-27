@@ -66,12 +66,6 @@ public class UpgradeManager : MonoBehaviour
         // OnScroll 함수 연결
         _targetScroll.onValueChanged.AddListener(OnScroll);
     }
-    private void OnEnable()
-    {
-        // 켜면 안보임
-        _scrollBarCanvasGroup.alpha = 0f;
-        _upgradeEdgeCanvasGroup.alpha = 0f;
-    }
 
     private IEnumerator Start()
     {
@@ -95,6 +89,10 @@ public class UpgradeManager : MonoBehaviour
 
         // 강화 슬롯 카드 초기화
         _upgradeSlotCard.Init(null, this);
+
+        // 안보이게
+        _scrollBarCanvasGroup.alpha = 0f;
+        _upgradeEdgeCanvasGroup.alpha = 0f;
 
         RefreshList();
     }
