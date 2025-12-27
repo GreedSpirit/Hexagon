@@ -40,12 +40,6 @@ public class InventorySlotUI : MonoBehaviour,
             if (cardImage != null)
                 cardImage.sprite = DataManager.Instance.GetCardSprite(data.CardImg);
 
-            // 등급별 배경 설정
-            if (backgroundImage != null)
-            {
-                backgroundImage.sprite = InventoryManager.Instance.GetGradeBackground(data.CardGrade);
-            }
-
             // 텍스트 정보 갱신 (이름)
             if (nameText != null)
             {

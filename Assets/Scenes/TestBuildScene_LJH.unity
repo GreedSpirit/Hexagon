@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DataManager
   characterDB: {fileID: 0}
-  cardDB: {fileID: 0}
+  cardDB: {fileID: 11400000, guid: 3beb61064a3130b41a0c3dfc6b7e263b, type: 2}
   monsterDB: {fileID: 0}
   statusDB: {fileID: 11400000, guid: a89ab20a73e172f488237377bd3eb84e, type: 2}
   inventoryDB: {fileID: 0}
@@ -2146,6 +2146,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
   CurrentSortType: 0
+  borderCommon: {fileID: -5724117552564479620, guid: 20520cb3bdd698540b2130f7e2369d86, type: 3}
+  borderRare: {fileID: 447256396793220725, guid: 0e45a650f9ea8b0429ef78e7cdbffbdf, type: 3}
+  borderEpic: {fileID: -7402860696145980078, guid: 448f351daaf6db04aa0249916134a82b, type: 3}
+  borderLegendary: {fileID: -7402860696145980078, guid: 448f351daaf6db04aa0249916134a82b, type: 3}
 --- !u!4 &744724416
 Transform:
   m_ObjectHideFlags: 0
@@ -3787,6 +3791,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 265242412802388354, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_ConstraintCount
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6669470952743614735, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: m_Pivot.x
       value: 0

@@ -10,6 +10,10 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] Image backgroundImage; // 등급별 배경
     [SerializeField] Image borderImage;     // 등급 테두리 (필요시)
 
+    [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
+    [SerializeField] TextMeshProUGUI levelText; // 카드 레벨
+    [SerializeField] TextMeshProUGUI typeText;  // 카드 타입
+
     private int _cardId;
     private int _slotIndex;
     private CardGrade _requiredGrade;
@@ -28,29 +32,55 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         // 카드가 장착된 상태인가?
         if (_cardId != -1)
         {
+
+            // 카드가 있을 때 (정보 표시)
+
             var cardData = DataManager.Instance.GetCard(_cardId);
 
-            // 데이터가 있으면 이미지를, 없으면 그냥 흰색 박스라도 띄웁니다.
-            cardImage.gameObject.SetActive(true);
+            // 카드 이미지가 연결되어 있을 때만 켬
+            if (cardImage != null)
+            {
+                cardImage.gameObject.SetActive(true);
+                cardImage.color = Color.white;
+            }
 
             if (cardData != null)
             {
-                // A. 일러스트 설정
-                cardImage.sprite = DataManager.Instance.GetCardSprite(cardData.CardImg);
+                // A. 이미지 설정
+                if (cardImage != null)
+                    cardImage.sprite = DataManager.Instance.GetCardSprite(cardData.CardImg);
 
-                // B. 등급별 배경(뒷면) 갈아끼우기
-                if (backgroundImage != null)
+                // B. 텍스트 설정 
+                if (nameText != null) nameText.text = cardData.Name;
+
+                // 레벨 가져오기 (CardManager를 통해 현재 레벨 조회)
+                if (levelText != null)
+                    levelText.text = CardManager.Instance.GetCardLevel(_cardId).ToString();
+
+                // 타입 설정 (한글 변환)
+                if (typeText != null)
                 {
-                    backgroundImage.sprite = InventoryManager.Instance.GetGradeBackground(cardData.CardGrade);
+                    string typeString = "";
+                    switch (cardData.CardType)
+                    {
+                        case CardType.Attack: typeString = "공격"; break;
+                        case CardType.Shield: typeString = "방어"; break;
+                        case CardType.Healing: typeString = "치유"; break;
+                        case CardType.Spell: typeString = "주문"; break;
+                        default: typeString = ""; break;
+                    }
+                    typeText.text = typeString;
                 }
             }
         }
         else
         {
-            // 빈 슬롯임 -> 카드 이미지를 끄거나 투명하게
-            // (배경의 빈 슬롯 모양이 보여야 하므로)
-            cardImage.color = Color.clear;
-            backgroundImage.sprite = InventoryManager.Instance.bgCommon; // 일단 기본값
+            if (cardImage != null) cardImage.color = Color.clear;
+
+            // 텍스트는 비움
+            if (nameText != null) nameText.text = "";
+            if (levelText != null) levelText.text = "";
+            if (typeText != null) typeText.text = "";
         }
     }
 
