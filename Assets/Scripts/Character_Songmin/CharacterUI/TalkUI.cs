@@ -41,8 +41,8 @@ public class TalkUI : MonoBehaviour
 
     private void Start()
     {
-        Player.Instance.SetTalkUI(this);
-        _testButton.SetActive(false);
+        //Player.Instance.SetTalkUI(this);
+        //_testButton.SetActive(false);
     }
 
 
@@ -256,6 +256,10 @@ public class TalkUI : MonoBehaviour
 
 
         yield return FadeRoutine(false);
+        if (!isEnter)
+        {
+            Destroy(gameObject);
+        }
     }
 
 
@@ -275,6 +279,11 @@ public class TalkUI : MonoBehaviour
 
 
         yield return FadeRoutine(false);
+        if (!isEnter)
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
     

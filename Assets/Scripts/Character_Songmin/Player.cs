@@ -24,6 +24,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     //¸¶À» °ü·Ã ÇÊµå
     public Village Currentvillage { get; private set; }
     public Npc TalkingNpc { get; private set; }
+    [SerializeField] TalkUI _talkUIPrefab;
     public TalkUI TalkUI { get; private set; }
     public bool CanInteract { get; set; }
     public bool IsTalking { get; set; }
@@ -326,9 +327,9 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     }
 
 
-    public void SetTalkUI(TalkUI talkUI)
+    public void SetTalkUI()
     {
-        TalkUI = talkUI;
+        TalkUI = Instantiate(_talkUIPrefab, transform);
     }
 
     public void TalkMyself()
@@ -341,6 +342,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     {
         if (CanInteract)
         {
+            SetTalkUI();
             EnterTalkMod();
             Debug.Log($"{TalkingNpc.Name}¿Í »óÈ£ÀÛ¿ë!");
             if (TalkUI == null)
@@ -360,7 +362,8 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
         TalkUI?.EndTalk();        
         EnterMoveMod();
         // [Ãß°¡] ´ëÈ­ Á¾·á ÈÄ ÀúÀå (ÁøÇàµµ/Äù½ºÆ®/½ºÅ©¸³Æ® ÀúÀå¿ë)
-        GameSaveManager.Instance.SaveGame();
+        GameSaveManager.Instance.SaveGame();        
+        TalkUI = null;
     }
     
     public void PlusMoney(int cost)

@@ -75,6 +75,7 @@ public class ScenarioPlayer : MonoBehaviour
 
     public void EnterScenario(Trigger_Type Trigger_Type)
     {
+        Player.Instance.SetTalkUI();
         switch (Trigger_Type)
         {
             case Trigger_Type.gamestart:
