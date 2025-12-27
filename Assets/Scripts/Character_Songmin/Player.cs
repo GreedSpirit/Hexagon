@@ -303,6 +303,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     public void Respawn()
     {        
         GetHp(_stat.Hp);
+        ResetCondition();
         SetStatUIView(true);
         if (Currentvillage != null)
         {
