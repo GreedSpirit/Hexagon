@@ -1,6 +1,6 @@
-﻿Id,CharacterKey의 기본키 값,캐릭터 이름,캐릭터에 대한 설명,"PC, NPC 중 택 1 기재 ① pc: 플레이어가 조종할 수 있는 캐릭터 ② npc: 플레이어가 조종할 수 없는 캐릭터",캐릭터 이동속도,캐릭터 이미지 리소스,캐릭터 모델링 리소스명
+Id,CharacterKey의 기본키 값,캐릭터 이름,캐릭터에 대한 설명,"PC, NPC 중 택 1 기재 ① pc: 플레이어가 조종할 수 있는 캐릭터 ② npc: 플레이어가 조종할 수 없는 캐릭터",캐릭터 이동속도,캐릭터 이미지 리소스,캐릭터 모델링 리소스명
 int,string,string,string,Enum,float,string,string
 Id,Key,Name,Desc,Type,MoveSpeed,Img,Model
-1,KeyPcErion,NamePcErion,DescPcErion,pc,5.5,Img_PC_Erion,Model_PC_Erion
+1,KeyPcErion,NamePcErion,DescPcErion,pc,3,Img_PC_Erion,Model_PC_Erion
 2,KeyNpcLibra,NameNpcLibra,DescNpcLibra,npc,0,Img_Npc_Libra,Model_Npc_Libra
 3,KeyNpcLionel,NameNpcLionel,DescNpcLionel,npc,0,Img_Npc_Lionel,Model_Npc_Lionel
