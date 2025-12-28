@@ -34,18 +34,17 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 
     //Player¿¡ ºÙÀº ´Ù¸¥ ÄÄÆ÷³ÍÆ®µé
     private PlayerUIManager _playerUIManager;
-    private PlayerInputHandler _playerInputHandler;
-    private PlayerModelController _playerModelController;
+    private PlayerInputHandler _playerInputHandler;    
     private ScenarioPlayer _scenarioPlayer;
-
+    private Animator _animator;
 
     protected override void Awake()
     {
         base.Awake();
         _playerUIManager = GetComponent<PlayerUIManager>();
-        _playerInputHandler = GetComponent<PlayerInputHandler>();
-        _playerModelController = GetComponent<PlayerModelController>();
+        _playerInputHandler = GetComponent<PlayerInputHandler>();        
         _scenarioPlayer = GetComponent<ScenarioPlayer>();
+        _animator = GetComponent<Animator>();
     }
 
 
@@ -230,6 +229,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     /// ÀÌÇÏ ÇÔ¼öµéÀº ÀüÅõ Áß ¿ÜºÎ¿¡¼­ È£Ãâ.      
     public void TakeDamage(int damage) //°ø°Ý µ¥¹ÌÁö¸¦ ÀÔÀ» ¶§¸¶´Ù È£Ãâ.
     {
+        HitMotion();
         _stat.GetDamage(damage);
         OnShieldChanged?.Invoke(_stat.Shield);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
@@ -301,11 +301,29 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     #endregion
 
     //------------------------------------------------------
+    public void AttackMotion()
+    {
+        _animator.SetTrigger("Attack");
+    }
+
+    public void HitMotion()
+    {
+        _animator.SetTrigger("Hit");
+    }
+
+    public void SetDeadMotion(bool die)
+    {
+        _animator.SetBool("IsDead", die);
+    }
+
+    //------------------------------------------------------
     public void Respawn()
     {        
+        SetDeadMotion(false);
         GetHp(_stat.Hp);
         ResetCondition();
         SetStatUIView(true);
+        
         if (Currentvillage != null)
         {
             gameObject.transform.position = Currentvillage.SpawnZone;
@@ -506,7 +524,7 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
     public void EnterBattle()
     {
         gameObject.transform.position = new Vector2(-3f, -1.5f);
-        gameObject.transform.localScale = new Vector2(1, 1);
+        gameObject.transform.localScale = new Vector2(0.25f, 0.25f);
         _playerUIManager.OnOffPlayerInventoryUi(true);
         _playerUIManager.OnOffPlayerStatUi(true);
     }

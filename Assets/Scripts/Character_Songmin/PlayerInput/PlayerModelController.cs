@@ -8,12 +8,13 @@ public class PlayerModelController : MonoBehaviour
     Rigidbody2D _rigid;
     Vector2 _moveInput;
     List<Npc> _neerNpcs = new List<Npc>();    
-    
+    Animator _animator;
     
 
 
     private void Awake()
     {
+        _animator = Player.Instance.GetComponent<Animator>();
         _rigid = GetComponent<Rigidbody2D>();
         _rigid.gravityScale = 0;
         _rigid.freezeRotation = true;        
@@ -35,18 +36,23 @@ public class PlayerModelController : MonoBehaviour
     {
         if (_moveInput != Vector2.zero)
         {
+            _animator.SetBool("IsWalk", true);
             if (_moveInput.x > 0)
             {
-                gameObject.transform.localScale = new Vector2(1, 1);
+                gameObject.transform.localScale = new Vector2(0.25f, 0.25f);
             }
             else if (_moveInput.x < 0)
             {
-                gameObject.transform.localScale = new Vector2(- 1, 1);
-            }
+                gameObject.transform.localScale = new Vector2(-0.25f, 0.25f);
+            }            
             Vector2 movePos = _rigid.position + _moveInput * Player.Instance.GetMoveSpeed() * Time.fixedDeltaTime;
             _rigid.MovePosition(movePos);
             //gameObject.transform.Translate(_moveInput * Time.deltaTime * Player.Instance.GetMoveSpeed());
-        }            
+        }
+        else
+        {
+            _animator.SetBool("IsWalk", false);
+        }
     }
 
     

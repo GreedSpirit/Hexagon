@@ -54,6 +54,7 @@ public class TalkUI : MonoBehaviour
 
         _currentTalking = talkable; 
         _rightImg.gameObject.SetActive(false);
+        _leftImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, _currentTalking.GetImage());
         
         
         
