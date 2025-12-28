@@ -40,7 +40,19 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµ
 
     protected override void Awake()
     {
-        base.Awake();
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+            init();
+        }
+        else
+        {
+            if (_instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
         _playerUIManager = GetComponent<PlayerUIManager>();
         _playerInputHandler = GetComponent<PlayerInputHandler>();        
         _scenarioPlayer = GetComponent<ScenarioPlayer>();
