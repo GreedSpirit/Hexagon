@@ -32,9 +32,14 @@ public class GameOverUI : MonoBehaviour
     {
         if(currentHp <= 0)
         {
-            Player.Instance.EnterReward();
-            _gameOverPanel.SetActive(true);
+            GameOver();
         }
-    }   
+    }
+
+    public void GameOver()
+    {
+        Player.Instance.EnterReward();
+        _gameOverPanel.SetActive(true);
+    }
 
 }
