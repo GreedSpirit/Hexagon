@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class TalkUI : MonoBehaviour
 {
@@ -41,8 +40,8 @@ public class TalkUI : MonoBehaviour
 
     private void Start()
     {
-        Player.Instance.SetTalkUI(this);
-        _testButton.SetActive(false);
+        //Player.Instance.SetTalkUI(this);
+        //_testButton.SetActive(false);
     }
 
 
@@ -256,6 +255,10 @@ public class TalkUI : MonoBehaviour
 
 
         yield return FadeRoutine(false);
+        if (!isEnter)
+        {
+            Destroy(gameObject);
+        }
     }
 
 
@@ -267,7 +270,7 @@ public class TalkUI : MonoBehaviour
         _talkPannel.SetActive(isEnter);
         Player.Instance.SwitchIsTalking(isEnter);
         
-        if (_currentTalking.GetName() == "리오넬")
+        if (_currentTalking.GetName() == "리오넬") //리오넬과 대화할 땐 강화버튼도 켜고 끄기
         {
             _currentTalking.SwitchIsTalking(isEnter);
             _upgradeEnterButton.SetActive(isEnter);
@@ -275,6 +278,11 @@ public class TalkUI : MonoBehaviour
 
 
         yield return FadeRoutine(false);
+        if (!isEnter)
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
     
@@ -282,16 +290,16 @@ public class TalkUI : MonoBehaviour
     IEnumerator FadeRoutine(bool isFadeIn) //true일 때 까매지고 false일 때 투명해짐(대화창을 가림)
     {
         float start = _canvasGroup.alpha;
-        float end = isFadeIn ? 1f : 0f;
+        float end = isFadeIn ? 1f : 0f;        
         float time = 0f;
-
+        
         while (time < fadeDuration)
         {
             time += Time.deltaTime;
             _canvasGroup.alpha = Mathf.Lerp(start, end, time / fadeDuration);
             yield return null;
         }
-
+        _canvasGroup.blocksRaycasts = isFadeIn ? true : false;
         _canvasGroup.alpha = end;
     }
 

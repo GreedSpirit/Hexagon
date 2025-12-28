@@ -55,7 +55,10 @@ public class PlayerModelController : MonoBehaviour
     {
         if (collision.TryGetComponent(out Npc npc))
         {
-            _neerNpcs.Add(npc);
+            if (!_neerNpcs.Contains(npc))
+            {
+                _neerNpcs.Add(npc);
+            }            
             Player.Instance.CanInteract = true;
             CheckNpcDistance();
             Player.Instance.Currentvillage.VillageManager.ShowTalkSlide(_neerNpcs[0]);
@@ -65,10 +68,20 @@ public class PlayerModelController : MonoBehaviour
     {
         if (collision.TryGetComponent(out Npc npc))
         {
-            Player.Instance.CanInteract = (_neerNpcs != null);
-            CheckNpcDistance();
-            Player.Instance.Currentvillage.VillageManager.HideTalkSlide();
             _neerNpcs.Remove(npc);
+
+            Player.Instance.CanInteract = _neerNpcs.Count > 0;
+
+            if (_neerNpcs.Count > 0)
+            {
+                CheckNpcDistance();
+                Player.Instance.Currentvillage.VillageManager.ShowTalkSlide(_neerNpcs[0]);
+            }
+            else
+            {
+                Player.Instance.SetTalkingNpc(null);
+                Player.Instance.Currentvillage.VillageManager.HideTalkSlide();
+            }
         }
     }
 
