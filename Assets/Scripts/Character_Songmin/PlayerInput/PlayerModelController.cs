@@ -14,7 +14,7 @@ public class PlayerModelController : MonoBehaviour
 
     private void Awake()
     {
-        _animator = Player.Instance.GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         _rigid = GetComponent<Rigidbody2D>();
         _rigid.gravityScale = 0;
         _rigid.freezeRotation = true;        
