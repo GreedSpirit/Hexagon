@@ -115,6 +115,8 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         if(_isDead) return;
 
+        DamageTextManager.Instance.ShowDamage(damage, transform.position, DamageType.Normal);
+
         if(_monsterShield > 0)
         {
             int shieldDamage = Mathf.Min(_monsterShield, damage);
@@ -428,17 +430,26 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     public IEnumerator ProcessDotEffects()
     {
-        int totalDotDmg = GetDotDamageByType("KeyStatusPoison") + GetDotDamageByType("KeyStatusBurn");
+        int poisonDmg = GetDotDamageByType("KeyStatusPoison");
+        int burnDmg = GetDotDamageByType("KeyStatusBurn");
+        int totalDotDmg = poisonDmg + burnDmg;
+
         TakeTrueDamage(totalDotDmg);
-        if (GetDotDamageByType("KeyStatusPoison") > 0)
+
+        if (poisonDmg > 0)
         {
+            DamageTextManager.Instance.ShowDamage(poisonDmg, transform.position, DamageType.Poison);
             PlayMonsterSound(MonsterSoundType.Hit_Poison);
         }
-        if(GetDotDamageByType("KeyStatusBurn") > 0)
+        // 2개의 상태 이상 데미지가 모두 들어올 경우 간격을 주어 텍스트가 겹치는 문제 해결
+        if (poisonDmg > 0 && burnDmg > 0) yield return new WaitForSeconds(0.2f);
+        
+        if(burnDmg > 0)
         {
+            DamageTextManager.Instance.ShowDamage(burnDmg, transform.position, DamageType.Burn);
             PlayMonsterSound(MonsterSoundType.Hit_Burn);
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
     }
 
     public int GetTotalDotDamage() //도트뎀으로 얻는 총 데미지를 얻고 싶을 때 사용할 메서드
