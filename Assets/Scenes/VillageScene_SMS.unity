@@ -517,6 +517,7 @@ MonoBehaviour:
   _talkSlide: {fileID: 1891133423}
   _villageNameUI: {fileID: 1289489226}
   _villageNameUIObject: {fileID: 1843669955}
+  _upgradePanel: {fileID: 0}
   _npcPrefab: {fileID: 3260176992410558911, guid: 96089d114a3cf8f4d9c77bb14ff8e7f0, type: 3}
   _npcCanvasPrefab: {fileID: 1554398058105983138, guid: 68ae5a9196e0f50468a8deb19fabe46c, type: 3}
   _nameTextPrefab: {fileID: 1587193905588550044, guid: d8555c697d4abd448ab56fb97b3fa7c8, type: 3}
@@ -1138,7 +1139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843752216f6379943b40ace78d121aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DataManager
-  characterDB: {fileID: 0}
+  characterDB: {fileID: 11400000, guid: c91f29f7094a25047a2a76ee2d596a55, type: 2}
   cardDB: {fileID: 0}
   monsterDB: {fileID: 0}
   statusDB: {fileID: 0}
@@ -1177,8 +1178,6 @@ MonoBehaviour:
   _goldText: {fileID: 1043957995}
   _upgradeButton: {fileID: 495906771}
   _upgradeEdgeCanvasGroup: {fileID: 0}
-  _targetScroll: {fileID: 0}
-  waitTime: 3
   enhanceClip: {fileID: 0}
   enhanceSuccessClip: {fileID: 0}
 --- !u!114 &211103312
@@ -2087,8 +2086,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB300\uD654\uD558\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7bac5618f9ac78546a92ebc05520e95c, type: 2}
-  m_sharedMaterial: {fileID: 6118840712927936670, guid: 7bac5618f9ac78546a92ebc05520e95c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2897,8 +2896,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "NPC \uC774\uB984"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6130d98ee6267474f9f3c3562ce5b72c, type: 2}
-  m_sharedMaterial: {fileID: 5130947645574673642, guid: 6130d98ee6267474f9f3c3562ce5b72c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4331,8 +4330,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB9C8\uC744 \uC774\uB984"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7bac5618f9ac78546a92ebc05520e95c, type: 2}
-  m_sharedMaterial: {fileID: 6118840712927936670, guid: 7bac5618f9ac78546a92ebc05520e95c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8245,7 +8244,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6782461204243984396, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+    - {fileID: 3900747389479883014, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}

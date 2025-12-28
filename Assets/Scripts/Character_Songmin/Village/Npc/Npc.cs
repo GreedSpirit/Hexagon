@@ -20,6 +20,7 @@ public class Npc : MonoBehaviour, ITalkable
     public CharacterType Type { get; private set; } = CharacterType.npc;
 
     public Vector2 SpawnPos { get; private set; }
+    public Animator Animator { get; private set; }
 
     public string Img { get; private set; }
     public string Model { get; private set; }
@@ -32,7 +33,7 @@ public class Npc : MonoBehaviour, ITalkable
     {
         CharacterData characterData = DataManager.Instance.GetCharacter(key);
         NpcData npcData = DataManager.Instance.GetNpc(key);
-        Name = DataManager.Instance.GetString(characterData.Name)?.Korean.Trim('"');        
+        Name = DataManager.Instance.GetString(characterData.Name)?.Korean;        
         Desc = DataManager.Instance.GetString(characterData.Desc)?.Korean;
         SpawnPos = new Vector2(npcData.NpcAreaX, npcData.NpcAreaY);
         gameObject.transform.position = SpawnPos;
@@ -41,7 +42,7 @@ public class Npc : MonoBehaviour, ITalkable
         //{
         //    Talks[i] = $"{Name}의 대사 {i+1}번 출력";
         //}
-        
+        Animator = gameObject.GetComponent<Animator>();   
         
 
 
@@ -52,12 +53,19 @@ public class Npc : MonoBehaviour, ITalkable
         Talks[2] = DataManager.Instance.GetString(talkData.NpcTalk3)?.Korean;
         Talks[3] = DataManager.Instance.GetString(talkData.NpcTalk4)?.Korean;
         Img = characterData.Img;
-
+        Model = characterData.Model;
+        GetComponent<SpriteRenderer>().sprite = DataManager.Instance.GetSprite(SpriteType.Character , Model);
         //이미지랑 모델도 나중에 받아오기
 
         SetNameText();
         SetWord();
         Debug.Log($"{Name} 생성 완료");
+    }
+
+
+    public void SetAnimator(RuntimeAnimatorController controller)
+    {
+        Animator.runtimeAnimatorController = controller;
     }
 
 

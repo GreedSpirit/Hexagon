@@ -249,6 +249,8 @@ MonoBehaviour:
   _villageNameUI: {fileID: 1289489226}
   _villageNameUIObject: {fileID: 1843669955}
   _upgradePanel: {fileID: 509608593588279511}
+  _libra: {fileID: 9100000, guid: dfcea7b60c08ad5458421f70d51e7955, type: 2}
+  _lionel: {fileID: 9100000, guid: eb76d3aa61fc99c4f982950872db7490, type: 2}
   _npcPrefab: {fileID: 3260176992410558911, guid: 96089d114a3cf8f4d9c77bb14ff8e7f0, type: 3}
   _npcCanvasPrefab: {fileID: 1554398058105983138, guid: 68ae5a9196e0f50468a8deb19fabe46c, type: 3}
   _nameTextPrefab: {fileID: 1587193905588550044, guid: d8555c697d4abd448ab56fb97b3fa7c8, type: 3}
@@ -572,7 +574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843752216f6379943b40ace78d121aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DataManager
-  characterDB: {fileID: 0}
+  characterDB: {fileID: 11400000, guid: c91f29f7094a25047a2a76ee2d596a55, type: 2}
   cardDB: {fileID: 11400000, guid: 3beb61064a3130b41a0c3dfc6b7e263b, type: 2}
   monsterDB: {fileID: 0}
   statusDB: {fileID: 11400000, guid: a89ab20a73e172f488237377bd3eb84e, type: 2}
@@ -1084,8 +1086,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB300\uD654\uD558\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d85a80ce2665b3a4ea32c971498b16e4, type: 2}
+  m_sharedMaterial: {fileID: -2520881341186198993, guid: d85a80ce2665b3a4ea32c971498b16e4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1357,8 +1359,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "NPC \uC774\uB984"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d85a80ce2665b3a4ea32c971498b16e4, type: 2}
+  m_sharedMaterial: {fileID: -2520881341186198993, guid: d85a80ce2665b3a4ea32c971498b16e4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2324,26 +2326,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 772604427160473731, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 772604427160473731, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 772604427160473731, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1134426398}
-    - target: {fileID: 772604427160473731, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EnterUpgrade
-      objectReference: {fileID: 0}
-    - target: {fileID: 772604427160473731, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: TalkUI, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 1460750715406203315, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2368,14 +2350,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4777206028396632041, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
-      propertyPath: _testButton
-      value: 
-      objectReference: {fileID: 8809973139168831879}
-    - target: {fileID: 4777206028396632041, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
-      propertyPath: _upgradePannel
-      value: 
-      objectReference: {fileID: 509608593588279511}
     - target: {fileID: 5129793933188052029, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2429,17 +2403,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
---- !u!114 &1134426398 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4777206028396632041, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
-  m_PrefabInstance: {fileID: 1134426397}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ef2af2da2110c5418b29a2d42d8f268, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TalkUI
 --- !u!4 &1219060698 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9045566944679772444, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
@@ -2504,8 +2467,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB9C8\uC744 \uC774\uB984"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d85a80ce2665b3a4ea32c971498b16e4, type: 2}
+  m_sharedMaterial: {fileID: -2520881341186198993, guid: d85a80ce2665b3a4ea32c971498b16e4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

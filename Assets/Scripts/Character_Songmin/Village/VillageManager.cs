@@ -9,6 +9,8 @@ public class VillageManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _villageNameUI;
     [SerializeField] GameObject _villageNameUIObject;
     [SerializeField] GameObject _upgradePanel;
+    [SerializeField] RuntimeAnimatorController _libra;
+    [SerializeField] RuntimeAnimatorController _lionel;
 
     Npc _currentTalkNpc;
 
@@ -80,9 +82,6 @@ public class VillageManager : MonoBehaviour
     }
 
 
-
-
-
     private void MakeAllVillageDatas()
     {
         for (int i = 1; i < int.MaxValue; i++)
@@ -130,6 +129,15 @@ public class VillageManager : MonoBehaviour
             npc.NameText = Instantiate(_nameTextPrefab, npc.NpcCanvas.transform, false);            
             npc.NameHighlight = Instantiate(_nameHighlightPrefab, npc.NpcCanvas.transform, false);
             npc.Init(npcData.Npc);
+            switch (npc.Name)
+            {
+                case "리브라":
+                    npc.SetAnimator(_libra);
+                    break;
+                case "리오넬":
+                    npc.SetAnimator(_lionel);
+                    break;
+            }
         }    
     }
 

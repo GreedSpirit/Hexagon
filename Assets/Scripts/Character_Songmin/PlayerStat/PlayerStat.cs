@@ -154,7 +154,8 @@ public class PlayerStat
     {
         if (CurrentHp <= 0)
         {
-            CurrentHp = 0;            
+            CurrentHp = 0;
+            Player.Instance.SetDeadMotion(true);
             Debug.Log("플레이어 사망!");
         }
     }
