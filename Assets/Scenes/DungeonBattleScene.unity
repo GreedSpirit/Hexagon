@@ -1065,12 +1065,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283409765}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: -0.5, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 432, y: -54, z: -9720}
+  m_LocalScale: {x: 64.8, y: 64.8, z: 64.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1305095885}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &308256270
 GameObject:
@@ -1091,7 +1091,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &308256271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2075,6 +2075,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1644259108289869087, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 72095f4f442e1e84282dc95fd82d339a, type: 2}
+    - target: {fileID: 1644259108289869087, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2091249604926714947, guid: 72095f4f442e1e84282dc95fd82d339a, type: 2}
+    - target: {fileID: 1644259108289869087, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2043608546844353828, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3160574478017220415, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2251,6 +2267,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BattleCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8493685684331359858, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8539136607705729896, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2270,6 +2290,14 @@ PrefabInstance:
     - target: {fileID: 8831858609216798545, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8866541568120212307, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 72095f4f442e1e84282dc95fd82d339a, type: 2}
+    - target: {fileID: 8866541568120212307, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9201309718016942956, guid: 6091c23ff2ce0d042bff87df745daf9c, type: 3}
       propertyPath: m_IsActive
@@ -2580,7 +2608,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1174913755
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2800,6 +2828,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1466225712}
+  - {fileID: 283409768}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4819,10 +4848,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Money Is Over!
+  m_text: "\uACE8\uB4DC \uC0C1\uD55C\uB7C9\uC744 \uCD08\uACFC\uD558\uC5EC \uBCF4\uC0C1\uC774
+    \uC0AC\uB77C\uC9D1\uB2C8\uB2E4."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d85a80ce2665b3a4ea32c971498b16e4, type: 2}
+  m_sharedMaterial: {fileID: -2520881341186198993, guid: d85a80ce2665b3a4ea32c971498b16e4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5376,7 +5406,6 @@ SceneRoots:
   - {fileID: 1470667433}
   - {fileID: 1305095885}
   - {fileID: 575411981}
-  - {fileID: 283409768}
   - {fileID: 308256274}
   - {fileID: 1472604745}
   - {fileID: 1921982272}

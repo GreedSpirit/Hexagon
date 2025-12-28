@@ -55,7 +55,6 @@ public class RewardResultUI : MonoBehaviour
     private void SetBossCard(DeterminedReward reward)
     {
         CardData data = DataManager.Instance.GetCard(reward.ItemId);
-
         if(data != null)
         {
             GameObject obj = Instantiate(_cardUIPrefab, _bossCardSpawnPoint);
@@ -84,9 +83,11 @@ public class RewardResultUI : MonoBehaviour
 
         // 텍스트 포맷: "아이템 이름 : 수량"
         // reward.ItemKey를 이용해 실제 한글 이름을 가져오는 로직 필요
-        string displayName = DataManager.Instance.GetString(reward.ItemKey).Korean; 
-        
-        textComp.text = $"{displayName} : {reward.Amount}";
+        // string displayName = DataManager.Instance.GetString(reward.ItemKey).Korean; 
+        // 원래 위처럼 갖고와야 하지만 현재 reward 테이블을 통해 name을 가져오는 방법이 없고 2단계를 거쳐서 string테이블에 도달해야 하기 때문에 골드로 명시
+        // 만약 필요해진다면 reward.itemkey -> currency.name > string.korean 순서로 갖고 올 것(그를 위해 currency 테이블 데이터도 만들 것)
+
+        textComp.text = $"골드 : {reward.Amount}";
     }
 
     public void OnMoneyOverText()
