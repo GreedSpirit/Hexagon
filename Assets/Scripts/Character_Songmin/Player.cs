@@ -9,8 +9,10 @@ using UnityEngine;
 /// <summary>
 /// 외부와 상호작용할 '플레이어 캐릭터'는 이거 하나. 
 /// </summary>
-public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤도 해주기
+public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해주기
 {
+    public static Player Instance {  get; private set; }
+
     //스탯 관련 필드    
     PlayerStat _stat;
     public Action<int> OnMoneyChanged; //돈 수치 변화할 때마다 호출.
@@ -38,17 +40,16 @@ public class Player : Singleton<Player>, IBattleUnit, ITalkable //나중에 싱글톤�
     private ScenarioPlayer _scenarioPlayer;
     private Animator _animator;
 
-    protected override void Awake()
+    protected void Awake()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-            init();
+            Instance = this;
+            DontDestroyOnLoad(gameObject);            
         }
         else
         {
-            if (_instance != this)
+            if (Instance != this)
             {
                 Destroy(gameObject);
             }
