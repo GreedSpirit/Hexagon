@@ -121,6 +121,7 @@ public class DeckUI : MonoBehaviour
     // [전투 시작] 버튼에 연결할 최종 함수
     public void OnClickStartBattle()
     {
+        InventoryManager.Instance.DeselectAll();
         // 덱 유효성 검사
         // 기획: 던전마다 요구 카드 수가 다를 수 있음
         if (_targetDungeon == null) return;

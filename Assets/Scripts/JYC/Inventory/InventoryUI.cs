@@ -211,6 +211,11 @@ public class InventoryUI : MonoBehaviour
             _currentSelectedSlot.SetSelected(false);
             _currentSelectedSlot = null;
         }
+
+        if (_detailPanel != null)
+        {
+            _detailPanel.Init();
+        }
     }
 
 }

@@ -1,15 +1,5 @@
-﻿Id,NPC가 배치될 마을의 Village 테이블 키 값 기재,마을에 배치될 NPC의 Character 테이블 키값 기재,Npc가 배치될 X 좌표 시작값,Npc가 배치될 Y 좌표 시작값,,,,
-int,string,string,float,float,,,,
-Id,Village,Npc,NpcAreaX,NpcAreaY,,,,
-1,KeyVillageSilencia,KeyNpcLibra,2.5,-1,,,,
-2,KeyVillageSilencia,KeyNpcLionel,-5.5,-1.5,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
+Id,NPC가 배치될 마을의 Village 테이블 키 값 기재,마을에 배치될 NPC의 Character 테이블 키값 기재,Npc가 배치될 X 좌표 시작값,Npc가 배치될 Y 좌표 시작값
+int,string,string,float,float
+Id,Village,Npc,NpcAreaX,NpcAreaY
+1,KeyVillageSilencia,KeyNpcLibra,2.5,-1
+2,KeyVillageSilencia,KeyNpcLionel,-5.5,-1.5

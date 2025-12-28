@@ -15,29 +15,12 @@ public class InventoryManager : MonoBehaviour
     public enum SortType { GradeAsc, LevelDesc, TypeOrder, Name, Recent }
     public SortType CurrentSortType = SortType.GradeAsc;
 
-    [Header("UI Resources (등급별 배경 이미지)")]
-    public Sprite bgCommon;     // Common 뒷면
-    public Sprite bgRare;       // Rare 뒷면
-    public Sprite bgEpic;       // Epic 뒷면
-    public Sprite bgLegendary;  // Legendary 뒷면
-
     [Header("UI Resources (테두리 이미지)")]
     public Sprite borderCommon;
     public Sprite borderRare;
     public Sprite borderEpic;
     public Sprite borderLegendary;
 
-    public Sprite GetGradeBackground(CardGrade grade)
-    {
-        switch (grade)
-        {
-            case CardGrade.Common: return bgCommon;
-            case CardGrade.Rare: return bgRare;
-            case CardGrade.Epic: return bgEpic;
-            case CardGrade.Legendary: return bgLegendary;
-            default: return bgCommon;
-        }
-    }
     // 가상 슬롯 (동적으로 크기가 변함)
     private int[] _virtualDeckSlots;
 
@@ -72,25 +55,18 @@ public class InventoryManager : MonoBehaviour
     {
         if (CardManager.Instance == null || _currentDeckData == null) return;
 
-        // 리스트에 있는 카드들을 등급 규칙에 맞춰 가상 슬롯에 채워넣기
-        foreach (int cardId in CardManager.Instance.CurrentDeck)
-        {
-            CardData data = DataManager.Instance.GetCard(cardId);
-            if (data == null) continue;
+        // 저장된 덱 리스트 가져오기
+        List<int> savedDeck = CardManager.Instance.CurrentDeck;
 
-            // 들어갈 수 있는 구역 확인
-            int startIdx, endIdx;
-            if (GetSlotRangeByGrade(data.CardGrade, out startIdx, out endIdx))
+        for (int i = 0; i < _virtualDeckSlots.Length; i++)
+        {
+            if (i < savedDeck.Count)
             {
-                // 해당 구역 빈자리 찾아서 넣기
-                for (int i = startIdx; i <= endIdx; i++)
-                {
-                    if (_virtualDeckSlots[i] == -1)
-                    {
-                        _virtualDeckSlots[i] = cardId;
-                        break;
-                    }
-                }
+                _virtualDeckSlots[i] = savedDeck[i];
+            }
+            else
+            {
+                _virtualDeckSlots[i] = -1;
             }
         }
     }
@@ -104,10 +80,9 @@ public class InventoryManager : MonoBehaviour
 
         foreach (int cardId in _virtualDeckSlots)
         {
-            if (cardId != -1)
-            {
-                CardManager.Instance.CurrentDeck.Add(cardId);
-            }
+
+            CardManager.Instance.CurrentDeck.Add(cardId);
+
         }
         GameSaveManager.Instance.SaveGame();
     }

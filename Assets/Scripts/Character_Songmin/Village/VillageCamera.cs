@@ -7,6 +7,11 @@ public class VillageCamera : MonoBehaviour
     private void Awake()
     {
         CinemachineCamera cam = GetComponent<CinemachineCamera>();
+        if (cam.Follow != Player.Instance.transform)
+        {
+            cam.Follow = Player.Instance.transform;
+        }
+
         float y =  ((_backGround.bounds.size.y) / 4f);
         cam.Lens.OrthographicSize = y;
     }

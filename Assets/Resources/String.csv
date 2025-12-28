@@ -13,20 +13,20 @@ Id,Key,Korean
 10,NameCardLazer,레이저
 11,NameCardPsychoKinesis,염력
 12,NameCardPride,오만
-13,NameCardExplode,폭발
+13,NameCardLeap,도약
 14,NameCardFireless,꺼지지 않는 불꽃
 15,DescCardFireball,상대에게 {D}의 데미지를 줍니다.
 16,DescCardThreat,상대에게 “낙인” 효과를 입힙니다.
 17,DescCardSwipe,상대에게 {D}의 데미지를 줍니다.
-18,DescCardLazer,상대에게 “화상” {SEV}을 부여합니다.
-19,DescCardPsychoKinesis,상대에게 {D}의 데미지를 줍니다.
-20,DescCardPride,"상대보다 체력이 많으면 ""오만"" 효과를 발동합니다. 체력이 적다면, 적에게 {D}의 데미지를 줍니다."
-21,DescCardExplode,"상대에게 {D}의 데미지를 줍니다. 대상이 ""화상"" 상태라면 화상을 제거하고 화상 스택만큼 +1 추가 데미지를 줍니다."
+18,DescCardLazer,화상 레이저를 발사해 상대에게 “화상” {SEV}을 부여합니다.
+19,DescCardPsychoKinesis,응축된 불의 힘으로 {D}의 데미지를 줍니다.
+20,DescCardPride,"시전자가 오만합니다. ""오만"" 효과를 발동합니다."
+21,DescCardLeap,스스로 민첩해져 {N} 회복합니다.
 22,DescCardFireless,"상대에게 {D}의 데미지를 줍니다. 대상은 ""화상""을 {SEV} 부여합니다."
 23,NameStatusBurn,화상
 24,NameStatusPride,오만
-25,DescStatusBurn,자신의 턴 시작 전 {표기 방법 미정}의 피해를 받고 화상이 1 감소합니다.
-26,DescStatusPride,현재 체력이 상대 체력보다 많으면 사용되며 주는 데미지가 2 증가한다.
+25,DescStatusBurn,자신의 턴 시작 전 화상 스택 수 만큼 피해를 입고 화상 스택이 1 감소합니다.
+26,DescStatusPride,공격이 30% 더 많은 피해를 입힙니다.
 27,NameDungeonPride,우월의 심연
 28,DescDungeonPride,오만의 정령으로 인해 어지럽혀진 숲
 29,NameStatusStigma,낙인
@@ -74,10 +74,10 @@ Id,Key,Korean
 71,NameStatusPoison,중독
 72,DescStatusKnowledge,공격이 15% 더 많은 피해를 줍니다
 73,DescStatusDespair,공격으로부터 50% 더 많은 피해를 입습니다.
-74,DescStatusPoison,자신의 턴 시작 전 {표기 방법 미정}의 피해를 받고 중독이 1 감소합니다.
-75,NamePcErion,"""에리온"""
-76,NameNpcLibra,"""리브라"""
-77,NameNpcLionel,"""리오넬"""
+74,DescStatusPoison,자신의 턴 시작 전 중독 스택 수 만큼 피해를 입고 중독 스택이 1 감소합니다.
+75,NamePcErion,에리온
+76,NameNpcLibra,리브라
+77,NameNpcLionel,리오넬
 78,DescPcErion,던전을 탐사하며 몬스터와 전투하고 시나리오를 진행하는 플레이어 캐릭터
 79,DescNpcLibra,던전 진입 전까지 등장하여 기본 시스템과 진행 방향을 안내하는 NPC
 80,DescNpcLionel,카드 강화를 전담하며 플레이어와 상호작용하는 기능성 NPC
@@ -91,7 +91,7 @@ Id,Key,Korean
 88,TalkNpcLionel3,
 89,TalkNpcLionel4,
 90,NameCurrency001,골드
-91,DescCurrency001,"(이름 미정)에서 통용되는 기본 화폐, 화려한 무늬가 매력적이다."
+91,DescCurrency001,"실렌시아에서 통용되는 기본 화폐, 화려한 무늬가 매력적이다."
 92,NameImage01,사진01
 93,NameImage02,사진02
 94,NameImage03,사진03
@@ -100,3 +100,5 @@ Id,Key,Korean
 97,DescImage02,시나리오 연출용 사진02
 98,DescImage03,시나리오 연출용 사진03
 99,DescImage04,시나리오 연출용 사진04
+100,NameStatusVulnerable,취약
+101,DescStatusVulnerable,공격으로부터 50% 더 많은 피해를 입습니다.
