@@ -238,8 +238,19 @@ public class HandManager : MonoBehaviour
             }
         }
 
+        // 플레이어 모션
+        Player.Instance.AttackMotion();
+
         // 남은 카드 재정렬
         AlignCards();           
+
+        if(CurrentDeckCount == 0 && CurrentHandCount == 0)
+        {
+            if(TargetMonster is MonsterStatus monster)
+            {
+                bool isGameOver = monster.MonsterCurHP > 0;
+            }
+        }
     }
 
     // 카드 부채꼴 정렬
