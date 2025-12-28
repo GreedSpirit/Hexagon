@@ -49,9 +49,6 @@ public class UpgradeManager : MonoBehaviour
 
     private Coroutine upgradeCoroutine;        // 강화 코루틴
 
-    private CanvasGroup _scrollBarCanvasGroup;   // 스크롤바 캔버스 그룹
-    private float _lastScrollTime;               // 마지막으로 스크롤한 시간
-
     private void Awake()
     {
         if (Instance == null)
@@ -82,9 +79,9 @@ public class UpgradeManager : MonoBehaviour
         _upgradeSlotCard.Init(null, this);
 
         // 안보이게
-        _scrollBarCanvasGroup.alpha = 0f;
         _upgradeEdgeCanvasGroup.alpha = 0f;
 
+        // 한 번 새로고침
         RefreshList();
     }
 
@@ -291,7 +288,7 @@ public class UpgradeManager : MonoBehaviour
         _goldText.text = "- / -";
     }
 
-    // 강화 UI Off (닫기 버튼)
+    // 강화 UI Off (닫기 버튼, 닫기 키 입력)
     public void CloseUpgradeUI()
     {
         // 리스트 새로고침
