@@ -13,6 +13,7 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
     [SerializeField] TextMeshProUGUI levelText; // 카드 레벨
     [SerializeField] TextMeshProUGUI typeText;  // 카드 타입
+    [SerializeField] TextMeshProUGUI descText;
 
     private int _cardId;
     private int _slotIndex;
@@ -53,10 +54,11 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 // B. 텍스트 설정 
                 if (nameText != null) nameText.text = cardData.Name;
 
+                int currentLevel = CardManager.Instance.GetCardLevel(_cardId);
+
                 // 레벨 가져오기 (CardManager를 통해 현재 레벨 조회)
                 if (levelText != null)
-                    levelText.text = CardManager.Instance.GetCardLevel(_cardId).ToString();
-
+                    levelText.text = currentLevel.ToString();
                 // 타입 설정 (한글 변환)
                 if (typeText != null)
                 {
@@ -71,6 +73,18 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                     }
                     typeText.text = typeString;
                 }
+                // 테스트
+                if (descText == null)
+                {
+                    // 연결 안됨 에러 
+                    Debug.LogError($"[오류] DeckSlotUI({index}번): 'Desc Text' 변수가 비어있습니다(Null)! 프리팹 인스펙터 연결을 확인하세요.");
+                }
+                else
+                {
+                    // 연결 됨 -> 텍스트 갱신
+                    string finalDesc = ParseDescription(cardData, currentLevel);
+                    descText.text = finalDesc;
+                }
             }
         }
         else
@@ -82,6 +96,21 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             if (levelText != null) levelText.text = "";
             if (typeText != null) typeText.text = "";
         }
+    }
+    private string ParseDescription(CardData data, int level)
+    {
+        if (string.IsNullOrEmpty(data.Desc)) return "";
+
+        // 기본값 + (레벨-1 * 증가량)
+        int finalValue = data.BaseValue + (level - 1) * data.ValuePerValue;
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder(data.Desc);
+        sb.Replace("{D}", finalValue.ToString());
+        sb.Replace("{N}", finalValue.ToString());
+        sb.Replace("{SEV}", data.StatusEffectValue.ToString());
+        sb.Replace("{Turns}", data.Turn.ToString());
+
+        return sb.ToString();
     }
 
     private void SetGradeVisual(CardGrade grade)

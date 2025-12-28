@@ -16,6 +16,7 @@ public class InventorySlotUI : MonoBehaviour,
     [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
     [SerializeField] TextMeshProUGUI levelText; // 카드 레벨
     [SerializeField] TextMeshProUGUI typeText;  // 카드 타입
+    [SerializeField] TextMeshProUGUI descText;
 
     [Header("Equip Mark")]
     [SerializeField] GameObject equipMark; // 장착 표시 (이미지+텍스트)
@@ -25,6 +26,13 @@ public class InventorySlotUI : MonoBehaviour,
     private InventoryUI _parentUI;
     private bool _isSelected = false;
     private static GameObject _dragGhost;
+
+    private Canvas _myCanvas;
+    private void Awake()
+    {
+        // 프리팹에 붙어있는 Canvas를 찾아옵니다.
+        _myCanvas = GetComponent<Canvas>();
+    }
 
     // 데이터 세팅
     public void Init(UserCard userCard, InventoryUI parent)
@@ -66,6 +74,10 @@ public class InventorySlotUI : MonoBehaviour,
                 }
                 typeText.text = typeString;
             }
+            if (descText != null)
+            {
+                descText.text = ParseDescription(data, userCard.Level);
+            }
         }
         if (countText != null)
         {
@@ -81,9 +93,28 @@ public class InventorySlotUI : MonoBehaviour,
         {
             equipMark.SetActive(isEquipped);
         }
+        if (_myCanvas != null)
+        {
+            _myCanvas.overrideSorting = false;
+            _myCanvas.sortingOrder = 0;
+        }
 
     }
+    private string ParseDescription(CardData data, int level)
+    {
+        if (string.IsNullOrEmpty(data.Desc)) return "";
 
+        // 기본값 + (레벨-1 * 증가량)
+        int finalValue = data.BaseValue + (level - 1) * data.ValuePerValue;
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder(data.Desc);
+        sb.Replace("{D}", finalValue.ToString());
+        sb.Replace("{N}", finalValue.ToString());
+        sb.Replace("{SEV}", data.StatusEffectValue.ToString());
+        sb.Replace("{Turns}", data.Turn.ToString());
+
+        return sb.ToString();
+    }
     // 클릭 이벤트 (확대 및 선택)
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -93,17 +124,20 @@ public class InventorySlotUI : MonoBehaviour,
         // 부모 UI가 덱 편집 모드인지 확인
         if (_parentUI.IsDeckBuildingMode)
         {
-            // 매니저에게 "이 카드 덱에 넣어줘/빼줘" 요청
+            // 장착/해제 요청
             bool changed = InventoryManager.Instance.ToggleDeckEquip(_userCard.CardId);
-            // 변경사항이 있었다면 화면 갱신 (여기서 Init이 다시 불리며 E마크가 켜짐)
+
+            InventoryManager.Instance.DeselectAll();
+
             if (changed)
             {
                 _parentUI.RefreshInventory();
-                return; 
             }
         }
-        // 부모 UI에 선택 요청을 보내, 다른 슬롯의 선택을 해제하고 현재 슬롯만 활성화
-        _parentUI.OnSlotClicked(this);
+        else
+        {
+            _parentUI.OnSlotClicked(this);
+        }
     }
 
     // 선택 상태 설정
@@ -116,11 +150,21 @@ public class InventorySlotUI : MonoBehaviour,
         {
             // 확대 (기획: 테두리 빛남 + 확대)
             transform.localScale = Vector3.one * 1.2f;
+            if (_myCanvas != null)
+            {
+                _myCanvas.overrideSorting = true;
+                _myCanvas.sortingOrder = 20;
+            }
         }
         else
         {
             // 원래대로 복귀
             transform.localScale = Vector3.one;
+            if (_myCanvas != null)
+            {
+                _myCanvas.overrideSorting = false;
+                _myCanvas.sortingOrder = 0;
+            }
         }
     }
 
@@ -131,10 +175,7 @@ public class InventorySlotUI : MonoBehaviour,
 
         InventoryManager.Instance.IsDropProcessing = false;
 
-        if (!_isSelected)
-        {
-            _parentUI.OnSlotClicked(this); // 드래그 시작하면 선택도 같이 되게
-        }
+        InventoryManager.Instance.DeselectAll();
 
         // 드래그용 반투명 아이콘 생성
         _dragGhost = new GameObject("DragGhost");
@@ -144,7 +185,7 @@ public class InventorySlotUI : MonoBehaviour,
         // 이미지 컴포넌트 복사
         Image ghostImg = _dragGhost.AddComponent<Image>();
         ghostImg.sprite = cardImage.sprite;
-        ghostImg.color = new Color(1, 1, 1, 0.6f); // 반투명하게 (투명도 60%)
+        ghostImg.color = new Color(1, 1, 1, 1.0f); // 반투명하게
         ghostImg.raycastTarget = false; // 마우스 클릭 통과하게 설정
 
         // 크기 맞춤
@@ -154,7 +195,6 @@ public class InventorySlotUI : MonoBehaviour,
         // 초기 위치 설정
         _dragGhost.transform.position = eventData.position;
 
-        Debug.Log("드래그 시작: 생성됨");
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -195,6 +235,12 @@ public class InventorySlotUI : MonoBehaviour,
         if (_isSelected) return; // 이미 선택(클릭)된 상태라면 크기 유지
 
         transform.localScale = Vector3.one * 1.2f;
+        selectEffect.gameObject.SetActive(true);
+        if (_myCanvas != null)
+        {
+            _myCanvas.overrideSorting = true;
+            _myCanvas.sortingOrder = 20;
+        }
     }
 
     // 마우스 나갈 때 복구
@@ -203,5 +249,11 @@ public class InventorySlotUI : MonoBehaviour,
         if (_isSelected) return; // 선택된 상태면 줄어들지 않음
 
         transform.localScale = Vector3.one;
+        selectEffect.gameObject.SetActive(false);
+        if (_myCanvas != null)
+        {
+            _myCanvas.overrideSorting = false;
+            _myCanvas.sortingOrder = 0;
+        }
     }
 }
