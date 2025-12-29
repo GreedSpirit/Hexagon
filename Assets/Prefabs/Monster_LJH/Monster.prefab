@@ -684,6 +684,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &4711352799078524655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2932322537314676493}
+  m_Layer: 0
+  m_Name: VFXPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2932322537314676493
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4711352799078524655}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.1, y: -0.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3503475730645960151}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5058029459828295100
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,6 +726,7 @@ GameObject:
   - component: {fileID: 3503475730645960151}
   - component: {fileID: 3420314490613989023}
   - component: {fileID: 2249159987969430875}
+  - component: {fileID: 2964173535684114114}
   - component: {fileID: 6529171942363824244}
   - component: {fileID: 5262980168448069836}
   - component: {fileID: 3831209829223011880}
@@ -724,6 +756,7 @@ Transform:
   m_Children:
   - {fileID: 7742030767305244700}
   - {fileID: 2543111983531588690}
+  - {fileID: 2932322537314676493}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3420314490613989023
@@ -829,6 +862,29 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 0ea29b247aa161445882935098a2032a, type: 3}
   - type: 11
     clip: {fileID: 8300000, guid: 3c61b8b0fb899244cb39b3c774102a8b, type: 3}
+  _vfxController: {fileID: 2964173535684114114}
+--- !u!114 &2964173535684114114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058029459828295100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d95bccfd21f0cd64fa9fa778b884c02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterVFXController
+  _effectCenter: {fileID: 2932322537314676493}
+  _hitVfx: {fileID: 669018648118327261, guid: 8effd804b11b5504ba7151318d9014b7, type: 3}
+  _healVfx: {fileID: 904651187185394017, guid: 26587b86dc09c1742ac834389f112609, type: 3}
+  _burnVfx: {fileID: 6681001652336395680, guid: 10b88ab18863699419cd6f9137f3bc45, type: 3}
+  _despairVfx: {fileID: 702981894718865960, guid: 7b0b5e3980fe2134fadc937eb78ebb4e, type: 3}
+  _poisonVfx: {fileID: 7264030080364186270, guid: b92178bf2273dfa41aa8cbdf4824a31d, type: 3}
+  _knowledgeVfx: {fileID: 572420816548206666, guid: c139dfaee9f51f44b8f3aa893f17efb7, type: 3}
+  _prideVfx: {fileID: 3267751598968977454, guid: 8d250172f625972438ad47ffb7c1ea10, type: 3}
+  _stigmaVfx: {fileID: 5956293276054965654, guid: e217d597f61f656448f64eda4c4e54f9, type: 3}
+  _vulnerableVfx: {fileID: 1130906820879740944, guid: 01c54bd000f81894e8ed9b56980d3628, type: 3}
 --- !u!70 &6529171942363824244
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

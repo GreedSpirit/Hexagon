@@ -66,13 +66,9 @@ public class VillageManager : MonoBehaviour
     public void TalkInteractClick()
     {
         Player player = Player.Instance;
-        if (player.TalkUI == null)
-        {
-            Debug.LogError("TalkUI가 Player에 아직 등록되지 않았습니다.");
-            return;
-        }
+        player.TalkWithNpc();        
         HideTalkSlide();
-        player.TalkWithNpc();
+        
     }
 
     public void OnOffTalkSlide(bool Onoff)

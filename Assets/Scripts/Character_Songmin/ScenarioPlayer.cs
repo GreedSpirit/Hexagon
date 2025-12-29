@@ -12,6 +12,36 @@ public class ScenarioPlayer : MonoBehaviour
         FillScenarioDatas();
     }
 
+    public bool IsScenarioPlayed(Trigger_Type trigger)
+    {
+        return _playedScenarios.Contains(trigger);
+    }
+
+    public void RequestScenario(Trigger_Type trigger)
+    {
+        // 이미 재생된 경우는 Player에서 처리함
+        if (_isPlaying) return;
+        if (!_scenarioMap.TryGetValue(trigger, out var list)) return;
+        if (list.Count == 0) return;
+
+        _isPlaying = true;
+
+        Player.Instance.SetTalkUI();
+        Player.Instance.TalkUI.EnterScenario(list);
+        Player.Instance.TalkUI.OnScenarioEnd += OnScenarioEnd;
+    }
+
+    private void OnScenarioEnd()
+    {
+        _isPlaying = false;
+
+        // 여기서만 재생 기록
+        _playedScenarios.Add(Player.Instance.CurrentPlayedScenario);
+
+        Player.Instance.TalkUI.OnScenarioEnd -= OnScenarioEnd;
+        Player.Instance.OnScenarioFinished();
+    }
+
     public void FillScenarioDatas()
     {
         _scenarioMap[Trigger_Type.gamestart] = Load("scn_Intro_");
@@ -31,43 +61,5 @@ public class ScenarioPlayer : MonoBehaviour
             list.Add(data);
         }
         return list;
-    }
-
-
-    public void RequestScenario(Trigger_Type trigger)
-    {
-        int triggerIndex = (int)trigger;
-
-        //이미 지나간 시나리오면 재생 안 함
-        if (Player.Instance.ScenarioPlayIndex > triggerIndex)
-            return;
-
-        //이미 재생 중이면 무시
-        if (_isPlaying)
-            return;
-
-        if (!_scenarioMap.TryGetValue(trigger, out var list))
-            return;
-
-        if (list.Count == 0)
-            return;
-
-        _isPlaying = true;
-
-        Player.Instance.SetTalkUI();
-        Player.Instance.TalkUI.EnterScenario(list);
-
-        Player.Instance.TalkUI.OnScenarioEnd += OnScenarioEnd;
-    }
-    void OnScenarioEnd()
-    {
-        _isPlaying = false;
-
-        _playedScenarios.Add(Player.Instance.CurrentPlayedScenario);
-
-        Player.Instance.TalkUI.OnScenarioEnd -= OnScenarioEnd;
-
-        Player.Instance.OnScenarioFinished();
-    }
-
+    }    
 }

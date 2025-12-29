@@ -57,6 +57,11 @@ public class PlayerModelController : MonoBehaviour
         }
     }
 
+    public void ResetModelScale()
+    {
+        gameObject.transform.localScale = _originScale;
+    }
+
     
 
     private void OnTriggerEnter2D(Collider2D collision)

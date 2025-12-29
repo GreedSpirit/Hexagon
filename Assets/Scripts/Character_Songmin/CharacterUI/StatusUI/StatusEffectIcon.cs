@@ -11,7 +11,7 @@ public class StatusEffectIcon : MonoBehaviour
     public void Init(StatusEffectData data)
     {
         _data = data;
-        _iconImage.sprite = DataManager.Instance.GetSprite(SpriteType.Status , _data.Img);
+        _iconImage.sprite = DataManager.Instance.GetStatusSprite(data.Img);
     }
 
     public void UpdateIcon(int turn)
