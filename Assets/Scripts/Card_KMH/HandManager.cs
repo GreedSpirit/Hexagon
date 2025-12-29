@@ -29,9 +29,12 @@ public class HandManager : MonoBehaviour
     [Header("소멸 위치 설정")]
     [SerializeField] Transform _disappearPoint;    // 소멸 고정 위치
 
+    [Header("게임오버")]
+    [SerializeField] GameOverUI _gameOverUI;        // 게임오버 관리자
+
     [Header("오디오 클립")]
-    [SerializeField] AudioClip drawClip;           // 드로우
-    [SerializeField] AudioClip overDrawClip;       // 오버드로우
+    [SerializeField] AudioClip _drawClip;           // 드로우
+    [SerializeField] AudioClip _overDrawClip;       // 오버드로우
 
 
     public float MoveSpeed => _moveSpeed;
@@ -67,6 +70,7 @@ public class HandManager : MonoBehaviour
 
     private IBattleUnit _targetPlayer;     // 타겟 플레이어 
     private IBattleUnit _targetMonster;    // 타겟 몬스터
+    private bool isBoss;                   // 보스인지
 
     private float _playerBuff;             // 플레이어 강화 수치
 
@@ -77,6 +81,9 @@ public class HandManager : MonoBehaviour
     private void Start()
     {
         _cardManager = CardManager.Instance;
+        
+        // 보스 스테이지 진입 함수
+        DungeonManager.Instance.OnEnterBossStage += EnterBossStage;
 
         // 카드 높이
         float cardHeight = cardPrefab.GetComponent<RectTransform>().rect.height;
@@ -194,14 +201,14 @@ public class HandManager : MonoBehaviour
             cardUI.OnDisappear(_disappearPoint);
 
             // 오버드로우 클립 재생
-            SoundManager.Instance.PlaySFX(overDrawClip);
+            SoundManager.Instance.PlaySFX(_overDrawClip);
 
             // 핸드에 추가 안하고 바로 끝
             return;
         }
 
         // 드로우 클립 재생
-        SoundManager.Instance.PlaySFX(drawClip);
+        SoundManager.Instance.PlaySFX(_drawClip);
 
         // 리스트 추가
         _handCards.Add(cardLogic);
@@ -242,15 +249,10 @@ public class HandManager : MonoBehaviour
         Player.Instance.AttackMotion();
 
         // 남은 카드 재정렬
-        AlignCards();           
+        AlignCards();
 
-        if(CurrentDeckCount == 0 && CurrentHandCount == 0)
-        {
-            if(TargetMonster is MonsterStatus monster)
-            {
-                bool isGameOver = monster.MonsterCurHP > 0;
-            }
-        }
+        // 게임 오버 체크
+        CheckGameOver();
     }
 
     // 카드 부채꼴 정렬
@@ -293,6 +295,26 @@ public class HandManager : MonoBehaviour
         }
     }
 
+
+    // 게임 오버 체크
+    private void CheckGameOver()
+    {
+        // 카드 썼는데 덱, 핸드 카운트 둘 다 0
+        if (CurrentDeckCount == 0 && CurrentHandCount == 0)
+        {
+            if (TargetMonster is MonsterStatus monster)
+            {
+                // 타겟 보스 몬스터의 체력이 남았으면 게임오버
+                bool isGameOver = monster.MonsterCurHP > 0 && isBoss;
+
+                // 게임오버
+                if (isGameOver)
+                {
+                    _gameOverUI.GameOver();
+                }
+            }
+        }
+    }
 
 
 
@@ -339,6 +361,12 @@ public class HandManager : MonoBehaviour
     public void SetPlayerBuff(float playerBuff)
     {
         _playerBuff = playerBuff;
+    }
+
+    // 보스 스테이지 진입
+    public void EnterBossStage()
+    {
+        isBoss = true;
     }
 
 
