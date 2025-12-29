@@ -67,10 +67,9 @@ public class TalkUI : MonoBehaviour
 
     public void EnterUpgrade()
     {
-        _talkPannel.SetActive(false);
-        _testButton.SetActive(true);
+        _talkPannel.SetActive(false);        
         _upgradeEnterButton.SetActive(false);
-        Player.Instance.Currentvillage.VillageManager.SetUpgradeButton(true);
+        Player.Instance.Currentvillage.VillageManager.SetUpgradePanel(true);
     }
 
 
@@ -92,8 +91,8 @@ public class TalkUI : MonoBehaviour
         else
         {
             Player.Instance.SwitchIsTalking(false);
-            Player.Instance.Currentvillage.VillageManager.SetUpgradeButton(false);
-            _testButton.SetActive(false);
+            Player.Instance.Currentvillage.VillageManager.SetUpgradePanel(false);
+            //_testButton.SetActive(false);
         }        
     }
 
