@@ -25,8 +25,14 @@ public class DeckUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _popupText;  // 팝업 내용 텍스트
 
     [Header("Dungeon Info UI")]
-    [SerializeField] TextMeshProUGUI stageInfoText; // "총 N 스테이지" 표시용
+    [SerializeField] Transform stageNodeParent;     // DeckUI 상단에 배치한 Horizontal Layout Group
+    [SerializeField] GameObject normalStagePrefab;  // 하얀 동그라미 프리팹
+    [SerializeField] GameObject bossStagePrefab;    // 빨간 동그라미 프리팹
+
     [SerializeField] Button dungeonInfoButton;      // "던전 정보" 팝업 여는 버튼
+
+    [Header("Popup UI")]
+    [SerializeField] DungeonInfoPanel _dungeonInfoPanel;
 
     private void Start()
     {
@@ -42,6 +48,7 @@ public class DeckUI : MonoBehaviour
 
         // 시작할 때 팝업 꺼두기
         if (_enterPopupPanel != null) _enterPopupPanel.SetActive(false);
+        if (_dungeonInfoPanel != null) _dungeonInfoPanel.gameObject.SetActive(false);
 
     }
 
@@ -66,9 +73,9 @@ public class DeckUI : MonoBehaviour
         }
 
         // 던전 정보 UI 갱신 (총 스테이지 수 표시)
-        if (stageInfoText != null && _targetDungeon != null)
+        if (_targetDungeon != null)
         {
-            stageInfoText.text = $"총 {_targetDungeon.NumberOfStages} 스테이지";
+            UpdateStageNodes(_targetDungeon.NumberOfStages);
         }
 
         // 던전 정보 버튼 연결
@@ -94,10 +101,30 @@ public class DeckUI : MonoBehaviour
 
         RefreshDeck();
     }
+    private void UpdateStageNodes(int stageCount)
+    {
+        if (stageNodeParent == null || normalStagePrefab == null || bossStagePrefab == null) return;
+
+        // 기존 노드 청소
+        foreach (Transform child in stageNodeParent) Destroy(child.gameObject);
+
+        // 노드 생성
+        for (int i = 0; i < stageCount; i++)
+        {
+            GameObject prefab = (i == stageCount - 1) ? bossStagePrefab : normalStagePrefab;
+            Instantiate(prefab, stageNodeParent);
+        }
+    }
     private void OnClickDungeonInfo()
     {
-        Debug.Log(" 던전 정보 팝업 오픈 (추후 구현 예정)");
-        // TODO: 기획서 8.1 팝업과 연결
+        if (_dungeonInfoPanel != null && _targetDungeon != null)
+        {
+            _dungeonInfoPanel.Open(_targetDungeon);
+        }
+        else
+        {
+            Debug.LogWarning("DungeonInfoPanel이 연결되지 않았거나 타겟 던전이 없습니다.");
+        }
     }
     // '뒤로가기'나 '닫기' 버튼에 연결할 함수 (마을로 돌아갈 때)
     public void CloseDeckUI()
