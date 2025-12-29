@@ -110,7 +110,6 @@ public class RewardResultUI : MonoBehaviour
         Player.Instance.Respawn();
 
         SceneManager.LoadScene(1);
-        //SceneTransitionManager.Instance.LoadSceneWithFade(씬 이름)
     }
 
     private void OnRewardReturnButtonClicked()

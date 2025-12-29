@@ -310,6 +310,9 @@ public class UpgradeManager : MonoBehaviour
 
         // UI 리셋
         ResetUI();
+        Player.Instance.SwitchIsTalking(false);
+        Player.Instance.Currentvillage.VillageManager.SetUpgradePanel(false);
+        Destroy(Player.Instance.TalkUI?.gameObject);
     }
 
 
