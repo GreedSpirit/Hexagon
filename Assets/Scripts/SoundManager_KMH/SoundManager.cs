@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 using UnityEngine.Audio;
 using UnityEngine;
 
@@ -77,6 +78,8 @@ public class SoundManager : MonoBehaviour
     // 현재 씬 이름
     private string _currentSceneName;
 
+    // 세팅 액션
+    private InputAction _settingAction;
 
     private void Awake()
     {
@@ -131,6 +134,8 @@ public class SoundManager : MonoBehaviour
 
         // 맨첨에 일단 실행
         OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+
+       // _settingAction =
     }
 
     private void OnDestroy()
