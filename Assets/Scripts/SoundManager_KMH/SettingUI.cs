@@ -81,10 +81,11 @@ public class SettingUI : MonoBehaviour
     {
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            // 대화중이면 무시 
-            if(Player.Instance == null || Player.Instance.IsTalking) return;
+            // 대화중이면 무시
+            if (Player.Instance?.IsTalking == true)
+                return;
 
-            SetActivePanel();
+                SetActivePanel();
         }
     }
 
