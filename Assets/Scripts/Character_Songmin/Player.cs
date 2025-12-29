@@ -41,6 +41,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
     //Player에 붙은 다른 컴포넌트들
     private PlayerUIManager _playerUIManager;
+    private PlayerModelController _playerModelController;
     private PlayerInputHandler _playerInputHandler;    
     private ScenarioPlayer _scenarioPlayer;
     private Animator _animator;
@@ -426,6 +427,14 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _afterScenarioAction = afterScenario;
         CurrentPlayedScenario = type;
 
+        //시나리오가 이미 재생된 상태인지 확인
+        if (_scenarioPlayer.IsScenarioPlayed(type))
+        {            
+            _afterScenarioAction?.Invoke();
+            _afterScenarioAction = null;
+            return;
+        }
+
         EnterScenarioMod();
         _scenarioPlayer.RequestScenario(type);
     }
@@ -437,8 +446,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
     public void EndScenario()
     {
-        TalkUI.EndScenario();
-        ScenarioPlayIndex++;
+        TalkUI.EndScenario();        
     }
 
     //----------------------------------------------------------
@@ -564,7 +572,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public void EnterBattle()
     {
         gameObject.transform.position = new Vector2(-3f, -1.5f);
-        gameObject.transform.localScale = new Vector2(0.25f, 0.25f);
+        _playerModelController.ResetModelScale();
         _playerUIManager.OnOffPlayerInventoryUi(true);
         _playerUIManager.OnOffPlayerStatUi(true);
     }
