@@ -57,9 +57,15 @@ public class SoundManager : MonoBehaviour
     [SerializeField] List<SFXData> _sfxList;
 
     // 현재 볼륨
-    public float MasterVolume { get; private set; } = 0.3f;
-    public float BGMVolume { get; private set; } = 0.3f;
-    public float SFXVolume { get; private set; } = 0.3f;
+    public float MasterVolume { get; private set; } = 1f;
+    public float BGMVolume { get; private set; } = 1f;
+    public float SFXVolume { get; private set; } = 1f;
+    
+    // 볼륨 상태
+    public bool IsMasterOn { get; private set; } = true;
+    public bool IsBGMOn { get; private set; } = true;
+    public bool IsSFXOn { get; private set; } = true;
+
 
     // 클립 간단하게 가져올 수 있도록 딕셔너리 생성
     private Dictionary<BGMType, AudioClip> _bgmTable = new Dictionary<BGMType, AudioClip>();
@@ -83,6 +89,11 @@ public class SoundManager : MonoBehaviour
             MasterVolume = PlayerPrefs.GetFloat("MasterVolume", MasterVolume);
             BGMVolume = PlayerPrefs.GetFloat("BGMVolume", BGMVolume);
             SFXVolume = PlayerPrefs.GetFloat("SFXVolume", SFXVolume);
+
+            // 볼륨 상태 기본 (True = 1)
+            IsMasterOn = PlayerPrefs.GetInt("MasterOn", 1) == 1;
+            IsBGMOn = PlayerPrefs.GetInt("BGMOn", 1) == 1;
+            IsSFXOn = PlayerPrefs.GetInt("SFXOn", 1) == 1;
         }
         else
         {
@@ -109,6 +120,11 @@ public class SoundManager : MonoBehaviour
         SetMasterVolume(MasterVolume);
         SetBGMVolume(BGMVolume);
         SetSFXVolume(SFXVolume);
+        
+        // 켜짐/꺼짐 상태 적용
+        SetMasterOn(IsMasterOn);
+        SetBGMOn(IsBGMOn);
+        SetSFXOn(IsSFXOn);
 
         // 씬 로드 델리게이트 구독
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -149,6 +165,39 @@ public class SoundManager : MonoBehaviour
         SFXVolume = value;
         _mixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20);
         PlayerPrefs.SetFloat("SFXVolume", value);
+    }
+
+    public void SetMasterOn(bool isOn)
+    {
+        IsMasterOn = isOn;
+        PlayerPrefs.SetInt("MasterOn", isOn ? 1 : 0);
+
+        if (isOn)
+            _mixer.SetFloat("MasterVolume", Mathf.Log10(MasterVolume) * 20);
+        else
+            _mixer.SetFloat("MasterVolume", -80f);
+    }
+
+    public void SetBGMOn(bool isOn)
+    {
+        IsBGMOn = isOn;
+        PlayerPrefs.SetInt("BGMOn", isOn ? 1 : 0);
+
+        if (isOn)
+            _mixer.SetFloat("BGMVolume", Mathf.Log10(BGMVolume) * 20);
+        else
+            _mixer.SetFloat("BGMVolume", -80f);
+    }
+
+    public void SetSFXOn(bool isOn)
+    {
+        IsSFXOn = isOn;
+        PlayerPrefs.SetInt("SFXOn", isOn ? 1 : 0);
+
+        if (isOn)
+            _mixer.SetFloat("SFXVolume", Mathf.Log10(SFXVolume) * 20);
+        else
+            _mixer.SetFloat("SFXVolume", -80f);
     }
 
     // 씬 로드시 실행
