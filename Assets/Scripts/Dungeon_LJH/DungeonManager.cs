@@ -50,11 +50,14 @@ public class DungeonManager : MonoBehaviour
         int dungeonId = DungeonSessionData.SelectedDungeonId;
         if (dungeonId == -1)
         {
-            Debug.LogWarning("던전ID가 -1입니다. 뭔가 문제가 있을 수 있습니다.");
+            Debug.LogWarning("던전ID가 -1입니다.");
         }
+
         _currentDungeonData = DataManager.Instance.GetDungeon(dungeonId);
 
-        StartStage(_currentStageIndex);
+        // 변경: 바로 스테이지 시작 → 시나리오 후 시작
+        Player.Instance.PlayScenario(Trigger_Type.dungeonenter,() =>{StartStage(_currentStageIndex);} );
+
     }
 
     public int GetDungeonId()
@@ -101,15 +104,21 @@ public class DungeonManager : MonoBehaviour
         _currentActiveMonster.InitMonsterStatus(monsterId);
         _battleManager.SetMonster(_currentActiveMonster);
 
-        if(_currentActiveMonster.MonsterData.MonGrade == MonsterGrade.Boss)
+        if (_currentActiveMonster.MonsterData.MonGrade == MonsterGrade.Boss)
         {
             SoundManager.Instance.PlayBGM(BGMType.Boss);
-            OnEnterBossStage?.Invoke();
+
+            
+            Player.Instance.PlayScenario(Trigger_Type.prebattle,() =>{_battleManager.StartBattle(); });
+        }
+        else
+        {
+            _battleManager.StartBattle(); // 일반 몬스터는 그대로
         }
 
-        //여기서 해당 몬스터가 죽거나 했을 때 이벤트를 등록시켜주면 될 듯?
         _currentActiveMonster.OnMonsterDeath += HandleMonsterDeath;
     }
+
 
     private void HandleMonsterDeath(MonsterStatus monster)
     {
@@ -125,10 +134,17 @@ public class DungeonManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Stage " + (_currentStageIndex + 1) + "Clear!");
-            _currentStageIndex++;
-            //다음 스테이지 불러오기
-            StartCoroutine(NextStageRoutine());
+            Debug.Log("Stage " + (_currentStageIndex + 1) + " Clear!");
+
+            // 변경: 바로 다음 스테이지 가지 않고 시나리오 시작
+            Player.Instance.PlayScenario(
+                Trigger_Type.stageenter,
+                () =>
+                {
+                    _currentStageIndex++;                 
+                    StartCoroutine(NextStageRoutine());
+                }
+            );
         }
     }
 
@@ -146,6 +162,20 @@ public class DungeonManager : MonoBehaviour
     }
 
     private IEnumerator BossClearSequence()
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        
+        Player.Instance.PlayScenario(
+            Trigger_Type.preseal,
+            () =>
+            {
+                StartCoroutine(BossClearSequence_Internal());
+            }
+        );
+    }
+
+    private IEnumerator BossClearSequence_Internal()
     {
         yield return new WaitForSeconds(3.0f); //몬스터가 죽고 나서 대기 시간이 필요할 것 같아서 넣은 대기 시간
 
@@ -211,6 +241,8 @@ public class DungeonManager : MonoBehaviour
         {
             Player.Instance.DungeonClearedIndex = DungeonSessionData.SelectedDungeonId;
         }
+        
+        Player.Instance.PlayScenario(Trigger_Type.clear,() =>{Player.Instance.BackToVillage();});
     }
 
 
