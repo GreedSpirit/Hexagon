@@ -310,6 +310,7 @@ public class UpgradeManager : MonoBehaviour
 
         // UI 리셋
         ResetUI();
+        Player.Instance.SwitchIsTalking(false);
     }
 
 

@@ -9,6 +9,9 @@ public class VillageManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _villageNameUI;
     [SerializeField] GameObject _villageNameUIObject;
     [SerializeField] GameObject _upgradePanel;
+
+    [SerializeField] GameObject _testButtons;
+
     [SerializeField] RuntimeAnimatorController _libra;
     [SerializeField] RuntimeAnimatorController _lionel;
 
@@ -141,8 +144,9 @@ public class VillageManager : MonoBehaviour
         }    
     }
 
-    public void SetUpgradeButton(bool on)
+    public void SetUpgradePanel(bool on)
     {
         _upgradePanel.SetActive(on);
+        _testButtons.SetActive(on);
     }
 }
