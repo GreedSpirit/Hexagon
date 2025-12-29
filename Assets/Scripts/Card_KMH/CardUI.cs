@@ -37,6 +37,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
 
     private CardLogic _cardLogic;        // 카드 로직
+    private CardTooltipLogic _tooltipLogic;// 툴팁
     private CardData _cardData;          // 카드 데이터
     private HandManager _handManager;    // 핸드 매니저 (카드 제거 시 필요)
     private CanvasGroup _canvasGroup;    // 소멸 테스트용
@@ -87,8 +88,11 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         switch (_currentState)
         {
             case CardUIState.Selected:          // 선택, 드래그 상태
-            case CardUIState.Drag:
             case CardUIState.Hover:
+                _selectedEdge.SetActive(false); // 테두리 끄기
+                _tooltipLogic.PointerExitParent();   // 툴팁 비활성화
+                break;
+            case CardUIState.Drag:
                 _selectedEdge.SetActive(false); // 테두리 끄기
                 break;
         }
@@ -106,8 +110,14 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             case CardUIState.Hover:
                 transform.SetAsLastSibling(); // 맨 위로
                 _selectedEdge.SetActive(true);// 테두리 활성화
+                _tooltipLogic.PointerEnterParent(); // 툴팁 활성화
                 break;
             case CardUIState.Selected:
+                transform.SetAsLastSibling();
+                _handManager.SetSelectedCard(this); // 선택 카드 등록
+                _selectedEdge.SetActive(true);
+                _tooltipLogic.PointerEnterParent();    // 툴팁 활성화
+                break;
             case CardUIState.Drag:
                 transform.SetAsLastSibling();
                 _handManager.SetSelectedCard(this); // 선택 카드 등록
@@ -252,6 +262,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public void Init(CardData data, HandManager manager)
     {
         _cardLogic = GetComponent<CardLogic>();
+        _tooltipLogic = GetComponent<CardTooltipLogic>();
         _canvasGroup = GetComponent<CanvasGroup>();
 
         _cardData = data;
