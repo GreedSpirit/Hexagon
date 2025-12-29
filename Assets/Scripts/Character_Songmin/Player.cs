@@ -32,7 +32,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public bool IsTalking { get; set; }
 
     // [추가] 진행도 저장용 변수
-    public bool IsFirstDungeonCleared { get; set; } = false;
+    public int DungeonClearedIndex { get; set; } = -1;
 
     //Player에 붙은 다른 컴포넌트들
     private PlayerUIManager _playerUIManager;
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
         _stat.Level = data.Level;
         _stat.Money = data.Money;
-        IsFirstDungeonCleared = data.IsFirstDungeonCleared;
+        DungeonClearedIndex = data.DungeonClearedIndex;
 
         PropertyInfo expProp = typeof(PlayerStat).GetProperty("CurrentExp");
         if (expProp != null)

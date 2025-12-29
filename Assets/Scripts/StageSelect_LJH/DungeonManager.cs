@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DungeonManager : MonoBehaviour
 {
+    public static DungeonManager Instance { get; private set; }
+
+    public event System.Action OnEnterBossStage;
+
     [Header("Dungeon Data")]
     private DungeonData _currentDungeonData;
     private int _currentStageIndex = 0;
@@ -30,6 +33,16 @@ public class DungeonManager : MonoBehaviour
     private StageData _tempStageData;
     private List<DeterminedReward> _determinedRewards;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
     void Start()
     {
         // DungeonPresenter에서 던전 슬롯 클릭 시 설정된 Id를 통해 던전 데이터를 불러온다.
@@ -39,9 +52,18 @@ public class DungeonManager : MonoBehaviour
             Debug.LogWarning("던전ID가 -1입니다. 뭔가 문제가 있을 수 있습니다.");
         }
         _currentDungeonData = DataManager.Instance.GetDungeon(dungeonId);
-        //_tempStageData = StageDataManager.Instance.GetStageByDungeonKey(_currentDungeonData.DungeonKey)[_currentStageIndex];
 
         StartStage(_currentStageIndex);
+    }
+
+    public int GetDungeonId()
+    {
+        return DungeonSessionData.SelectedDungeonId;
+    }
+
+    public int GetCurrentStageIndex()
+    {
+        return _currentStageIndex;
     }
 
     private void StartStage(int index)
@@ -72,6 +94,7 @@ public class DungeonManager : MonoBehaviour
         if(_currentActiveMonster.MonsterData.MonGrade == MonsterGrade.Boss)
         {
             SoundManager.Instance.PlayBGM(BGMType.Boss);
+            OnEnterBossStage?.Invoke();
         }
 
         //여기서 해당 몬스터가 죽거나 했을 때 이벤트를 등록시켜주면 될 듯?
@@ -86,12 +109,6 @@ public class DungeonManager : MonoBehaviour
         if(monster.MonsterData.MonGrade == MonsterGrade.Boss)
         {
             Debug.Log("Boss Clear! Next Logic is RewardRoom");
-
-            // [추가] 1회차 클리어 플래그 ON
-            if (Player.Instance != null)
-            {
-                Player.Instance.IsFirstDungeonCleared = true;
-            }
 
             //보상 방으로 가는 로직
             StartCoroutine(BossClearSequence());
@@ -155,6 +172,12 @@ public class DungeonManager : MonoBehaviour
         // 4. 최종 보상 결과창 띄우기
         _rewardCanvas.SetActive(true);
         _rewardResultUI.Init(_determinedRewards, this);
+
+        // [추가] 1회차 클리어 플래그 ON
+        if (Player.Instance != null)
+        {
+            Player.Instance.DungeonClearedIndex = DungeonSessionData.SelectedDungeonId;
+        }
     }
 
     public void GetRewards()
