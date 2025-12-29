@@ -261,5 +261,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d10e01ec01d61942b6c3557a2742bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectIcon
-  _iconImage: {fileID: 1534997654981324004}
+  _iconImage: {fileID: 0}
   _turnText: {fileID: 54930746315137495}
