@@ -3987,20 +3987,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb2ecdc07cbc31419bb5af3663860ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundSettingUI
-  masterSlider: {fileID: 5464236815733311549}
-  bgmSlider: {fileID: 4297735356446714104}
-  sfxSlider: {fileID: 5350812124837991784}
-  masterToggle: {fileID: 4560751482889866098}
-  bgmToggle: {fileID: 6180346797021391119}
-  sfxToggle: {fileID: 3157345753280125848}
-  masterText: {fileID: 8683609421483911036}
-  bgmText: {fileID: 1094186230207440682}
-  sfxText: {fileID: 979349407000971057}
-  masterIconImage: {fileID: 7804338210547823941}
-  bgmIconImage: {fileID: 1831217980316442356}
-  sfxIconImage: {fileID: 8480290808021062273}
-  soundOnSprite: {fileID: -1492531934, guid: 9cc6e482dee85d448b5cc451a20686e5, type: 3}
-  soundOffSprite: {fileID: -515051487, guid: 9cc6e482dee85d448b5cc451a20686e5, type: 3}
+  _setting: {fileID: 2437222519607013505}
+  _masterSlider: {fileID: 5464236815733311549}
+  _bgmSlider: {fileID: 4297735356446714104}
+  _sfxSlider: {fileID: 5350812124837991784}
+  _masterToggle: {fileID: 4560751482889866098}
+  _bgmToggle: {fileID: 6180346797021391119}
+  _sfxToggle: {fileID: 3157345753280125848}
+  _masterText: {fileID: 8683609421483911036}
+  _bgmText: {fileID: 1094186230207440682}
+  _sfxText: {fileID: 979349407000971057}
+  _masterIconImage: {fileID: 7804338210547823941}
+  _bgmIconImage: {fileID: 1831217980316442356}
+  _sfxIconImage: {fileID: 8480290808021062273}
+  _soundOnSprite: {fileID: -1492531934, guid: 9cc6e482dee85d448b5cc451a20686e5, type: 3}
+  _soundOffSprite: {fileID: -515051487, guid: 9cc6e482dee85d448b5cc451a20686e5, type: 3}
 --- !u!1 &5247816458685413056
 GameObject:
   m_ObjectHideFlags: 0
