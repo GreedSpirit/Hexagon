@@ -22,7 +22,11 @@ public class PlayerLevelUpUI : MonoBehaviour
 
     void ShowLevelUpUI(int level)
     {
+        if (level == 1)
+        {
+            return;
+        }
         PlayerLevelUpObject popup =  Instantiate(_levelUpUIPrefab, transform).GetComponent<PlayerLevelUpObject>();
-        popup.Init(level);
+        popup.Init(level);        
     }
 }
