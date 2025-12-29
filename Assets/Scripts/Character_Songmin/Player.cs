@@ -64,6 +64,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _playerInputHandler = GetComponent<PlayerInputHandler>();        
         _scenarioPlayer = GetComponent<ScenarioPlayer>();
         _animator = GetComponent<Animator>();
+        _playerModelController = GetComponent<PlayerModelController>();
     }
 
     private void Start()
@@ -261,6 +262,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         OnShieldChanged?.Invoke(_stat.Shield);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
+
     }
 
     public void GetHp(int hp) //체력을 회복할 때마다 호출
@@ -302,6 +304,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _stat.AddStatusEffect(effectKey, duration, stack);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
+        Debug.Log($"현재 걸린 상태 \n 공격 배율: {_stat.Buff}, 취약 배율 : {_stat.DeBuff}, 독: {_stat.Poison}, 화상 : {_stat.Burn}");
     }
 
     public void ApplyStatusEffect()
@@ -444,10 +447,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         TalkUI.UpdateScenario();
     }
 
-    public void EndScenario()
-    {
-        TalkUI.EndScenario();        
-    }
+    
 
     //----------------------------------------------------------
     // UI 온오프 관련 함수들
@@ -592,4 +592,6 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _afterScenarioAction?.Invoke();
         _afterScenarioAction = null;
     }
+
+
 }

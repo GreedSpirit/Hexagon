@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerStat
 {
@@ -29,7 +32,7 @@ public class PlayerStat
     public int Burn { get; private set; } //화상 중첩 스택
 
     public Dictionary<StatusEffectData, int> StatusEffects { get; private set; } //현재 걸려 있는 상태이상 목록
-
+    private Coroutine _dottCoroutine;
 
 
     public void SetStats()//맨 처음 캐릭터 생성할 때 및 레벨업 이후 호출.
@@ -92,12 +95,18 @@ public class PlayerStat
         {
             CurrentHp -= blockedDamage;
         }
+        DamageTextManager.Instance.ShowDamage(damage, Player.Instance.transform.position, DamageType.Normal);
         Die();
     }
     
 
     public void GetTrueDamage(int damage) //상태이상 대미지를 받을 때마다 호출
     {
+        if (_dottCoroutine != null)
+        {
+            Player.Instance.StopCoroutine(_dottCoroutine);
+        }
+        _dottCoroutine = Player.Instance.StartCoroutine(ProcessDotEffects());
         CurrentHp -= damage;
         Die();
     }
@@ -295,6 +304,31 @@ public class PlayerStat
             }
         }        
     }
+    public IEnumerator ProcessDotEffects()
+    {
+        int poisonDmg = Poison;
+        int burnDmg = Burn;
+        int totalDotDmg = poisonDmg + burnDmg;
 
-    
+        // 기획 내용에 따라 실제 데미지는 한 번에 처리
+        //GetTrueDamage(totalDotDmg);
+
+        if (poisonDmg > 0)
+        {
+            DamageTextManager.Instance.ShowDamage(poisonDmg, Player.Instance.transform.position, DamageType.Poison);
+            //PlayMonsterSound(MonsterSoundType.Hit_Poison);
+        }
+
+        // 두 상태이상이 같이 들어오면 0.2초 딜레이 (텍스트 겹침 방지)
+        if (poisonDmg > 0 && burnDmg > 0) yield return new WaitForSeconds(0.2f);
+
+        if (burnDmg > 0)
+        {
+            DamageTextManager.Instance.ShowDamage(burnDmg, Player.Instance.transform.position, DamageType.Burn);
+            //PlayMonsterSound(MonsterSoundType.Hit_Burn);
+        }
+
+        yield return new WaitForSeconds(1f);
+    }
+
 }
