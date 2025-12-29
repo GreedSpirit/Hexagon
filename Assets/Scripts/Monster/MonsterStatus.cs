@@ -27,6 +27,9 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     [SerializeField] private List<MonsterSoundStruct> _soundList;
     private Dictionary<MonsterSoundType, AudioClip> _soundTable = new Dictionary<MonsterSoundType, AudioClip>();
 
+    [Header("VFX")]
+    [SerializeField] private MonsterVFXController _vfxController;
+
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
     private List<IMonsterSkillObserver> _skillObservers = new List<IMonsterSkillObserver>();
     private List<IMonsterEffectObserver> _effectObservers = new List<IMonsterEffectObserver>();
@@ -119,6 +122,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         if(_isDead) return;
 
         DamageTextManager.Instance.ShowDamage(damage, transform.position, DamageType.Normal);
+        _vfxController.PlayHitEffect();
 
         if(_monsterShield > 0)
         {
@@ -311,6 +315,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             else if(_currentSkillData.CardType == CardType.Healing)
             {
                 _visual.PlaySkill();
+                _vfxController.PlayHealEffect();
                 GetHp(_selectedSkillValue);
                 Debug.Log("몬스터가 " + _selectedSkillValue + "의 체력을 회복했습니다.");
             }
@@ -328,6 +333,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 if(_currentSkillData.Key == "KeyCardPride")
                 {
                     PlayMonsterSound(MonsterSoundType.Atk_Pride);
+                    _vfxController.PlayStatusEffect("KeyStatusPride");
                 }
                 _visual.PlayBig();
             }
@@ -357,10 +363,13 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     //상태이상 Key와 Duration, Stack를 받아서 상태이상을 적용하는 함수
     public void AddStatusEffect(string effectKey, int duration, int stack)
     {
+        if(_isDead) return;
         if(effectKey == "") return;
         var tableData = DataManager.Instance.GetStatusEffectData(effectKey);
 
         var existingEffect = _statusEffects.Find(e => e.Key == effectKey);
+
+        _vfxController.PlayStatusEffect(effectKey);
 
         if(existingEffect != null)
         {
@@ -442,6 +451,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         if (poisonDmg > 0)
         {
             DamageTextManager.Instance.ShowDamage(poisonDmg, transform.position, DamageType.Poison);
+            _vfxController.PlayStatusEffect("KeyStatusPoison");
             PlayMonsterSound(MonsterSoundType.Hit_Poison);
         }
         // 2개의 상태 이상 데미지가 모두 들어올 경우 간격을 주어 텍스트가 겹치는 문제 해결
@@ -450,6 +460,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         if(burnDmg > 0)
         {
             DamageTextManager.Instance.ShowDamage(burnDmg, transform.position, DamageType.Burn);
+            _vfxController.PlayStatusEffect("KeyStatusBurn");
             PlayMonsterSound(MonsterSoundType.Hit_Burn);
         }
         yield return new WaitForSeconds(1f);
@@ -480,6 +491,12 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         StartCoroutine(ProcessDotEffects());
         TickStatusEffects();
+    }
+
+    private bool GetStatusEffect(string key)
+    {
+        var effect = _statusEffects.Find(e => e.Key == key);
+        return effect != null;
     }
 
 
