@@ -580,6 +580,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
         SwitchIsTalking(false);
         EnterMoveMod();
 
+        ScenarioPlayIndex++;
         _afterScenarioAction?.Invoke();
         _afterScenarioAction = null;
     }

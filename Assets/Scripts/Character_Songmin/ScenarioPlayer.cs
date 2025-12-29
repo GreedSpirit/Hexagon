@@ -36,12 +36,23 @@ public class ScenarioPlayer : MonoBehaviour
 
     public void RequestScenario(Trigger_Type trigger)
     {
-        if (_playedScenarios.Contains(trigger)) return;
-        if (_isPlaying) return;
-        if (!_scenarioMap.TryGetValue(trigger, out var list)) return;
-        if (list.Count == 0) return;
+        int triggerIndex = (int)trigger;
 
-        _isPlaying = true;        
+        //이미 지나간 시나리오면 재생 안 함
+        if (Player.Instance.ScenarioPlayIndex > triggerIndex)
+            return;
+
+        //이미 재생 중이면 무시
+        if (_isPlaying)
+            return;
+
+        if (!_scenarioMap.TryGetValue(trigger, out var list))
+            return;
+
+        if (list.Count == 0)
+            return;
+
+        _isPlaying = true;
 
         Player.Instance.SetTalkUI();
         Player.Instance.TalkUI.EnterScenario(list);
