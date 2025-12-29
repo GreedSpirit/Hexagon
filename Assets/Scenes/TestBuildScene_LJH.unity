@@ -376,6 +376,59 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &156921285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 156921287}
+  - component: {fileID: 156921286}
+  m_Layer: 0
+  m_Name: UpgradeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &156921286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156921285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f17978c1922ac45bdb0d7556e56b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
+  _cardUIPrefab: {fileID: 3720948962382598243, guid: df3c279823a26604e97d18664cb6f260, type: 3}
+  _cardContents: {fileID: 6659483314488640596}
+  _upgradeSlotCard: {fileID: 7365708817230766175}
+  _cardCountText: {fileID: 3058564528553955070}
+  _goldText: {fileID: 1389363930563153374}
+  _upgradeButton: {fileID: 202115700577844185}
+  _upgradeEdgeCanvasGroup: {fileID: 6747296309027532227}
+  enhanceClip: {fileID: 8300000, guid: 4c079ced8c3457146b59d5dcd8091347, type: 3}
+  enhanceSuccessClip: {fileID: 8300000, guid: acdbd6da4b436a74d8eca3c8295fdbc5, type: 3}
+--- !u!4 &156921287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156921285}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 887.58, y: 577.14185, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &211103307
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +440,6 @@ GameObject:
   - component: {fileID: 211103310}
   - component: {fileID: 211103308}
   - component: {fileID: 211103312}
-  - component: {fileID: 211103311}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -427,27 +479,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &211103311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 211103307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3f17978c1922ac45bdb0d7556e56b37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
-  _cardUIPrefab: {fileID: 3720948962382598243, guid: df3c279823a26604e97d18664cb6f260, type: 3}
-  _cardContents: {fileID: 6659483314488640596}
-  _upgradeSlotCard: {fileID: 7365708817230766175}
-  _cardCountText: {fileID: 3058564528553955070}
-  _goldText: {fileID: 1389363930563153374}
-  _upgradeButton: {fileID: 202115700577844185}
-  _upgradeEdgeCanvasGroup: {fileID: 6747296309027532227}
-  enhanceClip: {fileID: 8300000, guid: 4c079ced8c3457146b59d5dcd8091347, type: 3}
-  enhanceSuccessClip: {fileID: 8300000, guid: acdbd6da4b436a74d8eca3c8295fdbc5, type: 3}
 --- !u!114 &211103312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3636,7 +3667,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 211103311}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: TryUpgradeCard
         m_Mode: 1
@@ -6747,7 +6778,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 211103311}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: CloseUpgradeUI
         m_Mode: 1
@@ -6999,15 +7030,15 @@ PrefabInstance:
     - target: {fileID: 609745581865708115, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 715746218897655717, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 2740508120242962588, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 4278912945833255572, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_Name
       value: TestButton
@@ -7015,27 +7046,27 @@ PrefabInstance:
     - target: {fileID: 4454612347459885437, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 4988323274999399022, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 6557220438320247352, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 6847440248560193717, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 6851558342121961951, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 6948381274250640510, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 7244936474592073312, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -7043,7 +7074,7 @@ PrefabInstance:
     - target: {fileID: 7741292427647804920, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     - target: {fileID: 8191838233077183730, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -7051,7 +7082,7 @@ PrefabInstance:
     - target: {fileID: 8573790881742320739, guid: 80ab4ae95e703184693d15d98aeb9dc4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 211103311}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7164,6 +7195,7 @@ SceneRoots:
   - {fileID: 1510080789}
   - {fileID: 1348488665}
   - {fileID: 67391801}
+  - {fileID: 156921287}
   - {fileID: 744724416}
   - {fileID: 2144565099}
   - {fileID: 2132991417}
