@@ -11,6 +11,11 @@ public class InventorySlotUI : MonoBehaviour,
     [SerializeField] Image cardImage;       // 카드 일러스트
     [SerializeField] Image backgroundImage;
     [SerializeField] Image borderImage;     // 등급 테두리
+
+    [Header("등급 표시 (색상)")]
+    [SerializeField] Image gradeColorImg;       // 우측 상단 네모칸
+    [SerializeField] Color[] gradeColors;       // 등급별 색상 (0:Common, 1:Rare, 2:Epic, 3:Legendary)
+
     [SerializeField] GameObject selectEffect;    // 선택 시 노란색 빛 (On/Off)
     [SerializeField] TextMeshProUGUI countText; // xN 표시
     [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
@@ -70,7 +75,7 @@ public class InventorySlotUI : MonoBehaviour,
                     case CardType.Shield: typeString = "방어"; break;
                     case CardType.Healing: typeString = "치유"; break;
                     case CardType.Spell: typeString = "주문"; break;
-                    default: typeString = ""; break;
+                    default: typeString = "기타"; break;
                 }
                 typeText.text = typeString;
             }
@@ -78,6 +83,7 @@ public class InventorySlotUI : MonoBehaviour,
             {
                 descText.text = ParseDescription(data, userCard.Level);
             }
+            SetGradeColor(data.CardGrade);
         }
         if (countText != null)
         {
@@ -99,6 +105,32 @@ public class InventorySlotUI : MonoBehaviour,
             _myCanvas.sortingOrder = 0;
         }
 
+    }
+
+    private void SetGradeColor(CardGrade grade)
+    {
+        if (gradeColorImg == null || gradeColors == null || gradeColors.Length == 0) return;
+
+        Color color = Color.white; // 기본값
+
+        switch (grade)
+        {
+            case CardGrade.Common:
+                if (gradeColors.Length > 0) color = gradeColors[0];
+                break;
+            case CardGrade.Rare:
+                if (gradeColors.Length > 1) color = gradeColors[1];
+                break;
+            case CardGrade.Epic:
+                if (gradeColors.Length > 2) color = gradeColors[2];
+                break;
+            case CardGrade.Legendary:
+                if (gradeColors.Length > 3) color = gradeColors[3];
+                break;
+        }
+
+        gradeColorImg.color = color;
+        gradeColorImg.gameObject.SetActive(true);
     }
     private string ParseDescription(CardData data, int level)
     {

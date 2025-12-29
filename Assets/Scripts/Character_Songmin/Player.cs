@@ -31,11 +31,17 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public bool CanInteract { get; set; }
     public bool IsTalking { get; set; }
 
+    Action _afterScenarioAction;
+
+    public Trigger_Type CurrentPlayedScenario { get; private set; }
+
     // [추가] 진행도 저장용 변수
     public int DungeonClearedIndex { get; set; } = -1;
+    public int ScenarioPlayIndex { get; set; } = 0;
 
     //Player에 붙은 다른 컴포넌트들
     private PlayerUIManager _playerUIManager;
+    private PlayerModelController _playerModelController;
     private PlayerInputHandler _playerInputHandler;    
     private ScenarioPlayer _scenarioPlayer;
     private Animator _animator;
@@ -58,6 +64,15 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _playerInputHandler = GetComponent<PlayerInputHandler>();        
         _scenarioPlayer = GetComponent<ScenarioPlayer>();
         _animator = GetComponent<Animator>();
+        _playerModelController = GetComponent<PlayerModelController>();
+    }
+
+    private void Start()
+    {
+        if (ScenarioPlayIndex <= 0)
+        {
+            PlayScenario(Trigger_Type.gamestart);
+        }
     }
 
 
@@ -247,6 +262,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         OnShieldChanged?.Invoke(_stat.Shield);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
+
     }
 
     public void GetHp(int hp) //체력을 회복할 때마다 호출
@@ -288,6 +304,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _stat.AddStatusEffect(effectKey, duration, stack);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
+        Debug.Log($"현재 걸린 상태 \n 공격 배율: {_stat.Buff}, 취약 배율 : {_stat.DeBuff}, 독: {_stat.Poison}, 화상 : {_stat.Burn}");
     }
 
     public void ApplyStatusEffect()
@@ -408,16 +425,29 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _stat.MinusMoney(cost);
         OnMoneyChanged?.Invoke(_stat.Money);
     }
-    public void OnTestPlayIntroClick()
+    public void PlayScenario(Trigger_Type type, Action afterScenario = null)
     {
-        EnterScenarioMod();        
-        _scenarioPlayer.EnterScenario(Trigger_Type.gamestart);
+        _afterScenarioAction = afterScenario;
+        CurrentPlayedScenario = type;
+
+        //시나리오가 이미 재생된 상태인지 확인
+        if (_scenarioPlayer.IsScenarioPlayed(type))
+        {            
+            _afterScenarioAction?.Invoke();
+            _afterScenarioAction = null;
+            return;
+        }
+
+        EnterScenarioMod();
+        _scenarioPlayer.RequestScenario(type);
     }
 
     public void UpdateScenario()
     {
         TalkUI.UpdateScenario();
     }
+
+    
 
     //----------------------------------------------------------
     // UI 온오프 관련 함수들
@@ -475,6 +505,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         public int Level;
         public int Money;
         public int Exp;
+        public int ScenarioPlayIndex;
     }
     public void SaveGame()
     {
@@ -482,9 +513,10 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         data.Level = _stat.Level;
         data.Money = _stat.Money;
         data.Exp = _stat.CurrentExp;
+        data.ScenarioPlayIndex = ScenarioPlayIndex;
 
-        // JSON 변환
-        string json = JsonUtility.ToJson(data, true); // true는 보기 좋게 줄바꿈 함
+    // JSON 변환
+    string json = JsonUtility.ToJson(data, true); // true는 보기 좋게 줄바꿈 함
         // 파일 저장 경로 
         string path = Path.Combine(Application.persistentDataPath, "playersave.json");
         File.WriteAllText(path, json);
@@ -507,6 +539,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
                 _stat.Level = data.Level;
                 _stat.Money = data.Money;
                 _stat.CurrentExp = data.Exp;
+                ScenarioPlayIndex = data.ScenarioPlayIndex;
 
                 Debug.Log($"[Load] 불러오기 완료. 플레이어 레벨 : {_stat.Level}");
                 Debug.Log($"[Load] 불러오기 완료. 플레이어 골드 : {_stat.Money}");
@@ -515,6 +548,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         else
         {
             _stat.Level = 1;
+            _stat.Money = 0;
+            ScenarioPlayIndex = 0;
             Debug.Log($"[Load] 저장된 파일이 없습니다. 플레이어 레벨 : {_stat.Level}");
             Debug.Log($"[Load] 저장된 파일이 없습니다. 플레이어 골드 : {_stat.Money}");
         }
@@ -537,7 +572,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public void EnterBattle()
     {
         gameObject.transform.position = new Vector2(-3f, -1.5f);
-        gameObject.transform.localScale = new Vector2(0.25f, 0.25f);
+        _playerModelController.ResetModelScale();
         _playerUIManager.OnOffPlayerInventoryUi(true);
         _playerUIManager.OnOffPlayerStatUi(true);
     }
@@ -548,5 +583,15 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _playerUIManager.OnOffPlayerStatUi(false);
     }
 
-    
+    public void OnScenarioFinished()
+    {
+        SwitchIsTalking(false);
+        EnterMoveMod();
+
+        ScenarioPlayIndex++;
+        _afterScenarioAction?.Invoke();
+        _afterScenarioAction = null;
+    }
+
+
 }

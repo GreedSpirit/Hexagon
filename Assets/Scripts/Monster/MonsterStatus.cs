@@ -27,6 +27,9 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     [SerializeField] private List<MonsterSoundStruct> _soundList;
     private Dictionary<MonsterSoundType, AudioClip> _soundTable = new Dictionary<MonsterSoundType, AudioClip>();
 
+    [Header("VFX")]
+    [SerializeField] private MonsterVFXController _vfxController;
+
     private List<IMonsterHpObserver> _hpObservers = new List<IMonsterHpObserver>(); //옵저버 목록을 관리할 List
     private List<IMonsterSkillObserver> _skillObservers = new List<IMonsterSkillObserver>();
     private List<IMonsterEffectObserver> _effectObservers = new List<IMonsterEffectObserver>();
@@ -44,6 +47,10 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
 
     public void ChangePhase(PhaseType newPhase) //OnPhaseChanged 이벤트 구독용 함수
     {
+        if (this == null || gameObject == null || !gameObject.activeInHierarchy) 
+        {
+            return;
+        }
         //유저 드로우 턴 페이즈일 때 행동
         if(newPhase == PhaseType.Draw || newPhase == PhaseType.Start)
         {
@@ -51,8 +58,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
         else if(newPhase == PhaseType.EnemyAct)
         {
-            UseSkill();
-            OnEnemyActTurnEnd?.Invoke(); //몬스터 턴 종료 이벤트 발행
+            StartCoroutine(ProcessEnemyAction());
         }
     }
 
@@ -116,6 +122,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         if(_isDead) return;
 
         DamageTextManager.Instance.ShowDamage(damage, transform.position, DamageType.Normal);
+        _vfxController.PlayHitEffect();
 
         if(_monsterShield > 0)
         {
@@ -308,6 +315,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             else if(_currentSkillData.CardType == CardType.Healing)
             {
                 _visual.PlaySkill();
+                _vfxController.PlayHealEffect();
                 GetHp(_selectedSkillValue);
                 Debug.Log("몬스터가 " + _selectedSkillValue + "의 체력을 회복했습니다.");
             }
@@ -325,6 +333,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 if(_currentSkillData.Key == "KeyCardPride")
                 {
                     PlayMonsterSound(MonsterSoundType.Atk_Pride);
+                    _vfxController.PlayStatusEffect("KeyStatusPride");
                 }
                 _visual.PlayBig();
             }
@@ -354,10 +363,13 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     //상태이상 Key와 Duration, Stack를 받아서 상태이상을 적용하는 함수
     public void AddStatusEffect(string effectKey, int duration, int stack)
     {
+        if(_isDead) return;
         if(effectKey == "") return;
         var tableData = DataManager.Instance.GetStatusEffectData(effectKey);
 
         var existingEffect = _statusEffects.Find(e => e.Key == effectKey);
+
+        _vfxController.PlayStatusEffect(effectKey);
 
         if(existingEffect != null)
         {
@@ -439,6 +451,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         if (poisonDmg > 0)
         {
             DamageTextManager.Instance.ShowDamage(poisonDmg, transform.position, DamageType.Poison);
+            _vfxController.PlayStatusEffect("KeyStatusPoison");
             PlayMonsterSound(MonsterSoundType.Hit_Poison);
         }
         // 2개의 상태 이상 데미지가 모두 들어올 경우 간격을 주어 텍스트가 겹치는 문제 해결
@@ -447,6 +460,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         if(burnDmg > 0)
         {
             DamageTextManager.Instance.ShowDamage(burnDmg, transform.position, DamageType.Burn);
+            _vfxController.PlayStatusEffect("KeyStatusBurn");
             PlayMonsterSound(MonsterSoundType.Hit_Burn);
         }
         yield return new WaitForSeconds(1f);
@@ -477,6 +491,12 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         StartCoroutine(ProcessDotEffects());
         TickStatusEffects();
+    }
+
+    private bool GetStatusEffect(string key)
+    {
+        var effect = _statusEffects.Find(e => e.Key == key);
+        return effect != null;
     }
 
 
@@ -523,6 +543,27 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         {
             SoundManager.Instance.PlaySFX(clip);
         }
+    }
+
+    private IEnumerator ProcessEnemyAction()
+    {
+        UseSkill();
+
+        yield return null; 
+
+        Animator anim = GetComponentInChildren<Animator>();
+        float waitTime = 3.0f; // 기본값 (혹시 못 찾을 경우 대비)
+
+        if (anim != null)
+        {
+            if(anim.IsInTransition(0))
+                waitTime = anim.GetNextAnimatorStateInfo(0).length;
+            else
+                waitTime = anim.GetCurrentAnimatorStateInfo(0).length;
+        }
+        yield return new WaitForSeconds(waitTime + 0.5f);
+
+        OnEnemyActTurnEnd?.Invoke();
     }
 
 

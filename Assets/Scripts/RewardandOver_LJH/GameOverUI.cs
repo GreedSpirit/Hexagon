@@ -21,10 +21,6 @@ public class GameOverUI : MonoBehaviour
         {
             Player.Instance.OnHpChanged -= CheckGameOver;
         }
-        else
-        {
-            Debug.LogError("Player.Instance가 생성되지 않았습니다.");
-        }
     }
 
 
