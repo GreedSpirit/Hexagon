@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,7 +10,7 @@ public class TalkUI : MonoBehaviour
     //페이드 아웃용 검은 패널
     [SerializeField] GameObject _fadePannel;
     UpgradeManager _upgradeManager;
-
+    public Action OnScenarioEnd;
     CanvasGroup _canvasGroup;
     Coroutine _fadeRoutine;  
     Coroutine _effectRoutine;  
@@ -129,6 +130,7 @@ public class TalkUI : MonoBehaviour
         }
         ScenarioData data = _currentScenario[_currentIndex];
 
+        SetCutImage(data);
         SetScenarioBackground(data);
         SetScenarioPortrait(data);
 
@@ -150,6 +152,8 @@ public class TalkUI : MonoBehaviour
         }
         _fadeRoutine = StartCoroutine(ScenarioFadeInAndOut(false));
         Player.Instance.EnterMoveMod();
+        
+        OnScenarioEnd?.Invoke();
     }
 
 
@@ -162,11 +166,13 @@ public class TalkUI : MonoBehaviour
     {
         if (_cutImg.sprite != null && data.Image_ID != null) //d
         {
-            _cutImg = null;
+            _cutImg.gameObject.SetActive(true);
+            _cutImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Image_ID);            
         }
         else
         {
-            //_cutImg = DataManager.Instance.GetSprite(, data.Image_ID);
+            _cutImg.sprite = null;
+            _cutImg.gameObject.SetActive(false);
         }
 
     }
@@ -222,7 +228,7 @@ public class TalkUI : MonoBehaviour
         _backgroundPannel.GetComponent<CanvasGroup>().alpha = 1f;
         if (data.Background != null && data.Background != "")
         {
-            //_backgroundPannel.GetComponent<Image>().sprite = DataManager.Instance.GetSprite( ,data.Background);
+            _backgroundPannel.GetComponent<Image>().sprite = DataManager.Instance.GetSprite(SpriteType.Character , data.Background);
         }
         else
         {
