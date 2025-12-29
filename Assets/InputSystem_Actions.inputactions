@@ -153,8 +153,30 @@
         {
             "name": "Battle",
             "id": "e8d7ddcc-0b1e-42e8-a76a-d15cfafd5fef",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "Esc",
+                    "type": "Button",
+                    "id": "e60f0569-e6a5-41af-9b2e-dc1463ac6bd6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "80d72f1d-d1f9-44a7-b3ca-f4341caf44d7",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Esc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

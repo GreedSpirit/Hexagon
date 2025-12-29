@@ -8,6 +8,7 @@ public class DungeonManager : MonoBehaviour
     public static DungeonManager Instance { get; private set; }
 
     public event System.Action OnEnterBossStage;
+    public bool IsRewardSequenceActive { get; private set; } = false;
 
     [Header("Dungeon Data")]
     private DungeonData _currentDungeonData;
@@ -64,6 +65,15 @@ public class DungeonManager : MonoBehaviour
     public int GetCurrentStageIndex()
     {
         return _currentStageIndex;
+    }
+
+    public string GetCurrentDungeonName()
+    {
+        if(_currentDungeonData.Name != null)
+        {
+            return DataManager.Instance.GetString(_currentDungeonData.Name).Korean;
+        }
+        return "Unknown Dungeon";
     }
 
     private void StartStage(int index)
@@ -170,14 +180,9 @@ public class DungeonManager : MonoBehaviour
         }
 
         // 4. 최종 보상 결과창 띄우기
+        IsRewardSequenceActive = true;
         _rewardCanvas.SetActive(true);
         _rewardResultUI.Init(_determinedRewards, this);
-
-        // [추가] 1회차 클리어 플래그 ON
-        if (Player.Instance != null)
-        {
-            Player.Instance.DungeonClearedIndex = DungeonSessionData.SelectedDungeonId;
-        }
     }
 
     public void GetRewards()
@@ -197,6 +202,14 @@ public class DungeonManager : MonoBehaviour
                 }
                 Player.Instance.PlusMoney(reward.Amount);
             }
+        }
+
+        IsRewardSequenceActive = false;
+
+        // [추가] 1회차 클리어 플래그 ON
+        if (Player.Instance != null)
+        {
+            Player.Instance.DungeonClearedIndex = DungeonSessionData.SelectedDungeonId;
         }
     }
 
