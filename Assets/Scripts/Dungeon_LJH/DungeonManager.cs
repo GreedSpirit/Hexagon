@@ -93,7 +93,7 @@ public class DungeonManager : MonoBehaviour
         int targetMonsterId = DataManager.Instance.GetMonsterStatData(_tempStageData.SpawnMonster).Id;
         SpawnMonster(targetMonsterId);
         
-        _battleManager.StartBattle();
+        //_battleManager.StartBattle();
     }
 
     private void SpawnMonster(int monsterId)
