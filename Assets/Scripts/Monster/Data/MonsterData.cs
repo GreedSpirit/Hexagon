@@ -23,7 +23,7 @@ public class MonsterData : CSVLoad, TableKey
     public float MoveSpeed { get; set; }
     public string SkillSet { get; set; }
     public string Model { get; set; }
-
+    public string Img { get; set; }
     public void LoadFromCsv(string[] values)
     {
         // 0: Id
@@ -87,5 +87,15 @@ public class MonsterData : CSVLoad, TableKey
 
         // 9: Model
         Model = values[9];
+
+        // [추가됨] 10: Img
+        if (values.Length > 10)
+        {
+            Img = values[10];
+        }
+        else
+        {
+            Img = ""; // 데이터가 없을 경우 빈 값
+        }
     }
 }

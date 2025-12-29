@@ -1,0 +1,1131 @@
+fileFormatVersion: 2
+guid: a1be99a978ca20e4dba2ca4be79c65b1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -728733087968565086
+    second: Effect_FootRing_Yellow_0
+  - first:
+      213: 757420705515292643
+    second: Effect_FootRing_Yellow_1
+  - first:
+      213: 1930691464634823981
+    second: Effect_FootRing_Yellow_2
+  - first:
+      213: 6482579953989095085
+    second: Effect_FootRing_Yellow_3
+  - first:
+      213: 2343028625915390834
+    second: Effect_FootRing_Yellow_4
+  - first:
+      213: 5966617637804254730
+    second: Effect_FootRing_Yellow_5
+  - first:
+      213: -1586612274083885582
+    second: Effect_FootRing_Yellow_6
+  - first:
+      213: 307477392140314236
+    second: Effect_FootRing_Yellow_7
+  - first:
+      213: 3108728575649364606
+    second: Effect_FootRing_Yellow_8
+  - first:
+      213: 8809436211514673787
+    second: Effect_FootRing_Yellow_9
+  - first:
+      213: -7468172090178725467
+    second: Effect_FootRing_Yellow_10
+  - first:
+      213: -5799668786349940901
+    second: Effect_FootRing_Yellow_11
+  - first:
+      213: -933392689935722573
+    second: Effect_FootRing_Yellow_12
+  - first:
+      213: -971293562347653862
+    second: Effect_FootRing_Yellow_13
+  - first:
+      213: -5480308638877207014
+    second: Effect_FootRing_Yellow_14
+  - first:
+      213: -7316262788352347700
+    second: Effect_FootRing_Yellow_15
+  - first:
+      213: 4142399099362144587
+    second: Effect_FootRing_Yellow_16
+  - first:
+      213: -7485689211460586422
+    second: Effect_FootRing_Yellow_17
+  - first:
+      213: -4646042691752728137
+    second: Effect_FootRing_Yellow_18
+  - first:
+      213: -5512779514359887212
+    second: Effect_FootRing_Yellow_19
+  - first:
+      213: 917052046880546745
+    second: Effect_FootRing_Yellow_20
+  - first:
+      213: -3560335542655706547
+    second: Effect_FootRing_Yellow_21
+  - first:
+      213: 8655855894821934644
+    second: Effect_FootRing_Yellow_22
+  - first:
+      213: 9035032070915398529
+    second: Effect_FootRing_Yellow_23
+  - first:
+      213: 1154219350695695161
+    second: Effect_FootRing_Yellow_24
+  - first:
+      213: -1817211854883290641
+    second: Effect_FootRing_Yellow_25
+  - first:
+      213: 260321042368362999
+    second: Effect_FootRing_Yellow_26
+  - first:
+      213: 7940769490465936867
+    second: Effect_FootRing_Yellow_27
+  - first:
+      213: -1070831697987790407
+    second: Effect_FootRing_Yellow_28
+  - first:
+      213: 8031050002544841042
+    second: Effect_FootRing_Yellow_29
+  - first:
+      213: -576597414428759644
+    second: Effect_FootRing_Yellow_30
+  - first:
+      213: 405727151578925927
+    second: Effect_FootRing_Yellow_31
+  - first:
+      213: -8772023963923783783
+    second: Effect_FootRing_Yellow_32
+  - first:
+      213: 8280263655310548046
+    second: Effect_FootRing_Yellow_33
+  - first:
+      213: -8017504597748956947
+    second: Effect_FootRing_Yellow_34
+  - first:
+      213: -8153653816111436153
+    second: Effect_FootRing_Yellow_35
+  - first:
+      213: 2397188763606311346
+    second: Effect_FootRing_Yellow_36
+  - first:
+      213: -7677668084043043895
+    second: Effect_FootRing_Yellow_37
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 11
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a86f831e1503e5f0800000000000000
+      internalID: -728733087968565086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e7c3c16e16e28a00800000000000000
+      internalID: 757420705515292643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_2
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 11
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d25ff6868a13bca10800000000000000
+      internalID: 1930691464634823981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_3
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 3
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dae86993f10c6f950800000000000000
+      internalID: 6482579953989095085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_4
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 11
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27b22421f1c148020800000000000000
+      internalID: 2343028625915390834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_5
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 3
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0627eb012fadc250800000000000000
+      internalID: 5966617637804254730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_6
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 11
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fd84fefa883bf9e0800000000000000
+      internalID: -1586612274083885582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_7
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 3
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c76acfe1f01644400800000000000000
+      internalID: 307477392140314236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_8
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 11
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7abfa63b2c642b20800000000000000
+      internalID: 3108728575649364606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_9
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 3
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7a8bca5f87614a70800000000000000
+      internalID: 8809436211514673787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_10
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 11
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a919635d09bb5890800000000000000
+      internalID: -7468172090178725467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_11
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 3
+        width: 24
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5fd0be77ff638fa0800000000000000
+      internalID: -5799668786349940901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_12
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 11
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b75f683b4ceb03f0800000000000000
+      internalID: -933392689935722573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_13
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 3
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a15f4a3b6a54582f0800000000000000
+      internalID: -971293562347653862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_14
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a163830345802f3b0800000000000000
+      internalID: -5480308638877207014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_15
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc179d8d1c9677a90800000000000000
+      internalID: -7316262788352347700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_16
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b41f0639802cc7930800000000000000
+      internalID: 4142399099362144587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_17
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a44fae3b25d7d1890800000000000000
+      internalID: -7485689211460586422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_18
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b967c2a9c0f58fb0800000000000000
+      internalID: -4646042691752728137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_19
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49a47895d3cae73b0800000000000000
+      internalID: -5512779514359887212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_20
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bf1cd65af50abc00800000000000000
+      internalID: 917052046880546745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_21
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4a1fcaffa5279ec0800000000000000
+      internalID: -3560335542655706547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_22
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43615dd5317cf1870800000000000000
+      internalID: 8655855894821934644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_23
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18b9c218cc1e26d70800000000000000
+      internalID: 9035032070915398529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_24
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9335917526c940010800000000000000
+      internalID: 1154219350695695161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_25
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe18d0c2277f7c6e0800000000000000
+      internalID: -1817211854883290641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_26
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f9fce9db98dc9300800000000000000
+      internalID: 260321042368362999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_27
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e55b7297c7433e60800000000000000
+      internalID: 7940769490465936867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_28
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b995338e34a321f0800000000000000
+      internalID: -1070831697987790407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_29
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 251d51f4d65047f60800000000000000
+      internalID: 8031050002544841042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_30
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a9a09ed4b38ff7f0800000000000000
+      internalID: -576597414428759644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_31
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76bc799d1be61a500800000000000000
+      internalID: 405727151578925927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_32
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99fdb155ea2834680800000000000000
+      internalID: -8772023963923783783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_33
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4cdc5d7ce769e270800000000000000
+      internalID: 8280263655310548046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_34
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de0cc120c0a1cb090800000000000000
+      internalID: -8017504597748956947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_35
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78e6b2ddd0768de80800000000000000
+      internalID: -8153653816111436153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_36
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 11
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b1ef4aca76844120800000000000000
+      internalID: 2397188763606311346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Effect_FootRing_Yellow_37
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 4
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cba24b3e81737590800000000000000
+      internalID: -7677668084043043895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Effect_FootRing_Yellow_0: -728733087968565086
+      Effect_FootRing_Yellow_1: 757420705515292643
+      Effect_FootRing_Yellow_10: -7468172090178725467
+      Effect_FootRing_Yellow_11: -5799668786349940901
+      Effect_FootRing_Yellow_12: -933392689935722573
+      Effect_FootRing_Yellow_13: -971293562347653862
+      Effect_FootRing_Yellow_14: -5480308638877207014
+      Effect_FootRing_Yellow_15: -7316262788352347700
+      Effect_FootRing_Yellow_16: 4142399099362144587
+      Effect_FootRing_Yellow_17: -7485689211460586422
+      Effect_FootRing_Yellow_18: -4646042691752728137
+      Effect_FootRing_Yellow_19: -5512779514359887212
+      Effect_FootRing_Yellow_2: 1930691464634823981
+      Effect_FootRing_Yellow_20: 917052046880546745
+      Effect_FootRing_Yellow_21: -3560335542655706547
+      Effect_FootRing_Yellow_22: 8655855894821934644
+      Effect_FootRing_Yellow_23: 9035032070915398529
+      Effect_FootRing_Yellow_24: 1154219350695695161
+      Effect_FootRing_Yellow_25: -1817211854883290641
+      Effect_FootRing_Yellow_26: 260321042368362999
+      Effect_FootRing_Yellow_27: 7940769490465936867
+      Effect_FootRing_Yellow_28: -1070831697987790407
+      Effect_FootRing_Yellow_29: 8031050002544841042
+      Effect_FootRing_Yellow_3: 6482579953989095085
+      Effect_FootRing_Yellow_30: -576597414428759644
+      Effect_FootRing_Yellow_31: 405727151578925927
+      Effect_FootRing_Yellow_32: -8772023963923783783
+      Effect_FootRing_Yellow_33: 8280263655310548046
+      Effect_FootRing_Yellow_34: -8017504597748956947
+      Effect_FootRing_Yellow_35: -8153653816111436153
+      Effect_FootRing_Yellow_36: 2397188763606311346
+      Effect_FootRing_Yellow_37: -7677668084043043895
+      Effect_FootRing_Yellow_4: 2343028625915390834
+      Effect_FootRing_Yellow_5: 5966617637804254730
+      Effect_FootRing_Yellow_6: -1586612274083885582
+      Effect_FootRing_Yellow_7: 307477392140314236
+      Effect_FootRing_Yellow_8: 3108728575649364606
+      Effect_FootRing_Yellow_9: 8809436211514673787
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
