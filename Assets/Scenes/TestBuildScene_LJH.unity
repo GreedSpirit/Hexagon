@@ -461,7 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DataManager
   characterDB: {fileID: 11400000, guid: c91f29f7094a25047a2a76ee2d596a55, type: 2}
   cardDB: {fileID: 11400000, guid: 3beb61064a3130b41a0c3dfc6b7e263b, type: 2}
-  monsterDB: {fileID: 0}
+  monsterDB: {fileID: 11400000, guid: 0cb3080a5749ab24b89904e88eb22482, type: 2}
   statusDB: {fileID: 11400000, guid: a89ab20a73e172f488237377bd3eb84e, type: 2}
   inventoryDB: {fileID: 11400000, guid: bd779f643ab69ad40a726327917cc592, type: 2}
 --- !u!4 &211103310
@@ -2318,8 +2318,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 779.1664, y: 252}
-  m_SizeDelta: {x: 295.6672, y: 50}
+  m_AnchoredPosition: {x: 803.8379, y: 459.7}
+  m_SizeDelta: {x: 236.2655, y: 39.9546}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1289489226
 MonoBehaviour:
@@ -3131,8 +3131,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 784.5, y: 252}
-  m_SizeDelta: {x: 185, y: -50}
+  m_AnchoredPosition: {x: 808.1, y: 459.7}
+  m_SizeDelta: {x: 127.7414, y: -60.0454}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1831178939
 MonoBehaviour:
@@ -6831,7 +6831,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 156921286}
         m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
         m_MethodName: CloseUpgradeUI
         m_Mode: 1

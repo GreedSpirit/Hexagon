@@ -29,8 +29,8 @@ public class TalkUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _characterName;
     [SerializeField] TextMeshProUGUI _characterScript;
     [SerializeField] GameObject _upgradeEnterButton;
-    [SerializeField] GameObject _upgradePannel;
-    [SerializeField] GameObject _testButton;
+    [SerializeField] GameObject _escButton;
+    
     
     
 
@@ -57,6 +57,7 @@ public class TalkUI : MonoBehaviour
         SetTalkable(talkable);
 
         _currentTalking = talkable; 
+        _cutImg.gameObject.SetActive(false);
         _rightImg.gameObject.SetActive(false);
         _leftImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, _currentTalking.GetImage());
         
@@ -83,12 +84,11 @@ public class TalkUI : MonoBehaviour
     }
 
     public void EndTalk()
-    {        
+    {
         if (_fadeRoutine != null)
-        {
             StopCoroutine(_fadeRoutine);
-        }
-        if (_talkPannel.activeSelf == true)
+
+        if (_talkPannel.activeSelf)
         {
             _fadeRoutine = StartCoroutine(TalkFadeInAndOut(false));
         }
@@ -96,9 +96,8 @@ public class TalkUI : MonoBehaviour
         {
             Player.Instance.SwitchIsTalking(false);
             Player.Instance.Currentvillage.VillageManager.SetUpgradePanel(false);
-            _upgradeManager.CloseUpgradeUI();
-            Destroy(gameObject);            
-        }        
+            Destroy(gameObject);
+        }
     }
 
     #endregion
@@ -107,6 +106,7 @@ public class TalkUI : MonoBehaviour
 
     public void EnterScenario(List<ScenarioData> datas)
     {        
+        _escButton.SetActive(false);
         _currentScenario = datas;
         _currentIndex = 0;
 
@@ -164,17 +164,19 @@ public class TalkUI : MonoBehaviour
 
     private void SetCutImage(ScenarioData data) //마저 작업해야 함.
     {
-        if (_cutImg.sprite != null && data.Image_ID != null) //d
+        if (!string.IsNullOrEmpty(data.Image_ID))
         {
             _cutImg.gameObject.SetActive(true);
-            _cutImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Image_ID);            
+            _cutImg.sprite = DataManager.Instance.GetSprite(
+                SpriteType.Character,
+                data.Image_ID
+            );
         }
         else
         {
             _cutImg.sprite = null;
             _cutImg.gameObject.SetActive(false);
         }
-
     }
 
 
@@ -225,14 +227,19 @@ public class TalkUI : MonoBehaviour
 
     private void SetScenarioBackground(ScenarioData data)
     {
-        _backgroundPannel.GetComponent<CanvasGroup>().alpha = 1f;
-        if (data.Background != null && data.Background != "")
+        _backgroundPannel.GetComponent<CanvasGroup>().alpha = 1f;        
+
+        if (!string.IsNullOrEmpty(data.Background))
         {
+            //Debug.Log($"[Scenario BG RAW] '{data.Background}'");
             _backgroundPannel.GetComponent<Image>().sprite = DataManager.Instance.GetSprite(SpriteType.Character , data.Background);
+            _backgroundPannel.color = Color.white;
         }
         else
-        {
+        {            
+            //Debug.Log("배경 없음");
             _backgroundPannel.GetComponent<Image>().sprite = null;
+            _backgroundPannel.color = Color.black;
         }
 
     }
@@ -278,8 +285,11 @@ public class TalkUI : MonoBehaviour
 
 
         _talkPannel.SetActive(isEnter);
+        _escButton.SetActive(isEnter);
         Player.Instance.SwitchIsTalking(isEnter);
         
+        
+
         if (_currentTalking.GetName() == "리오넬") //리오넬과 대화할 땐 강화버튼도 켜고 끄기
         {
             _currentTalking.SwitchIsTalking(isEnter);
