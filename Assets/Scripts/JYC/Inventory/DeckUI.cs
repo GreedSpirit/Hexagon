@@ -164,8 +164,10 @@ public class DeckUI : MonoBehaviour
         }
         if (_popupText != null)
         {
-            string dName = _targetDungeon != null ? _targetDungeon.Name : "Unknown Dungeon";
-            _popupText.text = $"선택한 덱으로 <color=yellow>{dName}</color>에\n입장하시겠습니까?";
+            string dungeonKey = _targetDungeon.Name;
+            string koreanName = DataManager.Instance.GetString(dungeonKey).Korean;
+
+            _popupText.text = $"선택한 덱으로 <color=yellow>{koreanName}</color>에\n입장하시겠습니까?";
         }
         // 팝업 활성화
         if (_enterPopupPanel != null) _enterPopupPanel.SetActive(true);

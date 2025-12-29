@@ -66,11 +66,11 @@ public class InventorySlotUI : MonoBehaviour,
                 string typeString = "";
                 switch (data.CardType)
                 {
-                    case CardType.Attack: typeString = "공격"; break;
-                    case CardType.Shield: typeString = "방어"; break;
-                    case CardType.Healing: typeString = "치유"; break;
-                    case CardType.Spell: typeString = "주문"; break;
-                    default: typeString = ""; break;
+                    case CardType.Attack: typeString = "<color=red>공격</color>"; break;
+                    case CardType.Shield: typeString = "<color=blue>방어</color>"; break;
+                    case CardType.Healing: typeString = "<color=green>치유</color>"; break;
+                    case CardType.Spell: typeString = "<color=purple>주문</color>"; break;
+                    default: typeString = "기타"; break;
                 }
                 typeText.text = typeString;
             }
@@ -78,6 +78,7 @@ public class InventorySlotUI : MonoBehaviour,
             {
                 descText.text = ParseDescription(data, userCard.Level);
             }
+            SetGradeVisual(data.CardGrade);
         }
         if (countText != null)
         {
@@ -99,6 +100,26 @@ public class InventorySlotUI : MonoBehaviour,
             _myCanvas.sortingOrder = 0;
         }
 
+    }
+
+    private void SetGradeVisual(CardGrade grade)
+    {
+        if (borderImage == null) return;
+
+        // InventoryManager에 있는 등급별 스프라이트를 가져옴
+        Sprite borderSprite = InventoryManager.Instance.GetGradeBorderSprite(grade);
+
+        if (borderSprite != null)
+        {
+            borderImage.sprite = borderSprite;
+            borderImage.color = Color.white; // 이미지가 보이게 하얀색
+            borderImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            // 이미지가 없으면 끄기
+            borderImage.gameObject.SetActive(false);
+        }
     }
     private string ParseDescription(CardData data, int level)
     {
