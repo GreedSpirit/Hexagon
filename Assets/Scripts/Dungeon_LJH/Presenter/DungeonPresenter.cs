@@ -51,7 +51,6 @@ public class DungeonPresenter : MonoBehaviour
         // 선택된 던전 슬롯 뷰 업데이트
         foreach(var slotview in _dungeonSlotViews)
         {
-            //! 캐릭터 레벨에 따른 입장 가능 여부 처리 필요
             slotview.SetSelected(slotview.DungeonId == dungeonId);
         }
 

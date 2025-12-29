@@ -6,7 +6,7 @@ Id,Key,Korean
 3,NameMonsterEvilWizard,오만의 정령
 4,DescMonsterDemon,날아다니며 숲을 어지럽히는 데몬이다. 파이어볼을 뿜으며 사람들에게 위협을 가한다.
 5,DescMonsterPriest,오만의 정령의 하수인인 오만 사제이다. 오만 사제의 레이저에는 화상을 입는다
-6,DescMonsterEvilWizard,"오만의 정령이다. 화상을 잘 다루며, 플레이어 체력에 따라 ""오만""한다."
+6,DescMonsterEvilWizard,오만의 정령이다. 화상을 잘 다루며 오만한 성격을 가졌다.
 7,NameCardFireball,파이어볼
 8,NameCardThreat,위협
 9,NameCardSwipe,휘두르기
@@ -102,3 +102,11 @@ Id,Key,Korean
 99,DescImage04,시나리오 연출용 사진04
 100,NameStatusVulnerable,취약
 101,DescStatusVulnerable,공격으로부터 50% 더 많은 피해를 입습니다.
+102,NameDungeonPrideEasy,우월의 심연 - 이지
+103,DescDungeonPrideEasy,약화된 오만의 정령으로 인해 어지럽혀진 숲이다. 약화된 몬스터들이 상주하는 공간이다.
+104,NameMonsterDemonEasy,약화된 데몬
+105,NameMonsterPriestEasy,약화된 오만 사제
+106,NameMonsterEvilWizardEasy,약화된 오만의 정령
+107,DescMonsterDemonEasy,날아다니며 숲을 어지럽히는 노쇠화된 데몬이다. 파이어볼을 뿜으며 사람들에게 위협을 가한다.
+108,DescMonsterPriestEasy,오만의 정령의 하수인인 노쇠한 오만 사제이다. 오만 사제의 레이저에는 화상을 입는다
+109,DescMonsterEvilWizardEasy,오만의 정령의 분신이다. 화상을 잘 다루며 오만한 성격을 가졌다.

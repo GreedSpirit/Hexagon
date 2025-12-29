@@ -1,6 +1,9 @@
 Id,스테이지 테이블의 기본키,던전 테이블의 기본키 기재,소환될 몬스터,스테이지(맵) 배경 이미지 리소스,스테이지(맵) 배경 BGM 리소스
 int,string,string,string,string,string
 Id,StageKey,Dungeon,SpawnMonster,Img,bgm
-1,KeyDungeonPrideStage01,KeyDungeonPride,KeyMonster01,Img_Dungeon_Pride,
-2,KeyDungeonPrideStage02,KeyDungeonPride,KeyMonster02,Img_Dungeon_Pride,
-3,KeyDungeonPrideStage03,KeyDungeonPride,KeyMonster03,Img_Dungeon_Pride,
+1,KeyDungeonPrideStage01,KeyDungeonPride,KeyMonster01,Img_Dungeon_Pride,BGM_Dungeon_Pride_Normal
+2,KeyDungeonPrideStage02,KeyDungeonPride,KeyMonster02,Img_Dungeon_Pride,BGM_Dungeon_Pride_Normal
+3,KeyDungeonPrideStage03,KeyDungeonPride,KeyMonster03,Img_Dungeon_Pride,BGM_Dungeon_Pride_Boss
+4,KeyDungeonPrideEasyStage01,KeyDungeonPrideEasy,KeyMonster04,Img_Dungeon_Pride,BGM_Dungeon_Pride_Normal
+5,KeyDungeonPrideEasyStage02,KeyDungeonPrideEasy,KeyMonster05,Img_Dungeon_Pride,BGM_Dungeon_Pride_Normal
+6,KeyDungeonPrideEasyStage03,KeyDungeonPrideEasy,KeyMonster06,Img_Dungeon_Pride,BGM_Dungeon_Pride_Boss
