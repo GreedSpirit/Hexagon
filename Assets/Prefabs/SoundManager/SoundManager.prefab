@@ -1669,7 +1669,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Open SoundSetting
+  m_text: Setting
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1826,9 +1826,8 @@ GameObject:
   - component: {fileID: 6751646541764669627}
   - component: {fileID: 4432136217817150817}
   - component: {fileID: 1373070660261396431}
-  - component: {fileID: 3578129108781622110}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1893,32 +1892,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3578129108781622110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2437222519607013505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feb2ecdc07cbc31419bb5af3663860ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SoundSettingUI
-  masterSlider: {fileID: 5464236815733311549}
-  bgmSlider: {fileID: 4297735356446714104}
-  sfxSlider: {fileID: 5350812124837991784}
-  masterToggle: {fileID: 4560751482889866098}
-  bgmToggle: {fileID: 6180346797021391119}
-  sfxToggle: {fileID: 3157345753280125848}
-  masterText: {fileID: 8683609421483911036}
-  bgmText: {fileID: 1094186230207440682}
-  sfxText: {fileID: 979349407000971057}
-  masterIconImage: {fileID: 7804338210547823941}
-  bgmIconImage: {fileID: 1831217980316442356}
-  sfxIconImage: {fileID: 8480290808021062273}
-  soundOnSprite: {fileID: -1492531934, guid: 9cc6e482dee85d448b5cc451a20686e5, type: 3}
-  soundOffSprite: {fileID: -515051487, guid: 9cc6e482dee85d448b5cc451a20686e5, type: 3}
 --- !u!1 &2635291943085224098
 GameObject:
   m_ObjectHideFlags: 0
@@ -3910,6 +3883,7 @@ GameObject:
   - component: {fileID: 6969133748200192381}
   - component: {fileID: 5957912776175937832}
   - component: {fileID: 6370035808162664689}
+  - component: {fileID: 3700906755211290305}
   m_Layer: 5
   m_Name: SettingCanvas
   m_TagString: Untagged
@@ -4001,6 +3975,32 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3700906755211290305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5216133099137450370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb2ecdc07cbc31419bb5af3663860ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundSettingUI
+  masterSlider: {fileID: 5464236815733311549}
+  bgmSlider: {fileID: 4297735356446714104}
+  sfxSlider: {fileID: 5350812124837991784}
+  masterToggle: {fileID: 4560751482889866098}
+  bgmToggle: {fileID: 6180346797021391119}
+  sfxToggle: {fileID: 3157345753280125848}
+  masterText: {fileID: 8683609421483911036}
+  bgmText: {fileID: 1094186230207440682}
+  sfxText: {fileID: 979349407000971057}
+  masterIconImage: {fileID: 7804338210547823941}
+  bgmIconImage: {fileID: 1831217980316442356}
+  sfxIconImage: {fileID: 8480290808021062273}
+  soundOnSprite: {fileID: -1492531934, guid: 9cc6e482dee85d448b5cc451a20686e5, type: 3}
+  soundOffSprite: {fileID: -515051487, guid: 9cc6e482dee85d448b5cc451a20686e5, type: 3}
 --- !u!1 &5247816458685413056
 GameObject:
   m_ObjectHideFlags: 0
@@ -5240,7 +5240,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1880212530186225372}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3700906755211290305}
+        m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
+        m_MethodName: ClickExitApply
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6380301253101945267
 GameObject:
   m_ObjectHideFlags: 0
@@ -6569,7 +6581,7 @@ GameObject:
   - component: {fileID: 7949820580410487814}
   - component: {fileID: 6758045863898738766}
   m_Layer: 5
-  m_Name: OpenSoundSetting
+  m_Name: SettingButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6677,34 +6689,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3578129108781622110}
-        m_TargetAssemblyTypeName: SoundSettingUI, Assembly-CSharp
+      - m_Target: {fileID: 3700906755211290305}
+        m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
         m_MethodName: SetActivePanel
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7119,7 +7107,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3578129108781622110}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SoundSettingUI, Assembly-CSharp
         m_MethodName: SetActivePanel
         m_Mode: 1
