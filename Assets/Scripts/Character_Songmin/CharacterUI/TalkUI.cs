@@ -8,6 +8,8 @@ public class TalkUI : MonoBehaviour
 {
     //페이드 아웃용 검은 패널
     [SerializeField] GameObject _fadePannel;
+    UpgradeManager _upgradeManager;
+
     CanvasGroup _canvasGroup;
     Coroutine _fadeRoutine;  
     Coroutine _effectRoutine;  
@@ -36,6 +38,7 @@ public class TalkUI : MonoBehaviour
     {
         _canvasGroup = _fadePannel.GetComponent<CanvasGroup>();
         _currentScenario = new List<ScenarioData>();
+        _upgradeManager = FindFirstObjectByType<UpgradeManager>();
     }
 
     private void Start()
@@ -69,7 +72,7 @@ public class TalkUI : MonoBehaviour
     {
         _talkPannel.SetActive(false);        
         _upgradeEnterButton.SetActive(false);
-        Player.Instance.Currentvillage.VillageManager.SetUpgradePanel(true);
+        Player.Instance.Currentvillage.VillageManager.SetUpgradePanel(true);  
     }
 
 
@@ -92,7 +95,8 @@ public class TalkUI : MonoBehaviour
         {
             Player.Instance.SwitchIsTalking(false);
             Player.Instance.Currentvillage.VillageManager.SetUpgradePanel(false);
-            //_testButton.SetActive(false);
+            _upgradeManager.CloseUpgradeUI();
+            Destroy(gameObject);            
         }        
     }
 
