@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class InventoryUI : MonoBehaviour
     public bool IsDeckBuildingMode = false;
 
     private const string SORT_SAVE_KEY = "InventorySortType"; // 저장할 때 쓸 이름표
+
+    private SettingUI _cachedSettingUI;
 
     private void Start()
     {
@@ -179,6 +182,7 @@ public class InventoryUI : MonoBehaviour
         if (_detailPanel != null)
         {
             _detailPanel.SetCardInfo(clickedSlot.UserCard);
+            _detailPanel.transform.SetAsLastSibling();
         }
     }
 
@@ -217,5 +221,51 @@ public class InventoryUI : MonoBehaviour
             _detailPanel.Init();
         }
     }
+    // 켜질 때 Player에게 알림 (덱 모드가 아닐 때만)
+    private void OnEnable()
+    {
+        if (_cachedSettingUI == null) _cachedSettingUI = FindFirstObjectByType<SettingUI>();
 
+        if (_cachedSettingUI != null)
+        {
+            _cachedSettingUI.enabled = false; // 설정창 로직 잠시 끄기
+        }
+    }
+
+    // 꺼질 때 Player에게 알림
+    private void OnDisable()
+    {
+        if (_cachedSettingUI == null) _cachedSettingUI = FindFirstObjectByType<SettingUI>();
+
+        if (_cachedSettingUI != null)
+        {
+            _cachedSettingUI.enabled = true; // 설정창 로직 다시 켜기
+        }
+    }
+
+    //  ESC 키 처리
+    private void Update()
+    {
+        // 덱 편성 모드일 때는 DeckUI가 ESC를 처리하므로 여기선 무시
+        if (IsDeckBuildingMode) return;
+
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            // 인벤토리 닫기
+            CloseInventory();
+        }
+    }
+
+    public void CloseInventory()
+    {
+        // 상세 설명창 초기화
+        if (_detailPanel != null) _detailPanel.Init();
+        InventoryManager.Instance.DeselectAll();
+
+        // UI 끄기
+        gameObject.SetActive(false);
+
+        // Player 이동 모드 복구
+        if (Player.Instance != null) Player.Instance.EnterMoveMod();
+    }
 }

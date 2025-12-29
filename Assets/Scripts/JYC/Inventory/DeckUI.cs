@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class DeckUI : MonoBehaviour
 {
@@ -34,6 +35,8 @@ public class DeckUI : MonoBehaviour
     [Header("Popup UI")]
     [SerializeField] DungeonInfoPanel _dungeonInfoPanel;
 
+    private SettingUI _cachedSettingUI;
+
     private void Start()
     {
 
@@ -60,9 +63,32 @@ public class DeckUI : MonoBehaviour
             InventoryManager.Instance.OnDeckChanged -= RefreshDeck;
         }
     }
+    private void Update()
+    {
+        if (gameObject.activeSelf && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            // 팝업 닫기 우선
+            if (_enterPopupPanel != null && _enterPopupPanel.activeSelf)
+            {
+                OnClickPopupNo();
+                return;
+            }
+            if (_dungeonInfoPanel != null && _dungeonInfoPanel.gameObject.activeSelf)
+            {
+                _dungeonInfoPanel.Close();
+                return;
+            }
+
+            // 전체 닫기
+            CloseDeckUI();
+        }
+    }
     // DungeonPresenter가 호출해줄 함수
     public void ReadyForBattle(DungeonData dungeon)
     {
+        if (_cachedSettingUI == null) _cachedSettingUI = FindFirstObjectByType<SettingUI>();
+        if (_cachedSettingUI != null) _cachedSettingUI.enabled = false;
+
         _targetDungeon = dungeon;
 
         // 인벤토리 매니저에게 이번 던전의 덱 구성 정보(슬롯 개수 등)를 전달해서 세팅하게 함
@@ -129,6 +155,9 @@ public class DeckUI : MonoBehaviour
     // '뒤로가기'나 '닫기' 버튼에 연결할 함수 (마을로 돌아갈 때)
     public void CloseDeckUI()
     {
+        if (_cachedSettingUI == null) _cachedSettingUI = FindFirstObjectByType<SettingUI>();
+        if (_cachedSettingUI != null) _cachedSettingUI.enabled = true;
+
         GameSaveManager.Instance.LoadGame();
         // DeckUI 끄기
         Player.Instance.Currentvillage.VillageManager.OnOffVillageName(true);
