@@ -1,0 +1,390 @@
+fileFormatVersion: 2
+guid: 6a2385b36d5001c45ae9dbb2f961cfb8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5892730625640596002
+    second: 028-Bolt100_Blue_0
+  - first:
+      213: -1948419362016050072
+    second: 028-Bolt100_Blue_1
+  - first:
+      213: 5619594382593235517
+    second: 028-Bolt100_Blue_2
+  - first:
+      213: -3342561512771853538
+    second: 028-Bolt100_Blue_3
+  - first:
+      213: 3165067099331597233
+    second: 028-Bolt100_Blue_4
+  - first:
+      213: -4682886197453322056
+    second: 028-Bolt100_Blue_5
+  - first:
+      213: 6443886834975269711
+    second: 028-Bolt100_Blue_6
+  - first:
+      213: 698572913402388750
+    second: 028-Bolt100_Blue_7
+  - first:
+      213: -7747209456781632287
+    second: 028-Bolt100_Blue_8
+  - first:
+      213: 3479688894278797120
+    second: 028-Bolt100_Blue_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_0
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 821
+        width: 692
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2228f52784f27c150800000000000000
+      internalID: 5892730625640596002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 596
+        width: 286
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8644a85d9e2d5f4e0800000000000000
+      internalID: -1948419362016050072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_2
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 577
+        width: 419
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3a104c215fccfd40800000000000000
+      internalID: 5619594382593235517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_3
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 341
+        width: 257
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1367578306dc91d0800000000000000
+      internalID: -3342561512771853538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_4
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 351
+        width: 126
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b39fe1f1c39ceb20800000000000000
+      internalID: 3165067099331597233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_5
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 335
+        width: 170
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b8073d70db030fb0800000000000000
+      internalID: -4682886197453322056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_6
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 89
+        width: 101
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f43648b6fe84d6950800000000000000
+      internalID: 6443886834975269711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_7
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 87
+        width: 100
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e012f011d54d1b900800000000000000
+      internalID: 698572913402388750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_8
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 97
+        width: 99
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ecdbf7ab026c7490800000000000000
+      internalID: -7747209456781632287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 028-Bolt100_Blue_9
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 80
+        width: 123
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0470c58fc965a4030800000000000000
+      internalID: 3479688894278797120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      028-Bolt100_Blue_0: 5892730625640596002
+      028-Bolt100_Blue_1: -1948419362016050072
+      028-Bolt100_Blue_2: 5619594382593235517
+      028-Bolt100_Blue_3: -3342561512771853538
+      028-Bolt100_Blue_4: 3165067099331597233
+      028-Bolt100_Blue_5: -4682886197453322056
+      028-Bolt100_Blue_6: 6443886834975269711
+      028-Bolt100_Blue_7: 698572913402388750
+      028-Bolt100_Blue_8: -7747209456781632287
+      028-Bolt100_Blue_9: 3479688894278797120
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
