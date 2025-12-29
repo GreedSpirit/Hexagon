@@ -11,6 +11,11 @@ public class InventorySlotUI : MonoBehaviour,
     [SerializeField] Image cardImage;       // 카드 일러스트
     [SerializeField] Image backgroundImage;
     [SerializeField] Image borderImage;     // 등급 테두리
+
+    [Header("등급 표시 (색상)")]
+    [SerializeField] Image gradeColorImg;       // 우측 상단 네모칸
+    [SerializeField] Color[] gradeColors;       // 등급별 색상 (0:Common, 1:Rare, 2:Epic, 3:Legendary)
+
     [SerializeField] GameObject selectEffect;    // 선택 시 노란색 빛 (On/Off)
     [SerializeField] TextMeshProUGUI countText; // xN 표시
     [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
@@ -66,10 +71,10 @@ public class InventorySlotUI : MonoBehaviour,
                 string typeString = "";
                 switch (data.CardType)
                 {
-                    case CardType.Attack: typeString = "<color=red>공격</color>"; break;
-                    case CardType.Shield: typeString = "<color=blue>방어</color>"; break;
-                    case CardType.Healing: typeString = "<color=green>치유</color>"; break;
-                    case CardType.Spell: typeString = "<color=purple>주문</color>"; break;
+                    case CardType.Attack: typeString = "공격"; break;
+                    case CardType.Shield: typeString = "방어"; break;
+                    case CardType.Healing: typeString = "치유"; break;
+                    case CardType.Spell: typeString = "주문"; break;
                     default: typeString = "기타"; break;
                 }
                 typeText.text = typeString;
@@ -78,7 +83,7 @@ public class InventorySlotUI : MonoBehaviour,
             {
                 descText.text = ParseDescription(data, userCard.Level);
             }
-            SetGradeVisual(data.CardGrade);
+            SetGradeColor(data.CardGrade);
         }
         if (countText != null)
         {
@@ -102,24 +107,30 @@ public class InventorySlotUI : MonoBehaviour,
 
     }
 
-    private void SetGradeVisual(CardGrade grade)
+    private void SetGradeColor(CardGrade grade)
     {
-        if (borderImage == null) return;
+        if (gradeColorImg == null || gradeColors == null || gradeColors.Length == 0) return;
 
-        // InventoryManager에 있는 등급별 스프라이트를 가져옴
-        Sprite borderSprite = InventoryManager.Instance.GetGradeBorderSprite(grade);
+        Color color = Color.white; // 기본값
 
-        if (borderSprite != null)
+        switch (grade)
         {
-            borderImage.sprite = borderSprite;
-            borderImage.color = Color.white; // 이미지가 보이게 하얀색
-            borderImage.gameObject.SetActive(true);
+            case CardGrade.Common:
+                if (gradeColors.Length > 0) color = gradeColors[0];
+                break;
+            case CardGrade.Rare:
+                if (gradeColors.Length > 1) color = gradeColors[1];
+                break;
+            case CardGrade.Epic:
+                if (gradeColors.Length > 2) color = gradeColors[2];
+                break;
+            case CardGrade.Legendary:
+                if (gradeColors.Length > 3) color = gradeColors[3];
+                break;
         }
-        else
-        {
-            // 이미지가 없으면 끄기
-            borderImage.gameObject.SetActive(false);
-        }
+
+        gradeColorImg.color = color;
+        gradeColorImg.gameObject.SetActive(true);
     }
     private string ParseDescription(CardData data, int level)
     {
