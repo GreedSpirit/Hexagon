@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class DungeonPauseUI : MonoBehaviour
 {
+    [Header("HandManager")]
+    [SerializeField] private HandManager _handManager;
+
     [Header("Input Settings")]
     [SerializeField] private InputActionReference _escAction; // 인스펙터에서 Battle/Esc 액션 연결
 
@@ -74,6 +77,7 @@ public class DungeonPauseUI : MonoBehaviour
         }
 
         _menuPanel.SetActive(true);
+        _handManager.Deselect();
         Debug.Log("Pause");
         Time.timeScale = 0f;
         //SoundManager.Instance.PlaySFX(SFXType.PopupOpen);
