@@ -105,6 +105,11 @@ public class TalkUI : MonoBehaviour
         }
     }
 
+    public void EscButtonClicked()
+    {
+        Player.Instance.EndTalk();
+    }
+
     #endregion
 
     //------------------------------------------------------------------
