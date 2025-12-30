@@ -199,6 +199,7 @@ MonoBehaviour:
   _characterScript: {fileID: 2186089211105497577}
   _upgradeEnterButton: {fileID: 4716700859179785303}
   _escButton: {fileID: 3805688977187866612}
+  _spaceBarText: {fileID: 3680956786226126008}
 --- !u!223 &6058421896480937453
 Canvas:
   m_ObjectHideFlags: 0
