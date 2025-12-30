@@ -38,11 +38,8 @@ public class VillageManager : MonoBehaviour
         MakeAllVillages();
         ChangeVillage("실렌시아");
 
-        Player.Instance.Respawn();
-        StartCoroutine(PlayIntroAfterReady());
+        Player.Instance.Respawn();        
     }
-
-
 
 
     public void ChangeVillage(string vilName)
@@ -146,25 +143,7 @@ public class VillageManager : MonoBehaviour
             }
         }    
     }
-    private IEnumerator PlayIntroAfterReady()
-    {
-        // ScenarioPlayer 초기화 대기
-        while (!Player.Instance.GetComponent<ScenarioPlayer>().IsInitialized)
-            yield return null;
-
-        if (!Player.Instance.GetComponent<ScenarioPlayer>()
-        .IsScenarioPlayed(Trigger_Type.gamestart))
-        {
-            Player.Instance.PlayScenarioGuaranteed(
-                Trigger_Type.gamestart,
-                () => Player.Instance.EnterMoveMod()
-            );
-        }
-        else
-        {
-            Player.Instance.EnterMoveMod();
-        }
-    }
+    
     public void SetUpgradePanel(bool on)
     {
         _upgradePanel.SetActive(on);

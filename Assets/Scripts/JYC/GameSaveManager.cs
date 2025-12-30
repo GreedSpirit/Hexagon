@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class GameSaveManager : Singleton<GameSaveManager>
             {
                 CardManager.Instance.InitStartingDeck();
             }
+            StartCoroutine(PlayIntroAfterReady());
             return;
         }
 
@@ -41,6 +43,16 @@ public class GameSaveManager : Singleton<GameSaveManager>
             if (Player.Instance != null)
             {
                 Player.Instance.LoadFromSaveData(data);
+
+                var sp = Player.Instance.GetComponent<ScenarioPlayer>();
+                if (sp != null)
+                {
+                    sp.RestorePlayedScenarios(data.PlayedScenarios);
+                }
+            }
+            if (Player.Instance != null)
+            {
+                StartCoroutine(PlayIntroAfterReady());
             }
 
             Debug.Log($"[GameSaveManager] 로드 완료! (Lv.{data.Level}, {data.Money}G)");
@@ -49,6 +61,7 @@ public class GameSaveManager : Singleton<GameSaveManager>
         {
             Debug.LogError($"[GameSaveManager] 로드 중 에러 발생: {e.Message}");
         }
+
     }
 
     // 저장 시점마다 호출 (보상, 강화, 마을 이동 등)
@@ -64,7 +77,8 @@ public class GameSaveManager : Singleton<GameSaveManager>
             data.Money = Player.Instance.GetMoney();
             data.PlayerPosition = Player.Instance.transform.position;
             data.DungeonClearedIndex = Player.Instance.DungeonClearedIndex;
-            data.ScenarioPlayIndex = Player.Instance.ScenarioPlayIndex;
+            
+            data.PlayedScenarios = new List<Trigger_Type>(Player.Instance.GetComponent<ScenarioPlayer>().PlayedScenarios);
 
             if (Player.Instance.Currentvillage != null)
                 data.LastVillageName = Player.Instance.Currentvillage.Name;
@@ -93,4 +107,25 @@ public class GameSaveManager : Singleton<GameSaveManager>
             Debug.Log("세이브 파일 삭제됨");
         }
     }
+    private IEnumerator PlayIntroAfterReady()
+    {
+        var player = Player.Instance;
+        var sp = player.GetComponent<ScenarioPlayer>();
+
+        while (!sp.IsInitialized)
+            yield return null;
+
+        if (!sp.IsScenarioPlayed(Trigger_Type.gamestart))
+        {
+            player.PlayScenarioGuaranteed(
+                Trigger_Type.gamestart,
+                () => player.EnterMoveMod()
+            );
+        }
+        else
+        {
+            player.EnterMoveMod();
+        }
+    }
+
 }

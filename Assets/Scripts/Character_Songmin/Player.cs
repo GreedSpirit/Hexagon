@@ -39,7 +39,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
     // [추가] 진행도 저장용 변수
     public int DungeonClearedIndex { get; set; } = -1;
-    public int ScenarioPlayIndex { get; set; } = 0;
+    
 
     //Player에 붙은 다른 컴포넌트들
     private PlayerUIManager _playerUIManager;
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _stat.Level = data.Level;
         _stat.Money = data.Money;
         _stat.CurrentExp = data.CurrentExp;
-        ScenarioPlayIndex = data.ScenarioPlayIndex;
+        
         DungeonClearedIndex = data.DungeonClearedIndex;
         
 
@@ -447,7 +447,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     {
         if (_scenarioPlayer != null)
         {
-            _scenarioPlayer._playedScenarios.Remove(type);
+            _scenarioPlayer.PlayedScenarios.Remove(type);
         }
     }
 
@@ -509,54 +509,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         public int Money;
         public int Exp;
         public int ScenarioPlayIndex;
-    }
-    public void SaveGame()
-    {
-        PlayerSaveData data = new PlayerSaveData();
-        data.Level = _stat.Level;
-        data.Money = _stat.Money;
-        data.Exp = _stat.CurrentExp;
-        data.ScenarioPlayIndex = ScenarioPlayIndex;
-
-        // JSON 변환
-        string json = JsonUtility.ToJson(data, true); // true는 보기 좋게 줄바꿈 함
-        // 파일 저장 경로 
-        string path = Path.Combine(Application.persistentDataPath, "playersave.json");
-        File.WriteAllText(path, json);
-
-        Debug.Log($"[Save] 저장 완료: {path}");
-    }
-
-    // 게임 불러오기
-    public void LoadGame()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "playersave.json");
-
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
-
-            if (data != null)
-            {
-                _stat.Level = data.Level;
-                _stat.Money = data.Money;
-                _stat.CurrentExp = data.Exp;
-                ScenarioPlayIndex = data.ScenarioPlayIndex;
-
-                Debug.Log($"[Load] 불러오기 완료. 플레이어 레벨 : {_stat.Level}");
-                Debug.Log($"[Load] 불러오기 완료. 플레이어 골드 : {_stat.Money}");
-            }
-        }
-        else
-        {
-            _stat.Level = 1;
-            _stat.Money = 0;
-            ScenarioPlayIndex = 0;
-            Debug.Log($"[Load] 저장된 파일이 없습니다. 플레이어 레벨 : {_stat.Level}");
-            Debug.Log($"[Load] 저장된 파일이 없습니다. 플레이어 골드 : {_stat.Money}");
-        }
-    }
+    }   
 
     public void EnterDungeonSelect()
     {
@@ -569,13 +522,14 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     {
         _playerUIManager.OnOffPlayerInventoryUi(true);
         _playerUIManager.OnOffPlayerStatUi(true);
+        _playerModelController.ResetModel();
         EnterMoveMod();
     }
 
     public void EnterBattle()
     {
         gameObject.transform.position = new Vector2(-3f, -1.5f);
-        _playerModelController.ResetModelScale();
+        _playerModelController.ResetModel();
         _playerUIManager.OnOffPlayerInventoryUi(true);
         _playerUIManager.OnOffPlayerStatUi(true);
     }
@@ -590,7 +544,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     {
         SwitchIsTalking(false);
 
-        ScenarioPlayIndex++;
+        
         _afterScenarioAction?.Invoke();
         _afterScenarioAction = null;
 
@@ -644,6 +598,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         // 이미 재생된 경우
         if (_scenarioPlayer.IsScenarioPlayed(type))
         {
+            Debug.Log($"이미 본 {type} 타입의 시나리오. 건너뜁니다.");
             _afterScenarioAction?.Invoke();
             _afterScenarioAction = null;
             _scenarioRequestInProgress = false;
