@@ -168,10 +168,7 @@ public class DeckUI : MonoBehaviour
         if (_inventoryUI != null)
         {
             _inventoryUI.IsDeckBuildingMode = false; // 일반 모드로 복구
-            _inventoryUI.RefreshInventory();
-
-            // 기획상 마을 화면에서 인벤토리가 꺼져야 한다면 아래 코드 사용
-            _inventoryUI.gameObject.SetActive(false);
+            _inventoryUI.CloseInventory();
         }
     }
     // [전투 시작] 버튼에 연결할 최종 함수
