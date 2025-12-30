@@ -18,7 +18,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] Toggle _masterToggle;
     [SerializeField] Toggle _bgmToggle;
     [SerializeField] Toggle _sfxToggle;
-    
+
     [Header("볼륨 수치 텍스트")]
     [SerializeField] TextMeshProUGUI _masterText;
     [SerializeField] TextMeshProUGUI _bgmText;
@@ -86,22 +86,28 @@ public class SettingUI : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // 이 씬만
-        if (scene.name != "TestBuildScene_LJH") return;
+        if (scene.name == "TestBuildScene_LJH")
+        {
+            // 일단 활성화된 캔버스
+            GameObject villageCanvas = GameObject.Find("VillageCanvas");
 
-        // 일단 활성화된 캔버스
-        GameObject villageCanvas = GameObject.Find("VillageCanvas");
+            // 캔버스의 자식 중 강화 패널
+            Transform upgradePanelTrans = villageCanvas.transform.Find("UpgradePanel");
 
-        // 캔버스의 자식 중 강화 패널
-        Transform upgradePanelTrans = villageCanvas.transform.Find("UpgradePanel");
-
-        if (upgradePanelTrans != null)
-            _upgradePanel = upgradePanelTrans.gameObject;
+            if (upgradePanelTrans != null)
+                _upgradePanel = upgradePanelTrans.gameObject;
+        }
+        // 다른 씬 가면 일단 끄기
+        else
+        {
+            _setting.SetActive(false);
+        }
 
     }
 
     private void Update()
     {
-        if(_upgradePanel?.activeSelf == true && isActiveUpgrade == false) isActiveUpgrade = true;
+        if (_upgradePanel?.activeSelf == true && isActiveUpgrade == false) isActiveUpgrade = true;
 
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {

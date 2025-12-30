@@ -110,8 +110,10 @@ public class HandManager : MonoBehaviour
 
     private void Update()
     {
-        // 우클릭 릴리즈
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
+        // 우클릭 릴리즈 혹은
+        // ESC 로 정지 시
+        if ((Mouse.current != null && Mouse.current.rightButton.wasReleasedThisFrame) ||
+            (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame))
         {
             // 선택된 카드가 있을 때 && 선택 카드의 드래그 상태
             if (SelectedCard != null && SelectedCard.IsDragging == false)
