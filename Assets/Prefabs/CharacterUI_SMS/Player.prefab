@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
-  m_Actions: {fileID: 0}
+  m_Actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -281,9 +281,13 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f3dd80af-2a77-48e7-985d-709ff4f33b0f
     m_ActionName: 'Scenario/Next[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e60f0569-e6a5-41af-9b2e-dc1463ac6bd6
+    m_ActionName: 'Battle/Esc[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Scenario
+  m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!50 &9179265265456581134
@@ -428,7 +432,7 @@ Animator:
   m_GameObject: {fileID: 474732278576378717}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0d5c22a5c7f4ada4d9c76b8256606a44, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7b33224245cedf3498db18f5c969785e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
