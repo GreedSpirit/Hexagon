@@ -80,11 +80,15 @@ public class HandManager : MonoBehaviour
     // 선택된 카드 UI (1회 클릭)
     private CardUI _selectedCardUI;
 
+    private CanvasGroup _handCanvas;       // 핸드 그룹
+
 
     private void Start()
     {
         _cardManager = CardManager.Instance;
-        
+
+        _handCanvas = HandTransform.GetComponent<CanvasGroup>();
+
         // 보스 스테이지 진입 함수
         DungeonManager.Instance.OnEnterBossStage += EnterBossStage;
 
@@ -440,15 +444,23 @@ public class HandManager : MonoBehaviour
                 }
             }
         }
-        // 플레이어턴 끝나면 선택 카드 해제
+        // 플레이어턴 끝나면
         else if (phaseType == PhaseType.EnemyAct)
         {
+            // 핸드 상호작용 불가
+            _handCanvas.blocksRaycasts = false;
+
             // 선택된 카드가 있을 때 && 선택 카드의 드래그 상태
             if (SelectedCard != null && SelectedCard.IsDragging == false)
             {
                 // 카드 선택 해지
                 DeselectCard();
             }
+        }
+        else if (phaseType == PhaseType.PlayerAct)
+        {
+            // 핸드 상호작용 허용
+            _handCanvas.blocksRaycasts = true;
         }
     }
 }
