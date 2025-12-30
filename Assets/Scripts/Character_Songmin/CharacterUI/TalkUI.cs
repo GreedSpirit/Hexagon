@@ -30,6 +30,7 @@ public class TalkUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _characterScript;
     [SerializeField] GameObject _upgradeEnterButton;
     [SerializeField] GameObject _escButton;
+    [SerializeField] GameObject _spaceBarText;
     
     
     
@@ -300,6 +301,8 @@ public class TalkUI : MonoBehaviour
 
         _talkPannel.SetActive(isEnter);
         _escButton.SetActive(isEnter);
+        _spaceBarText.SetActive(!isEnter);
+
         Player.Instance.SwitchIsTalking(isEnter);
         
         
