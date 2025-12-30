@@ -71,7 +71,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     {
         if (ScenarioPlayIndex <= 0)
         {
-            PlayScenario(Trigger_Type.gamestart);
+            SwitchIsTalking(true);
+            PlayScenario(Trigger_Type.gamestart, () => {EnterMoveMod(); });
         }
     }
 
@@ -362,6 +363,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         {
             gameObject.transform.position = new Vector2(-1.5f, 2);
         }
+        ResolveInputState();
     }
 
     public void SetVillage(Village village)
@@ -457,7 +459,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         IsTalking = talking;
         if (!talking)
         {
-            EnterMoveMod();
+            //EnterMoveMod();
             // [추가] 대화 종료 후 저장 (진행도/퀘스트/스크립트 저장용)
             GameSaveManager.Instance.SaveGame();
             TalkUI = null;
@@ -586,12 +588,31 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public void OnScenarioFinished()
     {
         SwitchIsTalking(false);
-        EnterMoveMod();
 
         ScenarioPlayIndex++;
         _afterScenarioAction?.Invoke();
         _afterScenarioAction = null;
-    }
 
+        ResolveInputState();
+    }
+    private void ResolveInputState()
+    {
+        // 1. 시나리오가 재생 중이면
+        if (_scenarioPlayer != null && _scenarioPlayer.IsPlaying)
+        {
+            EnterScenarioMod();
+            return;
+        }
+
+        // 2. 대화 중이면
+        if (IsTalking)
+        {
+            EnterTalkMod();
+            return;
+        }
+
+        // 3. 그 외는 이동
+        EnterMoveMod();
+    }
 
 }

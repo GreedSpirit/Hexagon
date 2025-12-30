@@ -8,7 +8,7 @@ public class PlayerHpBar : MonoBehaviour
     [SerializeField] private Slider _poisonBar;
     [SerializeField] private Slider _burnBar;
 
-    
+
     float _hitTarget;
     Coroutine _hitRoutine;
 
@@ -53,6 +53,10 @@ public class PlayerHpBar : MonoBehaviour
         _burnBar.value = burnValue;
         _poisonBar.value = poisonValue;
 
+        if (!isActiveAndEnabled)
+        {
+            return;
+        }
 
         if (_hitRoutine != null)
         {

@@ -109,10 +109,11 @@ public class DungeonManager : MonoBehaviour
             SoundManager.Instance.PlayBGM(BGMType.Boss);
 
             
-            Player.Instance.PlayScenario(Trigger_Type.prebattle,() =>{_battleManager.StartBattle(); });
+            Player.Instance.PlayScenario(Trigger_Type.prebattle,() =>{ Player.Instance.EnterBattleMod(); _battleManager.StartBattle(); });
         }
         else
         {
+            Player.Instance.EnterBattleMod();
             _battleManager.StartBattle(); // 일반 몬스터는 그대로
         }
 
@@ -242,7 +243,7 @@ public class DungeonManager : MonoBehaviour
             Player.Instance.DungeonClearedIndex = DungeonSessionData.SelectedDungeonId;
         }
         
-        Player.Instance.PlayScenario(Trigger_Type.clear,() =>{Player.Instance.BackToVillage();});
+        Player.Instance.PlayScenario(Trigger_Type.clear,() =>{Player.Instance.EnterMoveMod();});
     }
 
 

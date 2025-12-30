@@ -106,7 +106,7 @@ public class RewardResultUI : MonoBehaviour
 
     public void OnReturnButtonClicked()
     {
-        Player.Instance.EnterMoveMod();
+        //Player.Instance.EnterMoveMod();
         Player.Instance.Respawn();
 
         SceneManager.LoadScene(1);

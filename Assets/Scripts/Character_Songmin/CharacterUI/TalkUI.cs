@@ -151,7 +151,7 @@ public class TalkUI : MonoBehaviour
             StopCoroutine(_fadeRoutine);
         }
         _fadeRoutine = StartCoroutine(ScenarioFadeInAndOut(false));
-        Player.Instance.EnterMoveMod();
+        
         
         OnScenarioEnd?.Invoke();
     }
