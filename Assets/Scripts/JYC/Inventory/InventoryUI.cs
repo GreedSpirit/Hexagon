@@ -16,12 +16,16 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI modeText;      //  현재 모드를 표시할 텍스트 (인벤토리 덱편집,전체 보기 전환용)
     [SerializeField] GameObject deckUIGroup;        // 덱 UI 그룹 (덱 슬롯들이 모인 오브젝트)
 
+    [Header("Hide in Inventory Mode")]
+    [SerializeField] List<GameObject> objectsToHide;
+
     [Header("UI Positioning (패널 위치 제어)")]
     [SerializeField] RectTransform inventoryPanelRect; // 인벤토리 패널
     [SerializeField] RectTransform deckUIGroupRect;    // 덱 패널
 
     // 배경 이미지 제어용 변수
     [Header("Background Settings")]
+    [SerializeField] GameObject _backgroundGroup;
     [SerializeField] Image backgroundPanelImage;   // 배경을 띄워줄 Image 컴포넌트 
     [SerializeField] Sprite inventoryOnlyBg;       // 일반 인벤토리용 배경 (접은 책)
     [SerializeField] Sprite deckBuildingBg;        // 덱 편성용 배경 (펼친 책)
@@ -69,12 +73,26 @@ public class InventoryUI : MonoBehaviour
     // 인벤토리 갱신 (데이터 로드 -> 정렬 -> 슬롯 생성)
     public void RefreshInventory()
     {
+        if (_backgroundGroup != null)
+        {
+            _backgroundGroup.SetActive(true);
+        }
+        if (backgroundPanelImage != null)
+        {
+            backgroundPanelImage.gameObject.SetActive(true);
+        }
         // 덱 UI 그룹 켜고 끄기
         if (deckUIGroup != null)
         {
             deckUIGroup.SetActive(IsDeckBuildingMode);
         }
-
+        if (objectsToHide != null)
+        {
+            foreach (GameObject obj in objectsToHide)
+            {
+                if (obj != null) obj.SetActive(IsDeckBuildingMode);
+            }
+        }
         // 배경 이미지 및 패널 위치/크기 정밀 조정
         if (backgroundPanelImage != null && inventoryPanelRect != null)
         {
@@ -109,20 +127,17 @@ public class InventoryUI : MonoBehaviour
                 backgroundPanelImage.preserveAspect = false; // 틀에 맞춰 늘리기 (비율은 틀로 조절)
 
 
-                float leftRatio = 0.3f;
-                float rightRatio = 0.7f;
-
                 // 배경 이미지: 중앙에 홀쭉하게 배치
-                bgRect.anchorMin = new Vector2(leftRatio, 0.1f); 
-                bgRect.anchorMax = new Vector2(rightRatio, 0.9f);
+                bgRect.anchorMin = new Vector2(0.25f, 0f);
+                bgRect.anchorMax = new Vector2(0.75f, 1f);
                 bgRect.offsetMin = Vector2.zero;
                 bgRect.offsetMax = Vector2.zero;
 
-                inventoryPanelRect.anchorMin = new Vector2(leftRatio, 0.1f);
-                inventoryPanelRect.anchorMax = new Vector2(rightRatio, 0.9f);
+                inventoryPanelRect.anchorMin = new Vector2(0.25f, 0f);
+                inventoryPanelRect.anchorMax = new Vector2(0.75f, 1f);
 
-                inventoryPanelRect.offsetMin = new Vector2(40, 40);
-                inventoryPanelRect.offsetMax = new Vector2(-40, -40);
+                inventoryPanelRect.offsetMin = new Vector2(20, 20);
+                inventoryPanelRect.offsetMax = new Vector2(-20, -20);
             }
         }
 
@@ -230,6 +245,7 @@ public class InventoryUI : MonoBehaviour
         {
             _cachedSettingUI.enabled = false; // 설정창 로직 잠시 끄기
         }
+        RefreshInventory();
     }
 
     // 꺼질 때 Player에게 알림
@@ -265,7 +281,16 @@ public class InventoryUI : MonoBehaviour
         // UI 끄기
         gameObject.SetActive(false);
 
+        if (_backgroundGroup != null)
+        {
+            _backgroundGroup.SetActive(false);
+        }
         // Player 이동 모드 복구
+        if (backgroundPanelImage != null)
+        {
+            backgroundPanelImage.gameObject.SetActive(false);
+        }
+
         if (Player.Instance != null) Player.Instance.EnterMoveMod();
     }
 }
