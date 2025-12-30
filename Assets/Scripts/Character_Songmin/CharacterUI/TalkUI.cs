@@ -122,6 +122,9 @@ public class TalkUI : MonoBehaviour
 
     public void UpdateScenario()
     {
+        if (_currentScenario == null || _currentScenario.Count == 0)
+            return;
+
         if (_currentIndex >= _currentScenario.Count)
         {               
             EndScenario();
@@ -151,7 +154,12 @@ public class TalkUI : MonoBehaviour
             StopCoroutine(_fadeRoutine);
         }
         _fadeRoutine = StartCoroutine(ScenarioFadeInAndOut(false));
+<<<<<<< Updated upstream
         
+        
+=======
+>>>>>>> Stashed changes
+        OnScenarioEnd?.Invoke();
     }
 
 

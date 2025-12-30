@@ -428,23 +428,33 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _afterScenarioAction = afterScenario;
         CurrentPlayedScenario = type;
 
-        //시나리오가 이미 재생된 상태인지 확인
         if (_scenarioPlayer.IsScenarioPlayed(type))
-        {            
+        {
             _afterScenarioAction?.Invoke();
             _afterScenarioAction = null;
             return;
         }
+
         if (TalkUI == null)
-        {
             SetTalkUI();
-        }
+
         EnterScenarioMod();
-        _scenarioPlayer.RequestScenario(type);
+
+        bool started = _scenarioPlayer.RequestScenario(type);
+
+        if (!started)
+        {
+            
+            _afterScenarioAction?.Invoke();
+            _afterScenarioAction = null;
+            ResolveInputState();
+        }
     }
 
     public void UpdateScenario()
     {
+        if (TalkUI == null)
+            return;
         TalkUI.UpdateScenario();
     }
 
