@@ -57,7 +57,7 @@ public class PlayerModelController : MonoBehaviour
         }
     }
 
-    public void ResetModelScale()
+    public void ResetModel()
     {
         gameObject.transform.localScale = _originScale;
     }

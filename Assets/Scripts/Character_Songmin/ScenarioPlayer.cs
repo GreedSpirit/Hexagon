@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScenarioPlayer : MonoBehaviour
 {
-    public HashSet<Trigger_Type> _playedScenarios = new();
+    public List<Trigger_Type> PlayedScenarios = new();
     public bool IsPlaying { get; private set; }
 
     Dictionary<Trigger_Type, List<ScenarioData>> _scenarioMap;
@@ -29,7 +29,7 @@ public class ScenarioPlayer : MonoBehaviour
 
     public bool IsScenarioPlayed(Trigger_Type trigger)
     {
-        return _playedScenarios.Contains(trigger);
+        return PlayedScenarios.Contains(trigger);
     }
 
     public bool RequestScenario(Trigger_Type trigger)
@@ -57,8 +57,15 @@ public class ScenarioPlayer : MonoBehaviour
 
     private void OnScenarioEnd()
     {
+        Player.Instance.TalkUI.OnScenarioEnd -= OnScenarioEnd;
         IsPlaying = false;
-        _playedScenarios.Add(Player.Instance.CurrentPlayedScenario);
+
+        var trigger = Player.Instance.CurrentPlayedScenario;
+        if (!PlayedScenarios.Contains(trigger))
+        {
+            PlayedScenarios.Add(trigger);
+        }            
+
         Player.Instance.OnScenarioFinished();
     }
 
@@ -82,5 +89,12 @@ public class ScenarioPlayer : MonoBehaviour
             list.Add(data);
         }
         return list;
+    }
+    public void RestorePlayedScenarios(List<Trigger_Type> list)
+    {
+        PlayedScenarios.Clear();
+
+        if (list != null)
+            PlayedScenarios.AddRange(list);
     }
 }

@@ -16,6 +16,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] MonsterStatus _currentMonster; // 추후 스테이지 및 던전 추가되면 받아오기로 함. 지금만 인스펙터 연결.
     public Queue<IPlayable> Effects {  get; private set; }
 
+    bool _isEndingPlayerPhase = false;
 
 
     private void Awake()
@@ -79,13 +80,19 @@ public class BattleManager : MonoBehaviour
         _phaseChanger.ChangePhase(new PlayerActPhase());        
     }
 
-    public void EndPlayerPhase()//플레이어 턴 종료 단추에 연결
-    {        
+    public void EndPlayerPhase()
+    {
+        if (_isEndingPlayerPhase)
+        {
+            return;
+        }            
+
+        _isEndingPlayerPhase = true;
+        _turnEndButton.interactable = false;
+
         _battleUIManager.StopTimer();
         _currentMonster.ApplyStatusEffect();
-        _phaseChanger.ChangePhase(new EnemyActPhase()); //이펙트 생기면 이부분 지우고 아래 두줄 활성화
-        //_phaseChanger.ChangePhase(new EffectPhase(this));
-        //PhaseToReturn = PhaseType.EnemyAct;
+        _phaseChanger.ChangePhase(new EnemyActPhase());
     }
 
     public void EndMonsterActPhase()
@@ -117,10 +124,13 @@ public class BattleManager : MonoBehaviour
     private void GetCurrentPhase(PhaseType phase) //PhaseChanger와 연동해서 현재 페이즈를 받아오는 함수(내부 구독용)
     {
         _currentPhase = phase;
+
         if (phase == PhaseType.PlayerAct)
         {
+            _isEndingPlayerPhase = false;
+            _turnEndButton.interactable = true;
             _battleUIManager.StartTimer();
-        }        
+        }
     }
 
     public void OnTurnEndButtonClick()
