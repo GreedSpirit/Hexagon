@@ -54,27 +54,29 @@ public class CardData : CSVLoad, TableKey
         else
             Debug.LogError($"Id {Id} 카드의 {Name} 이 String 테이블에 존재하지 않습니다.");
 
-        // 카드
-        if (IsCard == true)
-        {
-            // Desc 비어있는지 체크
-            if(string.IsNullOrEmpty(Desc) == false)
-            {
-                // 설명 가져오기 시도
-                StringData stringDescData = DataManager.Instance.GetString(Desc);
 
-                // 있으면 한글 설정
-                if (stringDescData != null) Desc = stringDescData.Korean;
-                else Debug.LogError($"Id {Id} 카드의 {Desc} 이 String 테이블에 존재하지 않습니다.");
-            }
-            else
-                Debug.LogError($"Id {Id} 카드의 Desc 가 비어있습니다.");
-        }
-        // 스킬
-        else
+        // Desc 비어있는지 체크
+        if (string.IsNullOrEmpty(Desc) == false)
         {
-            Desc = "";
+            // 설명 가져오기 시도
+            StringData stringDescData = DataManager.Instance.GetString(Desc);
+
+            // 있으면 한글 설정
+            if (stringDescData != null) Desc = stringDescData.Korean;
+            else Debug.LogError($"Id {Id} 카드의 {Desc} 이 String 테이블에 존재하지 않습니다.");
         }
+        else
+            Debug.LogError($"Id {Id} 카드의 Desc 가 비어있습니다.");
+
+        //// 카드
+        //if (IsCard == true)
+        //{
+        //}
+        //// 스킬
+        //else
+        //{
+        //    Desc = "";
+        //}
     }
 
     // 강화, 약화일 때 StatusEffectValue 를 0 으로
