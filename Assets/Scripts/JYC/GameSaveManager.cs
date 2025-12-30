@@ -64,6 +64,7 @@ public class GameSaveManager : Singleton<GameSaveManager>
             data.Money = Player.Instance.GetMoney();
             data.PlayerPosition = Player.Instance.transform.position;
             data.DungeonClearedIndex = Player.Instance.DungeonClearedIndex;
+            data.ScenarioPlayIndex = Player.Instance.ScenarioPlayIndex;
 
             if (Player.Instance.Currentvillage != null)
                 data.LastVillageName = Player.Instance.Currentvillage.Name;
