@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class PlayerLevelUpUI : MonoBehaviour
 {
-    [SerializeField] GameObject _levelUpUIPrefab;    
+    [SerializeField] GameObject _levelUpUIPrefab;
+
+    int _lastLevel = 1;
 
     void Start()
     {
         if (Player.Instance != null)
         {
-            Player.Instance.OnLevelChanged += ShowLevelUpUI;
+            _lastLevel = Player.Instance.GetLevel();
+            Player.Instance.OnLevelUp += ShowLevelUpUI;
         }            
     }
 
@@ -16,17 +19,21 @@ public class PlayerLevelUpUI : MonoBehaviour
     {
         if (Player.Instance != null)
         {
-            Player.Instance.OnLevelChanged -= ShowLevelUpUI;
+            Player.Instance.OnLevelUp -= ShowLevelUpUI;
         }            
     }
 
     void ShowLevelUpUI(int level)
     {
-        if (level == 1)
+        if (level <= _lastLevel)
         {
             return;
-        }
-        PlayerLevelUpObject popup =  Instantiate(_levelUpUIPrefab, transform).GetComponent<PlayerLevelUpObject>();
-        popup.Init(level);        
+        }            
+
+        _lastLevel = level;
+
+        PlayerLevelUpObject popup = Instantiate(_levelUpUIPrefab, transform).GetComponent<PlayerLevelUpObject>();
+
+        popup.Init(level);
     }
 }
