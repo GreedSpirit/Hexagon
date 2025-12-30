@@ -43,28 +43,6 @@ public class DungeonPauseUI : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            if (Player.Instance?.IsTalking == true) return;
-
-            if (DungeonManager.Instance.IsRewardSequenceActive)
-            {
-                return;
-            }
-
-            if (_isPaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
-        }
-    }
-
     // ESC 키 입력 시 호출
     private void OnEscPerformed(InputAction.CallbackContext context)
     {
