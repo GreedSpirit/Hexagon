@@ -4,7 +4,7 @@ using UnityEngine;
 public class ScenarioPlayer : MonoBehaviour
 {
     public HashSet<Trigger_Type> _playedScenarios = new();
-    bool _isPlaying;
+    public bool IsPlaying { get; private set; }
     Dictionary<Trigger_Type, List<ScenarioData>> _scenarioMap;
     private void Start()
     {
@@ -20,11 +20,11 @@ public class ScenarioPlayer : MonoBehaviour
     public void RequestScenario(Trigger_Type trigger)
     {
         // 이미 재생된 경우는 Player에서 처리함
-        if (_isPlaying) return;
+        if (IsPlaying) return;
         if (!_scenarioMap.TryGetValue(trigger, out var list)) return;
         if (list.Count == 0) return;
 
-        _isPlaying = true;
+        IsPlaying = true;
 
         Player.Instance.SetTalkUI();
         Player.Instance.TalkUI.EnterScenario(list);
@@ -33,7 +33,7 @@ public class ScenarioPlayer : MonoBehaviour
 
     private void OnScenarioEnd()
     {
-        _isPlaying = false;
+        IsPlaying = false;
 
         // 여기서만 재생 기록
         _playedScenarios.Add(Player.Instance.CurrentPlayedScenario);
