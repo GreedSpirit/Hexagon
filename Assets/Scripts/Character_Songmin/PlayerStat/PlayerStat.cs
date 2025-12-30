@@ -53,6 +53,8 @@ public class PlayerStat
         Level++;
         SetStats();
         GetHp(Hp);
+        Player.Instance.OnLevelChanged?.Invoke(Level);
+        Player.Instance.OnLevelUp?.Invoke(Level);
     }
 
     public void PlusMoney(int cost)
@@ -152,8 +154,7 @@ public class PlayerStat
         while (CurrentExp >= NeedExp && Level < LevelList.Count)
         {
             CurrentExp -= NeedExp;
-            LevelUp();
-            Player.Instance.GetLevelUp();
+            LevelUp();            
         }
 
         if (Level >= LevelList.Count)

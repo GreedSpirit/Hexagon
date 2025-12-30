@@ -19,8 +19,9 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public Action<int, int, int, int> OnHpChanged; //체력 수치 변화할 때마다 호출.    
     public Action<int> OnShieldChanged; //보호막 수치 변화할 때마다 호출.
     public Action<int, int> OnExpChanged; //경험치 획득할 때마다 호출.
-    public Action<int> OnLevelChanged; //레벨업할 때마다 호출.
+    public Action<int> OnLevelChanged;
     public Action<int> OnDefenseChanged; //방어력 변화할 때마다 호출.
+    public Action<int> OnLevelUp;//레벨업할 때마다 호출
     public Action<Dictionary<StatusEffectData, int>> OnStatusEffectChanged; //상태이상 변화할 때마다 호출
 
     //마을 관련 필드
@@ -118,7 +119,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         {
             expProp.SetValue(_stat, data.CurrentExp);
         }
-
+        _stat.SetStats();        // 레벨 기준 스탯 재계산
+        _stat.GetHp(_stat.Hp);   // 최대체력 기준으로 회복
         if (data.PlayerPosition != Vector3.zero)
         {
             transform.position = data.PlayerPosition;
@@ -299,11 +301,6 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _stat.GetExp(exp);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
-    }
-
-    public void GetLevelUp()
-    {
-        OnLevelChanged?.Invoke(_stat.Level);
     }
 
     public void AddStatusEffect(string effectKey, int duration, int stack)
