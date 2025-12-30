@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class SettingUI : MonoBehaviour
 {
     [SerializeField] GameObject _setting;
+    [SerializeField] GameObject _exit;
 
     [Header("볼륨 조절 슬라이더")]
     [SerializeField] Slider _masterSlider;
@@ -184,6 +185,8 @@ public class SettingUI : MonoBehaviour
         _setting.SetActive(!_setting.activeSelf);
         // 패널 켜면 UI 초기화
         if (_setting.activeSelf) InitUI();
+
+        _exit?.SetActive(false);
     }
 
     // 종료 확인
