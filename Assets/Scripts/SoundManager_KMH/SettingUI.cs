@@ -35,6 +35,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] Sprite _soundOffSprite; // 소리 Off
 
     public bool isActive => _setting.activeSelf;   // 활성화 상태
+    private string _currentSceneName;
     private GameObject _upgradePanel;
     private bool isActiveUpgrade;
 
@@ -86,6 +87,8 @@ public class SettingUI : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        _currentSceneName = scene.name;
+
         // 이 씬만
         if (scene.name == "TestBuildScene_LJH")
         {
@@ -108,7 +111,10 @@ public class SettingUI : MonoBehaviour
 
     private void Update()
     {
-        if (_upgradePanel?.activeSelf == true && isActiveUpgrade == false) isActiveUpgrade = true;
+        if(_currentSceneName == "TestBuildScene_LJH")
+        {
+            if (_upgradePanel?.activeSelf == true && isActiveUpgrade == false) isActiveUpgrade = true;
+        }
 
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
@@ -116,7 +122,7 @@ public class SettingUI : MonoBehaviour
             if (Player.Instance?.IsTalking == true) return;
 
             // 배틀씬 제외
-            if (SceneManager.GetActiveScene().name == "DungeonBattleScene") return;
+            if (_currentSceneName == "DungeonBattleScene") return;
 
             // 강화패널 켜져있으면 무시
             if (isActiveUpgrade == true)

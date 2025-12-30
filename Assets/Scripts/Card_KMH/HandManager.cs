@@ -186,6 +186,9 @@ public class HandManager : MonoBehaviour
         // 덱큐에서 카드 한장 뽑기
         int cardID = _deck.Dequeue();
 
+        // 덱 카운트 갱신
+        _deckUI?.UpdateDeckCountText();
+
         // ID 카드 데이터 가져오기
         CardData cardData = DataManager.Instance.GetCard(cardID);
 
@@ -226,9 +229,6 @@ public class HandManager : MonoBehaviour
 
         // 카드 내용 대상 상태이상 따라 한 번 체크
         TargetStatusValueChanged();
-
-        // 덱 카운트 갱신
-        _deckUI?.UpdateDeckCountText();
 
         // 정렬
         AlignCards();
