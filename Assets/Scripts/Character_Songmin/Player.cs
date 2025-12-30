@@ -533,8 +533,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
 
     public void EnterBattle()
     {
-        gameObject.transform.position = new Vector2(-3f, -1.5f);
-        _playerModelController.ResetModel();
+        gameObject.transform.position = new Vector2(-3f, -0.5f);
+        _playerModelController.BattleModel();
         _playerUIManager.OnOffPlayerInventoryUi(true);
         _playerUIManager.OnOffPlayerStatUi(true);
     }
