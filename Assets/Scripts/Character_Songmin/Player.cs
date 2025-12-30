@@ -440,7 +440,10 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
             _afterScenarioAction = null;
             return;
         }
-
+        if (TalkUI == null)
+        {
+            SetTalkUI();
+        }
         EnterScenarioMod();
         _scenarioPlayer.RequestScenario(type);
     }
