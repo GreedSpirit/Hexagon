@@ -391,6 +391,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
                 Desc = tableData.Desc,
                 AppliedTime = Time.time, // 적용 시점을 위함, 나중에 턴으로 바꿀수도
                 Img = tableData.Img,
+                decreaseType = tableData.DecreaseType,
             };
             
             _statusEffects.Add(newEffect);            
