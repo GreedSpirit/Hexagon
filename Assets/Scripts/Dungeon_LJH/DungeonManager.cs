@@ -222,7 +222,8 @@ public class DungeonManager : MonoBehaviour
         {
             if(reward.RewardType == "Card" || reward.RewardType == "BossCard")
             {
-                CardManager.Instance.AddCard(reward.ItemId, reward.Amount);
+                //CardManager.Instance.AddCard(reward.ItemId, reward.Amount);
+                CardManager.Instance.AddKeyCard(reward.ItemKey, reward.Amount);
             }
             else if(reward.RewardType == "Currency")
             {

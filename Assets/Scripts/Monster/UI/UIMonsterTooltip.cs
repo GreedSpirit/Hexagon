@@ -69,11 +69,8 @@ public class UIMonsterTooltip : MonoBehaviour
     // 효과 설명을 동적으로 생성하는 로직
     private string GenerateDescription(MonsterStatusEffectInstance effect)
     {
-        // 테이블의 Desc를 쓰거나, 로직에 따라 문장 조합
-        // 예시: "화상" -> "턴 종료 시 5의 피해를 입습니다."
-        string durationText = effect.Duration > 0 ? $"{effect.Duration}Turn" : $"{effect.Stack}Stack";
-        
-        // 간단한 예시 로직 (실제로는 테이블 Desc 활용)
-        return $"{DataManager.Instance.GetString(effect.Desc).Korean} Effect : {durationText}";
+        string durationText = effect.Duration > 0 ? $"턴 : {effect.Duration}" : $"스택 : {effect.Stack}";
+
+        return $"{DataManager.Instance.GetString(effect.Desc).Korean} 남은 {durationText}";
     }
 }

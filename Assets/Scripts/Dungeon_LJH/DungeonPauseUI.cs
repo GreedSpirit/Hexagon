@@ -43,6 +43,28 @@ public class DungeonPauseUI : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if (Player.Instance?.IsTalking == true) return;
+
+            if (DungeonManager.Instance.IsRewardSequenceActive)
+            {
+                return;
+            }
+
+            if (_isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
+    }
+
     // ESC 키 입력 시 호출
     private void OnEscPerformed(InputAction.CallbackContext context)
     {
@@ -74,6 +96,7 @@ public class DungeonPauseUI : MonoBehaviour
         }
 
         _menuPanel.SetActive(true);
+        Debug.Log("Pause");
         Time.timeScale = 0f;
         //SoundManager.Instance.PlaySFX(SFXType.PopupOpen);
     }
@@ -82,6 +105,7 @@ public class DungeonPauseUI : MonoBehaviour
     {
         _isPaused = false;
         _menuPanel.SetActive(false);
+        Debug.Log("Resume");
         Time.timeScale = 1f;; 
     }
 

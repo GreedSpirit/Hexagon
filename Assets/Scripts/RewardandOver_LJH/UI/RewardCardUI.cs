@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems; // 마우스 이벤트 필수
 using TMPro;
+using System.Text;
 
 public class RewardCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -55,7 +56,7 @@ public class RewardCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
         if (_img != null) _img.sprite = DataManager.Instance.GetCardSprite(_cardData.CardImg);
         if (_nameText != null) _nameText.text = _cardData.Name;
-        if (_descText != null) _descText.text = _cardData.Desc;
+        if (_descText != null) UpdateDesc();
         if (_levelText != null) _levelText.text = "1";
 
         if(_amountText != null)
@@ -109,5 +110,21 @@ public class RewardCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         {
             _gradeColorImg.color = _gradeColors[gradeIndex];
         }
+    }
+
+    public void UpdateDesc()
+    {
+        // 카드 설명 있을 때만
+        if (string.IsNullOrEmpty(_cardData.Desc)) return;
+
+        // 문자열 갱신
+        StringBuilder sb = new StringBuilder(_cardData.Desc);
+
+        sb.Replace("{D}", _cardData.BaseValue.ToString());
+        sb.Replace("{N}", _cardData.BaseValue.ToString());
+        sb.Replace("{SEV}", _cardData.StatusEffectValue.ToString());
+        sb.Replace("{turns}", _cardData.Turn.ToString());
+
+        _descText.text = sb.ToString();
     }
 }

@@ -54,7 +54,8 @@ public class RewardResultUI : MonoBehaviour
 
     private void SetBossCard(DeterminedReward reward)
     {
-        CardData data = DataManager.Instance.GetCard(reward.ItemId);
+        //CardData data = DataManager.Instance.GetCard(reward.ItemId);
+        CardData data = DataManager.Instance.GetCard(reward.ItemKey);
         if(data != null)
         {
             GameObject obj = Instantiate(_cardUIPrefab, _bossCardSpawnPoint);
@@ -68,7 +69,8 @@ public class RewardResultUI : MonoBehaviour
 
     private void CreateGeneralCardSlot(DeterminedReward reward)
     {
-        CardData data = DataManager.Instance.GetCard(reward.ItemId);
+        //CardData data = DataManager.Instance.GetCard(reward.ItemId);
+        CardData data = DataManager.Instance.GetCard(reward.ItemKey);
 
         GameObject obj = Instantiate(_cardUIPrefab, _generalCardParent);
         RewardCardUI cardUI = obj.GetComponent<RewardCardUI>();
