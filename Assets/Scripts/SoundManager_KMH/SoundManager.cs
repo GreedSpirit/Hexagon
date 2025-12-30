@@ -43,6 +43,8 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
+    private SettingUI _settingUI;
+
     [Header("오디오 믹서")]
     [SerializeField] AudioMixer _mixer;      // 믹서
     [Header("오디오 소스")]
@@ -87,6 +89,8 @@ public class SoundManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            _settingUI = GetComponentInChildren<SettingUI>();
 
             // 저장된 볼륨 가져오기, 없으면 유지
             MasterVolume = PlayerPrefs.GetFloat("MasterVolume", MasterVolume);
@@ -355,5 +359,12 @@ public class SoundManager : MonoBehaviour
             return;
         }
         _sfxSource.PlayOneShot(clip);
+    }
+
+
+    // 설정 버튼
+    public void SetActivePanel()
+    {
+        _settingUI.SetActivePanel();
     }
 }
