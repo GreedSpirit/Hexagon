@@ -12,7 +12,7 @@ using UnityEngine;
 public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해주기
 {
     public static Player Instance { get; private set; }
-
+    public bool IsInitialized { get; private set; } = false;
     //스탯 관련 필드    
     PlayerStat _stat;
     public Action<int> OnMoneyChanged; //돈 수치 변화할 때마다 호출.
@@ -96,6 +96,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         Debug.Log($"방어력 : {_stat.Defense}");
         Debug.Log($"이동속도 : {_stat.MoveSpeed}");
         Debug.Log($"보유 재화 : {_stat.Money}");
+        IsInitialized = true;
         Respawn();
     }
 

@@ -118,9 +118,6 @@ public class CardManager : MonoBehaviour
         AddStartingCard("KeyCardOldBookShield");
         AddStartingCard("KeyCardAccumulatedKnowledge");
 
-
-        // 저장
-        GameSaveManager.Instance.SaveGame();
     }
 
     // 동작 구성
