@@ -2365,6 +2365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f1c3c9da131e1479965435aaf01cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonPauseUI
+  _handManager: {fileID: 875355023}
   _escAction: {fileID: 3470229844895224080, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   _menuPanel: {fileID: 391327639}
   _dungeonNameText: {fileID: 382371612}
