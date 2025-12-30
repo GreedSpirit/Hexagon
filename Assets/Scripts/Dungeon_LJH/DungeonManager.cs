@@ -108,7 +108,7 @@ public class DungeonManager : MonoBehaviour
         {
             SoundManager.Instance.PlayBGM(BGMType.Boss);
 
-            
+            OnEnterBossStage();
             Player.Instance.PlayScenarioGuaranteed(Trigger_Type.prebattle,() =>{ Player.Instance.EnterBattleMod(); _battleManager.StartBattle(); });
         }
         else
