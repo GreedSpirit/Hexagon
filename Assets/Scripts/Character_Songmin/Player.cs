@@ -297,8 +297,9 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
 
     public void ResetCondition()
     {
-        _stat.ResetStatusEffect();
+        _stat.ResetCondition();
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        OnShieldChanged?.Invoke(_stat.Shield);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
 

@@ -132,12 +132,13 @@ public class PlayerStat
         Shield = 0;
     }
 
-    public void ResetStatusEffect() //전투상황 종료 시 호출
+    public void ResetCondition() //전투상황 종료 시 호출
     {
         Poison = 0;
         Burn = 0;
         Buff = 0;
-        DeBuff = 0;        
+        DeBuff = 0;
+        ResetShield();
         StatusEffects.Clear();
     }
 
