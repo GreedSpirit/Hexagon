@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -33,6 +34,8 @@ public class SettingUI : MonoBehaviour
     [SerializeField] Sprite _soundOffSprite; // 소리 Off
 
     public bool isActive => _setting.activeSelf;   // 활성화 상태
+    private GameObject _upgradePanel;
+    private bool isActiveUpgrade;
 
     private void Start()
     {
@@ -76,6 +79,24 @@ public class SettingUI : MonoBehaviour
         });
         // UI 초기화
         InitUI();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 이 씬만
+        if (scene.name != "TestBuildScene_LJH") return;
+
+        // 일단 활성화된 캔버스
+        GameObject villageCanvas = GameObject.Find("VillageCanvas");
+
+        // 캔버스의 자식 중 강화 패널
+        Transform upgradePanelTrans = villageCanvas.transform.Find("UpgradePanel");
+
+        if (upgradePanelTrans != null)
+            _upgradePanel = upgradePanelTrans.gameObject;
+
     }
 
     private void Update()
@@ -87,6 +108,9 @@ public class SettingUI : MonoBehaviour
 
             // 배틀씬 제외
             if (SceneManager.GetActiveScene().name == "DungeonBattleScene") return;
+
+            // 강화패널 켜져있으면 무시
+            if (_upgradePanel?.activeSelf == true) return;
 
             SetActivePanel();
         }
