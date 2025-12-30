@@ -154,11 +154,6 @@ public class TalkUI : MonoBehaviour
             StopCoroutine(_fadeRoutine);
         }
         _fadeRoutine = StartCoroutine(ScenarioFadeInAndOut(false));
-<<<<<<< Updated upstream
-        
-        
-=======
->>>>>>> Stashed changes
         OnScenarioEnd?.Invoke();
     }
 
