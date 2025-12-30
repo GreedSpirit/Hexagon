@@ -4,7 +4,7 @@ using UnityEngine;
 public class VillageCamera : MonoBehaviour
 {
     [SerializeField] SpriteRenderer _backGround;
-    private void Awake()
+    private void Start()
     {
         CinemachineCamera cam = GetComponent<CinemachineCamera>();
         if (cam.Follow != Player.Instance.transform)
