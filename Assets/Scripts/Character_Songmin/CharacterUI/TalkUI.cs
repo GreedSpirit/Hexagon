@@ -47,6 +47,11 @@ public class TalkUI : MonoBehaviour
         //Player.Instance.SetTalkUI(this);
         //_testButton.SetActive(false);
     }
+    private void OnDestroy()
+    {
+        if (Player.Instance != null && Player.Instance.TalkUI == this)
+            Player.Instance.TalkUI = null;
+    }
 
 
     //------------------------------------------------------------------
@@ -105,7 +110,8 @@ public class TalkUI : MonoBehaviour
     //------------------------------------------------------------------
 
     public void EnterScenario(List<ScenarioData> datas)
-    {        
+    {
+        _currentTalking = null;
         _escButton.SetActive(false);
         _currentScenario = datas;
         _currentIndex = 0;
@@ -150,11 +156,12 @@ public class TalkUI : MonoBehaviour
         _currentScenario = null;
 
         if (_fadeRoutine != null)
-        {
             StopCoroutine(_fadeRoutine);
-        }
+
         _fadeRoutine = StartCoroutine(ScenarioFadeInAndOut(false));
-        OnScenarioEnd?.Invoke();
+
+        
+        // OnScenarioEnd?.Invoke();
     }
 
 
@@ -255,29 +262,30 @@ public class TalkUI : MonoBehaviour
 
 
 
-    IEnumerator ScenarioFadeInAndOut(bool isEnter) //true는 시나리오 진입, false는 시나리오 종료.
+    IEnumerator ScenarioFadeInAndOut(bool isEnter)
     {
         yield return FadeRoutine(true);
-        
+
         _talkPannel.SetActive(isEnter);
         _leftImg.gameObject.SetActive(false);
         _rightImg.gameObject.SetActive(false);
         _backgroundPannel.GetComponent<CanvasGroup>().alpha = 1f;
-        Player.Instance.SwitchIsTalking(isEnter);
 
-        if (_currentTalking is Npc)
-        {
-            _currentTalking.SwitchIsTalking(isEnter);
-            _upgradeEnterButton.SetActive(isEnter);
-        }
-
+        
+        Player.Instance.EnterScenarioMod();
 
         yield return FadeRoutine(false);
+
         if (!isEnter)
         {
+            OnScenarioEnd?.Invoke();
+            OnScenarioEnd = null;
             Destroy(gameObject);
         }
     }
+
+
+
 
 
     IEnumerator TalkFadeInAndOut(bool isEnter) //true는 대화 진입, false는 대화 종료.

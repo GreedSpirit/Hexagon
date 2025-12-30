@@ -152,6 +152,7 @@ public class PlayerStat
         {
             CurrentExp -= NeedExp;
             LevelUp();
+            Player.Instance.GetLevelUp();
         }
         if (Level >= LevelList.Count)
         {

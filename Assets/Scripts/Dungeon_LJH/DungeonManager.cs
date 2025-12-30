@@ -56,7 +56,7 @@ public class DungeonManager : MonoBehaviour
         _currentDungeonData = DataManager.Instance.GetDungeon(dungeonId);
 
         // 변경: 바로 스테이지 시작 → 시나리오 후 시작
-        Player.Instance.PlayScenario(Trigger_Type.dungeonenter,() =>{StartStage(_currentStageIndex);} );
+        Player.Instance.PlayScenarioGuaranteed(Trigger_Type.dungeonenter,() => StartStage(_currentStageIndex));
 
     }
 
@@ -109,7 +109,7 @@ public class DungeonManager : MonoBehaviour
             SoundManager.Instance.PlayBGM(BGMType.Boss);
 
             
-            Player.Instance.PlayScenario(Trigger_Type.prebattle,() =>{ Player.Instance.EnterBattleMod(); _battleManager.StartBattle(); });
+            Player.Instance.PlayScenarioGuaranteed(Trigger_Type.prebattle,() =>{ Player.Instance.EnterBattleMod(); _battleManager.StartBattle(); });
         }
         else
         {
@@ -138,7 +138,7 @@ public class DungeonManager : MonoBehaviour
             Debug.Log("Stage " + (_currentStageIndex + 1) + " Clear!");
 
             // 변경: 바로 다음 스테이지 가지 않고 시나리오 시작
-            Player.Instance.PlayScenario(
+            Player.Instance.PlayScenarioGuaranteed(
                 Trigger_Type.stageenter,
                 () =>
                 {
@@ -167,7 +167,7 @@ public class DungeonManager : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
 
         
-        Player.Instance.PlayScenario(
+        Player.Instance.PlayScenarioGuaranteed(
             Trigger_Type.preseal,
             () =>
             {
@@ -243,8 +243,8 @@ public class DungeonManager : MonoBehaviour
         {
             Player.Instance.DungeonClearedIndex = DungeonSessionData.SelectedDungeonId;
         }
-        
-        Player.Instance.PlayScenario(Trigger_Type.clear,() =>{Player.Instance.EnterMoveMod();});
+
+        Player.Instance.PlayScenarioGuaranteed(Trigger_Type.clear);
     }
 
 

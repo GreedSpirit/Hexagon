@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해주기
 {
-    public static Player Instance {  get; private set; }
+    public static Player Instance { get; private set; }
 
     //스탯 관련 필드    
     PlayerStat _stat;
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public Village Currentvillage { get; private set; }
     public Npc TalkingNpc { get; private set; }
     [SerializeField] TalkUI _talkUIPrefab;
-    public TalkUI TalkUI { get; private set; }
+    public TalkUI TalkUI { get; set; }
     public bool CanInteract { get; set; }
     public bool IsTalking { get; set; }
 
@@ -42,7 +42,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     //Player에 붙은 다른 컴포넌트들
     private PlayerUIManager _playerUIManager;
     private PlayerModelController _playerModelController;
-    private PlayerInputHandler _playerInputHandler;    
+    private PlayerInputHandler _playerInputHandler;
     private ScenarioPlayer _scenarioPlayer;
     private Animator _animator;
 
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);            
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
             }
         }
         _playerUIManager = GetComponent<PlayerUIManager>();
-        _playerInputHandler = GetComponent<PlayerInputHandler>();        
+        _playerInputHandler = GetComponent<PlayerInputHandler>();
         _scenarioPlayer = GetComponent<ScenarioPlayer>();
         _animator = GetComponent<Animator>();
         _playerModelController = GetComponent<PlayerModelController>();
@@ -69,7 +69,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
     private void Start()
     {
-        
+
     }
 
 
@@ -217,8 +217,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         return _stat.Hp;
     }
 
-    
-    
+
+
     public float GetBuff()
     {
         return _stat.Buff;
@@ -244,7 +244,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         return "Img";
     }
 
-    
+
 
     #endregion
 
@@ -264,7 +264,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
     public void GetHp(int hp) //체력을 회복할 때마다 호출
     {
-        _stat.GetHp(hp);        
+        _stat.GetHp(hp);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
     }
 
@@ -282,7 +282,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
     public void ResetCondition()
     {
-        _stat.ResetStatusEffect();        
+        _stat.ResetStatusEffect();
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
@@ -293,6 +293,10 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _stat.GetExp(exp);
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
         OnExpChanged?.Invoke(_stat.CurrentExp, _stat.NeedExp);
+    }
+
+    public void GetLevelUp()
+    {
         OnLevelChanged?.Invoke(_stat.Level);
     }
 
@@ -345,12 +349,15 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
     //------------------------------------------------------
     public void Respawn()
-    {        
+    {
         SetDeadMotion(false);
-        GetHp(_stat.Hp);
-        ResetCondition();
-        SetStatUIView(true);
-        
+        if (_stat != null)
+        {
+            GetHp(_stat.Hp);
+            ResetCondition();
+            SetStatUIView(true);
+        }        
+
         if (Currentvillage != null)
         {
             gameObject.transform.position = Currentvillage.SpawnZone;
@@ -359,7 +366,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         {
             gameObject.transform.position = new Vector2(-1.5f, 2);
         }
-        
+
     }
 
     public void SetVillage(Village village)
@@ -398,20 +405,20 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
             if (TalkingNpc == null)
             {
                 Debug.LogWarning("TalkingNpc Null");
-            }            
+            }
             TalkUI.EnterTalk(TalkingNpc);
         }
     }
 
     public void EndTalk()
-    {           
+    {
         TalkUI?.EndTalk();
         EnterMoveMod();
         // [추가] 대화 종료 후 저장 (진행도/퀘스트/스크립트 저장용)
-        GameSaveManager.Instance.SaveGame();        
+        GameSaveManager.Instance.SaveGame();
         TalkUI = null;
     }
-    
+
     public void PlusMoney(int cost)
     {
         _stat.PlusMoney(cost);
@@ -422,33 +429,6 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     {
         _stat.MinusMoney(cost);
         OnMoneyChanged?.Invoke(_stat.Money);
-    }
-    public void PlayScenario(Trigger_Type type, Action afterScenario = null)
-    {
-        _afterScenarioAction = afterScenario;
-        CurrentPlayedScenario = type;
-
-        if (_scenarioPlayer.IsScenarioPlayed(type))
-        {
-            _afterScenarioAction?.Invoke();
-            _afterScenarioAction = null;
-            return;
-        }
-
-        if (TalkUI == null)
-            SetTalkUI();
-
-        EnterScenarioMod();
-
-        bool started = _scenarioPlayer.RequestScenario(type);
-
-        if (!started)
-        {
-            
-            _afterScenarioAction?.Invoke();
-            _afterScenarioAction = null;
-            ResolveInputState();
-        }
     }
 
     public void UpdateScenario()
@@ -532,8 +512,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         data.Exp = _stat.CurrentExp;
         data.ScenarioPlayIndex = ScenarioPlayIndex;
 
-    // JSON 변환
-    string json = JsonUtility.ToJson(data, true); // true는 보기 좋게 줄바꿈 함
+        // JSON 변환
+        string json = JsonUtility.ToJson(data, true); // true는 보기 좋게 줄바꿈 함
         // 파일 저장 경로 
         string path = Path.Combine(Application.persistentDataPath, "playersave.json");
         File.WriteAllText(path, json);
@@ -573,14 +553,14 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     }
 
     public void EnterDungeonSelect()
-    {        
+    {
         _playerUIManager.OnOffPlayerInventoryUi(false);
         _playerUIManager.OnOffPlayerStatUi(false);
         EnterBattleMod();
     }
 
     public void BackToVillage()
-    {        
+    {
         _playerUIManager.OnOffPlayerInventoryUi(true);
         _playerUIManager.OnOffPlayerStatUi(true);
         EnterMoveMod();
@@ -627,7 +607,46 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         }
 
         // 3. 그 외는 이동
-        EnterMoveMod();
+        //EnterMoveMod();
+    }
+    public void EnsureTalkUI()
+    {
+        if (TalkUI == null)
+            TalkUI = Instantiate(_talkUIPrefab, transform);
+    }
+    public void PlayScenarioGuaranteed(Trigger_Type type,Action afterScenario = null)
+    {
+        StartCoroutine(PlayScenarioGuaranteedRoutine(type, afterScenario));
     }
 
+    private IEnumerator PlayScenarioGuaranteedRoutine(
+    Trigger_Type type,
+    Action afterScenario
+)
+    {
+        _afterScenarioAction = afterScenario;
+        CurrentPlayedScenario = type;
+
+        // 이미 재생된 경우
+        if (_scenarioPlayer.IsScenarioPlayed(type))
+        {
+            _afterScenarioAction?.Invoke();
+            _afterScenarioAction = null;
+            yield break;
+        }
+
+        // DataManager 준비 대기
+        while (DataManager.Instance == null)
+            yield return null;
+
+        //// TalkUI 준비
+        //if (TalkUI == null)
+        //    SetTalkUI();
+
+        EnterScenarioMod();
+
+        // 시작될 때까지 대기
+        while (!_scenarioPlayer.RequestScenario(type))
+            yield return null;
+    }
 }

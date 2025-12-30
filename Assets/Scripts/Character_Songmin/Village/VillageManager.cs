@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -36,14 +37,11 @@ public class VillageManager : MonoBehaviour
         MakeAllVillageDatas();
         MakeAllVillages();
         ChangeVillage("실렌시아");
+
         Player.Instance.Respawn();
-        Player.Instance.ResolveInputState();
-        if (Player.Instance.ScenarioPlayIndex <= 0)
-        {
-            Player.Instance.SwitchIsTalking(true);
-            Player.Instance.PlayScenario(Trigger_Type.gamestart, () => { Player.Instance.EnterMoveMod(); });
-        }
+        StartCoroutine(PlayIntroAfterReady());
     }
+
 
 
 
@@ -148,7 +146,25 @@ public class VillageManager : MonoBehaviour
             }
         }    
     }
+    private IEnumerator PlayIntroAfterReady()
+    {
+        // ScenarioPlayer 초기화 대기
+        while (!Player.Instance.GetComponent<ScenarioPlayer>().IsInitialized)
+            yield return null;
 
+        if (!Player.Instance.GetComponent<ScenarioPlayer>()
+        .IsScenarioPlayed(Trigger_Type.gamestart))
+        {
+            Player.Instance.PlayScenarioGuaranteed(
+                Trigger_Type.gamestart,
+                () => Player.Instance.EnterMoveMod()
+            );
+        }
+        else
+        {
+            Player.Instance.EnterMoveMod();
+        }
+    }
     public void SetUpgradePanel(bool on)
     {
         _upgradePanel.SetActive(on);

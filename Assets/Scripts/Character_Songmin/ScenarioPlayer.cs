@@ -1,23 +1,27 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class ScenarioPlayer : MonoBehaviour
 {
     public HashSet<Trigger_Type> _playedScenarios = new();
     public bool IsPlaying { get; private set; }
+
     Dictionary<Trigger_Type, List<ScenarioData>> _scenarioMap;
     bool _initialized;
+    public bool IsInitialized => _initialized;
+
     private void Awake()
     {
-        _scenarioMap = new Dictionary<Trigger_Type, List<ScenarioData>>();        
+        _scenarioMap = new Dictionary<Trigger_Type, List<ScenarioData>>();
+        StartCoroutine(InitRoutine());
     }
-    private void EnsureInit()
-    {
-        if (_initialized) return;
 
-        // DataManager 준비 보장
-        if (DataManager.Instance == null) return;
-        if (!DataManager.Instance.IsReady) return;
+    private IEnumerator InitRoutine()
+    {
+        
+        while (DataManager.Instance == null || !DataManager.Instance.IsReady)
+            yield return null;
 
         FillScenarioDatas();
         _initialized = true;
@@ -25,24 +29,26 @@ public class ScenarioPlayer : MonoBehaviour
 
     public bool IsScenarioPlayed(Trigger_Type trigger)
     {
-        if (trigger == Trigger_Type.gamestart)
-            return Player.Instance.ScenarioPlayIndex > 0;
-
         return _playedScenarios.Contains(trigger);
     }
 
     public bool RequestScenario(Trigger_Type trigger)
     {
-        if (IsPlaying) return false;
+        if (IsPlaying || !_initialized)
+            return false;
 
-        EnsureInit();
+        if (!_scenarioMap.TryGetValue(trigger, out var list))
+            return false;
 
-        if (!_scenarioMap.TryGetValue(trigger, out var list)) return false;
-        if (list == null || list.Count == 0) return false;
+        if (list == null || list.Count == 0)
+            return false;
 
         IsPlaying = true;
 
-        Player.Instance.SetTalkUI();
+        Player.Instance.EnterScenarioMod();
+
+        Player.Instance.EnsureTalkUI();
+
         Player.Instance.TalkUI.EnterScenario(list);
         Player.Instance.TalkUI.OnScenarioEnd += OnScenarioEnd;
 
@@ -52,15 +58,11 @@ public class ScenarioPlayer : MonoBehaviour
     private void OnScenarioEnd()
     {
         IsPlaying = false;
-
-        // 여기서만 재생 기록
         _playedScenarios.Add(Player.Instance.CurrentPlayedScenario);
-
-        Player.Instance.TalkUI.OnScenarioEnd -= OnScenarioEnd;
         Player.Instance.OnScenarioFinished();
     }
 
-    public void FillScenarioDatas()
+    private void FillScenarioDatas()
     {
         _scenarioMap[Trigger_Type.gamestart] = Load("scn_Intro_");
         _scenarioMap[Trigger_Type.dungeonenter] = Load("scn_dun_envy_");
@@ -69,7 +71,8 @@ public class ScenarioPlayer : MonoBehaviour
         _scenarioMap[Trigger_Type.preseal] = Load("scn_boss_seal_");
         _scenarioMap[Trigger_Type.clear] = Load("scn_pride_clear_");
     }
-    List<ScenarioData> Load(string key)
+
+    private List<ScenarioData> Load(string key)
     {
         List<ScenarioData> list = new();
         for (int i = 1; i < int.MaxValue; i++)
@@ -79,5 +82,5 @@ public class ScenarioPlayer : MonoBehaviour
             list.Add(data);
         }
         return list;
-    }    
+    }
 }
