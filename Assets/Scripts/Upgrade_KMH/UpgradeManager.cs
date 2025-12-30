@@ -32,6 +32,8 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] Button _upgradeButton;
     [Header("강화 연출용 테두리")]
     [SerializeField] CanvasGroup _upgradeEdgeCanvasGroup;
+    [Header("툴팁")]
+    [SerializeField] CardTooltipUI _toolTipUI;
 
     [Header("오디오 클립")]
     [SerializeField] AudioClip enhanceClip;           // 강화 시도
@@ -70,6 +72,7 @@ public class UpgradeManager : MonoBehaviour
 
             // UI 초기화
             cardUI.Init(card, this);
+            cardUI.GetComponent<CardTooltipLogic>().Init(card, _toolTipUI);
 
             // 리스트에 추가
             _playerCards.Add(cardUI);

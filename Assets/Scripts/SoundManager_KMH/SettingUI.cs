@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
@@ -82,10 +83,12 @@ public class SettingUI : MonoBehaviour
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             // 대화중이면 무시
-            if (Player.Instance?.IsTalking == true)
-                return;
+            if (Player.Instance?.IsTalking == true) return;
 
-                SetActivePanel();
+            // 배틀씬 제외
+            if (SceneManager.GetActiveScene().name == "DungeonBattleScene") return;
+
+            SetActivePanel();
         }
     }
 

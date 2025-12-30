@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Text;
 using TMPro;
 
-public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnterHandler, IPointerExitHandler
+public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] GameObject _selectedEdge;      // 선택 테두리
 
@@ -26,6 +26,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     public UserCard UserCard { get; private set;  } // 보유 카드 데이터
 
     private CardManager _cardManager;
+    private CardTooltipLogic _tooltipLogic;  // 툴팁 로직
     private UpgradeManager _upgradeManager;  // 강화 매니저
     private CardData _cardData;              // 카드 데이터
 
@@ -42,6 +43,7 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     public void Init(UserCard userCard, UpgradeManager manager)
     {
         _cardManager = CardManager.Instance;
+        _tooltipLogic = GetComponent<CardTooltipLogic>();
 
         // 보유 카드 정보
         UserCard = userCard;
@@ -212,5 +214,19 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler //, IPointerEnt
     {
         // 선택 테두리
         _selectedEdge?.SetActive(false);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_isSlot == true) return;
+
+        _tooltipLogic?.PointerEnterParent();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (_isSlot == true) return;
+
+        _tooltipLogic?.PointerExitParent();
     }
 }

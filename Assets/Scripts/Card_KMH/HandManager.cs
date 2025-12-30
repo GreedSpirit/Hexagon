@@ -27,10 +27,13 @@ public class HandManager : MonoBehaviour
     [SerializeField] BattleDeckUI _deckUI;
 
     [Header("소멸 위치 설정")]
-    [SerializeField] Transform _disappearPoint;    // 소멸 고정 위치
+    [SerializeField] Transform _disappearPoint;
+
+    [Header("툴팁UI")]
+    [SerializeField] CardTooltipUI _cardTooltipUI;
 
     [Header("게임오버")]
-    [SerializeField] GameOverUI _gameOverUI;        // 게임오버 관리자
+    [SerializeField] GameOverUI _gameOverUI;
 
     [Header("오디오 클립")]
     [SerializeField] AudioClip _drawClip;           // 드로우
@@ -189,10 +192,12 @@ public class HandManager : MonoBehaviour
         // 설정
         CardLogic cardLogic = newCard.GetComponent<CardLogic>();
         CardUI cardUI = newCard.GetComponent<CardUI>();
+        CardTooltipLogic cardToolTipLogic = newCard.GetComponent<CardTooltipLogic>();
 
         // 매니저 연결
         cardLogic.Init(cardData, this, level);
         cardUI.Init(cardData, this);
+        cardToolTipLogic.Init(cardData, _cardTooltipUI);
 
         // 오버 드로우 체크
         if (_handCards.Count >= _handLimit)
