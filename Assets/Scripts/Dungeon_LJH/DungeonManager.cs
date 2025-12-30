@@ -244,7 +244,7 @@ public class DungeonManager : MonoBehaviour
             Player.Instance.DungeonClearedIndex = DungeonSessionData.SelectedDungeonId;
         }
 
-        Player.Instance.PlayScenarioGuaranteed(Trigger_Type.clear);
+        Player.Instance.PlayScenarioGuaranteed(Trigger_Type.clear, () => { Player.Instance.EnterMoveMod(); } );
     }
 
 
