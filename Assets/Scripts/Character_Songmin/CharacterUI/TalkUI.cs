@@ -152,8 +152,6 @@ public class TalkUI : MonoBehaviour
         }
         _fadeRoutine = StartCoroutine(ScenarioFadeInAndOut(false));
         
-        
-        OnScenarioEnd?.Invoke();
     }
 
 

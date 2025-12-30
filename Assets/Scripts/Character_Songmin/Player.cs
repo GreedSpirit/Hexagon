@@ -359,12 +359,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         {
             gameObject.transform.position = new Vector2(-1.5f, 2);
         }
-        ResolveInputState();
-        if (ScenarioPlayIndex <= 0)
-        {
-            SwitchIsTalking(true);
-            PlayScenario(Trigger_Type.gamestart, () => { EnterMoveMod(); });
-        }
+        
     }
 
     public void SetVillage(Village village)
@@ -599,7 +594,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
 
         ResolveInputState();
     }
-    private void ResolveInputState()
+    public void ResolveInputState()
     {
         // 1. 시나리오가 재생 중이면
         if (_scenarioPlayer != null && _scenarioPlayer.IsPlaying)

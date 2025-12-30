@@ -37,7 +37,14 @@ public class VillageManager : MonoBehaviour
         MakeAllVillages();
         ChangeVillage("½Ç·»½Ã¾Æ");
         Player.Instance.Respawn();
+        Player.Instance.ResolveInputState();
+        if (Player.Instance.ScenarioPlayIndex <= 0)
+        {
+            Player.Instance.SwitchIsTalking(true);
+            Player.Instance.PlayScenario(Trigger_Type.gamestart, () => { Player.Instance.EnterMoveMod(); });
+        }
     }
+
 
 
     public void ChangeVillage(string vilName)
