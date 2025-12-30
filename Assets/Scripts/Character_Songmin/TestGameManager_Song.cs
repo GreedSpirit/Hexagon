@@ -8,7 +8,16 @@ public class TestGameManager_Song : MonoBehaviour
 {
     private void Start()
     {
-        InitPlayer();        
+        if (Player.Instance != null && Player.Instance.IsInitialized)
+        {
+            return;
+        }
+        InitPlayer();
+        if (GameSaveManager.Instance != null)
+        {
+            Debug.Log("[TestGameManager] 초기화 후 세이브 데이터 로드");
+            GameSaveManager.Instance.LoadGame();
+        }
     }
 
     public void InitPlayer()

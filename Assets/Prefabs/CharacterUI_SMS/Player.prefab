@@ -931,7 +931,6 @@ GameObject:
   - component: {fileID: 4477782786537590343}
   - component: {fileID: 6948186685366895449}
   - component: {fileID: 3666238692535378951}
-  - component: {fileID: 1683112541406623304}
   m_Layer: 0
   m_Name: MoneyImage
   m_TagString: Untagged
@@ -996,20 +995,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1683112541406623304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798511268376501021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 757181b1b294e114aae3ed6379057901, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerLevelUpUI
-  _levelText: {fileID: 0}
-  _levelTextObject: {fileID: 0}
 --- !u!1 &1990650646218589944
 GameObject:
   m_ObjectHideFlags: 0
