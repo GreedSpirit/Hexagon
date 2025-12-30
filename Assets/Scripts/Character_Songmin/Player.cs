@@ -657,4 +657,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
             yield return null;
     }
 
+    public void ClickSettingButton()
+    {
+        SoundManager.Instance.SetActivePanel();
+    }
 }
