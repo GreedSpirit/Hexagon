@@ -108,7 +108,10 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
 
         _stat.Level = data.Level;
         _stat.Money = data.Money;
+        _stat.CurrentExp = data.CurrentExp;
+        ScenarioPlayIndex = data.ScenarioPlayIndex;
         DungeonClearedIndex = data.DungeonClearedIndex;
+        
 
         PropertyInfo expProp = typeof(PlayerStat).GetProperty("CurrentExp");
         if (expProp != null)
