@@ -69,11 +69,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
 
     private void Start()
     {
-        if (ScenarioPlayIndex <= 0)
-        {
-            SwitchIsTalking(true);
-            PlayScenario(Trigger_Type.gamestart, () => {EnterMoveMod(); });
-        }
+        
     }
 
 
@@ -364,6 +360,11 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
             gameObject.transform.position = new Vector2(-1.5f, 2);
         }
         ResolveInputState();
+        if (ScenarioPlayIndex <= 0)
+        {
+            SwitchIsTalking(true);
+            PlayScenario(Trigger_Type.gamestart, () => { EnterMoveMod(); });
+        }
     }
 
     public void SetVillage(Village village)
