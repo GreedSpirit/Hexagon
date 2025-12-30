@@ -8,7 +8,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] HandManager _handManager;
     [SerializeField] Button _turnEndButton; //턴 종료 버튼
     [SerializeField] BattleUIManager _battleUIManager;
-
+    [SerializeField] TurnPopUpObject _turnPopUpObject;
 
     PhaseChanger _phaseChanger;
     public PhaseType PhaseToReturn {  get; private set; }
@@ -32,6 +32,7 @@ public class BattleManager : MonoBehaviour
         //페이즈 알림용 구독
         _phaseChanger.OnPhaseChanged += _handManager.OnPhaseChanged;
         _phaseChanger.OnPhaseChanged += GetCurrentPhase;
+        _phaseChanger.OnPhaseChanged += _turnPopUpObject.Show;
 
 
         //행동 마침 알림 구독        
@@ -47,6 +48,8 @@ public class BattleManager : MonoBehaviour
         _phaseChanger.OnPhaseChanged -= _handManager.OnPhaseChanged;        
         _phaseChanger.OnPhaseChanged -= _currentMonster.ChangePhase;
         _phaseChanger.OnPhaseChanged -= GetCurrentPhase;
+        _phaseChanger.OnPhaseChanged -= _turnPopUpObject.Show;
+
 
         //행동 마침 알림 구독
         _currentMonster.OnEnemyActTurnEnd -= EndMonsterActPhase;
