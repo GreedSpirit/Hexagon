@@ -109,6 +109,7 @@ public class RewardResultUI : MonoBehaviour
     public void OnReturnButtonClicked()
     {
         //Player.Instance.EnterMoveMod();
+        Player.Instance.BackToVillage();
         Player.Instance.Respawn();
 
         SceneManager.LoadScene(1);

@@ -104,7 +104,7 @@ public class DungeonPauseUI : MonoBehaviour
 
         if (Player.Instance != null)
         {
-            Player.Instance.EnterMoveMod();
+            Player.Instance.BackToVillage();
             Player.Instance.Respawn();
         }
         SceneManager.LoadScene(1);

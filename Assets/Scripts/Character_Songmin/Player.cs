@@ -123,7 +123,14 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _stat.GetHp(_stat.Hp);   // 최대체력 기준으로 회복
         if (data.PlayerPosition != Vector3.zero)
         {
-            transform.position = data.PlayerPosition;
+            if (data.PlayerPosition.x > 6.5f)
+            {
+                transform.position = new Vector2(6.5f, -2.5f);
+            }
+            else
+            {
+                transform.position = data.PlayerPosition;
+            }                
         }
 
         PushAllUI();
