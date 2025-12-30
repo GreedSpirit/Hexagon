@@ -110,8 +110,10 @@ public class HandManager : MonoBehaviour
 
     private void Update()
     {
-        // 우클릭 릴리즈
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
+        // 우클릭 릴리즈 혹은
+        // ESC 로 정지 시
+        if ((Mouse.current != null && Mouse.current.rightButton.wasReleasedThisFrame) ||
+            (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame))
         {
             // 선택된 카드가 있을 때 && 선택 카드의 드래그 상태
             if (SelectedCard != null && SelectedCard.IsDragging == false)
@@ -184,6 +186,9 @@ public class HandManager : MonoBehaviour
         // 덱큐에서 카드 한장 뽑기
         int cardID = _deck.Dequeue();
 
+        // 덱 카운트 갱신
+        _deckUI?.UpdateDeckCountText();
+
         // ID 카드 데이터 가져오기
         CardData cardData = DataManager.Instance.GetCard(cardID);
 
@@ -224,9 +229,6 @@ public class HandManager : MonoBehaviour
 
         // 카드 내용 대상 상태이상 따라 한 번 체크
         TargetStatusValueChanged();
-
-        // 덱 카운트 갱신
-        _deckUI?.UpdateDeckCountText();
 
         // 정렬
         AlignCards();

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class SettingUI : MonoBehaviour
 {
     [SerializeField] GameObject _setting;
+    [SerializeField] GameObject _exit;
 
     [Header("볼륨 조절 슬라이더")]
     [SerializeField] Slider _masterSlider;
@@ -18,7 +19,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] Toggle _masterToggle;
     [SerializeField] Toggle _bgmToggle;
     [SerializeField] Toggle _sfxToggle;
-    
+
     [Header("볼륨 수치 텍스트")]
     [SerializeField] TextMeshProUGUI _masterText;
     [SerializeField] TextMeshProUGUI _bgmText;
@@ -34,6 +35,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] Sprite _soundOffSprite; // 소리 Off
 
     public bool isActive => _setting.activeSelf;   // 활성화 상태
+    private string _currentSceneName;
     private GameObject _upgradePanel;
     private bool isActiveUpgrade;
 
@@ -85,23 +87,34 @@ public class SettingUI : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        _currentSceneName = scene.name;
+
         // 이 씬만
-        if (scene.name != "TestBuildScene_LJH") return;
+        if (scene.name == "TestBuildScene_LJH")
+        {
+            // 일단 활성화된 캔버스
+            GameObject villageCanvas = GameObject.Find("VillageCanvas");
 
-        // 일단 활성화된 캔버스
-        GameObject villageCanvas = GameObject.Find("VillageCanvas");
+            // 캔버스의 자식 중 강화 패널
+            Transform upgradePanelTrans = villageCanvas.transform.Find("UpgradePanel");
 
-        // 캔버스의 자식 중 강화 패널
-        Transform upgradePanelTrans = villageCanvas.transform.Find("UpgradePanel");
-
-        if (upgradePanelTrans != null)
-            _upgradePanel = upgradePanelTrans.gameObject;
+            if (upgradePanelTrans != null)
+                _upgradePanel = upgradePanelTrans.gameObject;
+        }
+        // 다른 씬 가면 일단 끄기
+        else
+        {
+            _setting.SetActive(false);
+        }
 
     }
 
     private void Update()
     {
-        if(_upgradePanel?.activeSelf == true && isActiveUpgrade == false) isActiveUpgrade = true;
+        if(_currentSceneName == "TestBuildScene_LJH")
+        {
+            if (_upgradePanel?.activeSelf == true && isActiveUpgrade == false) isActiveUpgrade = true;
+        }
 
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
@@ -109,7 +122,7 @@ public class SettingUI : MonoBehaviour
             if (Player.Instance?.IsTalking == true) return;
 
             // 배틀씬 제외
-            if (SceneManager.GetActiveScene().name == "DungeonBattleScene") return;
+            if (_currentSceneName == "DungeonBattleScene") return;
 
             // 강화패널 켜져있으면 무시
             if (isActiveUpgrade == true)
@@ -178,6 +191,8 @@ public class SettingUI : MonoBehaviour
         _setting.SetActive(!_setting.activeSelf);
         // 패널 켜면 UI 초기화
         if (_setting.activeSelf) InitUI();
+
+        _exit?.SetActive(false);
     }
 
     // 종료 확인

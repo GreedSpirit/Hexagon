@@ -440,8 +440,8 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     // 카드 선택 해지
     public void Deselect()
     {
-        // 선택 상태일 때
-        if (_currentState == CardUIState.Selected)
+        // 선택, 드래그 상태일 때
+        if (_currentState == CardUIState.Selected || _currentState == CardUIState.Drag)
         {
             // 복귀 상태로 전환
             ChangeState(CardUIState.Return);
