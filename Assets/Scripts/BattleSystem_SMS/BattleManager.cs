@@ -95,6 +95,14 @@ public class BattleManager : MonoBehaviour
         Player.Instance.ApplyStatusEffect();        
         _phaseChanger.ChangePhase(new DrawPhase());        
     }
+
+    public void EndPhase()
+    {
+        _battleUIManager.StopTimer();
+        _phaseChanger.ChangePhase(new EndPhase());        
+        Player.Instance.ResetShield();        
+    }
+
     //-----------------------------------------------------------------
     public void SetMonster(MonsterStatus monster)
     {
