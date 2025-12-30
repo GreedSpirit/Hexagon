@@ -125,6 +125,8 @@ public class DungeonManager : MonoBehaviour
     {
         monster.OnMonsterDeath -= HandleMonsterDeath; // 죽으면 파괴 되거나 비활성화 될테니까 구독 해제
 
+        _battleManager.EndPhase();
+
         // 보스였는지 확인
         if(monster.MonsterData.MonGrade == MonsterGrade.Boss)
         {
