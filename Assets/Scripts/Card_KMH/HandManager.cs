@@ -228,9 +228,6 @@ public class HandManager : MonoBehaviour
             return;
         }
 
-        // 드로우 클립 재생
-        SoundManager.Instance.PlaySFX(_drawClip);
-
         // 리스트 추가
         _handCards.Add(cardLogic);
 
@@ -435,6 +432,9 @@ public class HandManager : MonoBehaviour
             // 카드 뽑기
             DrawCard();
 
+            // 드로우 클립 재생
+            SoundManager.Instance.PlaySFX(_drawClip);
+
             // 카드 뽑기 종료 이벤트
             OnDrawEnd?.Invoke();
         }
@@ -451,6 +451,9 @@ public class HandManager : MonoBehaviour
                 {
                     DrawCard();
                 }
+
+                // 드로우 클립 재생
+                SoundManager.Instance.PlaySFX(_drawClip);
             }
         }
         // 플레이어턴 끝나면

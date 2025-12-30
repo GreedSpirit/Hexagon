@@ -121,8 +121,14 @@ public class SettingUI : MonoBehaviour
             // 대화중이면 무시
             if (Player.Instance?.IsTalking == true) return;
 
-            // 배틀씬 제외
-            if (_currentSceneName == "DungeonBattleScene") return;
+            // 배틀씬은 버튼 눌러서 켜져있을 때만
+            if (_currentSceneName == "DungeonBattleScene")
+            {
+                if(_setting.activeSelf == true)
+                    SetActivePanel();
+
+                return;
+            }
 
             // 강화패널 켜져있으면 무시
             if (isActiveUpgrade == true)
