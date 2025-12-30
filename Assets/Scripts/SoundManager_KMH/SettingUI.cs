@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -17,7 +18,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] Toggle _masterToggle;
     [SerializeField] Toggle _bgmToggle;
     [SerializeField] Toggle _sfxToggle;
-    
+
     [Header("볼륨 수치 텍스트")]
     [SerializeField] TextMeshProUGUI _masterText;
     [SerializeField] TextMeshProUGUI _bgmText;
@@ -33,6 +34,8 @@ public class SettingUI : MonoBehaviour
     [SerializeField] Sprite _soundOffSprite; // 소리 Off
 
     public bool isActive => _setting.activeSelf;   // 활성화 상태
+    private GameObject _upgradePanel;
+    private bool isActiveUpgrade;
 
     private void Start()
     {
@@ -76,10 +79,36 @@ public class SettingUI : MonoBehaviour
         });
         // UI 초기화
         InitUI();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 이 씬만
+        if (scene.name == "TestBuildScene_LJH")
+        {
+            // 일단 활성화된 캔버스
+            GameObject villageCanvas = GameObject.Find("VillageCanvas");
+
+            // 캔버스의 자식 중 강화 패널
+            Transform upgradePanelTrans = villageCanvas.transform.Find("UpgradePanel");
+
+            if (upgradePanelTrans != null)
+                _upgradePanel = upgradePanelTrans.gameObject;
+        }
+        // 다른 씬 가면 일단 끄기
+        else
+        {
+            _setting.SetActive(false);
+        }
+
     }
 
     private void Update()
     {
+        if (_upgradePanel?.activeSelf == true && isActiveUpgrade == false) isActiveUpgrade = true;
+
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             // 대화중이면 무시
@@ -87,6 +116,13 @@ public class SettingUI : MonoBehaviour
 
             // 배틀씬 제외
             if (SceneManager.GetActiveScene().name == "DungeonBattleScene") return;
+
+            // 강화패널 켜져있으면 무시
+            if (isActiveUpgrade == true)
+            {
+                isActiveUpgrade = false;
+                return;
+            }
 
             SetActivePanel();
         }

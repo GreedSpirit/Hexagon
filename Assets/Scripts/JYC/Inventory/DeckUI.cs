@@ -35,6 +35,9 @@ public class DeckUI : MonoBehaviour
     [Header("Popup UI")]
     [SerializeField] DungeonInfoPanel _dungeonInfoPanel;
 
+    [Header("Main Player UI")]
+    [SerializeField] GameObject _mainPlayerUI;
+
     private SettingUI _cachedSettingUI;
 
     private void Start()
@@ -158,10 +161,18 @@ public class DeckUI : MonoBehaviour
         if (_cachedSettingUI == null) _cachedSettingUI = FindFirstObjectByType<SettingUI>();
         if (_cachedSettingUI != null) _cachedSettingUI.enabled = true;
 
-        GameSaveManager.Instance.LoadGame();
+        if (_mainPlayerUI != null)
+        {
+            _mainPlayerUI.SetActive(true);
+        }
+
         // DeckUI 끄기
         Player.Instance.Currentvillage.VillageManager.OnOffVillageName(true);
-        Player.Instance.EnterMoveMod();
+        if (Player.Instance != null)
+        {
+            Player.Instance.SwitchIsTalking(false); // 대화 끝났다고 알림
+            Player.Instance.EnterMoveMod();         // 이동 모드로 전환
+        }
         this.gameObject.SetActive(false);
         if (uiBackground != null) uiBackground.SetActive(false);
         // 인벤토리 정리 (끄거나 모드 해제)
