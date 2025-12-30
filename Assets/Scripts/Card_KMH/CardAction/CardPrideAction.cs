@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newPrideAction", menuName = "Card Actions/Pride Action")]
-public class CardPrideAction : CardAction
+public class CardPrideAction : CardActionStatus
 {
     public override void Use(string statusEffectKey, int statusValue, int turn, IBattleUnit target)
     {

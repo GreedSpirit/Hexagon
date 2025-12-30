@@ -90,10 +90,12 @@ public class CardLogic : MonoBehaviour
 
     private int GetStatusEffectValue()
     {
+        if (Data.CardType == CardType.Attack) return Data.StatusEffectValue;
         return Data.StatusEffectValue + (Level - 1) * Data.ValuePerValue;
     }
     private int GetTurn()
     {
+        if (Data.CardType == CardType.Attack) return Data.Turn;
         return Data.Turn + (Level - 1) * Data.ValuePerValue;
     }
 
@@ -105,25 +107,27 @@ public class CardLogic : MonoBehaviour
         {
             // 타겟 설정
             IBattleUnit target = Data.Target == Target.Self ? _handManager.TargetPlayer : _handManager.TargetMonster;
-            
-            if(Data.CardType == CardType.Spell)
+
+            // 상태이상
+            if (action is CardActionStatus cardStatus)
             {
                 // 카드 수치 가져오기
                 int statusEffectValue = GetStatusEffectValue();
                 int turnValue = GetTurn();
+
                 // 사용 (상태이상 키, 상태이상 부여 수치, 턴 수치, 적용 대상)
                 action.Use(Data.StatusEffect, statusEffectValue, turnValue, target);
 
-                // 효과 체크
+                // 효과 체크 (UI 갱신 등)
                 _handManager.TargetStatusValueChanged();
             }
-            else
+            else // 그 외 행동
             {
-                // 카드 수치 가져오기
+                // 카드 수치 가져오기 (공격력, 방어력 등)
                 int cardValue = GetValue();
-                // 사용 (상태이상 키, 카드 계산 수치, 적용 대상)
-                action.Use(cardValue, target);
 
+                // 사용 (일반 수치, 적용 대상)
+                action.Use(cardValue, target);
             }
         }
 

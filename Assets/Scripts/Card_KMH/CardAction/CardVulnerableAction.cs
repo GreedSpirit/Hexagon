@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newVulnerableAction", menuName = "Card Actions/Vulnerable Action")]
-public class CardVulnerableAction : CardAction
+public class CardVulnerableAction : CardActionStatus
 {
     public override void Use(string statusEffectKey, int statusValue, int turn, IBattleUnit target)
     {

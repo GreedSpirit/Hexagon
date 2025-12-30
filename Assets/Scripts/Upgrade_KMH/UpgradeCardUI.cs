@@ -184,10 +184,12 @@ public class UpgradeCardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterH
     }
     private int GetStatusEffectValue(int level)
     {
+        if (_cardData.CardType == CardType.Attack) return _cardData.StatusEffectValue;
         return _cardData.StatusEffectValue + (level - 1) * _cardData.ValuePerValue;
     }
     private int GetTurn(int level)
     {
+        if (_cardData.CardType == CardType.Attack) return _cardData.StatusEffectValue;
         return _cardData.Turn + (level - 1) * _cardData.ValuePerValue;
     }
 

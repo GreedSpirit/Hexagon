@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newDespairAction", menuName = "Card Actions/Despair Action")]
-public class CardDespairAction : CardAction
+public class CardDespairAction : CardActionStatus
 {
     public override void Use(string statusEffectKey, int statusValue, int turn, IBattleUnit target)
     {

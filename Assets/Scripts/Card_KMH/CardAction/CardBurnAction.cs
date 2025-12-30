@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newBurnAction", menuName = "Card Actions/Burn Action")]
-public class CardBurnAction : CardAction
+public class CardBurnAction : CardActionStatus
 {
     public override void Use(string statusEffectKey, int statusValue, int turn, IBattleUnit target)
     {

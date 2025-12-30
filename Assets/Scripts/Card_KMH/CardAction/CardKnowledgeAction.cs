@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newKnowledgeAction", menuName = "Card Actions/Knowledge Action")]
-public class CardKnowledgeAction : CardAction
+public class CardKnowledgeAction : CardActionStatus
 {
     public override void Use(string statusEffectKey, int statusValue, int turn, IBattleUnit target)
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newStigmaAction", menuName = "Card Actions/Stigma Action")]
-public class CardStigmaAction : CardAction
+public class CardStigmaAction : CardActionStatus
 {
     public override void Use(string statusEffectKey, int statusValue, int turn, IBattleUnit target)
     {
