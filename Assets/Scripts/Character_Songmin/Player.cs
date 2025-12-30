@@ -457,12 +457,18 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
             return;
         TalkUI.UpdateScenario();
     }
+    public void ResetScenarioPlayed(Trigger_Type type)
+    {
+        if (_scenarioPlayer != null)
+        {
+            _scenarioPlayer._playedScenarios.Remove(type);
+        }
+    }
 
-    
 
     //----------------------------------------------------------
     // UI 온오프 관련 함수들
-    
+
     public void SwitchIsTalking(bool talking)
     {
         IsTalking = talking;

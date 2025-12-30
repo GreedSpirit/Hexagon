@@ -25,6 +25,9 @@ public class ScenarioPlayer : MonoBehaviour
 
     public bool IsScenarioPlayed(Trigger_Type trigger)
     {
+        if (trigger == Trigger_Type.gamestart)
+            return Player.Instance.ScenarioPlayIndex > 0;
+
         return _playedScenarios.Contains(trigger);
     }
 
