@@ -59,6 +59,8 @@ public class PlayerModelController : MonoBehaviour
 
     public void ResetModel()
     {
+        _animator.Rebind();
+        _animator.Update(0f);
         gameObject.transform.localScale = _originScale;
     }
 
