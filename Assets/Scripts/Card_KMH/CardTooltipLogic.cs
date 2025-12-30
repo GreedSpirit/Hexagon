@@ -75,8 +75,13 @@ public class CardTooltipLogic : MonoBehaviour
 
     public void PointerExitParent()
     {
+        // 비활성화
         _tooltipUI?.gameObject.SetActive(false);
 
+        // 다시 원래 부모로
         _tooltipUI.transform.SetParent(_baseParent, false);
+
+        // 위치 꼬일 수도 있으니까
+        _tooltipUI.transform.localPosition = Vector3.zero;
     }
 }
