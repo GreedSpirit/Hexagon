@@ -61,7 +61,7 @@ public class UIMonsterTooltip : MonoBehaviour
         {
             case BuffType.Buff: return "#00FF00";   // 초록 (강화)
             case BuffType.DeBuff: return "#FF0000"; // 빨강 (약화)
-            case BuffType.DoT: return "#FFA500";    // 주황 (상태이상/도트)
+            case BuffType.DoT: return "#F5923F";    // 주황 (상태이상/도트)
             default: return "#FFFFFF";
         }
     }
@@ -69,8 +69,9 @@ public class UIMonsterTooltip : MonoBehaviour
     // 효과 설명을 동적으로 생성하는 로직
     private string GenerateDescription(MonsterStatusEffectInstance effect)
     {
-        string durationText = effect.Duration > 0 ? $"턴 : {effect.Duration}" : $"스택 : {effect.Stack}";
+        string durationText = effect.decreaseType == DecreaseType.Turn ? $"턴 : " : $"스택 : ";
+        int showint = Mathf.Max(effect.Duration, effect.Stack);
 
-        return $"{DataManager.Instance.GetString(effect.Desc).Korean} 남은 {durationText}";
+        return $"{DataManager.Instance.GetString(effect.Desc).Korean} 남은 {durationText}{showint}";
     }
 }

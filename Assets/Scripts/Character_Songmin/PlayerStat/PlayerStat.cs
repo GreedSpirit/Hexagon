@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerStat
 {
@@ -147,18 +146,22 @@ public class PlayerStat
             CurrentExp = NeedExp;
             return;
         }
+
         CurrentExp += exp;
-        if (CurrentExp >= NeedExp && Level < LevelList.Count)
+
+        while (CurrentExp >= NeedExp && Level < LevelList.Count)
         {
             CurrentExp -= NeedExp;
             LevelUp();
             Player.Instance.GetLevelUp();
         }
+
         if (Level >= LevelList.Count)
         {
             CurrentExp = NeedExp;
         }
     }
+
 
     private void Die()
     {
