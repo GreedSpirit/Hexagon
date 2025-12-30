@@ -101,6 +101,8 @@ public class SettingUI : MonoBehaviour
 
     private void Update()
     {
+        if(_upgradePanel?.activeSelf == true && isActiveUpgrade == false) isActiveUpgrade = true;
+
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             // 대화중이면 무시
@@ -110,7 +112,11 @@ public class SettingUI : MonoBehaviour
             if (SceneManager.GetActiveScene().name == "DungeonBattleScene") return;
 
             // 강화패널 켜져있으면 무시
-            if (_upgradePanel?.activeSelf == true) return;
+            if (isActiveUpgrade == true)
+            {
+                isActiveUpgrade = false;
+                return;
+            }
 
             SetActivePanel();
         }
