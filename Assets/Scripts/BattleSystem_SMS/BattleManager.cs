@@ -80,7 +80,7 @@ public class BattleManager : MonoBehaviour
     }
 
     public void EndPlayerPhase()//플레이어 턴 종료 단추에 연결
-    {               
+    {        
         _battleUIManager.StopTimer();
         _currentMonster.ApplyStatusEffect();
         _phaseChanger.ChangePhase(new EnemyActPhase()); //이펙트 생기면 이부분 지우고 아래 두줄 활성화
@@ -95,6 +95,15 @@ public class BattleManager : MonoBehaviour
         Player.Instance.ApplyStatusEffect();        
         _phaseChanger.ChangePhase(new DrawPhase());        
     }
+
+    public void EndPhase()
+    {
+        OnOffBattleUI(false);
+        _battleUIManager.StopTimer();
+        _phaseChanger.ChangePhase(new EndPhase());        
+        Player.Instance.ResetShield();        
+    }
+
     //-----------------------------------------------------------------
     public void SetMonster(MonsterStatus monster)
     {
