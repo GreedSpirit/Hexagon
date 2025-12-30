@@ -232,7 +232,42 @@ public class CardManager : MonoBehaviour
             GetExp(cardId);
         }
     }
+    public void AddKeyCard(string cardKey, int amount = 1)
+    {
+        // 카드 데이터 호출
+        CardData data = DataManager.Instance.GetCard(cardKey);
 
+        // 오타나 데이터 누락으로 null일 경우 에러 처리
+        if (data == null)
+        {
+            Debug.LogError($"[CardManager] '{cardKey}'라는 키를 가진 카드를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 데이터에서 ID 추출
+        int cardId = data.Id;
+
+        // 이후 로직은 기존과 동일하게 ID 사용
+        var existingCard = UserCardList.Find(x => x.CardId == cardId);
+
+        if (existingCard != null)
+        {
+            existingCard.Count = Mathf.Min(existingCard.Count + amount, 99);
+        }
+        else
+        {
+            UserCardList.Add(new UserCard()
+            {
+                CardId = cardId,
+                Level = 1,
+                Count = Mathf.Min(amount, 99),
+                AcquiredTime = System.DateTime.Now
+            });
+
+            // 미보유 카드 획득 시 플레이어 경험치 획득
+            GetExp(cardId);
+        }
+    }
     // 특정 카드 가져오기
     public UserCard GetCard(int cardId)
     {
