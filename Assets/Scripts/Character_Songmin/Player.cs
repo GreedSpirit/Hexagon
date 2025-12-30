@@ -32,6 +32,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     public bool IsTalking { get; set; }
 
     Action _afterScenarioAction;
+    bool _scenarioRequestInProgress = false;
+
 
     public Trigger_Type CurrentPlayedScenario { get; private set; }
 
@@ -588,6 +590,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         _afterScenarioAction?.Invoke();
         _afterScenarioAction = null;
 
+        _scenarioRequestInProgress = false;
+
         ResolveInputState();
     }
     public void ResolveInputState()
@@ -620,10 +624,16 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
     }
 
     private IEnumerator PlayScenarioGuaranteedRoutine(
-    Trigger_Type type,
-    Action afterScenario
-)
+     Trigger_Type type,
+     Action afterScenario
+ )
     {
+        // 이미 요청 중이면 무시
+        if (_scenarioRequestInProgress)
+            yield break;
+
+        _scenarioRequestInProgress = true;
+
         _afterScenarioAction = afterScenario;
         CurrentPlayedScenario = type;
 
@@ -632,21 +642,19 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         {
             _afterScenarioAction?.Invoke();
             _afterScenarioAction = null;
+            _scenarioRequestInProgress = false;
             yield break;
         }
 
         // DataManager 준비 대기
-        while (DataManager.Instance == null)
+        while (DataManager.Instance == null || !DataManager.Instance.IsReady)
             yield return null;
-
-        //// TalkUI 준비
-        //if (TalkUI == null)
-        //    SetTalkUI();
 
         EnterScenarioMod();
 
-        // 시작될 때까지 대기
+        // 실제 시작될 때까지 대기
         while (!_scenarioPlayer.RequestScenario(type))
             yield return null;
     }
+
 }
