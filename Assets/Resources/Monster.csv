@@ -6,4 +6,4 @@ Id,MonsterKey,Name,Desc,MonGrade,HpRate,DefRate,MoveSpeed,SkillSet,Model,Img
 3,KeyMonster03,NameMonsterEvilWizard,DescMonsterEvilWizard,Boss,1,1,3,KeySkillSet03,EvilWizard,Img_Boss_Pride
 4,KeyMonster04,NameMonsterDemonEasy,DescMonsterDemonEasy,Normal,0.25,1,3,KeySkillSet01,Demon,Img_Monster_Demon
 5,KeyMonster05,NameMonsterPriestEasy,DescMonsterPriestEasy,Normal,0.4,1,3,KeySkillSet02,Priest,Img_Monster_Priest
-6,KeyMonster06,NameMonsterEvilWizardEasy,DescMonsterEvilWizardEasy,Boss,0.5,1,3,KeySkillSet03,EvilWizard,Img_Boss_Pride
+6,KeyMonster06,NameMonsterEvilWizardEasy,DescMonsterEvilWizardEasy,Boss,0.4,1,3,KeySkillSet03,EvilWizard,Img_Boss_Pride

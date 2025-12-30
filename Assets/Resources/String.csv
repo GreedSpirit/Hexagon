@@ -25,7 +25,7 @@ Id,Key,Korean
 22,DescCardFireless,"상대에게 {D}의 데미지를 줍니다. 대상은 ""화상""을 {SEV} 부여합니다."
 23,NameStatusBurn,화상
 24,NameStatusPride,오만
-25,DescStatusBurn,자신의 턴 시작 전 화상 스택 수 만큼 피해를 입고 화상 스택이 1 감소합니다.
+25,DescStatusBurn,자신의 턴이 끝난 후 화상을 입은 적은 그 만큼 피해를 받습니다. 피해를 받은 후 화상이 1 감소합니다.
 26,DescStatusPride,공격이 30% 더 많은 피해를 입힙니다.
 27,NameDungeonPride,우월의 심연
 28,DescDungeonPride,오만의 정령으로 인해 어지럽혀진 숲
@@ -66,7 +66,7 @@ Id,Key,Korean
 63,DescCardOldBookStigma,고서의 힘을 빌려 대상에게 낙인을 {turns} 부여합니다.
 64,DescCardBanBookDespair,금서의 힘을 빌려 대상에게 절망을 {turns} 부여합니다.
 65,DescCardCorrodedInk,부식된 잉크를 대상에게 주입해 중독을 {SEV} 부여합니다.
-66,DescCardSpreadingStain,고서 속 얼룩을 대상에게 전이해 중독을 {SEV{ 부여합니다.
+66,DescCardSpreadingStain,고서 속 얼룩을 대상에게 전이해 중독을 {SEV} 부여합니다.
 67,DescCardAshes,다 타버린 금서의 페이지를 적에게 부착해 화상을 {SEV} 부여합니다.
 68,DescCardOldBookHeatRelease,고서 속 마력을 열기로 변환해 적에게 화상을 {SEV} 부여합니다.
 69,NameStatusKnowledge,지식
@@ -74,7 +74,7 @@ Id,Key,Korean
 71,NameStatusPoison,중독
 72,DescStatusKnowledge,공격이 15% 더 많은 피해를 줍니다
 73,DescStatusDespair,공격으로부터 50% 더 많은 피해를 입습니다.
-74,DescStatusPoison,자신의 턴 시작 전 중독 스택 수 만큼 피해를 입고 중독 스택이 1 감소합니다.
+74,DescStatusPoison,자신의 턴이 끝난 후 중독된 적은 그 만큼 피해를 받습니다. 피해를 받은 후 중독이 1 감소합니다.
 75,NamePcErion,에리온
 76,NameNpcLibra,리브라
 77,NameNpcLionel,리오넬

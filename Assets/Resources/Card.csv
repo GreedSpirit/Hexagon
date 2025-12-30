@@ -7,10 +7,10 @@ Id,Key,Name,IsCard,Desc,CardGrade,Target,CardType,BaseValue,ValuePerLevel,Status
 4,KeyCardLazer,NameCardLazer,false,DescCardLazer,Rare,Enemy,Spell,0,0,KeyStatusBurn,3,0,
 5,KeyCardPsychoKinesis,NameCardPsychoKinesis,false,DescCardPsychoKinesis,Common,Enemy,Attack,5,1,,0,0,Img_BossCard_PsychoKinesis
 6,KeyCardPride,NameCardPride,false,DescCardPride,Legendary,Self,Spell,0,0,KeyStatusPride,0,2,Img_BossCard_Pride
-7,KeyCardLeap,NameCardLeap,false,DescCardLeap,Rare,Enemy,Healing,10,2,,0,0,Img_BossCard_Leap
+7,KeyCardLeap,NameCardLeap,false,DescCardLeap,Common,Enemy,Healing,6,2,,0,0,Img_BossCard_Leap
 8,KeyCardFireless,NameCardFireless,false,DescCardFireless,Epic,Enemy,Attack,4,1,KeyStatusBurn,3,0,Img_BossCard_Fireless
 9,KeyCardBanBookThrowing,NameCardBanBookThrowing,true,DescCardBanBookThrowing,Common,Enemy,Attack,5,1,,,,Img_Card_BanBookThrowing
-10,KeyCardOldBookBreakDown,NameCardOldBookBreakDown,true,DescCardOldBookBreakDown,Common,Enemy,Attack,6,1,,,,Img_Card_OldBookBreakDown
+10,KeyCardOldBookBreakDown,NameCardOldBookBreakDown,true,DescCardOldBookBreakDown,Common,Enemy,Attack,7,1,,,,Img_Card_OldBookBreakDown
 11,KeyCardWeightOfKnowledge,NameCardWeightOfKnowledge,true,DescCardWeightOfKnowledge,Rare,Enemy,Attack,9,1,,,,Img_Card_WeightOfKnowledge
 12,KeyCardRecordExpunged,NameCardRecordExpunged,true,DescCardRecordExpunged,Epic,Enemy,Attack,13,2,,,,Img_Card_RecordExpunged
 13,KeyCardBanBookCrush,NameCardBanBookCrush,true,DescCardBanBookCrush,Rare,Enemy,Attack,8,2,,,,Img_Card_BanBookCrush
