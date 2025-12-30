@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpriteDatabase
   allSprites:
   - {fileID: 21300000, guid: 9160bce851c4d55468f2b32ab5720193, type: 3}
-  - {fileID: 21300000, guid: 84fab59841218d1498ab31401a1f5bb9, type: 3}
+  - {fileID: 21300000, guid: aa8a2a4038fd825489cdea623f284e72, type: 3}
   - {fileID: 21300000, guid: 48e2d1aac41342442a12641209b173c2, type: 3}
   - {fileID: 21300000, guid: 38616a18e3d9acc4daa0d8f7c0586631, type: 3}
   - {fileID: 21300000, guid: 28b419ce504c42540960ed681bfa27ea, type: 3}
   - {fileID: 21300000, guid: 0c70465ce52944e4bb2fd9dd5a7c3a5a, type: 3}
-  - {fileID: 21300000, guid: 98d697f7b94b46143a091059a06f925d, type: 3}
-  - {fileID: 21300000, guid: f0f98de304bb7a942a6532cf34630bbb, type: 3}
+  - {fileID: 21300000, guid: 7834909a94dbf3d4b9a20690b518c199, type: 3}
+  - {fileID: 21300000, guid: ba739d168b2d8b545aef8abc39c8a6bf, type: 3}
   - {fileID: 21300000, guid: 82545600a668b254299e68489fa19252, type: 3}
   - {fileID: 21300000, guid: 3ad0d975437aea643b05e229021c50f9, type: 3}
   - {fileID: 21300000, guid: db814f515f0d77f42a2aacf989e9e653, type: 3}
   - {fileID: 21300000, guid: 8b48923d39d3dc54389af727d98f69a2, type: 3}
   - {fileID: 21300000, guid: 6f1bc29e2a765cf4ab21bbe0b2ce1bf5, type: 3}
   - {fileID: 21300000, guid: 863d0e9c0bd247a4cbe28258e1fab1b9, type: 3}
-  - {fileID: 21300000, guid: 23fc3f8bdb5e6c6469b67b626d1a61fd, type: 3}
+  - {fileID: 21300000, guid: b289dcd68d0a55e4a93f3354cc390318, type: 3}
