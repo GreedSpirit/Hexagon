@@ -2412,6 +2412,38 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[4].m_ActionName
       value: 'Battle/Esc[/Keyboard/escape]'
       objectReference: {fileID: 0}
+    - target: {fileID: 8996571324796037732, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996571324796037732, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996571324796037732, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1876203994}
+    - target: {fileID: 8996571324796037732, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996571324796037732, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996571324796037732, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996571324796037732, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996571324796037732, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 9045566944679772444, guid: f1cd6806dd5833d45a09a68be8435515, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.15
@@ -3395,6 +3427,11 @@ RectTransform:
   m_AnchoredPosition: {x: 36, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1876203994 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5934616876115137077, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+  m_PrefabInstance: {fileID: 2144565099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1891133421
 GameObject:
   m_ObjectHideFlags: 0
@@ -3624,10 +3661,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 265242412802388354, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
-      propertyPath: m_ConstraintCount
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6669470952743614735, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: m_Pivot.x
       value: 0

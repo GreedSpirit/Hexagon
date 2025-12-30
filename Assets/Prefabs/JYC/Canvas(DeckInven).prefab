@@ -3193,6 +3193,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8683578593008029969, guid: 70fc9675aaf3350479a08076fac1d943, type: 3}
     - target: {fileID: 3142012139012220027, guid: d33289d3aec7e5146be3c7d960836227, type: 3}
+      propertyPath: _backgroundGroup
+      value: 
+      objectReference: {fileID: 6409995668381033455}
+    - target: {fileID: 3142012139012220027, guid: d33289d3aec7e5146be3c7d960836227, type: 3}
       propertyPath: inventoryPanelRect
       value: 
       objectReference: {fileID: 8085945554763910177}
@@ -3200,6 +3204,14 @@ PrefabInstance:
       propertyPath: backgroundPanelImage
       value: 
       objectReference: {fileID: 2755506641497003685}
+    - target: {fileID: 3142012139012220027, guid: d33289d3aec7e5146be3c7d960836227, type: 3}
+      propertyPath: objectsToHide.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3142012139012220027, guid: d33289d3aec7e5146be3c7d960836227, type: 3}
+      propertyPath: 'objectsToHide.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3430606232278965689}
     - target: {fileID: 3854918105749502847, guid: d33289d3aec7e5146be3c7d960836227, type: 3}
       propertyPath: m_SizeDelta.x
       value: 700
