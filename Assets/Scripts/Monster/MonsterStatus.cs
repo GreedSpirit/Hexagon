@@ -500,8 +500,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     }
 
 
-    //! 유니티 에디터를 사용할 때 체력 소모 이벤트에 대한 테스트를 위한 코드 추후 삭제 필요
-    #if UNITY_EDITOR
+    //TODO 유니티 에디터를 사용할 때 체력 소모 이벤트에 대한 테스트를 위한 코드 추후 삭제 필요
     public void TestTakeDamage()
     {
         TakeDamage(10);
@@ -534,7 +533,6 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         AddStatusEffect("KeyStatusVulnerable", 2, 0);
     }
-    #endif
 
 
     private void PlayMonsterSound(MonsterSoundType type)
