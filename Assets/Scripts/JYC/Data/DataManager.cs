@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 public enum SpriteType
 {
     Character,
@@ -24,6 +25,7 @@ public interface TableKey
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
+    public bool IsReady { get; private set; }
 
     [Header("Sprite Databases")]
     public SpriteDatabase characterDB;
@@ -101,7 +103,8 @@ public class DataManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             InitSpriteDB();
             LoadAllData();
-        }
+            IsReady = true;
+}
         else
         {
             Destroy(gameObject);
