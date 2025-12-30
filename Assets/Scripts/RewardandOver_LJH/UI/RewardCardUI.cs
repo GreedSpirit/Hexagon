@@ -105,7 +105,7 @@ public class RewardCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         if (_gradeColorImg == null || _gradeColors == null || _gradeColors.Length == 0) return;
 
-        int gradeIndex = (int)_cardData.CardGrade;
+        int gradeIndex = (int)_cardData.CardGrade - 1;
         if (gradeIndex >= 0 && gradeIndex < _gradeColors.Length)
         {
             _gradeColorImg.color = _gradeColors[gradeIndex];
