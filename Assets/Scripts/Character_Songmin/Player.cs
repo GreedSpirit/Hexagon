@@ -367,7 +367,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
 
     public void SetDeadMotion(bool die)
     {
-        _animator.SetBool("IsDead", die);
+        _animator.SetBool("IsDie", die);
     }
 
     //------------------------------------------------------
