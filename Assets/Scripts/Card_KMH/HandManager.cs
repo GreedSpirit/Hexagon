@@ -391,7 +391,6 @@ public class HandManager : MonoBehaviour
     {
         // 플레이어 강화 수치
         float playerBuff = Player.Instance.GetBuff();
-        Debug.Log("플레이어 버프 : " + playerBuff);
         // 몬스터 약화 수치
         float monsterDeBuff = 0;
         // 몬스터 방어력
