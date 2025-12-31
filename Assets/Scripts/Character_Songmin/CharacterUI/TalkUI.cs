@@ -377,6 +377,7 @@ public class TalkUI : MonoBehaviour
     //컷 이미지용 연출 코루틴
     IEnumerator CutImageRoutine(ScenarioData data)
     {
+        _isScenarioTransitioning = true;
         if (string.IsNullOrEmpty(_currentCutImageKey) && string.IsNullOrEmpty(data.Image_ID))
         {
             yield break;
@@ -404,6 +405,7 @@ public class TalkUI : MonoBehaviour
             yield return FadeInCutImage(data.Image_ID);
             yield break;
         }
+        _isScenarioTransitioning = false;
     }
 
     IEnumerator FadeInCutImage(string key)
