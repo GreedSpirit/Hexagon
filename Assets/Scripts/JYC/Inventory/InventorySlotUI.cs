@@ -32,12 +32,17 @@ public class InventorySlotUI : MonoBehaviour,
     private InventoryUI _parentUI;
     private bool _isSelected = false;
     private static GameObject _dragGhost;
-
+    private int _originalIndex;
     private Canvas _myCanvas;
+    private LayoutElement _layoutElement;
+    private GameObject _dummy;
+    private int _savedIndex;
     private void Awake()
     {
         // 프리팹에 붙어있는 Canvas를 찾아옵니다.
         _myCanvas = GetComponent<Canvas>();
+        _layoutElement = GetComponent<LayoutElement>();
+        if (_myCanvas != null) _myCanvas.overrideSorting = false;
     }
 
     // 데이터 세팅
@@ -187,21 +192,38 @@ public class InventorySlotUI : MonoBehaviour,
         {
             // 확대 (기획: 테두리 빛남 + 확대)
             transform.localScale = Vector3.one * 1.2f;
-            if (_myCanvas != null)
+            if (_dummy == null)
             {
-                _myCanvas.overrideSorting = true;
-                _myCanvas.sortingOrder = 20;
+                _savedIndex = transform.GetSiblingIndex();
+
+                _dummy = new GameObject("DummySlot", typeof(RectTransform), typeof(LayoutElement));
+                _dummy.transform.SetParent(transform.parent);
+                _dummy.transform.SetSiblingIndex(_savedIndex);
+
+                RectTransform dummyRT = _dummy.GetComponent<RectTransform>();
+                RectTransform myRT = GetComponent<RectTransform>();
+                dummyRT.sizeDelta = myRT.sizeDelta;
+
+                if (_layoutElement != null) _layoutElement.ignoreLayout = true;
+                transform.SetAsLastSibling();
             }
+
+            _originalIndex = transform.GetSiblingIndex();
+
+
+            if (_myCanvas != null) _myCanvas.overrideSorting = false;
         }
         else
         {
+            if (_dummy != null)
+            {
+                Destroy(_dummy);
+                _dummy = null;
+            }
             // 원래대로 복귀
             transform.localScale = Vector3.one;
-            if (_myCanvas != null)
-            {
-                _myCanvas.overrideSorting = false;
-                _myCanvas.sortingOrder = 0;
-            }
+            if (_layoutElement != null) _layoutElement.ignoreLayout = false;
+            transform.SetSiblingIndex(_savedIndex);
         }
     }
 
@@ -270,13 +292,23 @@ public class InventorySlotUI : MonoBehaviour,
         if (_userCard == null) return;
         if (eventData.dragging) return;
         if (_isSelected) return; // 이미 선택(클릭)된 상태라면 크기 유지
+        _savedIndex = transform.GetSiblingIndex();
+        _dummy = new GameObject("DummySlot", typeof(RectTransform), typeof(LayoutElement));
+        _dummy.transform.SetParent(transform.parent); 
+        _dummy.transform.SetSiblingIndex(_savedIndex);
+        RectTransform dummyRT = _dummy.GetComponent<RectTransform>();
+        RectTransform myRT = GetComponent<RectTransform>();
+        dummyRT.sizeDelta = myRT.sizeDelta;
 
         transform.localScale = Vector3.one * 1.2f;
         selectEffect.gameObject.SetActive(true);
+        _originalIndex = transform.GetSiblingIndex();
+        if (_layoutElement != null) _layoutElement.ignoreLayout = true;
+        transform.SetAsLastSibling();
+
         if (_myCanvas != null)
         {
-            _myCanvas.overrideSorting = true;
-            _myCanvas.sortingOrder = 20;
+            _myCanvas.overrideSorting = false;
         }
     }
 
@@ -284,13 +316,14 @@ public class InventorySlotUI : MonoBehaviour,
     public void OnPointerExit(PointerEventData eventData)
     {
         if (_isSelected) return; // 선택된 상태면 줄어들지 않음
+        if (_dummy != null)
+        {
+            Destroy(_dummy);
+        }
 
         transform.localScale = Vector3.one;
         selectEffect.gameObject.SetActive(false);
-        if (_myCanvas != null)
-        {
-            _myCanvas.overrideSorting = false;
-            _myCanvas.sortingOrder = 0;
-        }
+        if (_layoutElement != null) _layoutElement.ignoreLayout = false;
+        transform.SetSiblingIndex(_savedIndex);
     }
 }
