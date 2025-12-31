@@ -11,14 +11,17 @@ public class TalkUI : MonoBehaviour
     [SerializeField] GameObject _fadePannel;
     UpgradeManager _upgradeManager;
     public Action OnScenarioEnd;
-    CanvasGroup _canvasGroup;
-    Coroutine _fadeRoutine;  
+    CanvasGroup _backgroundCanvasGroup;
+    Coroutine _fadeRoutine;
+    Coroutine _cutImageRoutine;
+
     Coroutine _effectRoutine;  
-    float fadeDuration = 0.3f;
+    float _fadeDuration = 0.3f;
     ITalkable _currentTalking;
     List<ScenarioData> _currentScenario;
     int _currentIndex;
-    
+    string _currentCutImageKey;
+
     [SerializeField] GameObject _talkPannel;
     [SerializeField] Image _backgroundPannel;
     [SerializeField] Image _leftImg;
@@ -38,7 +41,7 @@ public class TalkUI : MonoBehaviour
 
     private void Awake()
     {
-        _canvasGroup = _fadePannel.GetComponent<CanvasGroup>();
+        _backgroundCanvasGroup = _fadePannel.GetComponent<CanvasGroup>();
         _currentScenario = new List<ScenarioData>();
         _upgradeManager = FindFirstObjectByType<UpgradeManager>();
     }
@@ -117,6 +120,10 @@ public class TalkUI : MonoBehaviour
 
     public void EnterScenario(List<ScenarioData> datas)
     {
+        _currentCutImageKey = null;
+        _cutImg.sprite = null;
+        _cutImg.gameObject.SetActive(false);
+
         _currentTalking = null;
         _escButton.SetActive(false);
         _currentScenario = datas;
@@ -178,19 +185,11 @@ public class TalkUI : MonoBehaviour
 
     private void SetCutImage(ScenarioData data) //마저 작업해야 함.
     {
-        if (!string.IsNullOrEmpty(data.Image_ID))
+        if (_cutImageRoutine != null)
         {
-            _cutImg.gameObject.SetActive(true);
-            _cutImg.sprite = DataManager.Instance.GetSprite(
-                SpriteType.Character,
-                data.Image_ID
-            );
+            StopCoroutine(_cutImageRoutine);
         }
-        else
-        {
-            _cutImg.sprite = null;
-            _cutImg.gameObject.SetActive(false);
-        }
+        _cutImageRoutine = StartCoroutine(CutImageRoutine(data));
     }
 
 
@@ -326,18 +325,93 @@ public class TalkUI : MonoBehaviour
 
     IEnumerator FadeRoutine(bool isFadeIn) //true일 때 까매지고 false일 때 투명해짐(대화창을 가림)
     {
-        float start = _canvasGroup.alpha;
+        float start = _backgroundCanvasGroup.alpha;
         float end = isFadeIn ? 1f : 0f;        
         float time = 0f;
         
-        while (time < fadeDuration)
+        while (time < _fadeDuration)
         {
             time += Time.deltaTime;
-            _canvasGroup.alpha = Mathf.Lerp(start, end, time / fadeDuration);
+            _backgroundCanvasGroup.alpha = Mathf.Lerp(start, end, time / _fadeDuration);
             yield return null;
         }
-        _canvasGroup.blocksRaycasts = isFadeIn ? true : false;
-        _canvasGroup.alpha = end;
+        _backgroundCanvasGroup.blocksRaycasts = isFadeIn ? true : false;
+        _backgroundCanvasGroup.alpha = end;
+    }
+    //--------------------------------------------------------------------------------------------
+
+
+
+    //-------------------------------------------------------------------------------------------
+    //컷 이미지용 연출 코루틴
+    IEnumerator CutImageRoutine(ScenarioData data)
+    {
+        if (string.IsNullOrEmpty(_currentCutImageKey) && string.IsNullOrEmpty(data.Image_ID))
+        {
+            yield break;
+        }
+
+        if (string.IsNullOrEmpty(_currentCutImageKey) && !string.IsNullOrEmpty(data.Image_ID))
+        {
+            yield return FadeInCutImage(data.Image_ID);
+            yield break;
+        }
+
+        if (!string.IsNullOrEmpty(_currentCutImageKey) && string.IsNullOrEmpty(data.Image_ID))
+        {
+            yield return FadeOutCutImage();
+            yield break;
+        }
+
+        if (!string.IsNullOrEmpty(_currentCutImageKey) && !string.IsNullOrEmpty(data.Image_ID))
+        {
+            if (_currentCutImageKey == data.Image_ID)
+            {
+                yield break;
+            }
+            yield return FadeOutCutImage();
+            yield return FadeInCutImage(data.Image_ID);
+            yield break;
+        }
     }
 
+    IEnumerator FadeInCutImage(string key)
+    {
+        _cutImg.gameObject.SetActive(true);
+        _cutImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, key);
+
+        CanvasGroup canvasGroup = _cutImg.gameObject.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0f;
+
+        float t = 0f;
+        while (t < _fadeDuration)
+        {
+            t += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, t / _fadeDuration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = 1;
+        _currentCutImageKey = key;
+    }
+
+    IEnumerator FadeOutCutImage()
+    {
+        CanvasGroup canvasGroup = _cutImg.gameObject.GetComponent<CanvasGroup>();
+        float start = canvasGroup.alpha;
+
+        float t = 0f;
+        while (t < _fadeDuration)
+        {
+            t += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(start, 0f, t / _fadeDuration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = 0;
+        _cutImg.sprite = null;
+        _cutImg.gameObject.SetActive(false);
+
+        _currentCutImageKey = null;
+    }
 }

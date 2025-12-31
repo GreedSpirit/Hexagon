@@ -1296,6 +1296,7 @@ GameObject:
   - component: {fileID: 4222171171276626282}
   - component: {fileID: 9143926030139805204}
   - component: {fileID: 7340821025172102604}
+  - component: {fileID: 786048144181991610}
   m_Layer: 0
   m_Name: CutImage
   m_TagString: Untagged
@@ -1360,6 +1361,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &786048144181991610
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570381385324085861}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7794721555717636053
 GameObject:
   m_ObjectHideFlags: 0
