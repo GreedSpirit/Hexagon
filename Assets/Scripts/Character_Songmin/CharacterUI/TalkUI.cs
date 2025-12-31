@@ -128,6 +128,8 @@ public class TalkUI : MonoBehaviour
         _currentCutImageKey = null;
         _cutImg.sprite = null;
         _cutImg.gameObject.SetActive(false);
+        _rightImg.gameObject.SetActive(false);
+
 
         _currentTalking = null;
         _escButton.SetActive(false);
@@ -225,49 +227,83 @@ public class TalkUI : MonoBehaviour
 
     private void SetScenarioPortrait(ScenarioData data)
     {
-        if (string.IsNullOrWhiteSpace(data.Npc))
+        if (string.IsNullOrWhiteSpace(data.Npc)) // 화자 없음 = 나레이션
         {
             _characterName.text = "";
             _characterNameBox.SetActive(false);
+
+         
+            if (_rightImg.gameObject.activeSelf)
+            {
+                _rightImg.gameObject.SetActive(false);
+            }
+            if (_leftImg.gameObject.activeSelf)
+            {
+                _leftImg.gameObject.SetActive(false);
+            }
+
             _characterScript.text = data.Dialogue;
             return;
         }
-        if (data.Npc == "에리온") //화자가 에리온이라면
-        {
-            if (_characterNameBox.activeSelf == false ||_leftImg.sprite == null) // 에리온의 최초 대사라면
-            {
-                _characterNameBox.SetActive(true);
-                _leftImg.gameObject.SetActive(true); //왼쪽 초상화 오브젝트 활성화
-                _leftImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Character_Image); //왼쪽 초상화에 에리온 이미지 할당
-            }            
-            _leftImg.gameObject.GetComponent<CanvasGroup>().alpha = 1f; //왼쪽 초상화 알파값 1로 딤드 해제
-            
 
-            if (_rightImg.gameObject.activeSelf) // 오른쪽 이미지가 켜져 있다면
-            {
-                _rightImg.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f; //알파값 조정으로 딤드 처리
-            }
-            _characterName.text = data.Npc; //이름 텍스트 설정
-        }
-        else //화자가 에리온이 아니라면(Npc라면)
-        {
-            if (_characterNameBox.activeSelf == false || _rightImg.sprite == null)  //Npc의 최초 대사라면
-            {
-                _characterNameBox.SetActive(true);
-                _rightImg.gameObject.SetActive(true); //우측 초상화 오브젝트 활성화
-                _rightImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Character_Image); //우측 초상화에 Npc 할당
-            }
-            _rightImg.gameObject.GetComponent<CanvasGroup>().alpha = 1f; //딤드 처리 복구
-
-            if (_leftImg.gameObject.activeSelf) //좌측 이미지가 켜져 있다면
-            {
-                _leftImg.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f; //딤드 처리
-            }            
-            
-            _characterName.text = data.Npc; //이름 텍스트 설정
-        }
+        Sprite newSprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Character_Image);
         
+
+        if (data.Npc == "에리온") // 화자가 에리온일 때
+        {
+            if (!_characterNameBox.activeSelf)
+            {
+                _characterNameBox.SetActive(true);
+            }
+
+            _leftImg.gameObject.SetActive(true);
+
+            
+            if (_leftImg.sprite != newSprite) // 스프라이트가 다르면 교체
+            {
+                _leftImg.sprite = newSprite;
+            }
+
+            _leftImg.GetComponent<CanvasGroup>().alpha = 1f;
+
+            if (_rightImg.gameObject.activeSelf)
+            {
+                _rightImg.GetComponent<CanvasGroup>().alpha = 0.5f;
+            }
+
+            _characterName.text = data.Npc;
+        }
+        else // 화자가 NPC일 때
+        {
+            if (newSprite == null)
+            {
+                _rightImg.gameObject.SetActive(false);
+                return;
+            }
+            if (!_characterNameBox.activeSelf)
+            {
+                _characterNameBox.SetActive(true);
+            }
+
+            _rightImg.gameObject.SetActive(true);
+
+            // sprite가 다를 때만 교체
+            if (_rightImg.sprite != newSprite)
+            {
+                _rightImg.sprite = newSprite;
+            }
+
+            _rightImg.GetComponent<CanvasGroup>().alpha = 1f;
+
+            if (_leftImg.gameObject.activeSelf)
+            {
+                _leftImg.GetComponent<CanvasGroup>().alpha = 0.5f;
+            }
+
+            _characterName.text = data.Npc;
+        }
     }
+
 
     private void SetScenarioBackground(ScenarioData data)
     {

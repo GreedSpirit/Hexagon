@@ -130,7 +130,7 @@ scn_boss_seal_013,boss,pride,preseal,13,,,,오만의 정령,Img_Boss_Pride_Portr
 scn_boss_seal_014,boss,pride,preseal,14,img_show,Img_preseal_cut_01,fade_in,,,Img_Dungeon_Pride,,
 scn_boss_seal_015,boss,pride,preseal,15,img_change,Img_preseal_cut_02,fade_in,,,Img_Dungeon_Pride,,
 scn_boss_seal_016,boss,pride,preseal,16,img_hide,Img_preseal_cut_02,fade_out,,,Img_Dungeon_Pride,,
-scn_boss_seal_017,boss,pride,preseal,17,,,,시스템,,Img_Dungeon_Pride,"""▶  금서 카드 획득  오만의 정령 - 봉인됨""",
+scn_boss_seal_017,boss,pride,preseal,17,,,,,,Img_Dungeon_Pride,"""▶  금서 카드 획득  오만의 정령 - 봉인됨""",
 scn_boss_seal_018,boss,pride,preseal,18,,,,에리온,Img_PC_Erion,Img_Dungeon_Pride,"""...끝났다""",
 scn_boss_seal_019,boss,pride,preseal,19,,,,에리온,Img_PC_Erion,Img_Dungeon_Pride,"""하지만 정말, 끝난 걸까""",
 scn_boss_seal_020,boss,pride,preseal,20,,,,에리온,Img_PC_Erion,Img_Dungeon_Pride,"""저 정령의 말이 계속 남는다.""",

@@ -187,6 +187,7 @@ public class DungeonManager : MonoBehaviour
 
         // 2. 보상 인터랙션을 진행
         if(_rewardObjAnimator != null) _rewardObjAnimator.gameObject.SetActive(true);
+        _battleManager.OffTurnUI();
         bool isInteractionDone = false;
         _rewardInteraction.OnInteractionComplete = () => {isInteractionDone = true;};
         _rewardInteraction.StartInteraction();
@@ -215,8 +216,7 @@ public class DungeonManager : MonoBehaviour
         // 4. 최종 보상 결과창 띄우기
         IsRewardSequenceActive = true;
         _rewardCanvas.SetActive(true);
-        _rewardResultUI.Init(_determinedRewards, this);
-        _battleManager.OffTurnUI();
+        _rewardResultUI.Init(_determinedRewards, this);        
         _battleManager.OffHandUI();
     }
 
