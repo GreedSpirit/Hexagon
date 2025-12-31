@@ -119,7 +119,10 @@ public class RewardResultUI : MonoBehaviour
     {
         //실제 보상 획득 로직 실행
         _dungeonManager.GetRewards();
-
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.ResetDeckData();
+        }
         // [추가] 보상을 다 받았으니 저장
         GameSaveManager.Instance.SaveGame();
         Debug.Log("보상 획득 및 저장 완료");
