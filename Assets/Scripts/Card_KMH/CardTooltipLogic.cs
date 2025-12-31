@@ -92,4 +92,24 @@ public class CardTooltipLogic : MonoBehaviour
         // 위치 꼬일 수도 있으니까
         _tooltipUI.transform.localPosition = Vector3.zero;
     }
+    private void OnDisable()
+    {
+        // 카드가 비활성화되거나 파괴되기 직전 툴팁을 원래 부모로 돌려보냄
+        ReturnTooltipToSafety();
+    }
+    private void ReturnTooltipToSafety()
+    {
+        if (_tooltipUI == null) return;
+
+        // 툴팁이 현재 이 카드의 자식으로 붙어있을 때만 복구
+        if (_tooltipUI.transform.parent == tooltipPoint)
+        {
+            _tooltipUI.gameObject.SetActive(false);
+            if (_baseParent != null)
+            {
+                _tooltipUI.transform.SetParent(_baseParent, false);
+            }
+            _tooltipUI.transform.localPosition = Vector3.zero;
+        }
+    }
 }
