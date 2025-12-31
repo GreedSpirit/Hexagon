@@ -322,6 +322,13 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
     public void RemoveStatusEffect(string effectKey)
     {
         _stat.RemoveStatusEffect(effectKey);
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
+    }
+    
+    public void RemoveDebuffs()
+    {
+        _stat.RemoveDebuffs();
+        OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
 
     public void ApplyStatusEffect()

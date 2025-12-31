@@ -256,7 +256,7 @@ public class PlayerStat
     {
         StatusEffectData removeTarget = null;
 
-        if (StatusEffects.Count == 0)
+        if (StatusEffects == null || StatusEffects.Count == 0)
         {
             return;
         }
@@ -290,6 +290,35 @@ public class PlayerStat
         {
             Burn = 0;
         }
+    }
+
+    public void RemoveDebuffs()
+    {
+        List<StatusEffectData> removeTargets = new List<StatusEffectData>();
+
+        if (StatusEffects == null || StatusEffects.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var data in StatusEffects.Keys)
+        {
+            if (data.BuffType == BuffType.DeBuff)
+            {
+                removeTargets.Add(data);
+                break;
+            }
+        }
+        if (removeTargets.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var target in removeTargets)
+        {
+            DeBuff -= target.ValueFormula;
+            StatusEffects.Remove(target);
+        }        
     }
 
 
