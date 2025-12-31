@@ -18,6 +18,7 @@ public class InventoryUI : MonoBehaviour
 
     [Header("External UI Control")]
     [SerializeField] List<GameObject> _uiToHide;
+    [SerializeField] GameObject _dungeonInfoBtn;
 
     [Header("UI Positioning (패널 위치 제어)")]
     [SerializeField] RectTransform inventoryPanelRect; // 인벤토리 패널
@@ -83,7 +84,10 @@ public class InventoryUI : MonoBehaviour
 
         // 덱 UI 그룹은 덱 편성 모드일 때만 표시
         if (deckUIGroup != null) deckUIGroup.SetActive(IsDeckBuildingMode);
-
+        if (_dungeonInfoBtn != null)
+        {
+            _dungeonInfoBtn.SetActive(IsDeckBuildingMode);
+        }
         // 모드와 상관없이 항상 레이아웃 적용
         if (backgroundPanelImage != null && inventoryPanelRect != null)
         {

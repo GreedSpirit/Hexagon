@@ -2060,6 +2060,11 @@ Transform:
   - {fileID: 2008819191}
   m_Father: {fileID: 1132206423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1007003489 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3904782216346531699, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+  m_PrefabInstance: {fileID: 1005340629480731424}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1014243730
 GameObject:
   m_ObjectHideFlags: 0
@@ -4360,12 +4365,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3182100762032499410, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00014352862
+      value: -0.000036192545
       objectReference: {fileID: 0}
+    - target: {fileID: 5243876266426759633, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: _dungeonInfoBtn
+      value: 
+      objectReference: {fileID: 1007003489}
+    - target: {fileID: 5243876266426759633, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: _uiToHide.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5243876266426759633, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: '_uiToHide.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1027325993}
     - target: {fileID: 5243876266426759633, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: '_uiToHide.Array.data[1]'
       value: 
-      objectReference: {fileID: 1027325993}
+      objectReference: {fileID: 0}
     - target: {fileID: 6561599773781064200, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4468,6 +4485,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7472836956022749386, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7472836956022749386, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

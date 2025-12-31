@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class InventoryManager : MonoBehaviour
@@ -42,6 +43,30 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+    private void Update()
+    {
+        // 새 입력 시스템(Input System) 기준
+        if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
+        {
+            ToggleInventory();
+        }
+    }
+    public void ToggleInventory()
+    {
+        // 연결된 UI가 없으면 무시
+        if (_currentInventoryUI == null) return;
+
+        if (_currentInventoryUI.gameObject.activeSelf)
+        {
+            // 켜져 있다면 -> 닫기 함수 호출
+            _currentInventoryUI.CloseInventory();
+        }
+        else
+        {
+            // 꺼져 있다면 -> 열기 함수 호출
+            OpenInventory();
         }
     }
     private void OnEnable()
