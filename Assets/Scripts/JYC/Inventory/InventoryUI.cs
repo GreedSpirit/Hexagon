@@ -206,6 +206,11 @@ public class InventoryUI : MonoBehaviour
         if (_cachedSettingUI == null) _cachedSettingUI = FindFirstObjectByType<SettingUI>();
         if (_cachedSettingUI != null) _cachedSettingUI.enabled = false;
 
+        if (Player.Instance != null)
+        {
+            Player.Instance.SetStatUIView(false);
+        }
+
         ControlExternalUI(false); // 외부 UI 끄기
         RefreshInventory();
 
@@ -217,6 +222,11 @@ public class InventoryUI : MonoBehaviour
     {
         if (_cachedSettingUI == null) _cachedSettingUI = FindFirstObjectByType<SettingUI>();
         if (_cachedSettingUI != null) _cachedSettingUI.enabled = true;
+
+        if (Player.Instance != null)
+        {
+            Player.Instance.SetStatUIView(true);
+        }
 
         ControlExternalUI(true); // 외부 UI 켜기
     }
