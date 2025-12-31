@@ -438,13 +438,13 @@ public class UpgradeManager : MonoBehaviour
                 exp = 5;
                 break;
             case CardGrade.Epic:
-                exp = 5;
-                break;
-            case CardGrade.Legendary:
                 exp = 10;
                 break;
-            default:
+            case CardGrade.Legendary:
                 exp = 15;
+                break;
+            default:
+                exp = 0;
                 break;
         }
 
