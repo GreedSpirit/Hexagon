@@ -229,8 +229,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         // 드래그 풀리고 호출 시 무시
         if (_currentState != CardUIState.Drag) return;
 
-        Debug.Log("드래그 끝");
-
         // 좌클릭 드래그 중 우클릭, 휠클릭 등으로 호출될 시 무시
         if (Mouse.current.leftButton.wasReleasedThisFrame == false)
         {

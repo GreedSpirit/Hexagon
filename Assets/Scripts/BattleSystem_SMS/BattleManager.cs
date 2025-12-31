@@ -180,4 +180,9 @@ public class BattleManager : MonoBehaviour
     {
         _battleUIManager.OffTurnUI();
     }
+
+    public void OffHandUI()
+    {
+        _handManager.EndBattle();
+    }
 }

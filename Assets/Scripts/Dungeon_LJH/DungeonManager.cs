@@ -217,6 +217,7 @@ public class DungeonManager : MonoBehaviour
         _rewardCanvas.SetActive(true);
         _rewardResultUI.Init(_determinedRewards, this);
         _battleManager.OffTurnUI();
+        _battleManager.OffHandUI();
     }
 
     public void GetRewards()
