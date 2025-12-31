@@ -1,112 +1,127 @@
-Id,스트링 테이블의 기본키값,한국어
-int,string,string
-Id,Key,Korean
-1,NameMonsterDemon,데몬
-2,NameMonsterPriest,오만 사제
-3,NameMonsterEvilWizard,오만의 정령
-4,DescMonsterDemon,날아다니며 숲을 어지럽히는 데몬이다. 파이어볼을 뿜으며 사람들에게 위협을 가한다.
-5,DescMonsterPriest,오만의 정령의 하수인인 오만 사제이다. 오만 사제의 레이저에는 화상을 입는다
-6,DescMonsterEvilWizard,오만의 정령이다. 화상을 잘 다루며 오만한 성격을 가졌다.
-7,NameCardFireball,파이어볼
-8,NameCardThreat,위협
-9,NameCardSwipe,휘두르기
-10,NameCardLazer,레이저
-11,NameCardPsychoKinesis,염력
-12,NameCardPride,오만
-13,NameCardLeap,도약
-14,NameCardFireless,꺼지지 않는 불꽃
-15,DescCardFireball,상대에게 {D}의 데미지를 줍니다.
-16,DescCardThreat,상대에게 “낙인” 효과를 입힙니다.
-17,DescCardSwipe,상대에게 {D}의 데미지를 줍니다.
-18,DescCardLazer,화상 레이저를 발사해 상대에게 “화상” {SEV}을 부여합니다.
-19,DescCardPsychoKinesis,응축된 불의 힘으로 {D}의 데미지를 줍니다.
-20,DescCardPride,"시전자가 오만합니다. ""오만"" 효과를 발동합니다."
-21,DescCardLeap,스스로 민첩해져 {N} 회복합니다.
-22,DescCardFireless,"상대에게 {D}의 데미지를 줍니다. 대상은 ""화상""을 {SEV} 부여합니다."
-23,NameStatusBurn,화상
-24,NameStatusPride,오만
-25,DescStatusBurn,자신의 턴이 끝난 후 화상을 입은 적은 그 만큼 피해를 받습니다. 피해를 받은 후 화상이 1 감소합니다.
-26,DescStatusPride,공격이 30% 더 많은 피해를 입힙니다.
-27,NameDungeonPride,우월의 심연
-28,DescDungeonPride,오만의 정령으로 인해 어지럽혀진 숲
-29,NameStatusStigma,낙인
-30,DescStatusStigma,공격으로부터 25% 더 많은 피해를 입습니다
-31,NameCardBanBookThrowing,금서 투척
-32,NameCardOldBookBreakDown,고서: 파훼
-33,NameCardWeightOfKnowledge,지식의 무게
-34,NameCardRecordExpunged,기록 말소
-35,NameCardBanBookCrush,금서: 압살
-36,NameCardBookshelfCollapse,서가 붕괴
-37,NameCardRewindHistory,기록 되감기
-38,NameCardEmergencyRestore,긴급 복원
-39,NameCardOldBookReconstruction,고서: 재구성
-40,NameCardLeisureofDinner,만찬의 여유
-41,NameCardCurtainOfLetters,글자의 장막
-42,NameCardOldBookShield,고서: 보호막
-43,NameCardAccumulatedKnowledge,축적된 지식
-44,NameCardOldBookStigma,고서: 낙인
-45,NameCardBanBookDespair,금서: 절망
-46,NameCardCorrodedInk,부식된 잉크
-47,NameCardSpreadingStain,퍼지는 얼룩
-48,NameCardAshes,잿더미
-49,NameCardOldBookHeatRelease,고서: 열기 방출
-50,DescCardBanBookThrowing,두꺼운 양장본 금서를 던져 피해를 {D} 줍니다.
-51,DescCardOldBookBreakDown,적의 가장 약한 부위를 공격해 피해를 {D} 줍니다.
-52,DescCardWeightOfKnowledge,대상 위에 여러 권의 책을 소환해 피해를 {D} 줍니다.
-53,DescCardRecordExpunged,대상과 관련된 기록을 말소해 피해를 {D} 줍니다.
-54,DescCardBanBookCrush,금서의 힘을 빌려 거대한 옥좌를 대상 위에 소환해 피해를 {D} 줍니다.
-55,DescCardBookshelfCollapse,대상을 향해 낡은 책장을 무너뜨려 피해를 {D} 줍니다.
-56,DescCardRewindHistory,상처를 되감아 체력을 {N} 회복합니다.
-57,DescCardOldBookReconstruction,신속히 상처를 되감아 체력을 {N} 회복합니다.
-58,DescCardOldBookReconstruction,고서의 힘을 빌려 사용해 체력을 {N} 회복합니다.
-59,DescCardLeisureofDinner,고서의 힘으로 생성된 만찬을 섭취해 체력을 {N} 회복합니다.
-60,DescCardCurtainOfLetters,고서 속 글자들이 대상을 감싸 보호막을 {N} 얻습니다.
-61,DescCardOldBookShield,고서를 사용해 보호막을 {N} 얻습니다.
-62,DescCardAccumulatedKnowledge,고서 속 지식을 습득해 지식을 {turns} 얻습니다.
-63,DescCardOldBookStigma,고서의 힘을 빌려 대상에게 낙인을 {turns} 부여합니다.
-64,DescCardBanBookDespair,금서의 힘을 빌려 대상에게 절망을 {turns} 부여합니다.
-65,DescCardCorrodedInk,부식된 잉크를 대상에게 주입해 중독을 {SEV} 부여합니다.
-66,DescCardSpreadingStain,고서 속 얼룩을 대상에게 전이해 중독을 {SEV} 부여합니다.
-67,DescCardAshes,다 타버린 금서의 페이지를 적에게 부착해 화상을 {SEV} 부여합니다.
-68,DescCardOldBookHeatRelease,고서 속 마력을 열기로 변환해 적에게 화상을 {SEV} 부여합니다.
-69,NameStatusKnowledge,지식
-70,NameStatusDespair,절망
-71,NameStatusPoison,중독
-72,DescStatusKnowledge,공격이 15% 더 많은 피해를 줍니다
-73,DescStatusDespair,공격으로부터 50% 더 많은 피해를 입습니다.
-74,DescStatusPoison,자신의 턴이 끝난 후 중독된 적은 그 만큼 피해를 받습니다. 피해를 받은 후 중독이 1 감소합니다.
-75,NamePcErion,에리온
-76,NameNpcLibra,리브라
-77,NameNpcLionel,리오넬
-78,DescPcErion,던전을 탐사하며 몬스터와 전투하고 시나리오를 진행하는 플레이어 캐릭터
-79,DescNpcLibra,던전 진입 전까지 등장하여 기본 시스템과 진행 방향을 안내하는 NPC
-80,DescNpcLionel,카드 강화를 전담하며 플레이어와 상호작용하는 기능성 NPC
-81,NameVillageSilencia,실렌시아
-82,TalkNpcLibra1,
-83,TalkNpcLibra2,
-84,TalkNpcLibra3,
-85,TalkNpcLibra4,
-86,TalkNpcLionel1,
-87,TalkNpcLionel2,
-88,TalkNpcLionel3,
-89,TalkNpcLionel4,
-90,NameCurrency001,골드
-91,DescCurrency001,"실렌시아에서 통용되는 기본 화폐, 화려한 무늬가 매력적이다."
-92,NameImage01,사진01
-93,NameImage02,사진02
-94,NameImage03,사진03
-95,NameImage04,사진04
-96,DescImage01,시나리오 연출용 사진01
-97,DescImage02,시나리오 연출용 사진02
-98,DescImage03,시나리오 연출용 사진03
-99,DescImage04,시나리오 연출용 사진04
-100,NameStatusVulnerable,취약
-101,DescStatusVulnerable,공격으로부터 50% 더 많은 피해를 입습니다.
-102,NameDungeonPrideEasy,우월의 심연 - 이지
-103,DescDungeonPrideEasy,약화된 오만의 정령으로 인해 어지럽혀진 숲이다. 약화된 몬스터들이 상주하는 공간이다.
-104,NameMonsterDemonEasy,약화된 데몬
-105,NameMonsterPriestEasy,약화된 오만 사제
-106,NameMonsterEvilWizardEasy,약화된 오만의 정령
-107,DescMonsterDemonEasy,날아다니며 숲을 어지럽히는 노쇠화된 데몬이다. 파이어볼을 뿜으며 사람들에게 위협을 가한다.
-108,DescMonsterPriestEasy,오만의 정령의 하수인인 노쇠한 오만 사제이다. 오만 사제의 레이저에는 화상을 입는다
-109,DescMonsterEvilWizardEasy,오만의 정령의 분신이다. 화상을 잘 다루며 오만한 성격을 가졌다.
+﻿Id,스트링 테이블의 기본키값,한국어,,,,,,
+int,string,string,,,,,,
+Id,Key,Korean,,,,,,
+1,NameMonsterDemon,데몬,,,,,,
+2,NameMonsterPriest,오만 사제,,,,,,
+3,NameMonsterEvilWizard,오만의 정령,,,,,,
+4,DescMonsterDemon,날아다니며 숲을 어지럽히는 데몬이다. 파이어볼을 뿜으며 사람들에게 위협을 가한다.,,,,,,
+5,DescMonsterPriest,오만의 정령의 하수인인 오만 사제이다. 오만 사제의 레이저에는 화상을 입는다,,,,,,
+6,DescMonsterEvilWizard,오만의 정령이다. 화상을 잘 다루며 오만한 성격을 가졌다.,,,,,,
+7,NameCardFireball,파이어볼,,,,,,
+8,NameCardThreat,위협,,,,,,
+9,NameCardSwipe,휘두르기,,,,,,
+10,NameCardLazer,레이저,,,,,,
+11,NameCardPsychoKinesis,염력,,,,,,
+12,NameCardPride,오만,,,,,,
+13,NameCardLeap,도약,,,,,,
+14,NameCardFireless,꺼지지 않는 불꽃,,,,,,
+15,DescCardFireball,대상에게 피해를 {D} 줍니다.,,,,,,
+16,DescCardThreat,대상에게 낙인 효과를 입힙니다.,,,,,,
+17,DescCardSwipe,대상에게 피해를 {D} 줍니다.,,,,,,
+18,DescCardLazer,대상에게 빔 형태의 불을 발사해 화상을 {SEV} 부여합니다.,,,,,,
+19,DescCardPsychoKinesis,응축된 불의 힘으로 피해를 {D} 줍니다.,,,,,,
+20,DescCardPride,금서의 힘을 빌려 오만을 {turns} 얻습니다.,,,,,,
+21,DescCardLeap,금서의 힘을 빌려 체력을 {N} 회복합니다.,,,,,,
+22,DescCardFireless,"대상에게 꺼지지 않는 불꽃을 부착해 피해를 {D} 주며, 화상을 {SEV} 부여합니다.",,,,,,
+23,NameStatusBurn,화상,,,,,,
+24,NameStatusPride,오만,,,,,,
+25,DescStatusBurn,자신의 턴이 끝난 후 화상을 입은 적은 그 만큼 피해를 받습니다. 피해를 받은 후 화상이 1 감소합니다.,,,,,,
+26,DescStatusPride,공격이 30% 더 많은 피해를 입힙니다.,,,,,,
+27,NameDungeonPride,우월의 심연,,,,,,
+28,DescDungeonPride,오만의 정령으로 인해 어지럽혀진 숲,,,,,,
+29,NameStatusStigma,낙인,,,,,,
+30,DescStatusStigma,공격으로부터 25% 더 많은 피해를 입습니다,,,,,,
+31,NameCardBanBookThrowing,금서 투척,,,,,,
+32,NameCardOldBookBreakDown,고서: 파훼,,,,,,
+33,NameCardWeightOfKnowledge,지식의 무게,,,,,,
+34,NameCardRecordExpunged,기록 말소,,,,,,
+35,NameCardBanBookCrush,금서: 압살,,,,,,
+36,NameCardBookshelfCollapse,서가 붕괴,,,,,,
+37,NameCardRewindHistory,기록 되감기,,,,,,
+38,NameCardEmergencyRestore,긴급 복원,,,,,,
+39,NameCardOldBookReconstruction,고서: 재구성,,,,,,
+40,NameCardLeisureofDinner,만찬의 여유,,,,,,
+41,NameCardCurtainOfLetters,글자의 장막,,,,,,
+42,NameCardOldBookShield,고서: 보호막,,,,,,
+43,NameCardAccumulatedKnowledge,축적된 지식,,,,,,
+44,NameCardOldBookStigma,고서: 낙인,,,,,,
+45,NameCardBanBookDespair,금서: 절망,,,,,,
+46,NameCardCorrodedInk,부식된 잉크,,,,,,
+47,NameCardSpreadingStain,퍼지는 얼룩,,,,,,
+48,NameCardAshes,잿더미,,,,,,
+49,NameCardOldBookHeatRelease,고서: 열기 방출,,,,,,
+50,DescCardBanBookThrowing,두꺼운 양장본 금서를 던져 피해를 {D} 줍니다.,,,,,,
+51,DescCardOldBookBreakDown,적의 가장 약한 부위를 공격해 피해를 {D} 줍니다.,,,,,,
+52,DescCardWeightOfKnowledge,대상 위에 여러 권의 책을 소환해 피해를 {D} 줍니다.,,,,,,
+53,DescCardRecordExpunged,대상과 관련된 기록을 말소해 피해를 {D} 줍니다.,,,,,,
+54,DescCardBanBookCrush,금서의 힘을 빌려 거대한 옥좌를 대상 위에 소환해 피해를 {D} 줍니다.,,,,,,
+55,DescCardBookshelfCollapse,대상을 향해 낡은 책장을 무너뜨려 피해를 {D} 줍니다.,,,,,,
+56,DescCardRewindHistory,상처를 되감아 체력을 {N} 회복합니다.,,,,,,
+57,DescCardOldBookReconstruction,신속히 상처를 되감아 체력을 {N} 회복합니다.,,,,,,
+58,DescCardOldBookReconstruction,고서의 힘을 빌려 사용해 체력을 {N} 회복합니다.,,,,,,
+59,DescCardLeisureofDinner,고서의 힘으로 생성된 만찬을 섭취해 체력을 {N} 회복합니다.,,,,,,
+60,DescCardCurtainOfLetters,고서 속 글자들이 대상을 감싸 보호막을 {N} 얻습니다.,,,,,,
+61,DescCardOldBookShield,고서를 사용해 보호막을 {N} 얻습니다.,,,,,,
+62,DescCardAccumulatedKnowledge,고서 속 지식을 습득해 지식을 {turns} 얻습니다.,,,,,,
+63,DescCardOldBookStigma,고서의 힘을 빌려 대상에게 낙인을 {turns} 부여합니다.,,,,,,
+64,DescCardBanBookDespair,금서의 힘을 빌려 대상에게 절망을 {turns} 부여합니다.,,,,,,
+65,DescCardCorrodedInk,부식된 잉크를 대상에게 주입해 중독을 {SEV} 부여합니다.,,,,,,
+66,DescCardSpreadingStain,고서 속 얼룩을 대상에게 전이해 중독을 {SEV} 부여합니다.,,,,,,
+67,DescCardAshes,다 타버린 금서의 페이지를 적에게 부착해 화상을 {SEV} 부여합니다.,,,,,,
+68,DescCardOldBookHeatRelease,고서 속 마력을 열기로 변환해 적에게 화상을 {SEV} 부여합니다.,,,,,,
+69,NameStatusKnowledge,지식,,,,,,
+70,NameStatusDespair,절망,,,,,,
+71,NameStatusPoison,중독,,,,,,
+72,DescStatusKnowledge,공격이 15% 더 많은 피해를 줍니다,,,,,,
+73,DescStatusDespair,공격으로부터 50% 더 많은 피해를 입습니다.,,,,,,
+74,DescStatusPoison,자신의 턴이 끝난 후 중독된 적은 그 만큼 피해를 받습니다. 피해를 받은 후 중독이 1 감소합니다.,,,,,,
+75,NamePcErion,에리온,,,,,,
+76,NameNpcLibra,리브라,,,,,,
+77,NameNpcLionel,리오넬,,,,,,
+78,DescPcErion,던전을 탐사하며 몬스터와 전투하고 시나리오를 진행하는 플레이어 캐릭터,,,,,,
+79,DescNpcLibra,던전 진입 전까지 등장하여 기본 시스템과 진행 방향을 안내하는 NPC,,,,,,
+80,DescNpcLionel,카드 강화를 전담하며 플레이어와 상호작용하는 기능성 NPC,,,,,,
+81,NameVillageSilencia,실렌시아,,,,,,
+82,TalkNpcLibra1,“당신의 선택이 세계의 균형을 지킵니다. 필요한 기록이 있다면 말씀하세요.”,,,,,,
+83,TalkNpcLibra2,“당신의 선택이 세계의 균형을 지킵니다. 필요한 기록이 있다면 말씀하세요.”,,,,,,
+84,TalkNpcLibra3,“당신의 선택이 세계의 균형을 지킵니다. 필요한 기록이 있다면 말씀하세요.”,,,,,,
+85,TalkNpcLibra4,“당신의 선택이 세계의 균형을 지킵니다. 필요한 기록이 있다면 말씀하세요.”,,,,,,
+86,TalkNpcLionel1,“카드 줘! 이번엔 더 반짝이게 만들어줄게!”,,,,,,
+87,TalkNpcLionel2,“카드 줘! 이번엔 더 반짝이게 만들어줄게!”,,,,,,
+88,TalkNpcLionel3,“카드 줘! 이번엔 더 반짝이게 만들어줄게!”,,,,,,
+89,TalkNpcLionel4,“카드 줘! 이번엔 더 반짝이게 만들어줄게!”,,,,,,
+90,NameCurrency001,골드,,,,,,
+91,DescCurrency001,"실렌시아에서 통용되는 기본 화폐, 화려한 무늬가 매력적이다.",,,,,,
+92,NameImage01,사진01,,,,,,
+93,NameImage02,사진02,,,,,,
+94,NameImage03,사진03,,,,,,
+95,NameImage04,사진04,,,,,,
+96,DescImage01,시나리오 연출용 사진01,,,,,,
+97,DescImage02,시나리오 연출용 사진02,,,,,,
+98,DescImage03,시나리오 연출용 사진03,,,,,,
+99,DescImage04,시나리오 연출용 사진04,,,,,,
+100,NameStatusVulnerable,취약,,,,,,
+101,DescStatusVulnerable,공격으로부터 50% 더 많은 피해를 입습니다.,,,,,,
+102,NameDungeonPrideEasy,우월의 심연 - 이지,,,,,,
+103,DescDungeonPrideEasy,약화된 오만의 정령으로 인해 어지럽혀진 숲이다. 약화된 몬스터들이 상주하는 공간이다.,,,,,,
+104,NameMonsterDemonEasy,약화된 데몬,,,,,,
+105,NameMonsterPriestEasy,약화된 오만 사제,,,,,,
+106,NameMonsterEvilWizardEasy,약화된 오만의 정령,,,,,,
+107,DescMonsterDemonEasy,날아다니며 숲을 어지럽히는 노쇠화된 데몬이다. 파이어볼을 뿜으며 사람들에게 위협을 가한다.,,,,,,
+108,DescMonsterPriestEasy,오만의 정령의 하수인인 노쇠한 오만 사제이다. 오만 사제의 레이저에는 화상을 입는다,,,,,,
+109,DescMonsterEvilWizardEasy,오만의 정령의 분신이다. 화상을 잘 다루며 오만한 성격을 가졌다.,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
