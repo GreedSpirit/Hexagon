@@ -47,11 +47,42 @@ public class InventoryManager : MonoBehaviour
     }
     private void Update()
     {
-        // 새 입력 시스템(Input System) 기준
         if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
         {
+            // 연결된 UI가 없으면 무시
+            if (_currentInventoryUI == null) return;
+
+            if (_currentInventoryUI.IsDeckBuildingMode)
+            {
+                return;
+            }
+            var presenter = FindFirstObjectByType<DungeonPresenter>();
+            if (presenter != null)
+            {
+                var slot = presenter.GetComponentInChildren<DungeonSlotView>(false);
+                if (slot != null && slot.gameObject.activeInHierarchy)
+                {
+                    return; // 인벤토리 토글 방지
+                }
+            }
+            // 그 외 평범한 상황일 때만 인벤토리 토글
             ToggleInventory();
         }
+    }
+    // 현재 인벤토리 창이 활성화되어 있는지 확인하는 프로퍼티
+    public bool IsInventoryActive => _currentInventoryUI != null && _currentInventoryUI.gameObject.activeInHierarchy;
+
+    // 인벤토리가 이번 프레임에 닫혔는지 확인하기 위한 변수
+    private int _lastClosedFrame = -1;
+
+    public void RegisterCloseFrame()
+    {
+        _lastClosedFrame = Time.frameCount;
+    }
+
+    public bool WasClosedThisFrame()
+    {
+        return _lastClosedFrame == Time.frameCount;
     }
     public void ToggleInventory()
     {
@@ -62,6 +93,7 @@ public class InventoryManager : MonoBehaviour
         {
             // 켜져 있다면 -> 닫기 함수 호출
             _currentInventoryUI.CloseInventory();
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
         }
         else
         {
@@ -107,6 +139,11 @@ public class InventoryManager : MonoBehaviour
         {
             Debug.LogWarning("현재 씬에 연결된 InventoryUI가 없습니다!");
         }
+    }
+    public bool IsInventoryOpen()
+    {
+        // 등록된 UI가 있고, 그 오브젝트가 활성화되어 있는지 확인
+        return _currentInventoryUI != null && _currentInventoryUI.gameObject.activeInHierarchy;
     }
     // DeckUI에서 던전에 입장할 때 이 함수를 호출해서 슬롯을 세팅해줍니다.
     public void ConfigureDeckSlots(DeckData deckData)

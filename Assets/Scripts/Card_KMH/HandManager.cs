@@ -125,7 +125,6 @@ public class HandManager : MonoBehaviour
         // 선택된 카드가 있을 때 && 선택 카드의 드래그 상태
         if (SelectedCard != null)
         {
-            Debug.Log("선택 해지");
             // 카드 선택 해지
             DeselectCard();
         }
@@ -388,6 +387,13 @@ public class HandManager : MonoBehaviour
     public void EnterBossStage()
     {
         isBoss = true;
+    }
+
+    // 배틀 종료
+    public void EndBattle()
+    {
+        _handTransform.gameObject.SetActive(false);
+        _deckUI.gameObject.SetActive(false);
     }
 
 
