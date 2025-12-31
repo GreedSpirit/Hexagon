@@ -173,8 +173,11 @@ public class BattleManager : MonoBehaviour
 
     public void OnOffBattleUI(bool Onoff)
     {
-        _turnEndButton.gameObject.SetActive(Onoff);
+        _turnEndButton.gameObject.SetActive(Onoff);        
     }
     
-
+    public void OffTurnUI()
+    {
+        _battleUIManager.OffTurnUI();
+    }
 }
