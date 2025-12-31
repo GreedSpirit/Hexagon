@@ -246,10 +246,13 @@ public class InventoryUI : MonoBehaviour
         // 덱 편성 모드일 때는 DeckUI가 ESC를 처리하므로 여기선 무시
         if (IsDeckBuildingMode) return;
 
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (gameObject.activeSelf && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            // 인벤토리 닫기
             CloseInventory();
+            if (UnityEngine.EventSystems.EventSystem.current != null)
+            {
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+            }
         }
     }
 
@@ -258,9 +261,14 @@ public class InventoryUI : MonoBehaviour
         // 상세 설명창 초기화
         if (_detailPanel != null) _detailPanel.Init();
         InventoryManager.Instance.DeselectAll();
-
+        InventoryManager.Instance.RegisterCloseFrame();
         // UI 끄기
         gameObject.SetActive(false);
+
+        if (UnityEngine.EventSystems.EventSystem.current != null)
+        {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+        }
 
         if (_backgroundGroup != null)
         {
@@ -272,6 +280,6 @@ public class InventoryUI : MonoBehaviour
             backgroundPanelImage.gameObject.SetActive(false);
         }
 
-        if (Player.Instance != null) Player.Instance.EnterMoveMod();
+        // if (Player.Instance != null) Player.Instance.EnterMoveMod();
     }
 }

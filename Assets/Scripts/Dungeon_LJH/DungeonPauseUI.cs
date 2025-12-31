@@ -54,7 +54,13 @@ public class DungeonPauseUI : MonoBehaviour
         {
             return;
         }
-
+        if (InventoryManager.Instance != null)
+        {
+            if (InventoryManager.Instance.IsInventoryActive || InventoryManager.Instance.WasClosedThisFrame())
+            {
+                return;
+            }
+        }
         if (_isPaused)
         {
             ResumeGame();
