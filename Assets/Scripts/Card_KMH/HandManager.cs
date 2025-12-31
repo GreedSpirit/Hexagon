@@ -242,12 +242,18 @@ public class HandManager : MonoBehaviour
     // 카드 사용
     public void UseCard(GameObject cardObject)
     {
-        // 사용된 카드가 선택된 UI와 같아야
-        if (cardObject == _selectedCardUI.gameObject)
+        // null인지 먼저 체크
+        if (_selectedCardUI != null && cardObject == _selectedCardUI.gameObject)
         {
-            // 소멸
-            _selectedCardUI.OnDisappear(_disappearPoint);
+            // 비우기
             _selectedCardUI = null;
+        }
+
+        // 소멸 처리는 받아온 오브젝트로
+        CardUI cardUI = cardObject.GetComponent<CardUI>();
+        if (cardUI != null)
+        {
+            cardUI.OnDisappear(_disappearPoint);
         }
 
         // 핸드 리스트에서 제외
