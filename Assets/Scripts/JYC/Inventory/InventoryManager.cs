@@ -47,9 +47,25 @@ public class InventoryManager : MonoBehaviour
     }
     private void Update()
     {
-        // 새 입력 시스템(Input System) 기준
         if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
         {
+            // 연결된 UI가 없으면 무시
+            if (_currentInventoryUI == null) return;
+
+            if (_currentInventoryUI.IsDeckBuildingMode)
+            {
+                return;
+            }
+            var presenter = FindFirstObjectByType<DungeonPresenter>();
+            if (presenter != null)
+            {
+                var slot = presenter.GetComponentInChildren<DungeonSlotView>(false);
+                if (slot != null && slot.gameObject.activeInHierarchy)
+                {
+                    return; // 인벤토리 토글 방지
+                }
+            }
+            // 그 외 평범한 상황일 때만 인벤토리 토글
             ToggleInventory();
         }
     }
