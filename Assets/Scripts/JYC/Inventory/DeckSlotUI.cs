@@ -14,6 +14,7 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] TextMeshProUGUI countText; // 하단 개수
     [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
     [SerializeField] TextMeshProUGUI levelText; // 카드 레벨
+    [SerializeField] TextMeshProUGUI noaText;   // 카드 사용가능횟수
     [SerializeField] TextMeshProUGUI typeText;  // 카드 타입
     [SerializeField] TextMeshProUGUI descText;
 
@@ -96,6 +97,10 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 SetGradeColor(cardData.CardGrade);
 
                 if (countText != null) countText.text = "x 1";
+
+                // 카드 사용 가능 횟수
+                int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(currentLevel, cardData.CardGrade);
+                if (noaText != null) noaText.text = numberOfAvailable.ToString("N0");
             }
         }
         else
@@ -105,6 +110,7 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             // 텍스트는 비움
             if (nameText != null) nameText.text = "";
             if (levelText != null) levelText.text = "";
+            if (noaText != null) noaText.text = "";
             if (typeText != null) typeText.text = "";
             if (gradeColorImg != null) gradeColorImg.gameObject.SetActive(false);
             if (countText != null) countText.text = "";
