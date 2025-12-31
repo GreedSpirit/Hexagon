@@ -185,7 +185,7 @@ public class TalkUI : MonoBehaviour
         _currentIndex++;
 
         // 최소 연출 대기 시간
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
 
         _isScenarioTransitioning = false;
     }
@@ -211,7 +211,7 @@ public class TalkUI : MonoBehaviour
 
     //-------------------------------------
 
-    private void SetCutImage(ScenarioData data) //마저 작업해야 함.
+    private void SetCutImage(ScenarioData data)
     {
         if (_cutImageRoutine != null)
         {
@@ -234,7 +234,7 @@ public class TalkUI : MonoBehaviour
         }
         if (data.Npc == "에리온") //화자가 에리온이라면
         {
-            if (_leftImg.sprite == null) // 에리온의 최초 대사라면
+            if (_characterNameBox.activeSelf == false ||_leftImg.sprite == null) // 에리온의 최초 대사라면
             {
                 _characterNameBox.SetActive(true);
                 _leftImg.gameObject.SetActive(true); //왼쪽 초상화 오브젝트 활성화
@@ -251,7 +251,7 @@ public class TalkUI : MonoBehaviour
         }
         else //화자가 에리온이 아니라면(Npc라면)
         {
-            if (_rightImg.sprite == null)  //Npc의 최초 대사라면
+            if (_characterNameBox.activeSelf == false || _rightImg.sprite == null)  //Npc의 최초 대사라면
             {
                 _characterNameBox.SetActive(true);
                 _rightImg.gameObject.SetActive(true); //우측 초상화 오브젝트 활성화
@@ -377,6 +377,7 @@ public class TalkUI : MonoBehaviour
     //컷 이미지용 연출 코루틴
     IEnumerator CutImageRoutine(ScenarioData data)
     {
+        _isScenarioTransitioning = true;
         if (string.IsNullOrEmpty(_currentCutImageKey) && string.IsNullOrEmpty(data.Image_ID))
         {
             yield break;
@@ -404,6 +405,7 @@ public class TalkUI : MonoBehaviour
             yield return FadeInCutImage(data.Image_ID);
             yield break;
         }
+        _isScenarioTransitioning = false;
     }
 
     IEnumerator FadeInCutImage(string key)
