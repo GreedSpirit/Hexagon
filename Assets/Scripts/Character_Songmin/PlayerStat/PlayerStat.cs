@@ -88,15 +88,17 @@ public class PlayerStat
             Shield -= blockedDamage; //보호막이 대미지 흡수
             if (Shield < 0) //데미지가 남았으면 체력도 감소
             {
+                DamageTextManager.Instance.ShowDamage(Shield, Player.Instance.transform.position, DamageType.Normal);
                 CurrentHp += Shield;
                 Shield = 0;
             }
         }
         else //보호막이 없는 경우
         {
+            DamageTextManager.Instance.ShowDamage(blockedDamage, Player.Instance.transform.position, DamageType.Normal);
             CurrentHp -= blockedDamage;
         }
-        DamageTextManager.Instance.ShowDamage(damage, Player.Instance.transform.position, DamageType.Normal);
+        
         Die();
     }
     
@@ -384,14 +386,11 @@ public class PlayerStat
         int poisonDmg = Poison;
         int burnDmg = Burn;
         int totalDotDmg = poisonDmg + burnDmg;
-
-        // 기획 내용에 따라 실제 데미지는 한 번에 처리
-        //GetTrueDamage(totalDotDmg);
+        
 
         if (poisonDmg > 0)
         {
-            DamageTextManager.Instance.ShowDamage(poisonDmg, Player.Instance.transform.position, DamageType.Poison);
-            //PlayMonsterSound(MonsterSoundType.Hit_Poison);
+            DamageTextManager.Instance.ShowDamage(poisonDmg, Player.Instance.transform.position, DamageType.Poison);            
         }
 
         // 두 상태이상이 같이 들어오면 0.2초 딜레이 (텍스트 겹침 방지)
@@ -399,8 +398,7 @@ public class PlayerStat
 
         if (burnDmg > 0)
         {
-            DamageTextManager.Instance.ShowDamage(burnDmg, Player.Instance.transform.position, DamageType.Burn);
-            //PlayMonsterSound(MonsterSoundType.Hit_Burn);
+            DamageTextManager.Instance.ShowDamage(burnDmg, Player.Instance.transform.position, DamageType.Burn);            
         }
 
         yield return new WaitForSeconds(1f);

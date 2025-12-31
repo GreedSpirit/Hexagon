@@ -121,7 +121,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
     {
         if(_isDead) return;
 
-        DamageTextManager.Instance.ShowDamage(damage, transform.position, DamageType.Normal);
+        
         _vfxController.PlayHitEffect();
 
         if(_monsterShield > 0)
@@ -135,6 +135,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         if(damage > 0)
         {
             PlayMonsterSound(MonsterSoundType.Hit_Body);
+            DamageTextManager.Instance.ShowDamage(damage, transform.position, DamageType.Normal); // 변경 : 보호막 수치 제외한 데미지만 텍스트로 표기
         }
         if (_monsterCurHP < 0)
             _monsterCurHP = 0;
