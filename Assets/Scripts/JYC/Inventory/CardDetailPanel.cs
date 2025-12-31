@@ -4,6 +4,9 @@ using TMPro;
 
 public class CardDetailPanel : MonoBehaviour
 {
+    [Header("툴팁 설정")]
+    [SerializeField] private CardTooltipUI _tooltipUI;
+    [SerializeField] private InventorySlotUI _leftSlot;
     [Header("왼쪽: 카드 슬롯")]
     [SerializeField] Image _leftCardImage;    // 카드 일러스트
     [SerializeField] TextMeshProUGUI _leftNameText; // 카드 이름
@@ -45,7 +48,11 @@ public class CardDetailPanel : MonoBehaviour
         gameObject.SetActive(true);
         if (_contentGroup != null) _contentGroup.SetActive(true);
         if (_emptyStateObj != null) _emptyStateObj.SetActive(false);
-
+        if (_leftSlot != null)
+        {
+            // _tooltipUI는 CardDetailPanel이 인스펙터에서 들고 있는 것을 전달합니다.
+            _leftSlot.Init(userCard, _tooltipUI);
+        }
         CardData data = userCard.GetData();
         if (data == null) return;
 

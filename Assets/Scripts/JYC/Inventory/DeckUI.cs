@@ -40,6 +40,8 @@ public class DeckUI : MonoBehaviour
 
     private SettingUI _cachedSettingUI;
 
+    [SerializeField] private CardTooltipUI _tooltipUI;
+public CardTooltipUI TooltipUI => _tooltipUI;
     private void Start()
     {
 
@@ -304,7 +306,7 @@ public class DeckUI : MonoBehaviour
                 cardId = currentDeck[globalIndex];
             }
 
-            slot.Init(cardId, globalIndex, targetGrade);
+            slot.Init(cardId, globalIndex, targetGrade, this);
             globalIndex++;
         }
     }
@@ -349,7 +351,7 @@ public class DeckUI : MonoBehaviour
                 }
             }
 
-            slot.Init(equippedCardId, globalIndex, targetGrade);
+            slot.Init(equippedCardId, globalIndex, targetGrade, this);
 
             // 다음 슬롯을 위해 번호 증가
             globalIndex++;

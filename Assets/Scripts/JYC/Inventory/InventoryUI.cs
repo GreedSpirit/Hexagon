@@ -29,6 +29,9 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Image backgroundPanelImage;   // 배경을 띄워줄 Image 컴포넌트 
     [SerializeField] Sprite deckBuildingBg;        // 덱 편성용 배경 (펼친 책)
 
+    [SerializeField] private CardTooltipUI _tooltipUI;
+    public CardTooltipUI TooltipUI => _tooltipUI;
+
     private List<InventorySlotUI> _slots = new List<InventorySlotUI>();
     private InventorySlotUI _currentSelectedSlot;   // 현재 선택된 슬롯
 
@@ -251,6 +254,7 @@ public class InventoryUI : MonoBehaviour
 
         ControlExternalUI(true); // 외부 UI 켜기
     }
+
     private void ControlExternalUI(bool isActive)
     {
         if (_uiToHide != null)

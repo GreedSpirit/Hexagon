@@ -81,6 +81,7 @@ public class CardTooltipLogic : MonoBehaviour
 
     public void PointerExitParent()
     {
+        if (_tooltipUI == null) return;
         // 비활성화
         _tooltipUI?.gameObject.SetActive(false);
 
@@ -90,4 +91,28 @@ public class CardTooltipLogic : MonoBehaviour
         // 위치 꼬일 수도 있으니까
         _tooltipUI.transform.localPosition = Vector3.zero;
     }
+
+    // 추가 코드
+    private void OnDisable()
+    {
+        // 카드가 사라지기 전에 툴팁을 복구시킵니다.
+        ReturnTooltipToSafety();
+    }
+    private void ReturnTooltipToSafety()
+    {
+        // 툴팁 UI가 이미 파괴되었거나(Missing) 없는 경우를 체크
+        if (_tooltipUI == null) return;
+
+        // 툴팁이 현재 이 카드의 자식으로 붙어있을 때만 복구 로직 실행
+        if (_tooltipUI.transform.parent == tooltipPoint)
+        {
+            _tooltipUI.gameObject.SetActive(false);
+            if (_baseParent != null)
+            {
+                _tooltipUI.transform.SetParent(_baseParent, false);
+            }
+            _tooltipUI.transform.localPosition = Vector3.zero;
+        }
+    }
+
 }

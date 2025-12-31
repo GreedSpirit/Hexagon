@@ -37,11 +37,14 @@ public class InventorySlotUI : MonoBehaviour,
     private LayoutElement _layoutElement;
     private GameObject _dummy;
     private int _savedIndex;
+    private CardTooltipLogic _tooltipLogic;
+    private bool _canHoverZoom = true;
     private void Awake()
     {
         // 프리팹에 붙어있는 Canvas를 찾아옵니다.
         _myCanvas = GetComponent<Canvas>();
         _layoutElement = GetComponent<LayoutElement>();
+        _tooltipLogic = GetComponent<CardTooltipLogic>();
         if (_myCanvas != null) _myCanvas.overrideSorting = false;
     }
 
@@ -50,73 +53,83 @@ public class InventorySlotUI : MonoBehaviour,
     {
         _userCard = userCard;
         _parentUI = parent;
-        var data = userCard.GetData();
+        _canHoverZoom = true;
+        UpdateSlotVisual();
 
-        // UI 갱신
-        if (data != null)
+        if (_tooltipLogic != null && parent.TooltipUI != null)
+            _tooltipLogic.Init(userCard, parent.TooltipUI);
+
+    }
+    public void Init(UserCard userCard, CardTooltipUI tooltipUI)
+    {
+        _userCard = userCard;
+        _canHoverZoom = false;
+        // 카드 비주얼 업데이트 등 필수 로직만 실행
+        UpdateSlotVisual();
+
+        // 인벤토리 매니저 없이 직접 받은 툴팁 UI로 초기화
+        if (_tooltipLogic != null && _userCard != null && tooltipUI != null)
         {
-            // 일러스트
-            if (cardImage != null)
-                cardImage.sprite = DataManager.Instance.GetCardSprite(data.CardImg);
-
-            // 텍스트 정보 갱신 (이름)
-            if (nameText != null)
-            {
-                nameText.text = data.Name;
-            }
-
-            // 텍스트 정보 갱신 (레벨)
-            if (levelText != null)
-            {
-                levelText.text = userCard.Level.ToString();
-            }
-
-            // 텍스트 정보 갱신 (타입 - 한글 변환)
-            if (typeText != null)
-            {
-                string typeString = "";
-                switch (data.CardType)
-                {
-                    case CardType.Attack: typeString = "공격"; break;
-                    case CardType.Shield: typeString = "방어"; break;
-                    case CardType.Healing: typeString = "치유"; break;
-                    case CardType.Spell: typeString = "주문"; break;
-                    default: typeString = "기타"; break;
-                }
-                typeText.text = typeString;
-            }
-            if (descText != null)
-            {
-                descText.text = ParseDescription(data, userCard.Level);
-            }
-            SetGradeColor(data.CardGrade);
-
-            // 카드 사용 가능 횟수
-            int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(userCard.Level, data.CardGrade);
-            if (noaText != null) noaText.text = numberOfAvailable.ToString("N0");
+            _tooltipLogic.Init(_userCard, tooltipUI);
         }
-        if (countText != null)
+    }
+    private void UpdateSlotVisual()
+    {
+        if (_userCard == null) return;
+        var data = _userCard.GetData();
+        if (data == null) return;
+
+        // 일러스트 갱신
+        if (cardImage != null)
+            cardImage.sprite = DataManager.Instance.GetCardSprite(data.CardImg);
+
+        // 이름 갱신
+        if (nameText != null) nameText.text = data.Name;
+
+        // 레벨 갱신
+        if (levelText != null) levelText.text = _userCard.Level.ToString();
+
+        // 타입 갱신
+        if (typeText != null)
         {
-            countText.text = $"x {userCard.Count}";
+            string typeString = "";
+            switch (data.CardType)
+            {
+                case CardType.Attack: typeString = "공격"; break;
+                case CardType.Shield: typeString = "방어"; break;
+                case CardType.Healing: typeString = "치유"; break;
+                case CardType.Spell: typeString = "주문"; break;
+                default: typeString = "기타"; break;
+            }
+            typeText.text = typeString;
         }
-        selectEffect.gameObject.SetActive(false); // 처음엔 꺼둠
 
-        // 장착 여부 확인
-        bool isEquipped = InventoryManager.Instance.IsCardInDeck(userCard.CardId);
+        // 설명 갱신
+        if (descText != null) descText.text = ParseDescription(data, _userCard.Level);
 
-        // 켜고 끄기
-        if (equipMark != null)
-        {
-            equipMark.SetActive(isEquipped);
-        }
+        // 등급 색상 갱신
+        SetGradeColor(data.CardGrade);
+
+        // 사용 가능 횟수 갱신
+        int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(_userCard.Level, data.CardGrade);
+        if (noaText != null) noaText.text = numberOfAvailable.ToString("N0");
+
+        // 보유 개수 갱신
+        if (countText != null) countText.text = $"x {_userCard.Count}";
+
+        // 장착 표시 갱신
+        bool isEquipped = InventoryManager.Instance.IsCardInDeck(_userCard.CardId);
+        if (equipMark != null) equipMark.SetActive(isEquipped);
+
+        // 캔버스 정렬 초기화
         if (_myCanvas != null)
         {
             _myCanvas.overrideSorting = false;
             _myCanvas.sortingOrder = 0;
         }
 
+        if (selectEffect != null) selectEffect.gameObject.SetActive(false);
     }
-
     private void SetGradeColor(CardGrade grade)
     {
         if (gradeColorImg == null || gradeColors == null || gradeColors.Length == 0) return;
@@ -292,38 +305,41 @@ public class InventorySlotUI : MonoBehaviour,
         if (_userCard == null) return;
         if (eventData.dragging) return;
         if (_isSelected) return; // 이미 선택(클릭)된 상태라면 크기 유지
-        _savedIndex = transform.GetSiblingIndex();
-        _dummy = new GameObject("DummySlot", typeof(RectTransform), typeof(LayoutElement));
-        _dummy.transform.SetParent(transform.parent); 
-        _dummy.transform.SetSiblingIndex(_savedIndex);
-        RectTransform dummyRT = _dummy.GetComponent<RectTransform>();
-        RectTransform myRT = GetComponent<RectTransform>();
-        dummyRT.sizeDelta = myRT.sizeDelta;
 
-        transform.localScale = Vector3.one * 1.2f;
-        selectEffect.gameObject.SetActive(true);
-        _originalIndex = transform.GetSiblingIndex();
-        if (_layoutElement != null) _layoutElement.ignoreLayout = true;
-        transform.SetAsLastSibling();
-
-        if (_myCanvas != null)
+        if (_canHoverZoom)
         {
-            _myCanvas.overrideSorting = false;
+            _savedIndex = transform.GetSiblingIndex();
+            _dummy = new GameObject("DummySlot", typeof(RectTransform), typeof(LayoutElement));
+            _dummy.transform.SetParent(transform.parent);
+            _dummy.transform.SetSiblingIndex(_savedIndex);
+
+            RectTransform dummyRT = _dummy.GetComponent<RectTransform>();
+            dummyRT.sizeDelta = GetComponent<RectTransform>().sizeDelta;
+
+            transform.localScale = Vector3.one * 1.2f;
+            if (_layoutElement != null) _layoutElement.ignoreLayout = true;
+            transform.SetAsLastSibling();
         }
+
+        // 툴팁은 확대 여부와 상관없이
+        if (_tooltipLogic != null) _tooltipLogic.PointerEnterParent();
+
+        selectEffect.gameObject.SetActive(true);
     }
 
     // 마우스 나갈 때 복구
     public void OnPointerExit(PointerEventData eventData)
     {
         if (_isSelected) return; // 선택된 상태면 줄어들지 않음
-        if (_dummy != null)
+        if (_tooltipLogic != null) _tooltipLogic.PointerExitParent();
+        if (_canHoverZoom)
         {
-            Destroy(_dummy);
+            if (_dummy != null) Destroy(_dummy);
+            transform.localScale = Vector3.one;
+            if (_layoutElement != null) _layoutElement.ignoreLayout = false;
+            transform.SetSiblingIndex(_savedIndex);
         }
-
-        transform.localScale = Vector3.one;
         selectEffect.gameObject.SetActive(false);
-        if (_layoutElement != null) _layoutElement.ignoreLayout = false;
-        transform.SetSiblingIndex(_savedIndex);
     }
+
 }

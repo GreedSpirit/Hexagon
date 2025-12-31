@@ -1605,6 +1605,30 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3246630475059596259, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3246630475059596259, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3246630475059596259, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3246630475059596259, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3246630475059596259, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3246630475059596259, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4652128806938569940, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1625,6 +1649,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5243876266426759633, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: _tooltipUI
+      value: 
+      objectReference: {fileID: 2079961256}
     - target: {fileID: 6561599773781064200, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1721,6 +1749,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7158861422542184180, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: _leftSlot
+      value: 
+      objectReference: {fileID: 294887279}
+    - target: {fileID: 7158861422542184180, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: _tooltipUI
+      value: 
+      objectReference: {fileID: 2079961256}
     - target: {fileID: 7472836956022749386, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1733,11 +1769,46 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7707667278206929048, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707667278206929048, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707667278206929048, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707667278206929048, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707667278206929048, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707667278206929048, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+--- !u!114 &294887279 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8941845400313784810, guid: ecd73235f4f1aaf4289efe437ade4891, type: 3}
+  m_PrefabInstance: {fileID: 294887278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad0d4875c811fc4a86325f5feb6ddbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
 --- !u!1 &308256270
 GameObject:
   m_ObjectHideFlags: 0

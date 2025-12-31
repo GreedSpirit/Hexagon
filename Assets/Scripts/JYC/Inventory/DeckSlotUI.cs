@@ -27,22 +27,29 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     // 렌더링 순서 제어용 Canvas 변수
     private Canvas _canvas;
     private GraphicRaycaster _graphicRaycaster;
+    private CardTooltipLogic _tooltipLogic;
+    private DeckUI _parentDeckUI;
 
     private void Awake()
     {
         // 컴포넌트 가져오기 
         _canvas = GetComponent<Canvas>();
+        _tooltipLogic = GetComponent<CardTooltipLogic>();
         if (_canvas == null) _canvas = gameObject.AddComponent<Canvas>();
 
         _graphicRaycaster = GetComponent<GraphicRaycaster>();
         if (_graphicRaycaster == null) _graphicRaycaster = gameObject.AddComponent<GraphicRaycaster>();
     }
     // 데이터 세팅
-    public void Init(int cardId, int index, CardGrade requiredGrade)
+    public void Init(int cardId, int index, CardGrade requiredGrade, DeckUI deckUI)
     {
         _cardId = cardId;
         _slotIndex = index;
         _requiredGrade = requiredGrade;
+        _parentDeckUI = deckUI;
+        var data = DataManager.Instance.GetCard(cardId);
+        if (_tooltipLogic != null && data != null && deckUI.TooltipUI != null)
+            _tooltipLogic.Init(data, deckUI.TooltipUI);
         // 테두리 색상 설정 (빈 슬롯이어도 등급 색은 나와야 함)
         SetGradeVisual(requiredGrade);
         // 카드가 장착된 상태인가?
@@ -217,6 +224,7 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             {
                 transform.localScale = Vector3.one * 1.5f;
                 // 마우스 올리면 렌더링 순서 최우선으로 변경
+                if (_tooltipLogic != null) _tooltipLogic.PointerEnterParent();
                 if (_canvas != null)
                 {
                     _canvas.overrideSorting = true;
@@ -254,7 +262,7 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerExit(PointerEventData eventData)
     {
         transform.localScale = Vector3.one;
-
+        if (_tooltipLogic != null) _tooltipLogic.PointerExitParent();
         if (_canvas != null)
         {
             _canvas.overrideSorting = false;

@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -877,8 +877,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0.1}
   m_AnchorMax: {x: 0.45, y: 0.9}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -29.2684, y: 0}
+  m_SizeDelta: {x: -58.5367, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8127571285722997652
 CanvasRenderer:
@@ -930,6 +930,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 420f5d96c82a4b34380dfcbb7688a1bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDetailPanel
+  _tooltipUI: {fileID: 0}
+  _tooltipLogic: {fileID: 0}
   _leftCardImage: {fileID: 7435601879123055189}
   _leftNameText: {fileID: 2984588508367154690}
   _leftDescText: {fileID: 8437188815827504923}
@@ -1635,6 +1637,7 @@ MonoBehaviour:
   dungeonInfoButton: {fileID: 7819969257357138640}
   _dungeonInfoPanel: {fileID: 3070913514874465336}
   _mainPlayerUI: {fileID: 0}
+  _tooltipUI: {fileID: 0}
 --- !u!1 &1500782381817627772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2178,7 +2181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6737231101502078513
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3643,7 +3646,7 @@ RectTransform:
   m_Father: {fileID: 6126354198388283229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5057,7 +5060,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -6075,6 +6078,7 @@ MonoBehaviour:
   _backgroundGroup: {fileID: 1102468016287953760}
   backgroundPanelImage: {fileID: 9136073069725270031}
   deckBuildingBg: {fileID: 21300000, guid: 2ef8ac471c4409042a0a4a116a46ff16, type: 3}
+  _tooltipUI: {fileID: 0}
   IsDeckBuildingMode: 0
 --- !u!1 &7994122166208754975
 GameObject:
@@ -7060,7 +7064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2898633851723836661, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 452.9691
+      value: 394.43
       objectReference: {fileID: 0}
     - target: {fileID: 2898633851723836661, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_SizeDelta.y
@@ -7068,11 +7072,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2898633851723836661, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.72601
+      value: 0.72469
       objectReference: {fileID: 0}
     - target: {fileID: 2898633851723836661, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -169
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191410491444468440, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191410491444468440, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4802698471854825601, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_fontSize
@@ -7108,11 +7120,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5786734410706720415, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -76.64
+      value: -69
       objectReference: {fileID: 0}
     - target: {fileID: 5786734410706720415, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -63.789
+      value: -62.154
       objectReference: {fileID: 0}
     - target: {fileID: 5966957920980916255, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_SizeDelta.x
@@ -7124,11 +7136,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5966957920980916255, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 74.6
+      value: 69
       objectReference: {fileID: 0}
     - target: {fileID: 5966957920980916255, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -62.154
+      value: -63.788
+      objectReference: {fileID: 0}
+    - target: {fileID: 6601636321985449024, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 6601636321985449024, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7212412304151779973, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_SizeDelta.x
@@ -7140,7 +7160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7212412304151779973, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -76.63974
+      value: -68.99997
       objectReference: {fileID: 0}
     - target: {fileID: 7212412304151779973, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
       propertyPath: m_AnchoredPosition.y

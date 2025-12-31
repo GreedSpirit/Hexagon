@@ -23,6 +23,9 @@ public class InventoryManager : MonoBehaviour
     public Sprite borderEpic;
     public Sprite borderLegendary;
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip _deckEditSfx;
+
     private InventoryUI _currentInventoryUI;
 
     // 가상 슬롯 (동적으로 크기가 변함)
@@ -310,6 +313,7 @@ public class InventoryManager : MonoBehaviour
         _virtualDeckSlots[targetSlot] = cardId;
         SaveVirtualDeckToCardManager();
         InvokeDeckChanged();
+        if (_deckEditSfx != null) SoundManager.Instance.PlaySFX(_deckEditSfx);
         return true;
     }
 
@@ -351,6 +355,7 @@ public class InventoryManager : MonoBehaviour
         RefreshInventory();
         InvokeDeckChanged();
         DeselectAll();
+        if (_deckEditSfx != null) SoundManager.Instance.PlaySFX(_deckEditSfx);
     }
     public Sprite GetGradeBorderSprite(CardGrade grade)
     {
