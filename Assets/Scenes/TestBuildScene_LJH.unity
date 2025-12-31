@@ -127,10 +127,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1059952690348728071, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_text
+      value: ???
+      objectReference: {fileID: 0}
     - target: {fileID: 4301632483757930528, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
       propertyPath: _deckUI
       value: 
       objectReference: {fileID: 855553153466316700}
+    - target: {fileID: 6194357943442141678, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
+      propertyPath: m_text
+      value: "\uC6B0\uC5BC\uC758 \uC2EC\uC5F0 - \uC774\uC9C0"
+      objectReference: {fileID: 0}
     - target: {fileID: 6450313857247947537, guid: 1ecbb263acb076048ab0062b3707c4ea, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

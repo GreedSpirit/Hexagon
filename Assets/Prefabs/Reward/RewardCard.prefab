@@ -92,7 +92,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5786734410706720415
 RectTransform:
   m_ObjectHideFlags: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 72095f4f442e1e84282dc95fd82d339a, type: 2}
-  m_sharedMaterial: {fileID: 9103922290409212317, guid: 72095f4f442e1e84282dc95fd82d339a, type: 2}
+  m_sharedMaterial: {fileID: -2091249604926714947, guid: 72095f4f442e1e84282dc95fd82d339a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1575,6 +1575,7 @@ MonoBehaviour:
   _typeText: {fileID: 4802698471854825601}
   _levelText: {fileID: 3191410491444468440}
   _amountText: {fileID: 3706268433057122676}
+  _numberOfAvailableText: {fileID: 6601636321985449024}
   _gradeColorImg: {fileID: 689027412308660929}
   _gradeColors:
   - {r: 0.7921569, g: 0.81960785, b: 0.87058824, a: 1}

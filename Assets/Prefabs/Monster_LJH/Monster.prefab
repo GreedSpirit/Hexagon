@@ -44,12 +44,12 @@ GameObject:
   - component: {fileID: 3303409773172927726}
   - component: {fileID: 5136850646916417982}
   m_Layer: 5
-  m_Name: Button
+  m_Name: TakeDmgButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3392296604441380380
 RectTransform:
   m_ObjectHideFlags: 0

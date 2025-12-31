@@ -935,6 +935,7 @@ MonoBehaviour:
   _leftNameText: {fileID: 2984588508367154690}
   _leftDescText: {fileID: 8437188815827504923}
   _leftLevelText: {fileID: 2473366910188234850}
+  _leftNoaText: {fileID: 6162254378661805818}
   _leftTypeText: {fileID: 5530310559453336123}
   _leftGradeColorImg: {fileID: 546881899685159035}
   _leftCountText: {fileID: 6463556749310468622}
@@ -7496,6 +7497,17 @@ RectTransform:
 --- !u!114 &5530310559453336123 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4802698471854825601, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
+  m_PrefabInstance: {fileID: 1015844253214519994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &6162254378661805818 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6601636321985449024, guid: 0895d2707da79cb44b5c77458cc69e01, type: 3}
   m_PrefabInstance: {fileID: 1015844253214519994}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

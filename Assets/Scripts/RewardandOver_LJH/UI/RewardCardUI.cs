@@ -18,6 +18,7 @@ public class RewardCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] private TextMeshProUGUI _levelText;
 
     [SerializeField] private TextMeshProUGUI _amountText;
+    [SerializeField] TextMeshProUGUI _numberOfAvailableText;      // 사용 가능 횟수 텍스트
     
     [Header("Grade Settings")]
     [SerializeField] private Image _gradeColorImg;
@@ -68,6 +69,10 @@ public class RewardCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
         SetGradeColor();
 
+        int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(CardManager.Instance.GetCardLevel(_cardData.Id), _cardData.CardGrade);
+        if (_numberOfAvailableText != null) _numberOfAvailableText.text = numberOfAvailable.ToString("N0");
+        else Debug.LogError("NumberOfAvailableText 가 할당되어있지 않습니다.");
+
         if (_selectedEdge != null) _selectedEdge.SetActive(false);
     }
 
@@ -105,7 +110,7 @@ public class RewardCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         if (_gradeColorImg == null || _gradeColors == null || _gradeColors.Length == 0) return;
 
-        int gradeIndex = (int)_cardData.CardGrade;
+        int gradeIndex = (int)_cardData.CardGrade - 1;
         if (gradeIndex >= 0 && gradeIndex < _gradeColors.Length)
         {
             _gradeColorImg.color = _gradeColors[gradeIndex];
