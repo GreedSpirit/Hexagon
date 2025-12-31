@@ -14,8 +14,11 @@ public class TalkUI : MonoBehaviour
     CanvasGroup _backgroundCanvasGroup;
     Coroutine _fadeRoutine;
     Coroutine _cutImageRoutine;
+    Coroutine _shakeRoutine;
 
-    Coroutine _effectRoutine;  
+    Vector2 _shakeOrigin;
+    float _shakeDuration = 0.3f;
+
     float _fadeDuration = 0.3f;
     ITalkable _currentTalking;
     List<ScenarioData> _currentScenario;
@@ -31,12 +34,13 @@ public class TalkUI : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI _characterName;
     [SerializeField] TextMeshProUGUI _characterScript;
+    [SerializeField] GameObject _characterNameBox;
     [SerializeField] GameObject _upgradeEnterButton;
     [SerializeField] GameObject _escButton;
     [SerializeField] GameObject _spaceBarText;
-    
-    
-    
+
+    bool _isScenarioTransitioning;
+
 
 
     private void Awake()
@@ -44,6 +48,7 @@ public class TalkUI : MonoBehaviour
         _backgroundCanvasGroup = _fadePannel.GetComponent<CanvasGroup>();
         _currentScenario = new List<ScenarioData>();
         _upgradeManager = FindFirstObjectByType<UpgradeManager>();
+        _shakeOrigin = _backgroundPannel.transform.localPosition;
     }
 
     private void Start()
@@ -119,7 +124,7 @@ public class TalkUI : MonoBehaviour
     //------------------------------------------------------------------
 
     public void EnterScenario(List<ScenarioData> datas)
-    {
+    {        
         _currentCutImageKey = null;
         _cutImg.sprite = null;
         _cutImg.gameObject.SetActive(false);
@@ -141,27 +146,50 @@ public class TalkUI : MonoBehaviour
 
     public void UpdateScenario()
     {
+        if (_isScenarioTransitioning)
+            return;
+
         if (_currentScenario == null || _currentScenario.Count == 0)
             return;
 
         if (_currentIndex >= _currentScenario.Count)
-        {               
+        {
             EndScenario();
             return;
-            //시나리오 종료 처리
         }
+
+        StartCoroutine(UpdateScenarioRoutine());
+    }
+    IEnumerator UpdateScenarioRoutine()
+    {
+        _isScenarioTransitioning = true;
+
         ScenarioData data = _currentScenario[_currentIndex];
 
         SetCutImage(data);
         SetScenarioBackground(data);
         SetScenarioPortrait(data);
 
-      
-        
+        if (data.Event_Type == Event_Type.shake)
+        {
+            if (_shakeRoutine != null)
+            {
+                StopCoroutine(_shakeRoutine);
+            }
+                
+
+            _shakeRoutine = StartCoroutine(ShakeRoutine());
+        }
+
         _characterScript.text = data.Dialogue;
         _currentIndex++;
-        //연출도 추가해주기
+
+        // 최소 연출 대기 시간
+        yield return new WaitForSeconds(0.2f);
+
+        _isScenarioTransitioning = false;
     }
+
 
     public void EndScenario()
     {
@@ -200,6 +228,7 @@ public class TalkUI : MonoBehaviour
         if (string.IsNullOrWhiteSpace(data.Npc))
         {
             _characterName.text = "";
+            _characterNameBox.SetActive(false);
             _characterScript.text = data.Dialogue;
             return;
         }
@@ -207,6 +236,7 @@ public class TalkUI : MonoBehaviour
         {
             if (_leftImg.sprite == null) // 에리온의 최초 대사라면
             {
+                _characterNameBox.SetActive(true);
                 _leftImg.gameObject.SetActive(true); //왼쪽 초상화 오브젝트 활성화
                 _leftImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Character_Image); //왼쪽 초상화에 에리온 이미지 할당
             }            
@@ -223,6 +253,7 @@ public class TalkUI : MonoBehaviour
         {
             if (_rightImg.sprite == null)  //Npc의 최초 대사라면
             {
+                _characterNameBox.SetActive(true);
                 _rightImg.gameObject.SetActive(true); //우측 초상화 오브젝트 활성화
                 _rightImg.sprite = DataManager.Instance.GetSprite(SpriteType.Character, data.Character_Image); //우측 초상화에 Npc 할당
             }
@@ -301,7 +332,7 @@ public class TalkUI : MonoBehaviour
         _talkPannel.SetActive(isEnter);
         _escButton.SetActive(isEnter);
         _spaceBarText.SetActive(!isEnter);
-
+        _characterNameBox.SetActive(isEnter);
         Player.Instance.SwitchIsTalking(isEnter);
         
         
@@ -414,4 +445,31 @@ public class TalkUI : MonoBehaviour
 
         _currentCutImageKey = null;
     }
+
+    //------------------------------------------------------------------------------
+    // 배경 진동용 연출 코루틴
+
+    IEnumerator ShakeRoutine()
+    {
+        float time = 0f;
+
+        RectTransform rect = _backgroundPannel.rectTransform;
+        float _shakeStrength = 10f;
+
+        while (time < _shakeDuration)
+        {
+            time += Time.deltaTime;
+
+            float offsetX = UnityEngine.Random.Range(-_shakeStrength, _shakeStrength);
+            float offsetY = UnityEngine.Random.Range(-_shakeStrength, _shakeStrength);
+
+            rect.localPosition = _shakeOrigin + new Vector2(offsetX, offsetY);
+
+            yield return null;
+        }
+
+        // 원위치 복구 (중요)
+        rect.localPosition = _shakeOrigin;
+    }
+
 }
