@@ -60,7 +60,8 @@ public class BattleManager : MonoBehaviour
     // 페이즈 변경용 함수
     //----------------------------------------------------------------
     public void StartBattle()//배틀 시작할 때 호출
-    {        
+    {
+        Player.Instance.RemoveDebuffs();
         _handManager.SetMonsterTarget(_currentMonster); //핸드 매니저에게 타겟 알려주기
         _phaseChanger.ChangePhase(new StartPhase());
         OnOffBattleUI(true);
