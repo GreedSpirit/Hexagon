@@ -36,7 +36,7 @@ public class GameSaveManager : Singleton<GameSaveManager>
             // 카드 데이터 복구
             if (CardManager.Instance != null)
             {
-                CardManager.Instance.LoadFromSaveData(data.MyCards, data.MyDeck);
+                CardManager.Instance.LoadFromSaveData(data.MyCards, new List<int>());
             }
 
             // 플레이어 데이터 복구

@@ -79,7 +79,34 @@ public class InventoryManager : MonoBehaviour
     {
         _lastClosedFrame = Time.frameCount;
     }
+    public void ResetDeckData()
+    {
+        // 덱 리스트 비우기
+        if (CardManager.Instance != null)
+        {
+            CardManager.Instance.CurrentDeck.Clear();
+        }
 
+        // 현재 매니저가 들고 있는 가상 슬롯 배열 초기화 (-1로 채움)
+        if (_virtualDeckSlots != null)
+        {
+            for (int i = 0; i < _virtualDeckSlots.Length; i++)
+            {
+                _virtualDeckSlots[i] = -1;
+            }
+        }
+
+        // UI에 변경사항 알림
+        InvokeDeckChanged();
+
+        // 초기화된 상태를 세이브 파일에 즉시 반영
+        if (GameSaveManager.Instance != null)
+        {
+            GameSaveManager.Instance.SaveGame();
+        }
+
+        Debug.Log("[InventoryManager] 덱 구성이 초기화되었습니다.");
+    }
     public bool WasClosedThisFrame()
     {
         return _lastClosedFrame == Time.frameCount;

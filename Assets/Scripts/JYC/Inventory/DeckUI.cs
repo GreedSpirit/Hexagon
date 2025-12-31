@@ -162,6 +162,10 @@ public class DeckUI : MonoBehaviour
         if (_cachedSettingUI == null) _cachedSettingUI = FindFirstObjectByType<SettingUI>();
         if (_cachedSettingUI != null) _cachedSettingUI.enabled = true;
 
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.ResetDeckData();
+        }
         if (_mainPlayerUI != null)
         {
             _mainPlayerUI.SetActive(true);
@@ -173,6 +177,7 @@ public class DeckUI : MonoBehaviour
         {
             Player.Instance.SwitchIsTalking(false); // 대화 끝났다고 알림
             Player.Instance.EnterMoveMod();         // 이동 모드로 전환
+            InventoryManager.Instance.ResetDeckData();
         }
         this.gameObject.SetActive(false);
         if (uiBackground != null) uiBackground.SetActive(false);

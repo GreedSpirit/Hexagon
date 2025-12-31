@@ -200,6 +200,27 @@ public class InventoryUI : MonoBehaviour
             _detailPanel.Init();
         }
     }
+    public void OnClickCloseButton()
+    {
+        // 덱 편성시
+        if (IsDeckBuildingMode)
+        {
+            var deckUI = FindFirstObjectByType<DeckUI>();
+            if (deckUI != null)
+            {
+                deckUI.CloseDeckUI();
+            }
+            else
+            {
+                CloseInventory();
+            }
+        }
+        // 인벤토리만
+        else
+        {
+            CloseInventory();
+        }
+    }
     // 켜질 때 Player에게 알림 (덱 모드가 아닐 때만)
     private void OnEnable()
     {
