@@ -15,14 +15,14 @@ Id,Key,Korean
 12,NameCardPride,오만
 13,NameCardLeap,도약
 14,NameCardFireless,꺼지지 않는 불꽃
-15,DescCardFireball,상대에게 {D}의 데미지를 줍니다.
-16,DescCardThreat,상대에게 “낙인” 효과를 입힙니다.
-17,DescCardSwipe,상대에게 {D}의 데미지를 줍니다.
-18,DescCardLazer,화상 레이저를 발사해 상대에게 “화상” {SEV}을 부여합니다.
-19,DescCardPsychoKinesis,응축된 불의 힘으로 {D}의 데미지를 줍니다.
-20,DescCardPride,"시전자가 오만합니다. ""오만"" 효과를 발동합니다."
-21,DescCardLeap,스스로 민첩해져 {N} 회복합니다.
-22,DescCardFireless,"상대에게 {D}의 데미지를 줍니다. 대상은 ""화상""을 {SEV} 부여합니다."
+15,DescCardFireball,대상에게 피해를 {D} 줍니다.
+16,DescCardThreat,대상에게 낙인 효과를 입힙니다.
+17,DescCardSwipe,대상에게 피해를 {D} 줍니다.
+18,DescCardLazer,대상에게 빔 형태의 불을 발사해 화상을 {SEV} 부여합니다.
+19,DescCardPsychoKinesis,응축된 불의 힘으로 피해를 {D} 줍니다.
+20,DescCardPride,금서의 힘을 빌려 오만을 {turns} 얻습니다.
+21,DescCardLeap,금서의 힘을 빌려 체력을 {N} 회복합니다.
+22,DescCardFireless,"대상에게 꺼지지 않는 불꽃을 부착해 피해를 {D} 주며, 화상을 {SEV} 부여합니다."
 23,NameStatusBurn,화상
 24,NameStatusPride,오만
 25,DescStatusBurn,자신의 턴이 끝난 후 화상을 입은 적은 그 만큼 피해를 받습니다. 피해를 받은 후 화상이 1 감소합니다.
