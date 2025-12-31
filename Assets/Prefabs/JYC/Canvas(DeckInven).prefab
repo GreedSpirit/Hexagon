@@ -4045,8 +4045,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonInfoPanel
   _panelBackground: {fileID: 142108393526638571}
-  _dungeonBgSprite: {fileID: 1709075544958532249, guid: 8a0576aaaae5d244f85d9b8b74d7a2ee, type: 3}
-  _enemyBgSprite: {fileID: -2859279159972725734, guid: 0902fd796f0943b418b48bef12bc6e1c, type: 3}
+  _dungeonBgSprite: {fileID: 1709075544958532249, guid: 133e5b071b3739048871ca2f506be49c, type: 3}
+  _enemyBgSprite: {fileID: -2859279159972725734, guid: 9e9f0a1fad671b24eb6431075129b1f1, type: 3}
   _closeButton: {fileID: 0}
   _toEnemyInfoButton: {fileID: 5731787393903354269}
   _toDungeonInfoButton: {fileID: 8418225299388784123}

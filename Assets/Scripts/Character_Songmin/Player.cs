@@ -623,6 +623,14 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
 
     public void ClickSettingButton()
     {
-        SoundManager.Instance.SetActivePanel();
+        var pauseUI = FindFirstObjectByType<DungeonPauseUI>();
+        if (pauseUI != null)
+        {
+            pauseUI.PauseGame();
+        }
+        else
+        {
+            SoundManager.Instance.SetActivePanel();
+        }            
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -33,10 +34,37 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); 
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+    private void OnEnable()
+    {
+        // 씬이 로드될 때마다 호출될 함수 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    // 씬이 변경(로드)되면 호출되는 함수
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _currentInventoryUI = null;
 
+        OnDeckChanged = null;
+        OnRequestDeselect = null;
+
+        // 상태 초기화 (드래그 중이었다면 취소 등)
+        IsDropProcessing = false;
+        DeselectAll();
+    }
     public void RegisterInventoryUI(InventoryUI ui)
     {
         _currentInventoryUI = ui;

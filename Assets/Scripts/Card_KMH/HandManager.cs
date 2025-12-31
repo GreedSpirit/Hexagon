@@ -426,6 +426,7 @@ public class HandManager : MonoBehaviour
     // 페이즈 변경 시 호출
     public void OnPhaseChanged(PhaseType phaseType)
     {
+
         // 드로우 페이즈일 때
         if(phaseType == PhaseType.Draw)
         {
@@ -438,6 +439,7 @@ public class HandManager : MonoBehaviour
             // 카드 뽑기 종료 이벤트
             OnDrawEnd?.Invoke();
         }
+        // 시작
         else if (phaseType == PhaseType.Start)
         {
             // 부족한 카드 수
@@ -456,23 +458,21 @@ public class HandManager : MonoBehaviour
                 SoundManager.Instance.PlaySFX(_drawClip);
             }
         }
-        // 플레이어턴 끝나면
-        else if (phaseType == PhaseType.EnemyAct)
-        {
-            // 핸드 상호작용 불가
-            _handCanvas.blocksRaycasts = false;
 
-            // 선택된 카드가 있을 때 && 선택 카드의 드래그 상태
-            if (SelectedCard != null && SelectedCard.IsDragging == false)
+        // 플레이어턴
+        bool isPlayerTurn = (phaseType == PhaseType.Draw || phaseType == PhaseType.PlayerAct);
+
+        // 상호작용 설정
+        _handCanvas.blocksRaycasts = isPlayerTurn;
+
+        // 플레이어 턴 아니면
+        if (isPlayerTurn == false)
+        {
+            // 선택된 카드 선택 해제
+            if (SelectedCard != null)
             {
-                // 카드 선택 해지
                 DeselectCard();
             }
-        }
-        else if (phaseType == PhaseType.PlayerAct)
-        {
-            // 핸드 상호작용 허용
-            _handCanvas.blocksRaycasts = true;
         }
     }
 }
