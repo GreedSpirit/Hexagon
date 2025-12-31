@@ -1,4 +1,4 @@
-시나리오 스크립트,시나리오 분류 타입,연관된 죄악 타입,대사 출력 타이밍,재생 순서,연출 이벤트,연출에 사용되는 이미지,이미지 연출 효과,캐릭터 이름,캐릭터 이미지,배경화면 이미지,대사,진행 플래그
+﻿시나리오 스크립트,시나리오 분류 타입,연관된 죄악 타입,대사 출력 타이밍,재생 순서,연출 이벤트,연출에 사용되는 이미지,이미지 연출 효과,캐릭터 이름,캐릭터 이미지,배경화면 이미지,대사,진행 플래그
 Id,Scenario_Type,Sin_Type,Trigger,Play_Order,Event,Image_ID,Image_Effect,Npc,Character_Image,Background,Dialogue,Next_Flag
 string,enum(string),enum(string),enum(string),int,enum(string),string,enum(string),string,string,string,Text(string),string
 scn_Intro_001,intro,,gamestart,1,,,,,,,"""깨진 서가, 흩어진 금서.""",

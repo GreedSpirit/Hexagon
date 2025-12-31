@@ -9,7 +9,9 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] Image cardImage;       // 카드 그림
     [SerializeField] Image backgroundImage; // 등급별 배경
     [SerializeField] Image borderImage;     // 등급 테두리 (필요시)
-
+    [SerializeField] Image gradeColorImg;       // 우측 상단 등급 색상 네모
+    [SerializeField] Color[] gradeColors;       // 등급별 색상 (0:Common ~)
+    [SerializeField] TextMeshProUGUI countText; // 하단 개수
     [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
     [SerializeField] TextMeshProUGUI levelText; // 카드 레벨
     [SerializeField] TextMeshProUGUI typeText;  // 카드 타입
@@ -21,7 +23,19 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     // 드래그 효과를 위한 반투명 이미지 변수
     private GameObject _dragGhost;
     private bool _isDropHandled = false;
+    // 렌더링 순서 제어용 Canvas 변수
+    private Canvas _canvas;
+    private GraphicRaycaster _graphicRaycaster;
 
+    private void Awake()
+    {
+        // 컴포넌트 가져오기 
+        _canvas = GetComponent<Canvas>();
+        if (_canvas == null) _canvas = gameObject.AddComponent<Canvas>();
+
+        _graphicRaycaster = GetComponent<GraphicRaycaster>();
+        if (_graphicRaycaster == null) _graphicRaycaster = gameObject.AddComponent<GraphicRaycaster>();
+    }
     // 데이터 세팅
     public void Init(int cardId, int index, CardGrade requiredGrade)
     {
@@ -74,17 +88,14 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                     typeText.text = typeString;
                 }
                 // 테스트
-                if (descText == null)
+                if (descText != null)
                 {
-                    // 연결 안됨 에러 
-                    Debug.LogError($"[오류] DeckSlotUI({index}번): 'Desc Text' 변수가 비어있습니다(Null)! 프리팹 인스펙터 연결을 확인하세요.");
-                }
-                else
-                {
-                    // 연결 됨 -> 텍스트 갱신
                     string finalDesc = ParseDescription(cardData, currentLevel);
                     descText.text = finalDesc;
                 }
+                SetGradeColor(cardData.CardGrade);
+
+                if (countText != null) countText.text = "x 1";
             }
         }
         else
@@ -95,7 +106,24 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             if (nameText != null) nameText.text = "";
             if (levelText != null) levelText.text = "";
             if (typeText != null) typeText.text = "";
+            if (gradeColorImg != null) gradeColorImg.gameObject.SetActive(false);
+            if (countText != null) countText.text = "";
         }
+    }
+    private void SetGradeColor(CardGrade grade)
+    {
+        if (gradeColorImg == null || gradeColors == null || gradeColors.Length == 0) return;
+
+        Color color = Color.white;
+        switch (grade)
+        {
+            case CardGrade.Common: if (gradeColors.Length > 0) color = gradeColors[0]; break;
+            case CardGrade.Rare: if (gradeColors.Length > 1) color = gradeColors[1]; break;
+            case CardGrade.Epic: if (gradeColors.Length > 2) color = gradeColors[2]; break;
+            case CardGrade.Legendary: if (gradeColors.Length > 3) color = gradeColors[3]; break;
+        }
+        gradeColorImg.color = color;
+        gradeColorImg.gameObject.SetActive(true);
     }
     private string ParseDescription(CardData data, int level)
     {
@@ -108,7 +136,7 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         sb.Replace("{D}", finalValue.ToString());
         sb.Replace("{N}", finalValue.ToString());
         sb.Replace("{SEV}", data.StatusEffectValue.ToString());
-        sb.Replace("{Turns}", data.Turn.ToString());
+        sb.Replace("{turns}", data.Turn.ToString());
 
         return sb.ToString();
     }
@@ -179,7 +207,16 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         // 드래그 중이 아닐 때 -> 그냥 확대 (기존 기능)
         if (!eventData.dragging)
         {
-            transform.localScale = Vector3.one * 1.5f;
+            if (_cardId != -1)
+            {
+                transform.localScale = Vector3.one * 1.5f;
+                // 마우스 올리면 렌더링 순서 최우선으로 변경
+                if (_canvas != null)
+                {
+                    _canvas.overrideSorting = true;
+                    _canvas.sortingOrder = 300; // 아주 높은 값으로 설정
+                }
+            }
             return;
         }
 
@@ -212,6 +249,11 @@ public class DeckSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         transform.localScale = Vector3.one;
 
+        if (_canvas != null)
+        {
+            _canvas.overrideSorting = false;
+            _canvas.sortingOrder = 0;
+        }
         // 하이라이트 끄기 (원래 색 복구)
         HighlightSlot(false);
     }

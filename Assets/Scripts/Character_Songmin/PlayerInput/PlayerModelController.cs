@@ -9,8 +9,14 @@ public class PlayerModelController : MonoBehaviour
     Vector2 _moveInput;
     List<Npc> _neerNpcs = new List<Npc>();    
     Animator _animator;
+
+    public float _originXScale = 0.15f;
+    public float _originYScale = 0.15f;
     Vector2 _originScale;
 
+    public float _battleXScale = 0.3f;
+    public float _battleYScale = 0.3f;
+    Vector2 _battleScale;
 
     private void Awake()
     {
@@ -18,7 +24,8 @@ public class PlayerModelController : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
         _rigid.gravityScale = 0;
         _rigid.freezeRotation = true;
-        _originScale = transform.localScale;
+        _originScale = new Vector2(_originXScale, _originYScale);
+        _battleScale = new Vector2(_battleXScale, _battleYScale);
     }
 
     private void FixedUpdate()
@@ -64,6 +71,12 @@ public class PlayerModelController : MonoBehaviour
         gameObject.transform.localScale = _originScale;
     }
 
+    public void BattleModel()
+    {
+        _animator.Rebind();
+        _animator.Update(0f);
+        gameObject.transform.localScale = _battleScale;
+    }
     
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -297,8 +297,9 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
 
     public void ResetCondition()
     {
-        _stat.ResetStatusEffect();
+        _stat.ResetCondition();
         OnHpChanged?.Invoke(_stat.CurrentHp, _stat.Hp, _stat.Poison, _stat.Burn);
+        OnShieldChanged?.Invoke(_stat.Shield);
         OnStatusEffectChanged?.Invoke(_stat.StatusEffects);
     }
 
@@ -532,8 +533,8 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //³ªÁß¿¡ ½Ì±ÛÅæµµ ÇØ
 
     public void EnterBattle()
     {
-        gameObject.transform.position = new Vector2(-3f, -1.5f);
-        _playerModelController.ResetModel();
+        gameObject.transform.position = new Vector2(-3f, -0.5f);
+        _playerModelController.BattleModel();
         _playerUIManager.OnOffPlayerInventoryUi(true);
         _playerUIManager.OnOffPlayerStatUi(true);
     }

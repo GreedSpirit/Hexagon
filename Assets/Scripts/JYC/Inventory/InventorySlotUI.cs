@@ -143,7 +143,7 @@ public class InventorySlotUI : MonoBehaviour,
         sb.Replace("{D}", finalValue.ToString());
         sb.Replace("{N}", finalValue.ToString());
         sb.Replace("{SEV}", data.StatusEffectValue.ToString());
-        sb.Replace("{Turns}", data.Turn.ToString());
+        sb.Replace("{turns}", data.Turn.ToString());
 
         return sb.ToString();
     }

@@ -21,6 +21,8 @@ public class InventoryManager : MonoBehaviour
     public Sprite borderEpic;
     public Sprite borderLegendary;
 
+    private InventoryUI _currentInventoryUI;
+
     // 가상 슬롯 (동적으로 크기가 변함)
     private int[] _virtualDeckSlots;
 
@@ -35,6 +37,24 @@ public class InventoryManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    public void RegisterInventoryUI(InventoryUI ui)
+    {
+        _currentInventoryUI = ui;
+    }
+    public void OpenInventory()
+    {
+        if (_currentInventoryUI != null)
+        {
+            _currentInventoryUI.gameObject.SetActive(true);
+
+            // 필요하다면 초기화 함수 호출
+            _currentInventoryUI.RefreshInventory();
+        }
+        else
+        {
+            Debug.LogWarning("현재 씬에 연결된 InventoryUI가 없습니다!");
+        }
+    }
     // DeckUI에서 던전에 입장할 때 이 함수를 호출해서 슬롯을 세팅해줍니다.
     public void ConfigureDeckSlots(DeckData deckData)
     {
