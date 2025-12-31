@@ -9,6 +9,7 @@ public class CardDetailPanel : MonoBehaviour
     [SerializeField] TextMeshProUGUI _leftNameText; // 카드 이름
     [SerializeField] TextMeshProUGUI _leftDescText; // 카드 설명 (본문)
     [SerializeField] TextMeshProUGUI _leftLevelText; // 레벨 숫자
+    [SerializeField] TextMeshProUGUI _leftNoaText;   // 사용가능횟수 숫자
     [SerializeField] TextMeshProUGUI _leftTypeText;  // 타입 (공격/방어 등)
     [SerializeField] Image _leftGradeColorImg;       // 등급 색상 네모
     [SerializeField] TextMeshProUGUI _leftCountText; // 보유 개수
@@ -51,9 +52,11 @@ public class CardDetailPanel : MonoBehaviour
         Sprite artSprite = DataManager.Instance.GetCardSprite(data.CardImg);
         string parsedDesc = ParseDescription(data, userCard.Level);
         string koreanType = GetKoreanTypeString(data.CardType);
+        int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(userCard.Level, data.CardGrade);
         if (_leftCardImage != null) _leftCardImage.sprite = artSprite;
         if (_leftLevelText != null) _leftLevelText.text = userCard.Level.ToString();
         if (_leftCountText != null) _leftCountText.text = $"x {userCard.Count}";
+        if (_leftNoaText != null) _leftNoaText.text = numberOfAvailable.ToString();
         if (_leftNameText != null) _leftNameText.text = data.Name;
         if (_leftDescText != null) _leftDescText.text = parsedDesc;
         if (_leftTypeText != null)

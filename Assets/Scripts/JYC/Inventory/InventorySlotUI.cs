@@ -20,6 +20,7 @@ public class InventorySlotUI : MonoBehaviour,
     [SerializeField] TextMeshProUGUI countText; // xN 표시
     [SerializeField] TextMeshProUGUI nameText;  // 카드 이름
     [SerializeField] TextMeshProUGUI levelText; // 카드 레벨
+    [SerializeField] TextMeshProUGUI noaText;   // 카드 사용가능횟수
     [SerializeField] TextMeshProUGUI typeText;  // 카드 타입
     [SerializeField] TextMeshProUGUI descText;
 
@@ -84,6 +85,10 @@ public class InventorySlotUI : MonoBehaviour,
                 descText.text = ParseDescription(data, userCard.Level);
             }
             SetGradeColor(data.CardGrade);
+
+            // 카드 사용 가능 횟수
+            int numberOfAvailable = CardManager.Instance.GetCardNumberOfAvailable(userCard.Level, data.CardGrade);
+            if (noaText != null) noaText.text = numberOfAvailable.ToString("N0");
         }
         if (countText != null)
         {

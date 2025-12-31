@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5786734410706720415
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -27.9006, y: -26.252}
+  m_AnchoredPosition: {x: -25.4179, y: -23.52019}
   m_SizeDelta: {x: 55.8011, y: 52.504}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2700885837567352381
@@ -1640,6 +1640,7 @@ MonoBehaviour:
   countText: {fileID: 6316908059675562164}
   nameText: {fileID: 2842443819882306744}
   levelText: {fileID: 3191410491444468440}
+  noaText: {fileID: 6601636321985449024}
   typeText: {fileID: 4802698471854825601}
   descText: {fileID: 8867563965819207073}
   equipMark: {fileID: 7035349643512227720}
