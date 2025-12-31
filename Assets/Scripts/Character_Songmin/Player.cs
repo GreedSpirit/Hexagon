@@ -319,6 +319,11 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         Debug.Log($"현재 걸린 상태 \n 공격 배율: {_stat.Buff}, 취약 배율 : {_stat.DeBuff}, 독: {_stat.Poison}, 화상 : {_stat.Burn}");
     }
 
+    public void RemoveStatusEffect(string effectKey)
+    {
+        _stat.RemoveStatusEffect(effectKey);
+    }
+
     public void ApplyStatusEffect()
     {
         Debug.Log("플레이어 상태이상 대미지 적용");
@@ -477,7 +482,7 @@ public class Player : MonoBehaviour, IBattleUnit, ITalkable //나중에 싱글톤도 해
         SetInventoryUIView(!talking);
     }
 
-    private void SetStatUIView(bool readyToShow)
+    public void SetStatUIView(bool readyToShow)
     {
         _playerUIManager.OnOffPlayerStatUi(readyToShow);
     }
