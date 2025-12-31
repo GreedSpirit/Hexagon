@@ -237,6 +237,10 @@ public class TalkUI : MonoBehaviour
             {
                 _rightImg.gameObject.SetActive(false);
             }
+            if (_leftImg.gameObject.activeSelf)
+            {
+                _leftImg.gameObject.SetActive(false);
+            }
 
             _characterScript.text = data.Dialogue;
             return;
