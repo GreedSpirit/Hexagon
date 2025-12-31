@@ -62,7 +62,7 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
     }
 
-    public void InitMonsterStatus(int monsterId) //몬스터 스탯 초기화 함수
+    public void InitMonsterStatus(int monsterId, int level) //몬스터 스탯 초기화 함수
     {
         _monsterId = monsterId;
         _monsterData = DataManager.Instance.GetMonsterStatData(_monsterId);
@@ -71,16 +71,16 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
             Debug.LogError("몬스터 스탯 데이터를 불러오지 못했습니다. Id: 1");
             return;
         }
-        //추후 어떻게 사용할지에 따라서 중복 변수이기 때문에 DataManager에서 불러오는 방식으로 변경할 수도 있음
+        
         if(_visual != null)
         {
             _visual.SetVisual(_monsterData.Model);
         }
         _monsterGrade = _monsterData.MonGrade;
+        _monsterLevel = level;
 
         if(_monsterGrade == MonsterGrade.Normal)
         {
-            _monsterLevel = 1; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
             _monsterStatData = DataManager.Instance.GetCommonMonsterStatData(_monsterLevel);
 
             _monsterMaxHP = Mathf.FloorToInt(_monsterStatData.Hp * _monsterData.HpRate); 
@@ -88,7 +88,6 @@ public class MonsterStatus : MonoBehaviour, IBattleUnit
         }
         else if(_monsterGrade == MonsterGrade.Boss)
         {
-            _monsterLevel = 1; //추후 스테이지 관련 테이블에서 갖고와서 레벨 설정하기
             _monsterStatData = DataManager.Instance.GetBossMonsterStatData(_monsterLevel);
             _monsterMaxHP = Mathf.FloorToInt(_monsterStatData.Hp * _monsterData.HpRate);
             _monsterDefense = Mathf.FloorToInt(_monsterStatData.Defense * _monsterData.DefRate);

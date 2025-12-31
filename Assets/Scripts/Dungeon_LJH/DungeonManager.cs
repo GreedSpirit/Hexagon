@@ -101,7 +101,7 @@ public class DungeonManager : MonoBehaviour
         GameObject obj = Instantiate(_monsterPrefab, _monsterSpawnPoint.position, Quaternion.identity);
         _currentActiveMonster = obj.GetComponent<MonsterStatus>();
 
-        _currentActiveMonster.InitMonsterStatus(monsterId);
+        _currentActiveMonster.InitMonsterStatus(monsterId, _currentDungeonData.RequiredLevel);
         _battleManager.SetMonster(_currentActiveMonster);
 
         if (_currentActiveMonster.MonsterData.MonGrade == MonsterGrade.Boss)
