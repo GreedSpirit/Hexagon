@@ -45,7 +45,7 @@ scn_Intro_041,intro,,gamestart,41,,,,리브라,Img_Npc_Libra,Img_Village_Silenci
 scn_Intro_042,intro,,gamestart,42,,,,리브라,Img_Npc_Libra,Img_Village_Silencia,"""다만, 선택하지 않았을 때의 결과도 이미 기록되어 있을 뿐이에요.""",
 scn_Intro_043,intro,,gamestart,43,,,,에리온,Img_PC_Erion,Img_Village_Silencia,"""...좋아, 어디부터 시작하면 되지?""",
 scn_Intro_044,intro,,gamestart,44,,,,리브라,Img_Npc_Libra,Img_Village_Silencia,"""이미 한 권이 가장 먼저 움직이기 시작했어요.""",
-scn_Intro_045,intro,,gamestart,45,,,,,,Img_Village_Silencia,"""▶ 메인 스토리 시작  ▶칠죄종의 봉인◀""",
+scn_Intro_045,intro,,gamestart,45,,,,,,Img_Village_Silencia,"""▶ 메인 스토리 시작  「칠죄종의 봉인」""",
 scn_Intro_046,intro,,gamestart,46,,,,에리온,Img_PC_Erion,Img_Village_Silencia,"""가장 먼저 움직인 금서가 있다고 했지?""",
 scn_Intro_047,intro,,gamestart,47,,,,에리온,Img_PC_Erion,Img_Village_Silencia,"""어떤 녀석이야?""",
 scn_Intro_048,intro,,gamestart,48,,,,리브라,Img_Npc_Libra,Img_Village_Silencia,"""'오만의 정령'입니다.""",
@@ -77,7 +77,7 @@ scn_Intro_073,intro,,gamestart,73,,,,에리온,Img_PC_Erion,Img_Village_Silencia
 scn_Intro_074,intro,,gamestart,74,,,,리브라,Img_Npc_Libra,Img_Village_Silencia,"""기억하세요. 오만의 정령은 힘으로만 상대할 수 있는 존재가 아닙니다.""",
 scn_Intro_075,intro,,gamestart,75,,,,리브라,Img_Npc_Libra,Img_Village_Silencia,"""당신이 스스로를 절대적으로 옳다고 믿는 순간...""",
 scn_Intro_076,intro,,gamestart,76,,,,리브라,Img_Npc_Libra,Img_Village_Silencia,"""그 정령은 가장 강해질 거예요.""",
-scn_Intro_077,intro,,gamestart,77,,,,,,Img_Village_Silencia,"""▶ 첫번째 던전  ▶첫 번째 봉인 - 오만◀""",
+scn_Intro_077,intro,,gamestart,77,,,,,,Img_Village_Silencia,"""▶ 첫번째 던전  「첫 번째 봉인 - 오만」""",
 scn_Intro_078,intro,,gamestart,78,,,,,,Img_Village_Silencia,"""우측으로 이동하면 던전 선택창이 나옵니다.""",intro_clear
 scn_dun_envy_001,dungeon,,dungeonenter,1,,,,,,Img_Dungeon_Pride,"""울창한 숲사이, 땅이 갈라진 듯 깊게 패인 골짜기.""",
 scn_dun_envy_002,dungeon,,dungeonenter,2,,,,,,Img_Dungeon_Pride,"""안쪽에서는 빛이 거의 닿지 않는다.""",
@@ -130,7 +130,7 @@ scn_boss_seal_013,boss,pride,preseal,13,,,,오만의 정령,Img_Boss_Pride_Portr
 scn_boss_seal_014,boss,pride,preseal,14,img_show,Img_preseal_cut_01,fade_in,,,Img_Dungeon_Pride,,
 scn_boss_seal_015,boss,pride,preseal,15,img_change,Img_preseal_cut_02,fade_in,,,Img_Dungeon_Pride,,
 scn_boss_seal_016,boss,pride,preseal,16,img_hide,Img_preseal_cut_02,fade_out,,,Img_Dungeon_Pride,,
-scn_boss_seal_017,boss,pride,preseal,17,,,,시스템,,Img_Dungeon_Pride,"""▶  금서 카드 획득  오만의 정령 - 봉인됨""",
+scn_boss_seal_017,boss,pride,preseal,17,,,,,,Img_Dungeon_Pride,"""▶  금서 카드 획득  오만의 정령 ? 봉인됨""",
 scn_boss_seal_018,boss,pride,preseal,18,,,,에리온,Img_PC_Erion,Img_Dungeon_Pride,"""...끝났다""",
 scn_boss_seal_019,boss,pride,preseal,19,,,,에리온,Img_PC_Erion,Img_Dungeon_Pride,"""하지만 정말, 끝난 걸까""",
 scn_boss_seal_020,boss,pride,preseal,20,,,,에리온,Img_PC_Erion,Img_Dungeon_Pride,"""저 정령의 말이 계속 남는다.""",
@@ -164,4 +164,4 @@ scn_pride_clear_024,ending,,clear,24,,,,,,Img_Village_Silencia,"""아직 여섯 
 scn_pride_clear_025,ending,,clear,25,,,,리브라,Img_Npc_Libra,Img_Village_Silencia,"""다음으로 반응하는 금서가 곧 나타날 겁니다.""",
 scn_pride_clear_026,ending,,clear,26,,,,에리온,Img_PC_Erion,Img_Village_Silencia,"""...그럼 쉬고 있을 시간은 없겠군.""",
 scn_pride_clear_027,ending,,clear,27,,,,리브라,Img_Npc_Libra,Img_Village_Silencia,"""다음 죄는 오만과는 다른방식으로 당신을 시험할 거예요.""",
-scn_pride_clear_028,ending,,clear,28,,,,,,Img_Village_Silencia,"""▶  첫번째 던전 완료 ▶첫 번째 봉인 - 오만◀""",pride_clear
+scn_pride_clear_028,ending,,clear,28,,,,,,Img_Village_Silencia,"""▶  첫번째 던전 완료 「첫 번째 봉인 ? 오만」""",pride_clear
