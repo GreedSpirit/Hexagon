@@ -27,7 +27,7 @@ public class CardTooltipLogic : MonoBehaviour
         SetString(data);
     }
 
-    //UserCard
+    // UserCard
     public void Init(UserCard userCard, CardTooltipUI tooltipUI)
     {
         _tooltipUI = tooltipUI;
@@ -81,8 +81,10 @@ public class CardTooltipLogic : MonoBehaviour
 
     public void PointerExitParent()
     {
+        if (_tooltipUI == null) return;
+
         // 비활성화
-        _tooltipUI?.gameObject.SetActive(false);
+        _tooltipUI.gameObject.SetActive(false);
 
         // 다시 원래 부모로
         _tooltipUI.transform.SetParent(_baseParent, false);
