@@ -110,6 +110,7 @@ public class DeckUI : MonoBehaviour
         // 던전 정보 버튼 연결
         if (dungeonInfoButton != null)
         {
+            dungeonInfoButton.gameObject.SetActive(true);
             dungeonInfoButton.onClick.RemoveAllListeners();
             dungeonInfoButton.onClick.AddListener(OnClickDungeonInfo);
         }

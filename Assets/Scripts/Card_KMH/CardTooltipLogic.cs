@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardTooltipLogic : MonoBehaviour
 {
@@ -71,6 +72,11 @@ public class CardTooltipLogic : MonoBehaviour
 
         // 툴팁 텍스트 변경
         _tooltipUI.SetToolTipText(_name, _desc);
+
+
+        // 레이아웃 강제 갱신
+        // LayoutGroup(Grid/Vertical) 즉시 다시 계산
+        LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipPoint.GetComponent<RectTransform>());
     }
 
     public void PointerExitParent()

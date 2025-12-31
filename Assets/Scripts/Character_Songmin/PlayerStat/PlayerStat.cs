@@ -252,6 +252,46 @@ public class PlayerStat
         }
     }
 
+    public void RemoveStatusEffect(string effectKey)
+    {
+        StatusEffectData removeTarget = null;
+
+        if (StatusEffects.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var data in StatusEffects.Keys)
+        {
+            if (data.Key == effectKey)
+            {
+                removeTarget = data;
+                break;
+            }            
+        }
+        if (removeTarget == null)
+        {
+            return;
+        }
+
+        if (removeTarget.BuffType == BuffType.DeBuff)
+        {
+            DeBuff -= removeTarget.ValueFormula;
+        }
+        else if (removeTarget.BuffType == BuffType.Buff)
+        {
+            Buff -= removeTarget.ValueFormula;
+        }
+        if (removeTarget.Key == "KeyStatusPoison")
+        {
+            Poison = 0;
+        }
+        if (removeTarget.Key == "KeyStatusBurn")
+        {
+            Burn = 0;
+        }
+    }
+
 
     public void ApplyStatusEffect()
     {

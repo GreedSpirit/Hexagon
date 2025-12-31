@@ -158,7 +158,7 @@ public class DungeonInfoPanel : MonoBehaviour
                 // 슬롯 생성
                 GameObject go = Instantiate(_enemySlotPrefab, _enemyListParent);
                 EnemySlotUI slot = go.GetComponent<EnemySlotUI>();
-                slot.Init(monData, OnEnemySlotClicked);
+                slot.Init(monData, (data) => OnEnemySlotClicked(data, slot));
                 _spawnedSlots.Add(slot);
 
                 //  이미지 체크
@@ -170,7 +170,7 @@ public class DungeonInfoPanel : MonoBehaviour
                 // 첫 번째 몬스터 자동 선택
                 if (!firstSelected)
                 {
-                    OnEnemySlotClicked(monData);
+                    OnEnemySlotClicked(monData, slot);
                     firstSelected = true;
                 }
             }
@@ -181,11 +181,17 @@ public class DungeonInfoPanel : MonoBehaviour
         }
     }
 
-    private void OnEnemySlotClicked(MonsterData data)
+    private void OnEnemySlotClicked(MonsterData data, EnemySlotUI selectedSlot)
     {
         // 선택 표시 갱신
-        foreach (var slot in _spawnedSlots) slot.SetSelected(false);
-
+        foreach (var slot in _spawnedSlots)
+        {
+            slot.SetSelected(false);
+        }
+        if (selectedSlot != null)
+        {
+            selectedSlot.SetSelected(true);
+        }
         // 텍스트 갱신
         _enemyNameText.text = DataManager.Instance.GetString(data.Name).Korean;
         _enemyDescText.text = DataManager.Instance.GetString(data.Desc).Korean;
