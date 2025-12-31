@@ -22,7 +22,7 @@ public class DungeonPresenter : MonoBehaviour
         _enterButton.onClick.AddListener(OnEnterButtonClicked);
         _returnButton.onClick.AddListener(ShowTown);
 
-        SetUpDungeonList();
+        //SetUpDungeonList();
     }
 
     void SetUpDungeonList()
@@ -74,6 +74,8 @@ public class DungeonPresenter : MonoBehaviour
 
     public void ShowDungeon() // 특정 위치에 다가가거나 버튼을 눌렀을 때 던전 선택 화면으로 전환
     {
+        SetUpDungeonList();
+
         _enterButton.interactable = false;
         _dungeonPanel.SetActive(true);
 
