@@ -43,6 +43,7 @@ public class InventoryUI : MonoBehaviour
         if (InventoryManager.Instance != null)
         {
             InventoryManager.Instance.RegisterInventoryUI(this);
+            InventoryManager.Instance.OnDeckChanged += RefreshInventory;
         }
         // 드롭다운 리스너 연결 (값이 바뀌면 OnSortChanged 실행)
         sortDropdown.onValueChanged.AddListener(OnSortChanged);
@@ -70,6 +71,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (InventoryManager.Instance != null)
         {
+            InventoryManager.Instance.OnDeckChanged -= RefreshInventory;
             InventoryManager.Instance.OnRequestDeselect -= DeselectVisualsOnly;
         }
     }
